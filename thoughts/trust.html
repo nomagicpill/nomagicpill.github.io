@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The Trust Function</title>
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="icon" href="../media/favicon.png">
+</head>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+<body>
+
+<h3 id="home"><a href="../index.html">Home</a></h3>
+
+<h1 id="trust">The Trust Function</h1>
+
+<p>
+  Calculating flakiness one commitment at a time.
+</p>
+
+<hr>
+
+<h2 id="contents">Contents</h2>
+
+<ul>
+  <li>
+    <a href="#theory">Theory</a>
+  </li>
+  <li>
+    <a href="#function">Function</a>
+  </li>
+  <li>
+    <a href="#summary">Summary</a>
+  </li>
+  <li>
+    <a href="#see_also">See Also</a>
+  </li>
+</ul>
+
+<hr>
+
+<h2 id="theory">Theory</h2>
+
+<p>
+  Assigning a trustworthiness score (TWS) to an individual is valuable because it provides an expected value for a commitment. The range is from 0 (pathological liar, doubt everything they say unless there is substantial, incontrovertible evidence otherwise) to 1 (perfectly trustworthy, never doubt anything they say and assume what they say is completely true without evidence). A few examples:
+</p>
+
+<ul>
+  <li>
+    Alyosha's TWS is 0.1, or 10%. He has agreed to meet at 10:00am. It is very unlikely he will be there at 10:00am, so I should arrive later than 10:00am to accommodate. The exact time offset can be determined if there is a history of his lack of punctuality.
+  </li>
+  <li>
+    Mitya's TWS is 0.9, or 90%. He has agreed to complete a work task by Friday at 5:00pm. It is very likely that the task will be complete, so there is little need to follow up, unless it's very important. Simply including a note in the original request to notify when it's complete will suffice.
+  </li>
+  <li>
+    Ivan's TWS is 50, or 50%. He has agreed to follow an exercise plan I put together for him. It is unlikely he will follow it to the letter, but I still expect some sort of adherence, so I built that into the program: there are more mess-around days to encourage Ivan to at least get out and do fun exercise rather than nothing at all.
+  </li>
+</ul>
+
+<p>
+  There are a few obvious problems with taking this mindset towards others, but counterarguments exist.
+</p>
+
+<p>
+  First, it can remove valuable expectations and standards from one's behavior. Alyosha should be held accountable for showing up at the agreed-upon 10:00am and I shouldn't have to accommodate for him. If I tell him his consistent tardiness is bothersome and he cares about me, then he should start showing up early or on time. And if he doesn't change his ways? While I'm a proponent of friends abiding by the practice of if-it's-important-to-you-it's-important-to-me, sometimes it just doesn't work that way and it's not worth nixing the friendship, but rather accommodating them and their foibles.
+</p>
+
+<p>
+  Second, cultural norms dictate different expectations. My culture is one of punctuality and upholding commitments when they're made. Others may value time much less and think saying "I'll do this" is a statement of weak conviction. But what matters is the culture that the relationship is operating in. There is some give-and-take, but some take precedence over others. Company A must abide by company B's culture when trying to win over their business. Person A must abide by person B's culture when person B is leading the effort.
+</p>
+
+<p>
+  Third, communication of expectations must be open and straightforward before updating one's TWS. The score recipient may not be aware of the expectation they're being held to.
+</p>
+
+<hr>
+
+<h2 id="function">Function</h2>
+
+<p>
+  I need a formula that satisfies the following conditions:
+</p>
+
+<ul>
+  <li>
+    Increase TWS if the event resolves as true
+  </li>
+  <li>
+    Decrease TWS if the event resolves as false
+  </li>
+  <li>
+    Averages over the course of the events or takes into account history of events
+  </li>
+  <li>
+    Asymptotic in nature as the independent variable's magnitude grows
+  </li>
+</ul>
+
+<p>
+  A sigmoid function with coefficient and offset options comes naturally:
+</p>
+
+\[TWS(x) = \frac{1}{1 + ae^{b-ax}}\]
+
+<p>
+  where \(x\) is a running counter of true resolutions (x += 1) and false resolutions (x -= 1), \(a\) adjusts the y-axis scaling near low values of \(x\), preventing or allowing one's trustworthiness to be tarnished or overblown by a few flukes, and \(b\) offsets the scale left and right to make it more difficult to achieve high or low trustworthiness, depending on whether it's positive or negative. This score can then be turned into the likelihood of completing an individual commitment, eventually regressing or progressing to the individual's mean trustworthiness.
+</p>
+
+<img src="media/trust/sigmoid.png" style="width:350px">
+<figcaption>
+  Standard sigmoid function
+</figcaption>
+
+<p>
+  (A <a href="https://en.wikipedia.org/wiki/Gompertz_function">Gompertz function</a> can also be used, but the standard sigmoid with an offset feels cleaner.)
+</p>
+
+<p>
+  A few considerations on the function:
+</p>
+
+<ul>
+  <li>
+    <p>
+      \(x\) contributions can be weighted based on confidence levels (high confidence corresponds to \(x > 1\) for a single event; low confidence is \(x < 1\)), increasing TWS when high-confidence commitments come true and vice versa.
+    </p>
+    <p>
+      This concept allows us to Brier-score-ize the function by greatly rewarding high-confidence true resolutions and penalizing high-confidence false resolutions. The <a href="https://en.wikipedia.org/wiki/Brier_score">Brier score (BS)</a> is used to score probabilistic predictions, where \(BS = (p_{i} - o_{i})^2\) with \(p_{i}\) being the probability and \(o_{i}\) the outcome (1 is true and 0 is false). The squaring helps to penalize larger errors more than smaller errors, a characteristic that is also desired in trusting relationships.
+    </p>
+    <p>
+      But there are different rewards and penalties depending on the confidence levels and outcomes:
+    </p>
+    <ul>
+      <li>
+        High confidence of true (or low confidence of false) with true outcome: person is trustworthy, reward them more than the standard x += 1
+        <ul>
+          <li>
+            Ex: Alice says she will get the job done by the deadline and the job gets done (this should be normal behavior, hence the only-a-bit-more than normal reward for her calibration)
+          </li>
+        </ul>
+      </li>
+      <li>
+        High confidence of true (or low confidence of false) with false outcome: person is untrustworthy, penalize them much more than the standard x -= 1
+        <ul>
+          <li>
+            Ex: Bob says he will get the job done by the deadline and the job does not get done
+          </li>
+        </ul>
+      </li>
+      <li>
+        Low confidence of true (or high confidence of false) with true outcome: person is neither trustworthy nor untrustworthy and definitely not calibrated, reward them with the standard x += 1
+        <ul>
+          <li>
+            Ex: Charles says he won't get the job done by the deadline and the job gets done
+          </li>
+        </ul>
+      </li>
+      <li>
+        Low confidence of true (or high confidence of false) with false outcome: person is trustworthy and calibrated, reward them with the standard x += 1
+        <ul>
+          <li>
+            Ex: Delaney says she doesn't know if she'll get the job done by the deadline and the job does not get done
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      How to mathematize this is left as an exercise for the reader (read: I'm not sure how to do it).
+    </p>
+  </li>
+  <li>
+    \(a\) values should be less than one because trustworthiness doesn't just jump up or down given a single event; it takes multiple events to get a solid idea of one's TWS.
+  </li>
+  <li>
+    <p>
+      \(b\) values should be zero when there is no information. (This is obviously a contentious take that goes against the conventional wisdom of "trust until proven otherwise", but in my ancedotal experience it roughly holds.) They should also be often be zero because a person's true and false resolutions cancel each other out, with exceptions being made for major true resolutions and minor false resolutions (see note on weighting \(x\) values above).
+    </p>
+    <p>
+      \(b\) values can be offset in either direction when relevant information is known (reputation, etc).
+    </p>
+  </li>
+  <li>
+    Outside of a piecewise function, there's no way to make it difficult to gain score and easy to lose score if you want to be more guarded against others. This is a limitation of this mathemtical portion of the model, but can easily extend to the non-math version.
+  </li>
+  <li>
+    Excuses and reasons may be used to add or subtract values from x depending on their reasonableness and truthfulness.
+  </li>
+</ul>
+
+<hr>
+
+<h2 id="summary">Summary</h2>
+
+<p>
+  Keep a running mental tally of how consistent people are with their commitments to get a better idea of their likelihood of fulfilling future commitments.
+</p>
+
+<p>
+  Let important commitments or those they say they will get done count for much more than unimportant commitments or those they say may not get done.
+</p>
+
+<p>
+  Trustworthy people should have a more difficult time losing trust than gaining it. The inverse—untrustworthy people should have an easier time losing trust—is also true.
+</p>
+
+<p>
+  Do what you say you're going to do.
+</p>
+
+<hr>
+
+<h2 id="see_also">See Also</h2>
+
+<ul>
+  <li>
+    <a href="https://www.overcomingbias.com/p/signals-are-foreverhtml">Signals Are Forever</a>
+  </li>
+</ul>
+
+</body>
+</html>

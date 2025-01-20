@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Is Reserved Parking Worth It?</title>
+
+  <link rel="alternate" type="application/rss+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
+  <link rel="alternate" type="application/atom+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="icon" href="../media/favicon.png">
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+  <style>
+      .calculator {
+          max-width: 600px;
+          margin: 20px auto;
+          padding: 20px;
+          font-family: Arial, sans-serif;
+      }
+      .input-group {
+          margin-bottom: 15px;
+      }
+      .input-group label {
+          display: block;
+          margin-bottom: 5px;
+      }
+      .input-group input {
+          width: 100%;
+          padding: 8px;
+          margin-bottom: 5px;
+      }
+      .hint {
+          font-size: 0.8em;
+          color: #666;
+      }
+      .results {
+          margin-top: 20px;
+          padding: 15px;
+          background-color: #f5f5f5;
+          border-radius: 5px;
+      }
+      .positive { color: green; }
+      .negative { color: red; }
+  </style>
+</head>
+
+<body>
+
+<h3 id="home"><a href="../index.html">Home</a></h3>
+
+<h1 id="reservedparking">Is Paying For Reserved Parking Worth It?</h1>
+
+<p>
+  Calculations and potential improvements to parking systems.
+</p>
+
+<hr>
+
+<h2 id="contents">Contents</h2>
+
+<ul>
+  <li>
+    <a href="#background">Background</a>
+  </li>
+  <li>
+    <a href="#calculation">Calculation</a>
+  </li>
+  <li>
+    <a href="#improvements">Improvements</a>
+  </li>
+  <li>
+    <a href="#see_also">See Also</a>
+  </li>
+</ul>
+
+<hr>
+
+<h2 id="background">Background</h2>
+
+<p>
+  My apartment's parking situation is a free-for-all for the proletariat and a breeze for the bourgeoisie, with the two classes being separated by whether or not a "Reserved" is painted on the spot their car is parked. God forbid you come home at 1:00am and are forced to park in the deepest, darkest corners of the garage because you don't have a reserved spot and everyone is already deep in sleep for the night (read: cars parked in all of the spaces closest to the elevators). Otherwise, the standard "do I drive around in hopes to find a better parking spot, or just accept this one" question crosses every prole's mind upon entering the garage and driving down the rows—the <a href="https://en.wikipedia.org/wiki/Optimal_stopping">optimal "parking" theory</a> of transportation, which, unsurprisingly, has <a href="https://www.youtube.com/watch?v=EEuZgZ1f-V4">already been discussed</a>.
+</p>
+
+<p>
+  This raises the question of whether it's worth it to upgrade one's social status from low- to high-class, not for the clout or jealous looks on the elevator, but the material benefit it provides in both alleviating mental turmoil and giving time back.
+</p>
+
+<hr>
+
+<h2 id="calculation">Calculation</h2>
+
+<p>
+  Many factors can be considered in the cost-benefit calculation, some mandatory and some optional:
+</p>
+
+<ul>
+  <li>
+    Number of trips per time period: One trip is either to or from the car since time will be saved in both directions
+  </li>
+  <li>
+    Time saved per trip to/from the elevator: This must be measured based on the potential reserved spot that would be rented versus the average spot. To calculate:
+    <ul>
+      <li>
+        Measure walking time from potential reserved spot
+      </li>
+      <li>
+        Measure walking time from unreserved spot for the next 10-20 times and take average
+      </li>
+      <li>
+        Take difference between the two numbers to get averaged time saved per trip
+      </li>
+    </ul>
+    If the elevator waiting time depends on which floor the spot is on, include how long it takes for the elevator to arrive. Step 1 will also have to be averaged to account for this.
+  </li>
+  <li>
+    Percentage of time a closer spot is occupied: If a closer spot is unoccupied a majority of the time, then there's potentially no benefit in having a reserved spot.
+  </li>
+  <li>
+    Value of time: How much is free time worth? There's a decent ballpark calculator <a href="https://www.clearerthinking.org/tools/value-of-your-time-calculator">here</a> (beware that it requires an email to send the report to).
+  </li>
+  <li>
+    Value of not having to think about parking per trip: never having to worry what floor to go to, having to search for spots, going to the wrong floor, etc. 
+  </li>
+  <li>
+    Monthly cost of reserved parking
+  </li>
+</ul>
+
+<p>
+  The final formula comes out to:
+</p>
+
+<p class="center">
+  mentalValue = mentalLoad * tripsPerDay * 365;
+</p>
+
+<p class="center">
+  timeValue = timeSaved * tripsPerDay * spotAvailability * minuteRate * 365
+</p>
+
+<p class="center">
+  cost = monthlyCost * 12
+</p>
+
+<p class="center">
+  <b>value = mentalValue + timeValue - cost</b>
+</p>
+
+<p>
+  And here's a handy calculator Claude helped make to do all the math:
+</p>
+
+<div id="calculator-root"></div>
+
+<script type="text/babel">
+    const ParkingCalculator = () => {
+        const [timeSaved, setTimeSaved] = React.useState(1);
+        const [tripsPerDay, setTripsPerDay] = React.useState(2);
+        const [spotAvailability, setSpotAvailability] = React.useState(80);
+        const [hourlyRate, setHourlyRate] = React.useState(50);
+        const [mentalLoad, setMentalLoad] = React.useState(1);
+        const [monthlyCost, setMonthlyCost] = React.useState(50);
+        const chartRef = React.useRef(null);
+        const [chart, setChart] = React.useState(null);
+
+        const calculate = () => {
+            const minuteRate = hourlyRate / 60;
+            const dailyTimeSaved = timeSaved * tripsPerDay * (spotAvailability / 100);
+            const dailyTimeValue = dailyTimeSaved * minuteRate;
+            const annualTimeValue = dailyTimeValue * 365;
+            const annualMentalValue = mentalLoad * tripsPerDay * 365;
+            const totalBenefit = annualTimeValue + annualMentalValue;
+            const annualCost = monthlyCost * 12;
+            const netValue = totalBenefit - annualCost;
+
+            return {
+                benefit: Math.round(totalBenefit),
+                cost: annualCost,
+                net: Math.round(netValue)
+            };
+        };
+
+        React.useEffect(() => {
+            if (chartRef.current) {
+                if (chart) {
+                    chart.destroy();
+                }
+
+                // Calculate monthly values
+                const monthlyTimeValue = (timeSaved * tripsPerDay * (spotAvailability / 100) * (hourlyRate / 60) * 365) / 12;
+                const monthlyMentalValue = (mentalLoad * tripsPerDay * 365) / 12;
+                const monthlyBenefit = monthlyTimeValue + monthlyMentalValue;
+
+                // Generate data for 12 months
+                const months = Array.from({length: 13}, (_, i) => i);
+                const data = {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: 'Total Benefit',
+                            data: months.map(month => monthlyBenefit * month),
+                            borderColor: '#82ca9d',
+                            fill: false
+                        },
+                        {
+                            label: 'Annual Cost',
+                            data: months.map(month => monthlyCost * month),
+                            borderColor: '#ff8042',
+                            fill: false
+                        },
+                        {
+                            label: 'Net Value',
+                            data: months.map(month => (monthlyBenefit * month) - (monthlyCost * month)),
+                            borderColor: '#2196f3',
+                            borderWidth: 2,
+                            fill: false
+                        }
+                    ]
+                };
+
+                const ctx = chartRef.current.getContext('2d');
+                const newChart = new Chart(ctx, {
+                    type: 'line',
+                    data: data,
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Months'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Cumulative Value ($)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: $${Math.round(context.raw)}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                setChart(newChart);
+            }
+        }, [timeSaved, tripsPerDay, spotAvailability, hourlyRate, mentalLoad, monthlyCost]);
+
+        const values = calculate();
+
+        return (
+            <div className="calculator">
+
+                <div className="input-group">
+                    <label>Time saved per trip (minutes)</label>
+                    <input 
+                        type="number" 
+                        value={timeSaved}
+                        onChange={e => setTimeSaved(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="input-group">
+                    <label>Number of trips to/from car per day</label>
+                    <input 
+                        type="number" 
+                        value={tripsPerDay}
+                        onChange={e => setTripsPerDay(Number(e.target.value))}
+                    />
+                    <div className="hint">Going to and returning from your car is considered two (2) trips</div>
+                </div>
+
+                <div className="input-group">
+                    <label>Percentage of time closer spots are occupied (%)</label>
+                    <input 
+                        type="number" 
+                        value={spotAvailability}
+                        onChange={e => setSpotAvailability(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="input-group">
+                    <label>Value of your time ($ per hour)</label>
+                    <input 
+                        type="number" 
+                        value={hourlyRate}
+                        onChange={e => setHourlyRate(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="input-group">
+                    <label>Value of not having to think about parking per trip ($)</label>
+                    <input 
+                        type="number" 
+                        value={mentalLoad}
+                        onChange={e => setMentalLoad(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="input-group">
+                    <label>Monthly cost of reserved parking ($)</label>
+                    <input 
+                        type="number" 
+                        value={monthlyCost}
+                        onChange={e => setMonthlyCost(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="results">
+                    <h3>Annual Benefit: <span className="positive">+${values.benefit.toLocaleString()}</span></h3>
+                    <h3>Annual Cost: <span className="negative">-${values.cost.toLocaleString()}</span></h3>
+                    <h3>Net Annual Value: 
+                        <span className={values.net >= 0 ? "positive" : "negative"}>
+                            ${values.net.toLocaleString()}
+                        </span>
+                    </h3>
+                    <div className="hint">Based on {tripsPerDay} trips per day, 365 days per year</div>
+                </div>
+
+                <div style={{ marginTop: "20px", height: "400px" }}>
+                    <canvas ref={chartRef} height="350"></canvas>
+                </div>
+            </div>
+        );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('calculator-root'));
+    root.render(<ParkingCalculator />);
+</script>
+
+<br>
+
+<hr>
+
+<h2 id="improvements">Improvements to Reserved Parking Systems</h2>
+
+<p>
+  Here are some ideas on how to improve reserved parking systems with no guarantees on the downstream ramifications they may create. They also favor the wealthy over the less wealthy.
+</p>
+
+<h3 id="harberger">Harberger Parking Tax</h3>
+
+<p>
+  The Harberger Tax states that:
+</p>
+
+<blockquote>
+  <ul>
+    <li>
+      Owners periodically self-assess their property and pay tax on its value.
+    </li>
+    <li>
+      Others are able to purchase the property from the owner at the taxed price at any time, forcing a sale.
+    </li>
+  </ul>
+</blockquote>
+
+<p>
+  The Harberger Parking Tax states that:
+</p>
+
+<ul>
+  <li>
+    Owners of reserved spots periodically self-assess their spot and pay cost on its self-assessed value.
+  </li>
+  <li>
+    Others are able to purchase the spot from the owner at the self-assessed price at any time, forcing a sale.
+  </li>
+</ul>
+
+<p>
+  Thus the owner is incentivized to price it fairly, if not a bit above his actual value, to ensure someone doesn't snatch it up.
+</p>
+
+<h3 id="market">Parking Market</h3>
+
+<p>
+  Each parking space has a digital sign above it that displays the cost of parking there indefinitely (within reason), ranging from a minimum of $0 to a maximum of whatever the market decides. Nobody parking in the spot that's right next to the elevator? Drop the cost by 25% and see what happens.
+</p>
+
+<p>
+  This ensures that people who really want the primo parking spots get them.
+</p>
+
+<p>
+  Further, the cost could be normalized to some other number to ensure actual cost remains the same across socioeconomic statuses, i.e., a high net worth person can easily afford the parking cost because they are (likely) an outlier in the apartment's market, whereas a low net worth person may not be able to afford it. Instead, the cost could be a percent of their income with an extra scaling factor based on the income band they reside in. (To be clear, I think this paragraph's idea is too drastic and should not be implemented even if the parking market is.)
+</p>
+
+<h3 id="raffle">Weighted Raffle</h3>
+
+<p>
+  Participants who want reserved parking could purchase any number of raffle tickets at some amount. The first person chosen would get first pick of their spot, second person gets second pick, and so on. This provides some, but not complete, fairness around getting better spots. 
+</p>
+
+<p>
+  However, this requires that no parking spots be assigned to anyone yet, meaning this only works in:
+</p>
+
+<ul>
+  <li>
+    New complexes by waiting until some occupancy rate then announcing reserved parking and the initial raffle. This could work.
+  </li>
+  <li>
+    Existing complexes that revoke assignments and start over through raffle. Douglas Adams would probably scoff at this and say "this would make many people very angry and be widely regarded as a bad move".
+  </li>
+</ul>
+
+<h3 id="tiers">Tiered Parking System</h3>
+
+<p>
+  Parking spots aren't all equal, so why price them equally? The best reserved spots cost more than the not-so-good ones.
+</p>
+
+<hr>
+
+<h2 id="see_also">See Also</h2>
+
+<ul>
+  <li>
+    <a href="https://reason.org/commentary/it-is-time-for-a-market-approach-to-parking/">It Is Time For a Market Approach to Parking</a>
+  </li>
+  <li>
+    <a href="https://en.wikipedia.org/wiki/Harberger_Tax">Harberger Tax</a>: Also known as Common Ownership Self-assessed Tax (COST)
+  </li>
+</ul>
+
+</body>
+</html>
