@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>About</title>
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="icon" href="../media/favicon.png">
+</head>
+<body>
+
+<h3 id="home"><a href="../index.html">Home</a></h3>
+
+<h1 id="about">About</h1>
+
+<p>
+  About myself and the website.
+</p>
+
+<hr>
+
+<h2 id="contents">Contents</h2>
+
+<ul>
+  <li>
+    <a href="#contact">Contact</a>
+  </li>
+  <li>
+    <a href="#what_i_use">What I Use</a>
+  </li>
+  <li>
+    <a href="#hobbies">Hobbies</a>
+  </li>
+  <li>
+    <a href="#favorites">Favorites</a>
+  </li>
+  <li>
+    <a href="#website">Website</a>
+  </li>
+  <li>
+    <a href="#friends">Friends of the Site</a>
+  </li>
+  <li>
+    <a href="#see_also">See Also</a>
+  </li>
+</ul>
+
+<hr>
+
+<h2 id="contact">Contact</h2>
+
+<p>
+  Contact me for suggestions, comments, questions, criticisms, collaboration, notifications, etc.
+</p>
+
+<p>
+  Solve the following math problem to see my email:
+</p>
+
+    <p id="question">Loading question...</p>
+    
+    <input type="number" id="answer" placeholder="Enter your answer" onkeydown="if(event.key === 'Enter') checkAnswer()">
+    <button onclick="checkAnswer()">Submit</button>
+    
+    <div class="feedback" id="feedback"></div>
+
+    <img id="emailImage" src="media/about/email.png" alt="My email address">
+    
+    <script>
+        let num1, num2, correctAnswer;
+
+        function generateNewQuestion() {
+            num1 = Math.floor(Math.random() * 11) + 2;
+            num2 = Math.floor(Math.random() * 11) + 2;
+            correctAnswer = num1 * num2;
+            
+            document.getElementById('question').textContent = `What is ${num1} × ${num2}?`;
+            document.getElementById('answer').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('emailImage').style.display = 'none';
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answer').value;
+            const feedback = document.getElementById('feedback');
+            const emailImage = document.getElementById('emailImage');
+            
+            if (parseInt(userAnswer) === correctAnswer) {
+                feedback.textContent = 'Correct! Here is my email:';
+                feedback.className = 'feedback';
+                emailImage.style.display = 'block';
+            } else {
+                feedback.textContent = `Wrong answer. Please try again.`;
+                feedback.className = 'feedback error';
+                emailImage.style.display = 'none';
+                // Wait a moment before showing new question
+                setTimeout(generateNewQuestion, 2000);
+            }
+        }
+
+        generateNewQuestion();
+    </script>
+
+<hr>
+
+<h2 id="what_i_use">What I Use</h2>
+
+<p>
+  See how some of the following items have affected my life in <a href="../knowledge/improvements.html">Life Improvements</a>.
+</p>
+
+<ul>
+  <li>
+    Laptop: <a href="https://support.apple.com/kb/sp715?locale=en_US">2015 13" MacBook Pro</a>
+  </li>
+  <li>
+    OS: <a href="https://www.apple.com/macos/catalina/">macOS</a>
+  </li>
+  <li>
+    Monitor: <a href="https://www.amazon.com/gp/product/B081PSV6CC">27" Sceptre 4K UHD monitor</a>
+  </li>
+  <li>
+    Microsoft Office: <a href="https://www.microsoft.com/en-us/microsoft-365/word">Word</a>, <a href="https://www.microsoft.com/en-us/microsoft-365/excel">Excel</a>, <a href="https://www.microsoft.com/en-us/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook">Outlook</a>, <a href="https://www.microsoft.com/en-us/microsoft-365/onenote/digital-note-taking-app">OneNote</a>
+  </li>
+  <li>
+    Editor: <a href="https://atom.io/">Atom</a>
+  </li>
+  <li>
+    TeX: <a href="http://www.texstudio.org/">TeXstudio</a>
+  </li>
+  <li>
+    Spaced Repetition: <a href="https://apps.ankiweb.net/">Anki</a>
+  </li>
+  <li>
+    Calendar: <a href="https://www.google.com/calendar">Google Calendar</a>
+  </li>
+  <li>
+    Browser: <a href="https://www.google.com/chrome/">Google Chrome</a>
+  </li>
+  <li>
+    Extensions:
+    <ul>
+      <li>
+        <a href="https://adblockplus.org/">Adblock Plus</a>
+      </li>
+      <li>
+        <a href="https://www.ghostery.com/">Ghostery</a>
+      </li>
+      <li>
+        <a href="https://www.eff.org/https-everywhere">HTTPS Everywhere</a>
+      </li>
+      <li>
+        <a href="https://chrome.google.com/webstore/detail/old-reddit-redirect/dneaehbmnbhcippjikoajpoabadpodje?hl=en-US">Old Reddit Redirect</a>
+      </li>
+      <li>
+        <a href="https://chrome.google.com/webstore/detail/reading-time/nccohhimobidpghgpnejnbkpoichbbml?hl=en-US">Reading Time</a>
+      </li>
+      <li>
+        <a href="https://redditenhancementsuite.com/">Reddit Enhancement Suite</a>
+      </li>
+      <li>
+        <a href="http://www.stayfocusd.com/">StayFocusd</a>
+      </li>
+      <li>
+        <a href="https://chrome.google.com/webstore/detail/video-speed-controller/nffaoalbilbmmfgbnbgppjihopabppdk?hl=en">Video Speed Controller</a>
+      </li>
+      <li>
+        <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en">uBlock Origin</a>
+      </li>
+      <li>
+        <a href="https://chrome.google.com/webstore/detail/wayback-machine/fpnmgdkabkmnadcjpehmlllkndpkmiak?hl=en-US">Wayback Machine</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    Passwords: <a href="https://bitwarden.com/">Bitwarden</a>
+  </li>
+  <li>
+    Time: <a href="https://www.rescuetime.com/">RescueTime</a> / <a href="https://support.apple.com/en-us/HT208982">Screen Time</a>
+  </li>
+  <li>
+    Productivity: <a href="https://www.alfredapp.com/">Alfred</a>
+  </li>
+  <li>
+    Chair: <a href="https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/">Herman Miller Aeron</a>
+  </li>
+  <li>
+    <a href="https://linkchecker.github.io/linkchecker/">LinkChecker</a>
+  </li>
+</ul>
+
+<hr>
+
+<h2 id="hobbies">Hobbies</h2>
+
+<h3 id="mountain_biking">Mountain Biking</h3>
+
+<p>
+  I own six bicycles:
+</p>
+
+<ul>
+  <li>
+    <a href="https://www.ibiscycles.com/bikes/ripley">Ibis Ripley</a>
+  </li>
+  <li>
+    <a href="https://www.bicycling.com/bikes-gear/a20046399/first-look-the-turner-flux-v4-0/">Turner Flux</a>
+  </li>
+  <li>
+    <a href="https://www.ibiscycles.com/bikes/past-models/dv9">Ibis DV9</a>
+  </li>
+  <li>
+    <a href="https://www.bicyclebluebook.com/value-guide/product/14968/">Cannondale Rize 4</a>
+  </li>
+  <li>
+    <a href="https://www.6ku.com/products/6ku-fixie">6KU Fixie</a>
+  </li>
+  <li>
+    <a href="https://www.bikeradar.com/reviews/bikes/road-bikes/lemond-poprad-disc-review/">LeMond Poprad</a>
+  </li>
+</ul>
+
+<p>
+  I've built a few small features in the forest behind my parents' house. I mostly enjoy technical, steep (up and down) trails.
+</p>
+
+<hr>
+
+<h2 id="favorites">Favorites</h2>
+
+<p>
+  In no particular order.
+</p>
+
+<h3 id="articles_essays">Articles/Essays</h3>
+
+<ul>
+  <li>
+    <a href="https://jsomers.net/blog/speed-matters">Speed matters</a>, James Somers
+  </li>
+  <li>
+    <a href="https://gwern.net/doc/science/1986-hamming">You and Your Research</a>, Richard Hamming
+  </li>
+  <li>
+    <a href="https://web.archive.org/web/20110618150006/http://www.gymjones.com/knowledge.php?id=21">Why</a>, Mark Twight
+  </li>
+  <li>
+    <a href="https://www.nonprophet.media/journal/4odmqjbfcya1l4tco3m37ck4zblk5a">Honesty</a>, Mark Twight
+  </li>
+  <li>
+    <a href="https://www.nonprophet.media/journal/sport-is-my-teacher">Sport is my Teacher</a>, Mark Twight
+  </li>
+  <li>
+    <a href="https://equipesolitaire.com/blogs/discourse/84418756-twitching-with-twight">Twitching with Twight</a>, Mark Twight
+  </li>
+  <li>
+    <a href="https://www.nonprophet.media/journal/the-recipe">The Recipe</a>, Mark Twight
+  </li>
+  <li>
+    <a href="https://dormin.org/2020/10/06/thoughts-on-meaning-and-writing/">Thoughts on Meaning and Writing</a>, Dormin111
+  </li>
+  <li>
+    <a href="http://stationfiveonefive.com/wp/blog/thenextstep/">the next step</a>, burkey
+  </li>
+  <li>
+    <a href="https://thezvi.wordpress.com/2017/08/26/play-in-hard-mode/">Play in Hard Mode</a>, Zvi
+  </li>
+  <li>
+    <a href="https://sive.rs/kimo">There’s no speed limit</a>, Derek Sivers
+  </li>
+  <li>
+    <a href="https://web.archive.org/web/20110704191652/http://www.gymjones.com/knowledge.php?id=31">Clarity</a>, Mark Twight
+  </li>
+  <li>
+    <a href="https://www.neelnanda.io/blog/mini-blog-post-23-taking-social-initiative">Taking Social Initiative</a>, Neel Nanda
+  </li>
+  <li>
+    <a href="https://leangains.com/fuckarounditis/">Fuckarounditis</a>, Martin Berkhan
+  </li>
+</ul>
+
+<h3 id="favorite_books">Books</h3>
+
+<p>
+  All of my book reviews are <a href="../knowledge/books.html">here</a>.
+</p>
+
+<ul>
+  <li>
+    <a href="https://www.goodreads.com/book/show/290979.War_and_Peace"><i>War and Peace</i></a> by Leo Tolstoy (<a href="https://www.goodreads.com/review/show/3470054624">review</a>)
+  </li>
+  <li>
+    <a href="https://www.goodreads.com/book/show/30659.Meditations"><i>Meditations</i></a> by Marcus Aurelius (<a href="http://classics.mit.edu/Antoninus/meditations.mb.txt">plain text</a>)
+  </li>
+  <li>
+    <a href="https://www.goodreads.com/book/show/83017.The_Tartar_Steppe"><i>The Tartar Steppe</i></a> by Dino Buzzati (<a href="https://archive.org/details/TheTartarSteppeDinoBuzzati/page/n1/mode/2up">archive</a>)
+  </li>
+  <li>
+    <a href="https://www.goodreads.com/book/show/662.Atlas_Shrugged"><i>Atlas Shrugged</i></a> by Ayn Rand
+  </li>
+  <li>
+    <a href="https://www.goodreads.com/book/show/8701960-the-information"><i>The Information: A History, a Theory, a Flood</i></a> by James Gleick
+  </li>
+  <li>
+    <a href="https://www.goodreads.com/book/show/282085.Human_Accomplishment"><i>Human Accomplishment: The Pursuit of Excellence in the Arts and Sciences, 800 B.C. to 1950</i></a> by Charles Murray (<a href="../knowledge/accomplishment.html">review</a>)
+  </li>
+</ul>
+
+<hr>
+
+<h2 id="website">Website</h2>
+
+<p>
+  I only write when I want to. No forcing myself, no saying just 15 minutes, no guilting. Myself and others have found that hobbies' fun factors tend to quickly fade once they become a "chore". I write about things that interest me (although there may be some parts within the subject that don't interest me). Most of writings are never truly finished—I (try to) update them as I or information changes. I enjoy using examples to get my points across.
+</p>
+
+<p>
+  I try to keep the <a href="http://motherfuckingwebsite.com/">website design as simple as possible</a>:
+</p>
+
+<ul>
+  <li>
+    All public pages are accessible from the <a href="../index.html">home page</a>
+  </li>
+  <li>
+    <a href="https://entirelyuseless.com/2015/07/11/are-hyperlinks-a-bad-idea/">Hyperlinks</a> are used where possible. (I use parentheses like this in lieu of those types of notes) instead of footnotes, endnotes, or <a href="https://www.gwern.net/Sidenotes">sidenotes</a>.
+  </li>
+  <li>
+    Default HTML font and sizes are used
+  </li>
+  <li>
+    All sections are in chronological order, with the exception of a handful of "stickied" pages
+  </li>
+</ul>
+
+<p>
+  Other notes:
+</p>
+
+<ul>
+  <li>
+    I block other people's faces with a black square in personal pictures and only mention initials/vague names for anonymity
+  </li>
+  <li>
+    The website is hosted using <a href="https://pages.github.com/">GitHub Pages</a>
+  </li>
+  <li>
+    I try my best to update pages as needed. Sometimes I forget, sometimes I'm lazy. This site is more for me than others.
+  </li>
+  <li>
+    Analytics software: I use Google Analytics solely on the <a href="../index.html">homepage</a>. This can be verified by looking at any other page's source's <code>head</code> section. I use it out of curiosity about the number of homepage views I get. It tracks nothing else, nor do I do anything with the data. Every possible setting that page view measurement doesn't need is turned off.
+  </li>
+</ul>
+
+<h3 id="individual_page_style">Individual Page Style</h3>
+
+<p>
+  The order of content in individual pages is as follows, with some exceptions for blog-style posts:
+</p>
+
+<ul>
+  <li>
+    Title
+  </li>
+  <li>
+    Abstract
+  </li>
+  <li>
+    Contents (i.e., list of sections)
+  </li>
+  <li>
+    [Content]
+    <ul>
+      <li>
+        [Sub-content]
+      </li>
+      <li>
+        ...
+      </li>
+    </ul>
+  </li>
+  <li>
+    See Also
+  </li>
+</ul>
+
+<p>
+  Specific information:
+</p>
+
+<ul>
+  <li>
+    Title uses an <code>h1</code> header, while all other section titles are <code>h2</code> or lower
+  </li>
+  <li>
+    All section titles have an id
+  </li>
+  <li>
+    There is no information regarding date posted or last modified. The posting date can be found in the <a href="changelog.html">changelog</a>.
+  </li>
+  <li>
+    Figure captions are under figures and table captions are above tables
+  </li>
+  <li>
+    Sections are separated by a horizontal line (<code>hr</code>)
+  </li>
+  <li>
+    Titles and headers use the <a href="https://blog.apastyle.org/apastyle/2012/03/title-case-and-sentence-case-capitalization-in-apa-style.html">APA style of capitalization</a>.
+  </li>
+  <li>
+    Tense varies based on the style of the post
+  </li>
+  <li>
+    List item punctuation varies based on the style of list
+  </li>
+  <li>
+    All index items are one line
+  </li>
+  <li>
+    All file names are a single string
+  </li>
+</ul>
+
+<h3 id="checklist">Checklist</h3>
+
+<p>
+  This is the list of things I do before publishing a new post:
+</p>
+
+<ul>
+  <li>
+    Verify no typos or spacing goofs
+  </li>
+  <li>
+    <a href="https://github.com/amperser/proselint">proselint</a> the .html file
+  </li>
+  <li>
+    <a href="https://github.com/linkchecker/linkchecker">linkchecker</a> the entire site
+  </li>
+  <li>
+    Add or think about any relevant links for the See Also section
+  </li>
+  <li>
+    Add the post to <a href="../feed.xml">feed.xml</a>
+  </li>
+  <li>
+    Add the post to <a href="../index.html">index.html</a>
+  </li>
+  <li>
+    Add the post to <a href="changelog.html">changelog.html</a>
+  </li>
+</ul>
+
+<hr>
+
+<h2 id="friends">Friends of the Site</h2>
+
+<ul>
+  <li>
+    <a href="https://niplav.github.io/index.html">niplav</a>
+  </li>
+  <li>
+    <a href="https://www.moodyloner.net/">Steve French</a>
+  </li>
+  <li>
+    <a href="http://www.trettel.us/">Ben Trettel</a>
+  </li>
+</ul>
+
+<hr>
+
+<h2 id="see_also">See Also</h2>
+
+</body>
+</html>
