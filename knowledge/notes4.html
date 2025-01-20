@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Notes IV: Electronics</title>
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="icon" href="../media/favicon.png">
+</head>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+<body>
+
+<h3 id="home"><a href="../index.html">Home</a></h3>
+
+<!--
+
+- https://lcamtuf.coredump.cx/electronics/
+
+- components:
+  - relays
+  - drivers
+  - motors: brushed vs brushless
+
+-->
+
+<h1 id="notes4">Notes IV: Electronics</h1>
+
+<p>
+  Notes on electronics, from theories to design to components to tools.
+</p>
+
+<hr>
+
+<h2 id="series">Notes Series</h2>
+
+<p>
+  <a href="notes.html">Notes I</a>: Papers, posts, ideas, information
+</p>
+
+<p>
+  <a href="notes2.html">Notes II</a>: Economics, medicine, (geo)politics, technology, science
+</p>
+
+<p>
+  <a href="notes3.html">Notes III</a>: Books, podcasts
+</p>
+
+<p>
+  <a href="notes4.html">Notes IV</a>: Electronics
+</p>
+
+<p>
+  <a href="notes5.html">Notes V</a>: Miscellaneous
+</p>
+
+<hr>
+
+<h2 id="contents">Contents</h2>
+
+<ul>
+  <li>
+    <a href="#purpose">Purpose</a>
+  </li>
+  <li>
+    <a href="#physics">Physics</a>
+    <ul>
+      <li>
+        <a href="#physics_units">Units</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="#components">Components</a>
+    <ul>
+      <li>
+        <a href="#motors">Motors</a>
+      </li>
+      <li>
+        <a href="#components_encoders">Encoders</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="#see_also">See Also</a>
+  </li>
+</ul>
+
+<hr>
+
+<h2 id="purpose">Purpose</h2>
+
+<p>
+  Despite getting a degree in electrical engineering, I feel like I have very little practical knowledge of electronics. I did not enjoy analog nor digital design courses, instead opting for the more physics-based options (i.e., devices). University courses also do not provide practical, hands-on knowledge of electronics and troubleshooting them.
+</p>
+
+<p>
+  In an effort to learn more about electronics and improve my career skills, here are some notes on various aspects of electronics. The goal is for a lay-person to read this page (when finished) and have a basic understanding of most electronics.
+</p>
+
+<p>
+  All information is taken from Scherz's <a href="https://www.amazon.com/Practical-Electronics-Inventors-Fourth-Scherz/dp/1259587541">Practical Electronics for Inventors, 4th edition</a> or my own knowledge, unless otherwise linked/attributed. There were a <a href="https://www.eg.bucknell.edu/physics/ph235/errata.pdf">mistakes in the second edition</a>, but they have seemingly since been corrected. The only errata I could find for the fourth edition is <a href="http://simonmonk.org/pefi4/">here</a>.
+</p>
+
+<hr>
+
+<h2 id="physics">Physics</h2>
+
+<h3 id="physics_units">Units</h3>
+
+<p>
+  The <a href="https://en.wikipedia.org/wiki/Si_units">International System of Units</a> defines seven base units, only a few of which concern electronics: electric current, ampere (A); length, meter (m); time, second (s); mass, kilogram (kg); temperature, Kelvin (K). (The other two are light intensity, candela (Cd), and substance amount, mole (mol)).
+</p>
+
+<p>
+  From these seven base units <a href="https://physics.nist.gov/cuu/Units/units.html">all other units are derived</a>. For example, voltage, or the potential difference between two points, is defined as \(\text{V} = \frac{\text{kg}^{2} \cdot \text{m}}{\text{A} \cdot \text{s}^{3}}\).
+</p>
+
+<p>
+  Let's define some common derived units:
+</p>
+
+<ul>
+  <li>
+    V: Voltage, or potential difference: \(\text{V} = \frac{\text{J}}{\text{C}} = \frac{\text{kg}^{2} \cdot \text{m}}{\text{A} \cdot \text{s}^{3}}\). Voltage measures the different in electric potential at two points, often across a component. As <a href="https://en.wikipedia.org/wiki/Voltage">Wikipedia's voltage article</a> points out, "voltage may represent either a source of energy (electromotive force) or lost, used, or stored energy (potential drop)".
+  </li>
+  <li>
+    \(\Omega\): Ohm, or resistance (of electric current): \(\Omega = \frac{\text{V}}{\text{A}} = \frac{\text{kg} \cdot \text{m}^{2}}{\text{A}^{2} \cdot \text{s}^{3}}\). Resistance measures how much the component (whether it's a wire, actual electronic component, or something else) impedes the flow of current. If resistance is higher in system 1 than in system 2, then system 1 needs a larger voltage to allow for the same current to flow.
+  </li>
+  <li>
+    W: Watt, or electric power: \(\text{W} = \frac{\text{J}}{\text{s}} = \frac{\text{m}^{2} \cdot \text{kg}}{\text{s}^{3}}\). Power measures how much energy is produced per unit time. More energy over shorter time means more power.
+  </li>
+  <li>
+    C: Coulomb, or amount of electricity: \(\text{C} = \text{A} \cdot \text{s}\). Coulombs are a quantity of electricity, where one electron has a unit charge of 1.6E-19 C. Relating this back to current, current is the amount of charge per unit time (C per time).
+  </li>
+  <li>
+    F: <a href="https://en.wikipedia.org/wiki/Capacitance">Capacitance</a>, or "ratio of the amount of electric charge stored on a conductor to a difference in electric potential": \(\frac{\text{C}}{\text{V}} = \frac{\text{A}^{2} \cdot \text{s}^{4}}{\text{kg} \cdot \text{m}^{2}}\). The capacitor, a component with two plates, has a potential difference between the plate and can store some amount of charge.
+  </li>
+  <li>
+    H: <a href="https://en.wikipedia.org/wiki/Inductance">Inductance</a>, or "tendency of an electrical conductor to oppose a change in the electric current flowing through it": \(\frac{\text{V}}{\text{(I/t)}} = \frac{\text{kg} \cdot \text{m}^{2}}{\text{s}^{2} \cdot \text{A}^{2}}\)
+  </li>
+</ul>
+
+<p>
+
+</p>
+
+
+
+
+
+
+
+
+
+
+<hr>
+
+<h2 id="components">Components</h2>
+
+<h3 id="components_motors">Motors</h3>
+
+<p>
+  <a href="https://www.allaboutcircuits.com/technical-articles/how-to-choose-the-right-motor-driver-ic/">Motor drivers</a> serve to boost low current signals into high current signals, allowing motors to be powered (driven). The driver must also allow for heat to dissipate properly—larger currents produce more heat, and some components can't handle the heat.
+</p>
+
+
+
+<h3 id="components_encoders">Encoders</h3>
+
+<p>
+  <a href="https://www.dynapar.com/technology/absolute-rotary-encoders/">Absolute encoders</a> provide speed and position (up/down, forward/back, rotation) "by outputting a digital word or bit in relation to motion".
+</p>
+
+<p>
+  Position can be found optically by shining a light through a code disc marked with unique binary positions, each providing unique feedback to the controller.
+</p>
+
+<p>
+
+</p>
+
+<p>
+  A good summary of absolute vs. incremental encoders and their differences can be found here:
+</p>
+
+<iframe width="560" height="315" class="center" src="https://www.youtube.com/embed/-Qk--Sjgq78"></iframe>
+
+
+
+
+
+
+<h2 id="see_also">See Also</h2>
+
+
+
+</body>
+</html>
