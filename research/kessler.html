@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kessler Syndrome Simulation</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .control-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .button {
+            background: #3366ff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .button:hover {
+            background: #2952cc;
+        }
+        .slider-container {
+            margin: 10px 0;
+        }
+        .slider-label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .slider {
+            width: 100%;
+        }
+        #simulation-container {
+            width: 100%;
+            height: 600px;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .stats {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        .stat-box {
+            background: #333;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kessler Syndrome Simulation</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <button id="startButton" class="button">Start</button>
+                <button id="resetButton" class="button">Reset</button>
+            </div>
+            
+            <div class="control-group">
+                <div class="slider-container">
+                    <label class="slider-label">Initial Objects: <span id="objectCount">50</span></label>
+                    <input type="range" id="objectSlider" class="slider" min="10" max="200" value="50">
+                </div>
+                
+                <div class="slider-container">
+                    <label class="slider-label">Collision Probability: <span id="probCount">0.3</span></label>
+                    <input type="range" id="probSlider" class="slider" min="0" max="1" step="0.1" value="0.3">
+                </div>
+                
+                <div class="slider-container">
+                    <label class="slider-label">Mean Object Size: <span id="sizeCount">3</span></label>
+                    <input type="range" id="sizeSlider" class="slider" min="1" max="10" step="0.5" value="3">
+                </div>
+            </div>
+        </div>
+        
+        <div id="simulation-container"></div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div>Total Collisions</div>
+                <div id="collisionCount">0</div>
+            </div>
+            <div class="stat-box">
+                <div>Total Objects</div>
+                <div id="totalObjects">0</div>
+            </div>
+            <div class="stat-box">
+                <div>Time Elapsed</div>
+                <div id="timeElapsed">0</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        class KesslerSimulation {
+            constructor() {
+                this.config = {
+                    numObjects: 50,
+                    collisionProbability: 0.3,
+                    meanRadius: 3,
+                    stdDevRadius: 1,
+                    orbitRadius: 150,
+                    speed: 3,
+                    objects: [],
+                    isPaused: true
+                };
+
+                this.stats = {
+                    collisions: 0,
+                    totalObjects: 0,
+                    timeElapsed: 0
+                };
+
+                this.scene = null;
+                this.camera = null;
+                this.renderer = null;
+                this.controls = null;
+                this.animationFrame = null;
+                this.init();
+            }
+
+            init() {
+                const container = document.getElementById('simulation-container');
+                
+                // Scene setup
+                this.scene = new THREE.Scene();
+                
+                // Camera setup
+                this.camera = new THREE.PerspectiveCamera(
+                    75,
+                    container.clientWidth / container.clientHeight,
+                    0.1,
+                    1000
+                );
+                this.camera.position.z = 300;
+                
+                // Renderer setup
+                this.renderer = new THREE.WebGLRenderer({ antialias: true });
+                this.renderer.setSize(container.clientWidth, container.clientHeight);
+                this.renderer.setClearColor(0x000000);
+                container.appendChild(this.renderer.domElement);
+                
+                // Controls setup
+                this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+                this.controls.enableDamping = true;
+                
+                // Add Earth
+                const earthGeometry = new THREE.SphereGeometry(20, 32, 32);
+                const earthMaterial = new THREE.MeshPhongMaterial({
+                    color: 0x4169E1,
+                    emissive: 0x112244,
+                    shininess: 5
+                });
+                const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+                this.scene.add(earth);
+                
+                // Add lighting
+                const ambientLight = new THREE.AmbientLight(0x404040);
+                this.scene.add(ambientLight);
+                
+                const pointLight = new THREE.PointLight(0xffffff, 1, 0);
+                pointLight.position.set(50, 50, 50);
+                this.scene.add(pointLight);
+                
+                // Initialize objects
+                this.initializeObjects();
+                
+                // Event listeners
+                window.addEventListener('resize', () => this.onWindowResize(), false);
+                
+                // UI controls
+                document.getElementById('startButton').addEventListener('click', () => this.toggleSimulation());
+                document.getElementById('resetButton').addEventListener('click', () => this.resetSimulation());
+                document.getElementById('objectSlider').addEventListener('input', (e) => this.updateObjectCount(e));
+                document.getElementById('probSlider').addEventListener('input', (e) => this.updateCollisionProbability(e));
+                document.getElementById('sizeSlider').addEventListener('input', (e) => this.updateObjectSize(e));
+                
+                // Start animation loop
+                this.animate();
+            }
+
+            normalRandom(mean, stdDev) {
+                const u1 = Math.random();
+                const u2 = Math.random();
+                const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+                return mean + stdDev * z0;
+            }
+
+            calculateMass(radius) {
+                return (4/3) * Math.PI * Math.pow(radius, 3);
+            }
+
+            initializeObjects() {
+                // Remove existing objects
+                this.config.objects.forEach(obj => {
+                    this.scene.remove(obj.mesh);
+                });
+                this.config.objects = [];
+
+                for (let i = 0; i < this.config.numObjects; i++) {
+                    const phi = Math.random() * Math.PI * 2;
+                    const theta = Math.acos(2 * Math.random() - 1);
+                    const radius = this.config.orbitRadius + (Math.random() - 0.5) * 20;
+
+                    const position = new THREE.Vector3(
+                        radius * Math.sin(theta) * Math.cos(phi),
+                        radius * Math.sin(theta) * Math.sin(phi),
+                        radius * Math.cos(theta)
+                    );
+
+                    const objectRadius = Math.max(0.5, this.normalRandom(this.config.meanRadius, this.config.stdDevRadius));
+                    
+                    const velocity = new THREE.Vector3();
+                    velocity.crossVectors(position, new THREE.Vector3(0, 1, 0));
+                    velocity.normalize();
+                    // Initialize with orbital velocity for roughly circular orbits
+                    const orbitSpeed = Math.sqrt(200 / radius) * 0.6;
+                    velocity.multiplyScalar(orbitSpeed * this.config.speed);
+
+                    const geometry = new THREE.SphereGeometry(objectRadius, 8, 8);
+                    const material = new THREE.MeshPhongMaterial({
+                        color: 0xFFFFFF,
+                        emissive: 0x112244,
+                        shininess: 5
+                    });
+                    const mesh = new THREE.Mesh(geometry, material);
+                    mesh.position.copy(position);
+                    this.scene.add(mesh);
+
+                    this.config.objects.push({
+                        position,
+                        velocity,
+                        radius: objectRadius,
+                        mass: this.calculateMass(objectRadius),
+                        mesh,
+                        debris: false
+                    });
+                }
+
+                this.updateStats();
+            }
+
+            handleCollision(obj1, obj2) {
+                const normal = new THREE.Vector3().subVectors(obj2.position, obj1.position).normalize();
+                const relativeVelocity = new THREE.Vector3().subVectors(obj2.velocity, obj1.velocity);
+                const impulse = -2 * relativeVelocity.dot(normal) / (1/obj1.mass + 1/obj2.mass);
+                
+                const v1 = new THREE.Vector3(obj1.velocity.x, obj1.velocity.y, obj1.velocity.z);
+                const v2 = new THREE.Vector3(obj2.velocity.x, obj2.velocity.y, obj2.velocity.z);
+                
+                v1.add(normal.clone().multiplyScalar(impulse / obj1.mass));
+                v2.sub(normal.clone().multiplyScalar(impulse / obj2.mass));
+                
+                // Create debris
+                const debris = [];
+                const numDebris = 2 + Math.floor(Math.random() * 3);
+                
+                for (let i = 0; i < numDebris; i++) {
+                    const debrisRadius = Math.max(0.5, obj1.radius * 0.3);
+                    const debrisMass = this.calculateMass(debrisRadius);
+                    
+                    const debrisVelocity = new THREE.Vector3()
+                        .addVectors(v1, v2)
+                        .multiplyScalar(0.5)
+                        .add(new THREE.Vector3(
+                            (Math.random() - 0.5) * 2,
+                            (Math.random() - 0.5) * 2,
+                            (Math.random() - 0.5) * 2
+                        ));
+
+                    const geometry = new THREE.SphereGeometry(debrisRadius, 8, 8);
+                    const material = new THREE.MeshPhongMaterial({
+                        color: 0xFF4136,
+                        emissive: 0x441111,
+                        shininess: 5
+                    });
+                    const mesh = new THREE.Mesh(geometry, material);
+                    mesh.position.copy(obj1.position.clone().add(normal.clone().multiplyScalar(Math.random() * 5)));
+                    this.scene.add(mesh);
+
+                    debris.push({
+                        position: mesh.position.clone(),
+                        velocity: debrisVelocity,
+                        radius: debrisRadius,
+                        mass: debrisMass,
+                        mesh,
+                        debris: true
+                    });
+                }
+                
+                return { v1, v2, debris };
+            }
+
+            animate() {
+              this.animationFrame = requestAnimationFrame(() => this.animate());
+              
+              if (!this.config.isPaused) {
+                  let collisionCount = 0;
+
+                  // Update positions with gravitational forces
+                  this.config.objects.forEach(obj => {
+                      // Calculate gravitational force
+                      const toCenter = new THREE.Vector3(0, 0, 0).sub(obj.position);
+                      const distance = toCenter.length();
+                      const directionToCenter = toCenter.normalize();
+                      
+                      // F = G * M * m / r^2, simplified with constants for visualization
+                      const forceMagnitude = 200 / (distance * distance);
+                      const acceleration = directionToCenter.multiplyScalar(forceMagnitude);
+                      
+                      // Update velocity with acceleration
+                      obj.velocity.add(acceleration);
+                      
+                      // Apply slight drag to stabilize orbits
+                      obj.velocity.multiplyScalar(0.999);
+                      
+                      // Update position
+                      obj.position.add(obj.velocity);
+                      obj.mesh.position.copy(obj.position);
+                  });
+
+                  // Rest of collision checking code...
+                  for (let i = 0; i < this.config.objects.length; i++) {
+                      for (let j = i + 1; j < this.config.objects.length; j++) {
+                          const obj1 = this.config.objects[i];
+                          const obj2 = this.config.objects[j];
+
+                          const distance = obj1.position.distanceTo(obj2.position);
+                          if (distance < (obj1.radius + obj2.radius) && Math.random() < this.config.collisionProbability) {
+                              const { v1, v2, debris } = this.handleCollision(obj1, obj2);
+                              obj1.velocity.copy(v1);
+                              obj2.velocity.copy(v2);
+                              this.config.objects.push(...debris);
+                              collisionCount++;
+                          }
+                      }
+                  }
+
+                  if (collisionCount > 0) {
+                      this.stats.collisions += collisionCount;
+                      this.updateStats();
+                  }
+
+                  this.stats.timeElapsed++;
+                  document.getElementById('timeElapsed').textContent = this.stats.timeElapsed;
+              }
+
+    this.controls.update();
+    this.renderer.render(this.scene, this.camera);
+}
+
+            updateStats() {
+                this.stats.totalObjects = this.config.objects.length;
+                document.getElementById('collisionCount').textContent = this.stats.collisions;
+                document.getElementById('totalObjects').textContent = this.stats.totalObjects;
+            }
+
+            onWindowResize() {
+                const container = document.getElementById('simulation-container');
+                this.camera.aspect = container.clientWidth / container.clientHeight;
+                this.camera.updateProjectionMatrix();
+                this.renderer.setSize(container.clientWidth, container.clientHeight);
+            }
+
+            toggleSimulation() {
+                this.config.isPaused = !this.config.isPaused;
+                document.getElementById('startButton').textContent = this.config.isPaused ? 'Start' : 'Pause';
+            }
+
+            resetSimulation() {
+                this.config.isPaused = true;
+                document.getElementById('startButton').
+
+            textContent = 'Start';
+                this.stats = { collisions: 0, totalObjects: 0, timeElapsed: 0 };
+                this.updateStats();
+                document.getElementById('timeElapsed').textContent = '0';
+                this.initializeObjects();
+            }
+
+            updateObjectCount(e) {
+                this.config.numObjects = parseInt(e.target.value);
+                document.getElementById('objectCount').textContent = this.config.numObjects;
+            }
+
+            updateCollisionProbability(e) {
+                this.config.collisionProbability = parseFloat(e.target.value);
+                document.getElementById('probCount').textContent = this.config.collisionProbability;
+            }
+
+            updateObjectSize(e) {
+                this.config.meanRadius = parseFloat(e.target.value);
+                document.getElementById('sizeCount').textContent = this.config.meanRadius;
+            }
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (window.simulation) {
+                cancelAnimationFrame(window.simulation.animationFrame);
+                window.simulation.renderer?.dispose();
+                window.simulation.scene?.clear();
+            }
+        });
+
+        // Initialize the simulation
+        window.simulation = new KesslerSimulation();
+    </script>
+</body>
+</html>
