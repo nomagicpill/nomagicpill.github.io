@@ -4,6 +4,36 @@
   <title>Midwit Memes - No Magic Pill</title>
   <link rel="stylesheet" type="text/css" href="../css/main.css">
   <link rel="icon" href="../media/favicon.png">
+  <style>
+    .meme-container {
+            position: relative;
+            width: 600px;
+            max-width: 90%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .meme img {
+            width: 100%;
+            height: auto;
+        }
+        .text {
+            position: absolute;
+            width: 30%;
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Arial', sans-serif;
+            color: black;
+            text-shadow: 2px 2px 5px white;
+        }
+        .left { left: 5%; top: 50%; transform: translateY(-50%); }
+        .right { right: 5%; top: 40%; transform: translateY(-50%); }
+        .mid { width: 60%; left: 50%; top: 40%; transform: translateX(-50%); }
+        .controls { margin-top: 20px; text-align: center; }
+        .hidden { display: none; }
+  </style>
 </head>
 
 <body>
@@ -87,8 +117,38 @@
 <h2 id="list">List</h2>
 
 <p>
-  Here are some of my favorite midwit memes. Some are mine, others were found on the internet.
+  Here are some of my favorite midwit memes. Some are mine, others were found on the internet. As a note, I think all midwit memes should have identical left and right text, so I had 4o code up this generator to force this principle.
 </p>
+
+<div class="meme-container" id="memeCanvas">
+        <div class="meme">
+            <img src="media/midwit/template.jpg" alt="Midwit Meme">
+            <div class="text left" id="leftText"></div>
+            <div class="text right" id="rightText"></div>
+            <div class="text mid" id="midText"></div>
+        </div>
+    </div>
+    <div class="controls">
+        <input type="text" id="textInput" placeholder="Enter left/right text..." oninput="updateText()">
+        <input type="text" id="midInput" placeholder="Enter middle text..." oninput="updateText()">
+    </div>
+
+    <script>
+        function updateText() {
+            let input = document.getElementById("textInput").value;
+            let midInput = document.getElementById("midInput").value;
+            let left = document.getElementById("leftText");
+            let right = document.getElementById("rightText");
+            let mid = document.getElementById("midText");
+            
+            left.innerText = right.innerText = input;
+            mid.innerText = midInput;
+            
+            let fontSize = Math.max(12, 24 - input.length / 3) + "px";
+            left.style.fontSize = right.style.fontSize = fontSize;
+            mid.style.fontSize = Math.max(12, 24 - midInput.length / 3) + "px";
+        }
+    </script>
 
 <h3>Diet</h3>
 
