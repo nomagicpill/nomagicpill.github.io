@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Moshpit Simulation</title>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            background-color: #000; 
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            box-sizing: border-box;
+            z-index: 100;
+        }
+        #controls h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+        .control-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+            justify-content: center;
+        }
+        .control-group {
+            margin: 0 10px 10px 0;
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+            margin-right: 10px;
+        }
+        input[type="number"] {
+            width: 80px;
+            padding: 5px;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 3px;
+        }
+        button {
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #2a6da8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #3a8bd8;
+        }
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        #pauseBtn {
+            background-color: #d9a030;
+        }
+        #pauseBtn.paused {
+            background-color: #30d940;
+        }
+        #resetBtn {
+            background-color: #d93030;
+        }
+        #stats {
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        #toggle-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 200;
+            padding: 5px 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid #555;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <h2>3D Moshpit Simulation</h2>
+        
+        <div class="control-row">
+            <div class="control-group">
+                <label for="numHeads">Number of Heads:</label>
+                <input type="number" id="numHeads" min="1" max="100" value="15">
+            </div>
+            
+            <div class="control-group">
+                <label for="numFists">Number of Fists:</label>
+                <input type="number" id="numFists" min="1" max="200" value="30">
+            </div>
+            
+            <div class="control-group">
+                <label for="headRadius">Head Radius:</label>
+                <input type="number" id="headRadius" min="0.1" max="1" step="0.1" value="0.3">
+            </div>
+            
+            <div class="control-group">
+                <label for="fistRadius">Fist Radius:</label>
+                <input type="number" id="fistRadius" min="0.05" max="0.5" step="0.05" value="0.1">
+            </div>
+        </div>
+        
+        <div class="control-row">
+            <div class="control-group">
+                <label for="headMinHeight">Head Min Height:</label>
+                <input type="number" id="headMinHeight" min="0.5" max="3" step="0.1" value="1.6">
+            </div>
+            
+            <div class="control-group">
+                <label for="headMaxHeight">Head Max Height:</label>
+                <input type="number" id="headMaxHeight" min="0.5" max="3" step="0.1" value="1.9">
+            </div>
+            
+            <div class="control-group">
+                <label for="fistMinHeight">Fist Min Height:</label>
+                <input type="number" id="fistMinHeight" min="0.1" max="3" step="0.1" value="0.8">
+            </div>
+            
+            <div class="control-group">
+                <label for="fistMaxHeight">Fist Max Height:</label>
+                <input type="number" id="fistMaxHeight" min="0.1" max="3" step="0.1" value="2.0">
+            </div>
+        </div>
+        
+        <div class="control-row">
+            <div class="control-group">
+                <label for="minVelocity">Min Velocity:</label>
+                <input type="number" id="minVelocity" min="0.1" max="5" step="0.1" value="0.5">
+            </div>
+            
+            <div class="control-group">
+                <label for="maxVelocity">Max Velocity:</label>
+                <input type="number" id="maxVelocity" min="0.1" max="5" step="0.1" value="2.0">
+            </div>
+            
+            <div class="control-group">
+                <label for="groundSize">Ground Size:</label>
+                <input type="number" id="groundSize" min="5" max="50" step="1" value="10">
+            </div>
+            
+            <div class="control-group">
+                <label for="simDuration">Duration (sec):</label>
+                <input type="number" id="simDuration" min="5" max="300" step="5" value="30">
+            </div>
+        </div>
+        
+        <div class="control-row">
+            <button id="startBtn">Start Simulation</button>
+            <button id="pauseBtn" disabled>Pause</button>
+            <button id="resetBtn">Reset</button>
+        </div>
+        
+        <div id="stats">Ready to start simulation</div>
+    </div>
+    
+    <button id="toggle-controls">Toggle Controls</button>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.174.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.174.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // Simulation configuration (will be overridden by UI inputs)
+        let config = {
+            NUM_HEADS: 15,
+            NUM_FISTS: 30,
+            HEAD_RADIUS: 0.3,
+            FIST_RADIUS: 0.1,
+            FLOOR_HEIGHT: 0,
+            HEAD_HEIGHT_RANGE: { min: 1.6, max: 1.9 },
+            FIST_HEIGHT_RANGE: { min: 0.8, max: 2.0 },
+            GROUND_SIZE: 10,
+            MAX_VELOCITY: 2.0,
+            MIN_VELOCITY: 0.5,
+            VELOCITY_CHANGE_INTERVAL: 1000, // ms
+            COLLISION_COOLDOWN: 200, // ms
+            SIMULATION_DURATION: 30 // seconds
+        };
+
+        // Global variables
+        let camera, scene, renderer, controls;
+        let heads = [], fists = [];
+        let headGeometry, headMaterial, fistGeometry, fistMaterial;
+        let floor;
+        let collisionCount = 0;
+        let elapsedTime = 0;
+        let running = false;
+        let paused = false;
+        let lastTime = 0;
+        let collisionCooldowns = new Map();
+        let velocityChangeInterval;
+        
+        // Get UI elements
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const statsEl = document.getElementById('stats');
+        const toggleControlsBtn = document.getElementById('toggle-controls');
+        const controlsPanel = document.getElementById('controls');
+
+        // Initialize the 3D scene
+        function init() {
+            // Create scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x222222);
+            
+            // Create camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 4, 8);
+            camera.lookAt(0, 1, 0);
+            
+            // Create renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+            
+            // Add orbit controls
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            
+            // Add lighting
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+            
+            // Create geometries and materials for reuse
+            headGeometry = new THREE.SphereGeometry(1, 32, 32);
+            headMaterial = new THREE.MeshStandardMaterial({ color: 0xffaa00 });
+            
+            fistGeometry = new THREE.SphereGeometry(1, 16, 16);
+            fistMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+            
+            // Add floor
+            createFloor();
+            
+            // Add resize handler
+            window.addEventListener('resize', onWindowResize);
+            
+            // Add UI event listeners
+            startBtn.addEventListener('click', startSimulation);
+            pauseBtn.addEventListener('click', togglePause);
+            resetBtn.addEventListener('click', resetSimulation);
+            toggleControlsBtn.addEventListener('click', toggleControls);
+            
+            // Initial render
+            renderer.render(scene, camera);
+        }
+        
+        // Create or update the floor
+        function createFloor() {
+            // Remove existing floor if present
+            if (floor) {
+                scene.remove(floor);
+            }
+            
+            const floorGeometry = new THREE.PlaneGeometry(config.GROUND_SIZE * 2, config.GROUND_SIZE * 2);
+            const floorMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x333333,
+                roughness: 0.8,
+                metalness: 0.2
+            });
+            floor = new THREE.Mesh(floorGeometry, floorMaterial);
+            floor.rotation.x = -Math.PI / 2;
+            floor.position.y = config.FLOOR_HEIGHT;
+            scene.add(floor);
+        }
+
+        // Read configuration from UI
+        function readConfig() {
+            config.NUM_HEADS = parseInt(document.getElementById('numHeads').value);
+            config.NUM_FISTS = parseInt(document.getElementById('numFists').value);
+            config.HEAD_RADIUS = parseFloat(document.getElementById('headRadius').value);
+            config.FIST_RADIUS = parseFloat(document.getElementById('fistRadius').value);
+            config.HEAD_HEIGHT_RANGE.min = parseFloat(document.getElementById('headMinHeight').value);
+            config.HEAD_HEIGHT_RANGE.max = parseFloat(document.getElementById('headMaxHeight').value);
+            config.FIST_HEIGHT_RANGE.min = parseFloat(document.getElementById('fistMinHeight').value);
+            config.FIST_HEIGHT_RANGE.max = parseFloat(document.getElementById('fistMaxHeight').value);
+            config.MIN_VELOCITY = parseFloat(document.getElementById('minVelocity').value);
+            config.MAX_VELOCITY = parseFloat(document.getElementById('maxVelocity').value);
+            config.GROUND_SIZE = parseFloat(document.getElementById('groundSize').value);
+            config.SIMULATION_DURATION = parseFloat(document.getElementById('simDuration').value);
+            
+            // Update floor size
+            createFloor();
+        }
+
+        // Create heads and fists
+        function createEntities() {
+            // Clear existing entities
+            heads.forEach(head => scene.remove(head));
+            fists.forEach(fist => scene.remove(fist));
+            
+            heads = [];
+            fists = [];
+            
+            // Create heads
+            for (let i = 0; i < config.NUM_HEADS; i++) {
+                const head = new THREE.Mesh(headGeometry, headMaterial.clone());
+                head.scale.set(config.HEAD_RADIUS, config.HEAD_RADIUS, config.HEAD_RADIUS);
+                
+                // Random position
+                head.position.x = (Math.random() - 0.5) * config.GROUND_SIZE;
+                head.position.z = (Math.random() - 0.5) * config.GROUND_SIZE;
+                head.position.y = config.HEAD_HEIGHT_RANGE.min + 
+                                  Math.random() * (config.HEAD_HEIGHT_RANGE.max - config.HEAD_HEIGHT_RANGE.min);
+                
+                // Random velocity
+                head.userData.velocity = {
+                    x: getRandomVelocity(),
+                    y: 0, // Heads stay at roughly the same height
+                    z: getRandomVelocity()
+                };
+                
+                scene.add(head);
+                heads.push(head);
+            }
+            
+            // Create fists
+            for (let i = 0; i < config.NUM_FISTS; i++) {
+                const fist = new THREE.Mesh(fistGeometry, fistMaterial.clone());
+                fist.scale.set(config.FIST_RADIUS, config.FIST_RADIUS, config.FIST_RADIUS);
+                
+                // Random position
+                fist.position.x = (Math.random() - 0.5) * config.GROUND_SIZE;
+                fist.position.z = (Math.random() - 0.5) * config.GROUND_SIZE;
+                fist.position.y = config.FIST_HEIGHT_RANGE.min + 
+                                  Math.random() * (config.FIST_HEIGHT_RANGE.max - config.FIST_HEIGHT_RANGE.min);
+                
+                // Random velocity
+                fist.userData.velocity = {
+                    x: getRandomVelocity(),
+                    y: getRandomVelocity() * 0.5, // Vertical movement is slower
+                    z: getRandomVelocity()
+                };
+                
+                scene.add(fist);
+                fists.push(fist);
+            }
+        }
+
+        // Generate random velocity within range
+        function getRandomVelocity() {
+            return (Math.random() * (config.MAX_VELOCITY - config.MIN_VELOCITY) + config.MIN_VELOCITY) * 
+                   (Math.random() > 0.5 ? 1 : -1);
+        }
+
+        // Window resize handler
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // Toggle control panel visibility
+        function toggleControls() {
+            if (controlsPanel.style.display === 'none') {
+                controlsPanel.style.display = 'block';
+                toggleControlsBtn.textContent = 'Hide Controls';
+            } else {
+                controlsPanel.style.display = 'none';
+                toggleControlsBtn.textContent = 'Show Controls';
+            }
+        }
+
+        // Start the simulation
+        function startSimulation() {
+            // Read configuration values from UI
+            readConfig();
+            
+            // Disable/Enable appropriate buttons
+            startBtn.disabled = true;
+            pauseBtn.disabled = false;
+            
+            // Create entities with updated config
+            if (!running && !paused) {
+                createEntities();
+                collisionCount = 0;
+                elapsedTime = 0;
+                collisionCooldowns.clear();
+            }
+            
+            if (!running) {
+                running = true;
+                paused = false;
+                lastTime = performance.now();
+                animate();
+                
+                // Set up random velocity changes
+                if (velocityChangeInterval) {
+                    clearInterval(velocityChangeInterval);
+                }
+                
+                velocityChangeInterval = setInterval(() => {
+                    if (running && !paused) {
+                        // Randomly change velocities of some entities
+                        heads.forEach(head => {
+                            if (Math.random() < 0.2) {
+                                head.userData.velocity.x = getRandomVelocity();
+                                head.userData.velocity.z = getRandomVelocity();
+                            }
+                        });
+                        
+                        fists.forEach(fist => {
+                            if (Math.random() < 0.3) {
+                                fist.userData.velocity.x = getRandomVelocity();
+                                fist.userData.velocity.y = getRandomVelocity() * 0.5;
+                                fist.userData.velocity.z = getRandomVelocity();
+                            }
+                        });
+                    }
+                }, config.VELOCITY_CHANGE_INTERVAL);
+            }
+            
+            // Update button text
+            pauseBtn.textContent = 'Pause';
+            pauseBtn.classList.remove('paused');
+        }
+        
+        // Toggle pause/resume
+        function togglePause() {
+            if (running) {
+                paused = !paused;
+                
+                if (paused) {
+                    // Paused - update button text
+                    pauseBtn.textContent = 'Resume';
+                    pauseBtn.classList.add('paused');
+                } else {
+                    // Resumed - restart animation and update time
+                    lastTime = performance.now();
+                    animate();
+                    pauseBtn.textContent = 'Pause';
+                    pauseBtn.classList.remove('paused');
+                }
+            }
+        }
+
+        // Reset the simulation
+        function resetSimulation() {
+            running = false;
+            paused = false;
+            
+            if (velocityChangeInterval) {
+                clearInterval(velocityChangeInterval);
+            }
+            
+            // Read configuration values from UI
+            readConfig();
+            
+            // Clear entities
+            heads.forEach(head => scene.remove(head));
+            fists.forEach(fist => scene.remove(fist));
+            heads = [];
+            fists = [];
+            
+            collisionCount = 0;
+            elapsedTime = 0;
+            collisionCooldowns.clear();
+            
+            // Update UI
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            pauseBtn.textContent = 'Pause';
+            pauseBtn.classList.remove('paused');
+            
+            statsEl.textContent = 'Ready to start simulation';
+            
+            // Force a render
+            renderer.render(scene, camera);
+        }
+
+        // Animation loop
+        function animate() {
+            if (!running || paused) return;
+            
+            requestAnimationFrame(animate);
+            
+            const now = performance.now();
+            const deltaTime = (now - lastTime) / 1000; // Convert to seconds
+            lastTime = now;
+            
+            elapsedTime += deltaTime;
+            
+            // Update controls
+            controls.update();
+            
+            // Update entity positions
+            updateEntities(deltaTime);
+            
+            // Check for collisions
+            detectCollisions();
+            
+            // Update the stats display
+            updateStats();
+            
+            // Render the scene
+            renderer.render(scene, camera);
+            
+            // Check if simulation is complete
+            if (elapsedTime >= config.SIMULATION_DURATION) {
+                running = false;
+                pauseBtn.disabled = true;
+                startBtn.disabled = false;
+                console.log(`Simulation complete. Total collisions: ${collisionCount}`);
+                statsEl.textContent = `Simulation complete! Total collisions: ${collisionCount}`;
+            }
+        }
+
+        // Update entity positions
+        function updateEntities(deltaTime) {
+            // Update heads
+            heads.forEach(head => {
+                const vel = head.userData.velocity;
+                head.position.x += vel.x * deltaTime;
+                head.position.z += vel.z * deltaTime;
+                
+                // Bounce off walls
+                if (Math.abs(head.position.x) > config.GROUND_SIZE / 2) {
+                    vel.x *= -1;
+                    head.position.x = Math.sign(head.position.x) * config.GROUND_SIZE / 2;
+                }
+                
+                if (Math.abs(head.position.z) > config.GROUND_SIZE / 2) {
+                    vel.z *= -1;
+                    head.position.z = Math.sign(head.position.z) * config.GROUND_SIZE / 2;
+                }
+            });
+            
+            // Update fists
+            fists.forEach(fist => {
+                const vel = fist.userData.velocity;
+                fist.position.x += vel.x * deltaTime;
+                fist.position.y += vel.y * deltaTime;
+                fist.position.z += vel.z * deltaTime;
+                
+                // Bounce off walls
+                if (Math.abs(fist.position.x) > config.GROUND_SIZE / 2) {
+                    vel.x *= -1;
+                    fist.position.x = Math.sign(fist.position.x) * config.GROUND_SIZE / 2;
+                }
+                
+                if (Math.abs(fist.position.z) > config.GROUND_SIZE / 2) {
+                    vel.z *= -1;
+                    fist.position.z = Math.sign(fist.position.z) * config.GROUND_SIZE / 2;
+                }
+                
+                // Bounce off floor and ceiling
+                if (fist.position.y < config.FIST_HEIGHT_RANGE.min || fist.position.y > config.FIST_HEIGHT_RANGE.max) {
+                    vel.y *= -1;
+                    fist.position.y = fist.position.y < config.FIST_HEIGHT_RANGE.min ? 
+                        config.FIST_HEIGHT_RANGE.min : config.FIST_HEIGHT_RANGE.max;
+                }
+            });
+        }
+
+        // Detect collisions between entities
+        function detectCollisions() {
+            const now = performance.now();
+            
+            // Check for head-fist collisions
+            heads.forEach((head, headIndex) => {
+                fists.forEach((fist, fistIndex) => {
+                    const collisionId = `h${headIndex}-f${fistIndex}`;
+                    const lastCollision = collisionCooldowns.get(collisionId) || 0;
+                    
+                    // Skip if this pair recently collided
+                    if (now - lastCollision < config.COLLISION_COOLDOWN) return;
+                    
+                    // Calculate distance between head and fist
+                    const dx = head.position.x - fist.position.x;
+                    const dy = head.position.y - fist.position.y;
+                    const dz = head.position.z - fist.position.z;
+                    const distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                    
+                    // Check for collision
+                    if (distance < config.HEAD_RADIUS + config.FIST_RADIUS) {
+                        collisionCount++;
+                        collisionCooldowns.set(collisionId, now);
+                        
+                        createCollisionFlash(
+                            (head.position.x + fist.position.x) / 2,
+                            (head.position.y + fist.position.y) / 2,
+                            (head.position.z + fist.position.z) / 2
+                        );
+                        
+                        // Apply simple physics
+                        const nx = dx / distance;
+                        const ny = dy / distance;
+                        const nz = dz / distance;
+                        
+                        const fistVel = fist.userData.velocity;
+                        const headVel = head.userData.velocity;
+                        
+                        fistVel.x = -fistVel.x + nx * 0.5;
+                        fistVel.y = -fistVel.y + ny * 0.5;
+                        fistVel.z = -fistVel.z + nz * 0.5;
+                        
+                        headVel.x = -headVel.x + nx * 0.2;
+                        headVel.z = -headVel.z + nz * 0.2;
+                    }
+                });
+            });
+            
+            // Head-head collisions
+            for (let i = 0; i < heads.length; i++) {
+                for (let j = i + 1; j < heads.length; j++) {
+                    const head1 = heads[i];
+                    const head2 = heads[j];
+                    const collisionId = `h${i}-h${j}`;
+                    const lastCollision = collisionCooldowns.get(collisionId) || 0;
+                    
+                    // Skip if this pair recently collided
+                    if (now - lastCollision < config.COLLISION_COOLDOWN) continue;
+                    
+                    // Calculate distance
+                    const dx = head1.position.x - head2.position.x;
+                    const dy = head1.position.y - head2.position.y;
+                    const dz = head1.position.z - head2.position.z;
+                    const distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                    
+                    // Check for collision
+                    if (distance < config.HEAD_RADIUS * 2) {
+                        collisionCount++;
+                        collisionCooldowns.set(collisionId, now);
+                        
+                        createCollisionFlash(
+                            (head1.position.x + head2.position.x) / 2,
+                            (head1.position.y + head2.position.y) / 2,
+                            (head1.position.z + head2.position.z) / 2
+                        );
+                        
+                        // Apply physics
+                        const nx = dx / distance;
+                        const ny = dy / distance;
+                        const nz = dz / distance;
+                        
+                        const vel1 = head1.userData.velocity;
+                        const vel2 = head2.userData.velocity;
+                        
+                        const tempX = vel1.x;
+                        const tempZ = vel1.z;
+                        
+                        vel1.x = vel2.x + nx * 0.5;
+                        vel1.z = vel2.z + nz * 0.5;
+                        
+                        vel2.x = tempX - nx * 0.5;
+                        vel2.z = tempZ - nz * 0.5;
+                    }
+                }
+            }
+            
+            // Fist-fist collisions
+            for (let i = 0; i < fists.length; i++) {
+                for (let j = i + 1; j < fists.length; j++) {
+                    const fist1 = fists[i];
+                    const fist2 = fists[j];
+                    const collisionId = `f${i}-f${j}`;
+                    const lastCollision = collisionCooldowns.get(collisionId) || 0;
+                    
+                    // Skip if this pair recently collided
+                    if (now - lastCollision < config.COLLISION_COOLDOWN) continue;
+                    
+                    // Calculate distance
+                    const dx = fist1.position.x - fist2.position.x;
+                    const dy = fist1.position.y - fist2.position.y;
+                    const dz = fist1.position.z - fist2.position.z;
+                    const distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                    
+                    // Check for collision
+                    if (distance < config.FIST_RADIUS * 2) {
+                        collisionCount++;
+                        collisionCooldowns.set(collisionId, now);
+                        
+                        createCollisionFlash(
+                            (fist1.position.x + fist2.position.x) / 2,
+                            (fist1.position.y + fist2.position.y) / 2,
+                            (fist1.position.z + fist2.position.z) / 2
+                        );
+                        
+                        // Apply physics
+                        const nx = dx / distance;
+                        const ny = dy / distance;
+                        const nz = dz / distance;
+                        
+                        const vel1 = fist1.userData.velocity;
+                        const vel2 = fist2.userData.velocity;
+                        
+                        const tempX = vel1.x;
+                        const tempY = vel1.y;
+                        const tempZ = vel1.z;
+                        
+                        vel1.x = vel2.x + nx * 0.5;
+                        vel1.y = vel2.y + ny * 0.5;
+                        vel1.z = vel2.z + nz * 0.5;
+                        
+                        vel2.x = tempX - nx * 0.5;
+                        vel2.y = tempY - ny * 0.5;
+                        vel2.z = tempZ - nz * 0.5;
+                    }
+                }
+            }
+        }
+
+        // Create visual flash effect for collisions
+        function createCollisionFlash(x, y, z) {
+            const flashGeometry = new THREE.SphereGeometry(0.1, 8, 8);
+            const flashMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xffffff,
+                transparent: true,
+                opacity: 1
+            });
+            
+            const flash = new THREE.Mesh(flashGeometry, flashMaterial);
+            flash.position.set(x, y, z);
+            scene.add(flash);
+            
+            // Animate the flash - expand and fade out
+            const startTime = performance.now();
+            const duration = 300; // ms
+            
+            function animateFlash() {
+                const elapsed = performance.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                flash.scale.set(1 + progress * 2, 1 + progress * 2, 1 + progress * 2);
+                flashMaterial.opacity = 1 - progress;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animateFlash);
+                } else {
+                    scene.remove(flash);
+                    flashMaterial.dispose();
+                    flashGeometry.dispose();
+                }
+            }
+            
+            animateFlash();
+        }
+
+        // Update stats display
+        function updateStats() {
+            statsEl.textContent = `Collisions: ${collisionCount} | Time: ${elapsedTime.toFixed(1)}s / ${config.SIMULATION_DURATION}s`;
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
