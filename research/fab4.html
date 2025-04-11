@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Semiconductor Fabs I: The Building - No Magic Pill</title>
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="icon" href="../media/favicon.png">
+</head>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+<body>
+
+<h3 id="home"><a href="../index.html">Home</a></h3>
+
+<!--
+
+- https://ieeexplore.ieee.org/abstract/document/630771
+
+- https://www.mckinsey.com/industries/advanced-electronics/our-insights/semiconductor-design-and-manufacturing-achieving-leading-edge-capabilities
+- https://www.construction-physics.com/p/how-to-build-a-20-billion-semiconductor
+
+- construction:
+  - phases
+  - foundation
+    - https://colingordon.com/research/seismic-isolation-of-semiconductor-production-facilities/
+  - who designs it?
+  - https://books.google.com/books?hl=en&lr=&id=d4GpW63HCCAC&oi=fnd&pg=PA299#v=onepage&q&f=false
+
+- cost:
+  - when does it become "worth it"?
+  - average cost
+  - https://smithsonianchips.si.edu/ice/cd/CEICM/SECTION6.pdf
+
+- manufacturing:
+  - equations
+  - photo tools are constraint
+    - most important tool in the fab!!
+    - https://ieomsociety.org/ieom2011/pdfs/IEOM002.pdf
+  - MES
+  - smart manufacturing
+  - delivery systems
+  - https://en.wikipedia.org/wiki/Scheduling_(production_processes)
+  - job shop scheduling
+
+- layout:
+  - are tools layed out in a specific fashion?
+  - photo tools central to fab?
+    - https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=2703&context=all_theses
+  - metal vs non-metal locations
+  - https://www.sciencedirect.com/science/article/abs/pii/S0360835216300390
+  - if you put all types in one location and location goes down, all types go down
+
+- cleanroom design itself:
+  - class definitions
+  - how to achieve clean air
+  - bay and chase
+- facilities:
+  - bulk gas
+  - DMOS6 as the "island"
+  - https://www.mks.com/n/semiconductor-utilities-overview
+  - water: city, DI, IWW
+    - some fabs use double-digit percentage of city supplies
+    - http://large.stanford.edu/courses/2020/ph240/multani2/
+    - https://spectrum.ieee.org/fabs-cut-back-water-use
+    - https://en.wikipedia.org/wiki/Klaiber%27s_law
+  - environmental impact:
+    - water
+    - electric
+    - waste
+  - waste:
+    - scrubbers
+
+- laws:
+  - https://en.wikipedia.org/wiki/Moore%27s_second_law
+  - https://en.wikipedia.org/wiki/Klaiber%27s_law
+
+- https://semiliterate.substack.com/p/no-permits-no-fabs
+-
+
+
+
+
+-->
+
+<h1 id="fab">Semiconductor Fabs I: The Building</h1>
+
+<p>
+  A detailed look into semiconductor fab construction, design, and considerations.
+</p>
+
+<hr>
+
+<h2 id="contents">Contents</h2>
+
+<ul>
+  <li>
+    <a href="#introduction">Introduction</a>
+  </li>
+  <li>
+    <a href="#cost">Cost</a>
+  </li>
+  <li>
+    <a href="#location">Location</a>
+  </li>
+  <li>
+    <a href="#construction">Construction</a>
+  </li>
+  <li>
+    <a href="#see_also">See Also</a>
+  </li>
+</ul>
+
+<hr>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>
+  What is a fab anyway? Short for semiconductor fabrication facility or plant, a fab is where computer chips are made. <a href="https://en.wikipedia.org/wiki/Wafer_(electronics)">Wafers</a>, generally made of silicon, are put through hundreds to thousands of individual processes and tests in a fab before being diced into individual chips (called die) and packaged for actual use by the customer. Some companies, such as Texas Instruments and Intel, build and operate their own fabs (these are called <a href="https://en.wikipedia.org/wiki/Integrated_device_manufacturer">integrated device manufacturers</a>). Others outsource the physical chip-making process to foundries, or companies that exclusively create chips for others. Companies that do this are considered <a href="https://en.wikipedia.org/wiki/Fabless_manufacturing">fabless</a>. This is done due to how expensive building and operating a fab is. Why go through all the trouble when billions of dollars and millions of man-hours can be saved by giving the work to someone else who will do it faster and better?
+</p>
+
+<p>
+  Fabs help drive technological advancement from a hardware perspective, while supplying other industries with their required electronics (see <a href="https://en.wikipedia.org/wiki/2020%E2%80%93present_global_chip_shortage">2020-present global chip shortage</a>). They are undeniably important to the world economy and progress, so by extension, improving their ease of construction and feasibility is important.
+</p>
+
+<hr>
+
+<h2 id="cost">Cost</h2>
+
+<p>
+  Building and running a fab is expensive. Really expensive. <a href="https://en.wikipedia.org/wiki/Moore%27s_second_law">Moore's Second Law</a> states that the cost of a fab will double every four years, and this has held roughly true per the following plot (note this is a semi-log plot, so the linearity means it's actually an exponential relationship):
+</p>
+
+<img src="media/fab/moores_second_law.jpeg">
+<figcaption>
+  (<a href="https://www.chiphistory.org/367-rising-wafer-fab-costs-and-moore-s-2nd-law-fact-or-fiction">source</a>)
+</figcaption>
+
+<p>
+  Fab cost depends on a multitude of factors:
+</p>
+
+<ul>
+  <li>
+    Technology: While a majority of fab equipment is common throughout all fabs and can be used on any node size, <a href="https://en.wikipedia.org/wiki/Photolithography">photolithography</a> systems are by far the most expensive and must be chosen based on node size (as well as some other specialized systems). ASML's <a href="https://www.asml.com/en/products/euv-lithography-systems">EUV lithography tool</a>, designed for the smallest technologies, costs upward of $200MM, with their next-gen system being <a href="https://www.reuters.com/technology/intel-orders-asml-machine-still-drawing-board-chipmakers-look-an-edge-2022-01-19/">more than $340MM</a>. For reference, the best cost estimate I could find for a single-wafer deposition system from AMAT is <a href="https://www.extremetech.com/extreme/106899-beyond-22nm-applied-materials-the-unsung-silicon-hero">$2-6MM</a>. Fab cleanliness must also increase as node size decreases.
+  </li>
+  <li>
+    Capacity: Running at full capacity (or the most number of wafers that can be processing in the fab without causing major buildups in specific areas) costs much more due to the required consumables (parts needed for maintenance, process gases and materials).
+  </li>
+  <li>
+    Size: Larger fabs obviously cost more. No information could be found on cost vs. size.
+  </li>
+</ul>
+
+<p>
+  For reference:
+</p>
+
+<ul>
+  <li>
+    Samsung's <a href="https://www.samsung.com/us/sas/Taylor">Taylor, TX fab</a> is expected to cost $17B, "which includes buildings, property improvements, machinery and equipment"
+  </li>
+  <li>
+    Texas Instrument's <a href="https://news.ti.com/texas-instruments-breaks-ground-on-new-300-mm-semiconductor-wafer-fabrication-plants-in-sherman-texas">Sherman fabs</a> are expected to cost upwards of $30B
+  </li>
+</ul>
+
+<h3 id="wafer_size">Wafer Size</h3>
+
+<p>
+  Wafer sizes have increase progressively over the history of electronics, starting at measly 1-inch wafers and now at the industry standard of 300 mm. Some fabs still use 150 mm and 200 mm wafers. <a href="https://semiengineering.com/this-is-what-450mm-wafers-look-like/">450 mm wafers</a> have been proposed and the Global 450 Consortium created by relevant companies, but has since shut down because of lack of interest and expected return on investment. 300 mm is the size of the foreseeable future with no plans to increase.
+</p>
+
+<img src="media/fab/wafer_size.webp">
+
+<p>
+  Because 300 mm is constant for all new fabs, there will be no analysis done on the advantages/disadvantages of moving to 450 mm. Chris Mack outlines the whys for 450 mm <a href="http://www.lithoguru.com/scientist/essays/why450.html">here</a>.
+</p>
+
+<h3 id="return">Return on Investment</h3>
+
+<p>
+  No literature nor statistics were found ROI for new fabs. Time frames of 18 months to three years have been cited without sources.
+</p>
+
+<p>
+  Factors for ROI include:
+</p>
+
+<ul>
+  <li>
+    Capacity: How many wafers can be run at a single time?
+  </li>
+  <li>
+    Technology: Is the final product going to sell for a lot of money?
+  </li>
+  <li>
+    Cycle Time: How quickly can wafers be produced?
+  </li>
+</ul>
+
+<p>
+  Obviously, companies want to produce more wafers faster and cheaper.
+</p>
+
+
+
+
+
+
+<h3 id="cost_literature">Literature</h3>
+
+https://smithsonianchips.si.edu/ice/cd/CEICM/SECTION6.pdf
+
+[FINISH]
+
+
+<hr>
+
+<h2 id="location">Location</h2>
+
+<p>
+  A handful of factors are considered when deciding where to build a new fab.
+</p>
+
+<h3 id="location_incentives">Incentives</h3>
+
+<p>
+  Financial incentives in the form of tax breaks, subsidies, and cheap labor are incredibly attractive to companies. Take the <a href="https://www.dallasnews.com/business/technology/2021/12/29/incentive-package-to-lure-samsung-to-taylor-is-the-biggest-in-texas-history/">$954MM worth of incentives Samsung received</a> for its Taylor fab:
+</p>
+
+<blockquote>
+  <p>
+    [Samsung] will be rebated 92.5% of its city property taxes during the initial decade of the project, 90% in the second decade and 85% in the third. The city has estimated the combined value of those rebates at $467.8 million, based on an assumption that there will be no change to its property tax rate over the 30-year life of the agreement.
+  </p>
+  <p>
+    Taylor also will extend water and sewer service to the site of the development, at an estimated cost of $18 million.
+  </p>
+  <p>
+    $172.1 million in property tax rebates from Williamson County over 20 years, assuming no change in the property tax rate. The county’s agreement calls for a 90% property tax rebate for Samsung during the first 10 years of the project, with an extension for another 10 years at 85% if the company is in compliance with the terms. The American-Statesman calculated the total value of the county tax rebates based on the same development schedule for the project used by the city of Taylor. The county also will foot the bill for about $120 million in roadwork near the site, such as improvements to County Roads 401 and 404, and portions of the planned Southeast Loop to connect Texas 130 to U.S. 79. Those projects were already in the long-range transportation plan, county officials said, although they’ll be accelerated in certain cases.
+  </p>
+  <p>
+    A $314 million, 10-year property tax break from the Taylor Independent School District. Samsung will still pay all of its school taxes that go to fund school district debt, but it will pay just a fraction of the portion earmarked for maintenance and operations over the duration of the deal. The tax break is being granted under the state’s Chapter 313 incentive program, which will expire Dec. 31, 2022, because it wasn’t renewed during the recent session of the state Legislature. The expiration won’t affect deals put in place before then.
+  </p>
+  <p>
+    $27 million from the Texas Enterprise Fund, a deal-closing tool used by the governor’s office as a final carrot to sway corporate decisions in competitive situations. In addition, the Texas Department of Transportation will pay $80 million of the cost for section 3 of the Southeast Loop. Funding for about $40 million of construction costs for section 2 of the loop has yet to be identified, Williamson County officials said.
+  </p>
+</blockquote>
+
+<p>
+  All things considered, this is extremely beneficial for all parties involved. The company is able to save vast sums of money; the politicians that made the deal happen get positive PR for the economics gains to be made; the city creates jobs and most industries within the jurisdiction are positively affected.
+</p>
+
+<h4 id="locations_chips">CHIPS Act</h4>
+
+<p>
+  From <a href="https://www.semiconductors.org/wp-content/uploads/2022/07/Pass-the-CHIPS-Act-of-2022-Fact-Sheet.pdf">Semiconductor Industry Association</a>:
+</p>
+
+<blockquote>
+  <ul>
+    <li>
+      provide $52 billion in manufacturing grants and research investments
+    </li>
+    <li>
+      establish a 25% investment tax credit (ITC) to incentivize semiconductor manufacturing in the U.S.
+    </li>
+  </ul>
+</blockquote>
+
+<p>
+  See also:
+</p>
+
+<ul>
+  <li>
+    <a href="https://www.whitehouse.gov/briefing-room/statements-releases/2022/08/09/fact-sheet-chips-and-science-act-will-lower-costs-create-jobs-strengthen-supply-chains-and-counter-china/">FACT SHEET: CHIPS and Science Act Will Lower Costs, Create Jobs, Strengthen Supply Chains, and Counter China</a>
+  </li>
+</ul>
+
+<h3 id="location_support">Support</h3>
+
+<p>
+  Many companies support fabs. Equipment manufacturers often have field service engineers (FSE) located at fabs to fix tools in case of issues. Chemical and gas suppliers, like Air Liquide, set up shop nearby to expedite delivery of processing material. Part manufacturers have warehouses in the vicinity that are ready to dispatch much-needed parts. Building a fab in a place that doesn't have these complementary services makes getting them much more difficult. The support companies would have to invest significant funds into this new location, instead of just increasing manpower at their current locations.
+</p>
+
+<p>
+  This is my theory (although it may be established as the cause) as to the Pareto-ness of fab locations: having the support companies in place makes maintaining the fab much easier and less costly, so it's simpler to build in those locations—a variant of the <a href="https://en.wikipedia.org/wiki/Matthew_effect">Matthew effect</a> in which fabs are built in cities that already have fabs.
+</p>
+
+<p>
+  An competent workforce must be available to pick and choose from. Building a fab in a podunk town in Kansas gives access to few workers, while 30 minutes outside Austin is enough to attract the city's top talent. In the same vein, the city (or compensation) must be desirable enough that employees are actually willing to work there.
+</p>
+
+<h3 id="location_geography">Geography</h3>
+
+<p>
+  Fabs are climate-controlled and must be kept at very specific temperature and humidity ranges. Temperatures range from 19-23 °C and relative humidity (how much water vapor is in a water-air mixture compared to the maximum amount possible) from <a href="https://sst.semiconductor-digest.com/2003/10/why-control-humidity-in-a-cleanroom/">30-50%</a>, with tolerances now reaching <a href="https://insights.globalspec.com/article/15490/semiconductor-temperature-control-systems-and-humidity-regulation">0.5%</a> in the most critical areas. While the infrastructure is generally robust and can maintain the climate well, it helps when the weather outside the fab isn't too different.
+</p>
+
+<p>
+  Seismic and weather-related hazards can cause potential delays of shipping (incoming and outgoing), <a href="https://www.zdnet.com/article/samsung-reopens-austin-chip-plant-after-shutdown-from-winter-storm/">a complete shutdown of the factory</a>, or even employees not being able to come in. Mitigation of these factors is discussed later. This is one reason Arizona (Phoenix, specifically) is an attractive choice for fabs: no earthquakes, tornadoes, nor devastating storms.
+</p>
+
+<h3 id="location_geopolitics">Geopolitics</h3>
+
+<p>
+  Geopolitics can hinder access to the product supply chain—both incoming and outgoing. For example, a fab in Ukraine would have a difficult time getting parts and shipping out wafers in March 2022. Fabs should ideally be located in places not under the threat of war. As an interesting point, there are unconfirmed rumors of <a href="https://en.wikipedia.org/wiki/TSMC">TSMC</a> rigging their factories to blow in case China invades.
+</p>
+
+<h3 id="location_utilities">Utilities</h3>
+
+<p>
+  Availability and cost of utilities (water and electricity) can make a significant change in the initial and recurring costs of a fab.
+</p>
+
+<p>
+  Samsung Austin spent <a href="https://www.statesman.com/story/news/2016/09/26/samsungs-monthly-austin-water-bill-roughly-700000-a-month/9913815007/">$700,000/mo</a> in 2016 on water, despite a 40% recycle rate. Surprisingly enough, <a href="https://www.austintexas.gov/sites/default/files/files/Water/Rates/CommercialPublicRates_2022.pdf">commercial rates</a> have actually decreased (weighted averages of $5.40<sub>2022</sub> vs. $6.02<sub><a href="https://www.austintexas.gov/sites/default/files/files/Water/Rates/CommercialPublicRates_2018.pdf">2018</a></sub> per 1,000 gallons). Compared to the <a href="https://www.phoenix.gov/waterservices/customerservices/rateinfo">Phoenix, AZ rates</a> of $6.02<sub>2022</sub>, Austin is still substantially cheaper.
+</p>
+
+<p>
+  But what about actual availability? For example, Arizona is in its <a href="https://new.azwater.gov/drought/drought-status">27th year of a long-term drought</a>, making water scarce. Intel has made an effort for <a href="https://www.intel.com/content/www/us/en/environment/water-restoration-arizona.html">water restoration projects</a> in Arizona, and due to their efforts to increase recycling rate, keeping the fab running after the necessary initial water amount is met is much easier.
+</p>
+
+<p>
+  Electricity is the other major component of fab utilities. Actual usage varies by technology, throughput, etc., but some characterizations have been made:
+</p>
+
+<ul>
+  <li>
+    <a href="https://www.researchgate.net/publication/237511031_Power_consumption_of_semiconductor_Fabs_in_Taiwan_area">Power consumption of semiconductor Fabs in Taiwan area</a> (PDF <a href="https://dokumen.tips/documents/power-consumption-of-semiconductor-fabs-in-taiwan.html">here</a>): "The average power consumption per unit product (wafer) area is 1.432 kWh/cm2". This report was published in 2003, but can serve as a good baseline and comparison for how far fabs have progressed since kWh is a price-independent unit.
+  </li>
+  <li>
+    <a href="https://www.epri.com/research/products/TR-113499">Worldwide Fab Energy Survey Report</a>: "On average, the fabs in this study consumed 7.45 kWh/inch(2) (1.15 kWh/cm(2)) of wafer processed and 0.393 kWh of electrical energy per unit of production", where unit of production is defined as "square inches of wafer processed per year multiplied by the average number of mask layers per wafer processed". This report was published in 2000, but can serve as a good baseline and comparison for how far fabs have progressed since kWh is a price-independent unit.
+  </li>
+  <li>
+    <a href="https://www.mckinsey.com/~/media/mckinsey/dotcom/client_service/operations/pdfs/bringing_fabenergyefficiency.ashx">Bringing energy efficiency to the fab</a>: "Large semiconductor fabs use as much as 100 megawatt-hours of power each hour ... electricity can account for up to 30 percent of fab operating costs". Shockingly, no sources are cited so this is taken with a hefty grain of salt.
+  </li>
+</ul>
+
+<p>
+  While these don't specify total kWh used on a periodic basis, an idea can be had by using a low 300 mm wafer per month example of 600 WPD. Assuming cushion on either side and no issues in the line (ha!), the fab's throughput is 18,000 WPM (600 WPD for 30 days):
+</p>
+
+\[\text{monthly power consumption} = 18 \times 10^{3} \times \pi \times 15^{2} * 1.432 = 5.8 \times 10^{6} \, \text{kWh}\]
+
+<p>
+  The aforementioned paper, <a href="https://www.researchgate.net/publication/237511031_Power_consumption_of_semiconductor_Fabs_in_Taiwan_area">Power consumption of semiconductor Fabs in Taiwan area</a>, supports this with their finding of 300-400 MWh per day. It's easy to see why electricity cost is so crucial to low operating costs and ultimately a profitable fab.
+</p>
+
+<p>
+  But what's cost if it isn't reliable? During the <a href="https://en.wikipedia.org/wiki/February_13%E2%80%9317,_2021_North_American_winter_storm">February 2021 North American winter storm</a>, Samsung's Austin fab was <a href="https://www.sammobile.com/news/samsung-temporarily-shuts-down-chip-plant-texas-usa/">forced to shut down</a> by Austin officials, causing $270MM in damages. Their new fab's location in Taylor, TX, is conveniently located near an ERCOT facility, which is rumored to be intentional for electricity reliability purposes.
+</p>
+
+<p>
+  Reliability also relates with geography and climate: all things equal, locations with more severe weather are more likely to experience power issues during said storms.
+</p>
+
+<hr>
+
+<h2 id="construction">Construction</h2>
+
+<h3 id="construction_foundation">Foundation</h3>
+
+<p>
+  Like most things in life, a strong foundation must be formed to prevent future issues. And if the foundation isn't strong, someone's head is going on the chopping block, because that's a whole lotta money that's gonna cost the company.
+</p>
+
+<p>
+  Colin Gordon & Associates' <a href="https://colingordon.com/wp-content/uploads/2012/07/af4b37fcb6b62ea52d471e6da7ed9540.pdf">Seismic Isolation of Semiconductor Production Facilities</a> gives a glimpse into what is needed for earthquake-prone fabs.
+</p>
+
+
+[FINISH]
+
+
+
+
+<hr>
+
+<!--
+- layout:
+  - are tools layed out in a specific fashion?
+  - photo tools central to fab?
+    - https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=2703&context=all_theses
+  - metal vs non-metal locations
+  - https://www.sciencedirect.com/science/article/abs/pii/S0360835216300390
+  - if you put all types in one location and location goes down, all types go down
+
+
+-->
+
+<h2 id="layout">Layout</h2>
+
+<p>
+  The layout of tools within the fab can provide immense gains in manufacturing capacity while also minimizing risk of going line down in the case of a catastrophic event.
+</p>
+
+<p>
+  <b>I</b>
+</p>
+
+<p>
+  Kim et al.'s <a href="https://www.sciencedirect.com/science/article/abs/pii/S0360835216300390">Semiconductor FAB layout design analysis with 300-mm FAB data: “Is minimum distance-based layout design best for semiconductor FAB design?</a> checks the obvious question of whether or not a distance-based layout is superior to other kinds.
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr>
+
+<h2 id="see_also">See Also</h2>
+
+
+
+</body>
+</html>
