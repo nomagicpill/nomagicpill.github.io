@@ -19,13 +19,14 @@
 
 </figcaption>
 
-tool considerations:
-- cost of ownership
---- maintenance
---- materials used
-- footprint
-- throughput
-- match to other tools
+context
+- flow chart?
+
+order of magnitude of cost of materials, tools, etc
+
+add credentials
+
+add brian potter's as a prereq
 
 general tool stuff:
 - alid
@@ -36,11 +37,17 @@ general tool stuff:
 - devicenet comms
 --- cdn49x cards https://www.artisantg.com/info/MKS_Instruments_CDN491R_Datasheet_201772793317.pdf?srsltid=AfmBOoqk92kpFCIgetBTG2Lvk7cpwPQ_WVy9DKbE71pGvpAgM1WTm8jT
 
+add collapsible sections that go into more detail if the reader wishes
 
 
 https://kawasakirobotics.com/blog/the-ins-outs-of-industrial-robot-arms/
 https://www.appliedmaterials.com/us/en/blog/blog-posts/a-new-equipment-platform-for-a-new-era-of-chipmaking.html
 
+
+support for tools
+- most companies going towards service packages to help you
+- lots of people have left the industry
+- no more manuals
 
 
 -->
@@ -56,6 +63,15 @@ https://www.appliedmaterials.com/us/en/blog/blog-posts/a-new-equipment-platform-
 <h2 id="contents">Contents</h2>
 
 <ul>
+  <li>
+    <a href="#preface">Preface</a>
+  </li>
+  <li>
+    <a href="#context">Context</a>
+  </li>
+  <li>
+    <a href="#selection">Tool Selection</a>
+  </li>
   <li>
     <a href="#overview">Overview</a>
   </li>
@@ -89,38 +105,222 @@ https://www.appliedmaterials.com/us/en/blog/blog-posts/a-new-equipment-platform-
 
 <hr>
 
+<h2 id="preface">Preface</h2>
+
+<p>
+  I tried to include as many links as possible. Some links are quoted but put directly in here because I think it helps to put everything in one space without having to hop tabs over and over.
+</p>
+
+<p>
+  While I think this is well-researched and reasonably written, <a href="https://en.wikipedia.org/wiki/Gell-Mann_amnesia_effect">Gell-Mann amnesia</a> is a potential side effect of reading this work. Please consult your personal semiconductor engineer if something sounds like bullshit.
+</p>
+
+<p>
+  I'm a semiconductor fab engineer working in both process and equipment engineering-related capacities at a you've-probably-heard-of-it company.
+</p>
+
+<p>
+  This information is current as of May 2025.
+</p>
+
+<hr>
+
+<h2 id="context">Context</h2>
+
+<p>
+  Construction Physics' <a href="https://www.construction-physics.com/p/how-to-build-a-20-billion-semiconductor">How to Build a $20 Billion Semiconductor Fab</a> is an excellent introduction into both the semiconductor manufacturing process and the physical building that houses the manufacturing operations, but chooses not to expand on a critical component: the equipment used to make the semiconductor chips. (To be clear, you should probably read that first before reading this.)
+</p>
+
+<p>
+  As Brian writes:
+</p>
+
+<blockquote>
+  Early integrated circuits could be made with just ... dozens of process steps, but a modern leading-edge microchip might require ... thousands of separate process steps.
+</blockquote>
+
+<p>
+  The equipment, also known as tools to those in the industry, is what performs these individual process steps. In the same way that a traditional machine shop has a mille, lathe, and bandsaw to perform a variety of operations on a single piece of metal to create a final product, a fab has deposition tools, etch tools, and lithography tools (among many, many others) to perform a variety of operations on a single silicon wafer to create the final chip.
+</p>
+
+<p>
+  So what does the equipment even look like? Some tools are quite boxy to help minimize the area used, or the footprint. Some tools are less boxy due to sheer requirements, i.e., the original equipment manufacturer (OEM) could only make it so small area-wise before it lost some functionality or performance.
+</p>
+
+<p>
+  Here's a picture of one of Applied Materials' (AMAT) tools, the Endura (note that while not perfectly box-like, it can still fit inside a nice rectangle):
+</p>
+
+<img src="media/fab/endura.png">
+
+<p>
+  And here's a picture of a Tokyo Electron Limited (TEL) furnace that can fit inside a very narrow space, allowing strategic use of overhead space while minimizing its 2D footprint:
+</p>
+
+<img src="media/fab/telindy.png">
+
+<p>
+  The rest of this piece will go over everything around tools: how they're selected, a detailed overview of all the parts of an example tool, and what tools generally share in common regardless of the process. There are even some fun little games to help visualize concepts.
+</p>
+
+<hr>
+
+<h2 id="selection">Tool Selection</h2>
+
+<p>
+  There are a gazillion steps that happen before one actually uses a tool, especially if it's the first fab and there's nothing to match off of.
+</p>
+
+<h3 id="process">Process Design</h3>
+
+<p>
+  First, the chips designers craft the individual steps needed to go from a bare silicon wafer to the final product. These steps include low-level specifics like what materials they'll use, temperature/pressure/gas flow needed, etc. This is done in <a href="https://en.wikipedia.org/wiki/Technology_CAD">technology CAD (TCAD)</a> software like <a href="https://www.synopsys.com/manufacturing/tcad.html">Synopsys</a> to minimize on-wafer experimentation and hit the ground running. (Note that sometimes the designers here don't care about the manufacturability of the process—they will simply do what is best for the device performance and leave the equipment and process engineers to figure out the rest at the detriment of their weekends and hairlines and sanity, leading them to gripe on the internet to strangers in run-on sentences.)
+</p>
+
+<img src="media/fab/sentaurus.png">
+<figcaption>
+  TCAD is like AutoCAD but for super nerds
+</figcaption>
+
+<p>
+  Jokes aside, there is some amount of direction from the head honchos on balancing out cost considerations with device performance depending on the size of the company's coffers, the (potential) demand of the product, and the raw expected value of the proposed flow. Does the flow really need that one step that requires a brand new one-of-a-kind (OAK) tool in the fab, or can they figure out another way to achieve the same results? Do they really need to use the oh-so-expensive, but incredibly reliable and proven, nitrous oxide (N<sub>2</sub>O) as a primary gas when growing gate oxides, or can they find a way to make an N<sub>2</sub>-O<sub>2</sub> chemistry work, despite the literature saying it is worse in almost all ways? Do they really need all that helium to help cool the wafer faster, or can they make do with N<sub>2</sub>.
+</p>
+
+<img src="media/fab/chemistries.png">
+<figcaption>
+  When in doubt, it's probably expensive for a reason
+</figcaption>
+
+<h3 id="considerations">Considerations</h3>
+
+<p>
+  Now that the general process flow has been created, the grunts (equipment and process engineers) can start selecting the tools that fit the requirements. Plus, if they ask really nicely and their parents (read: management) let them, they may even be able to add some sweet, sweet goodies on from the boring base model to make the tool even better.
+</p>
+
+<p>
+  Thankfully free markets and <a href="https://www.justice.gov/archives/opa/pr/applied-materials-inc-and-tokyo-electron-ltd-abandon-merger-plans-after-justice-department">anti-monopoly laws</a> allow some leeway in choosing which tool is best, where best can mean a bunch of different things (in no particular order):
+</p>
+
+<ul>
+  <li>
+    Cost:
+    <ul>
+      <li>
+        How cheap is the tool? Paying a bit more upfront may result in benefits down the road.
+      </li>
+      <li>
+        Is there a warranty that comes with it? OEMs generally offer a one-year warranty on the tool and any major issues that arise.
+      </li>
+      <li>
+        Any discounts they are willing to provide? Fabs that know they are going to keep buying tools may enter into a volume purchasing agreement with the vendor to get lower costs.
+      </li>
+      <li>
+        How expensive is it to maintain, both in terms of parts and manpower?
+      </li>
+    </ul>
+  </li>
+  <li>
+    Footprint: What is the area of the tool? Most fabs aren't too worried about the height of the tool, but rather the x- and y-axis dimensions. A bigger footprint means fewer tools, fewer tools means fewer chips are produced, ultimately resulting in less money.
+  </li>
+  <li>
+    Throughput: How many wafers can it produce per hour (pph) without degrading in quality?
+  </li>
+  <li>
+    Support: Does the OEM plan to support the platform for the long-term future in terms of both parts and service?
+  </li>
+  <li>
+    Nicheness: Is the platform unique to the point that:
+    <ul>
+      <li>
+        The OEM only has a handful of specialists working on it?
+      </li>
+      <li>
+        It is difficult to find experienced employees to work on it?
+      </li>
+      <li>
+        There is a low supply of parts due to lack of demand?
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <img src="media/fab/morrischang.png">
+    <figcaption>
+      You should probably get a different tool if this is the only guy left at the OEM that knows it well
+    </figcaption>
+    <p>
+      
+    </p>
+    It may be better to find an equivalent platform that is much more common. I've heard of OEMs sunsetting support for certain tools because they want to force purchases of new equipment and there just isn't enough demand in the market to justify supporting it anymore. This can leave fabs in precarious situations, especially if the OEM isn't willing to release IP around the platform or provide contact details of former employees who could help, even if it won't hurt their bottom line.
+  </li>
+  <li>
+    Similarity: How similar is the tool to the rest of the fleet it will be added to? There is a delicate balance of wanting to ensure wafers are processed as identically as possible and getting newer revisions of the same platform to improve important fab metrics. Intel's <a href="media/fab/intelcopyexactly.pdf#page=11">Copy EXACTLY!</a> method takes this to an extreme, but not uncalled for, level. (To show how important identicality is to some fabs, I've heard of companies being asked by OEMs if they'd sell back a now-obsolete part for a massive markup in order for the OEM to facilitate making a tool that matched the customer's already-existing fleet.)
+  </li>
+</ul>
+
+<h3 id="purchasing">Purchasing</h3>
+
+<p>
+  Engineers work with OEMs to help design the tool to the customer's specifications. The customer may say I want X and don't want Y and the OEM may offer a catalog of attractive upgrades with data to support their efficacy. The engineer may also simply say "match this new guy to our current tool with serial number 123", which makes it much easier on everyone.
+</p>
+
+<p>
+  Once the design and final price are agreed upon, the customer purchases the tool.
+</p>
+
+<h3 id="manufacturing">Manufacturing</h3>
+
+<p>
+  Manufacturing locations of the tools vary. AMAT has <a href="https://www.appliedmaterials.com/us/en/about.html">manufacturing facilities in Austin and Singapore</a>, TEL builds tools in Japan and ships them via ship to the U.S., ASML builds the modules in the Netherlands and ships them using "<a href="https://www.asml.com/en/news/stories/2022/busting-asml-myths">40 freight containers, three cargo planes and 20 trucks</a>".
+</p>
+
+<p>
+  Factories will do their own factory acceptance testing (FAT) prior to shipping to ensure everything was manufactured correctly with no to minimal defects.
+</p>
+
+<p>
+  Shipping occurs by either land (freight truck), air (cargo plane), or sea (cargo ship).
+</p>
+
+<h3 id="installation">Installation</h3>
+
+<p>
+  The OEM includes installation labor and relevant parts in the price of the tool. OEM employees, often dedicated to installing equipment and very little else, will come in and follow step-by-step guides to ensure the installation is done correctly and completely.
+</p>
+
+<p>
+  The fab's electrical and gas teams will often prefabricate 
+</p>
+
+<hr>
+
 <h2 id="overview">Overview</h2>
 
 <p>
-  We'll look at the <a href="https://ir.appliedmaterials.com/news-releases/news-release-details/tsmc-qualifies-applied-materials-gate-stack-system-its-leading">Applied Materials Centura Gate Stack system</a>. This equipment, also called a tool, consists of the following parts:
+  We'll look at the <a href="https://ir.appliedmaterials.com/news-releases/news-release-details/tsmc-qualifies-applied-materials-gate-stack-system-its-leading">Applied Materials Centura Gate Stack system</a>, which consists of the following modules:
 </p>
 
 <ol>
   <li>
-    Factory interface: Connects factory to tool
+    Factory interface: Connects the rest of the factory to tool by allowing a place to load the wafers
   </li>
   <li>
-    Mainframe:
-    <ol>
-      <li>
-        Loadlocks: Allows transfer of wafers between atmospheric and reduced pressure (vacuumm) sides of tool
-      </li>
-      <li>
-        Buffer chamber: Allows transfer of wafers between chambers while maintaining vacuum
-      </li>
-    </ol>
+    Loadlocks: Allows transfer of wafers between atmospheric and reduced pressure (vacuum) sides of tool
+  </li>
+  <li>
+    Buffer chamber: Allows transfer of wafers between chambers while maintaining vacuum
   </li>
   <li>
     Process chambers (listed in order of processing):
     <ul>
       <li>
-        <a href="https://www.appliedmaterials.com/us/en/semiconductor/products/modify/rapid-thermal-processing-treatments/vantage-radox-rtp.html">Radiance ISSG</a> (in-situ steam generation): Grows the gate oxide
+        <a href="https://www.appliedmaterials.com/us/en/semiconductor/products/modify/rapid-thermal-processing-treatments/vantage-radox-rtp.html">Radiance</a>: Grows the gate oxide using ISSG (in-situ steam generation)
       </li>
       <li>
         <a href="https://www.appliedmaterials.com/us/en/semiconductor/products/modify/rapid-thermal-processing-treatments/centura-dpn-hd.html">DPN</a> (decoupled plasma nitridation): Implants nitrogen into the gate oxide using a plasma
       </li>
       <li>
-        <a href="https://www.appliedmaterials.com/us/en/semiconductor/products/modify/rapid-thermal-processing-treatments/centura-dpn-hd.html">Radiance PNA</a> (post-nitridation anneal): Anneals the nitrogen into the gate oxide to minimize nitrogen loss
+        <a href="https://www.appliedmaterials.com/us/en/semiconductor/products/modify/rapid-thermal-processing-treatments/centura-dpn-hd.html">Radiance</a>: Anneals the nitrogen into the gate oxide to minimize nitrogen loss (called PNA, or post-nitridation anneal)
       </li>
       <li>
         <a href="https://ir.appliedmaterials.com/news-releases/news-release-details/applied-materials-introduces-new-polygen-systems-low-cost-single">Polygen</a> (polysilicon generator): Deposits a polysilicon gate on top of the gate oxide
@@ -141,8 +341,49 @@ https://www.appliedmaterials.com/us/en/blog/blog-posts/a-new-equipment-platform-
 </ol>
 
 <p>
-  It's also important to note that like ships, all tools and their various parts are female, except when they're male. I don't make the rules!
+  And just to be explicit, here's the complete path of a normal wafer through the tool with explanations of each step:
 </p>
+
+<ol>
+  <li>
+    FOUP with wafer (W) inside lands on a loadport. This is dropped off by the AMHS (automatic material handling system).
+  </li>
+  <li>
+    Loadport scans the FOUP to determine the correct number of wafers is present.
+  </li>
+  <li>
+    W gets aligned based on its notch's position. 
+  </li>
+  <li>
+    W is placed into loadlock that is at atmospheric pressure (760 Torr) by the factory interface robot (FIR).
+  </li>
+  <li>
+    Loadlock pumps down to the same pressure as the buffer chamber to minimize any pressure differential between the two chambers.
+  </li>
+  <li>
+    Buffer chamber robot (BR) picks up the W from the loadlock after the door separating the buffer chamber and loadlock opens.
+  </li>
+  <li>
+    BR places W into Radiance ISSG chamber for processing.
+  </li>
+  <li>
+    BR picks up W from ISSG chamber and places it into DPN chamber for processing.
+  </li>
+  <li>
+    BR picks up W from DPN chamber and places it into PNA chamber for processing.
+  </li>
+  <li>
+    BR picks up W from PNA chamber and places it in the loadlock for cooling.
+  </li>
+  <li>
+    BR picks up W from Polygen chamber and places it in the loadlock for transfer back to the FOUP.
+  </li>
+  <li>
+    FIR picks up W from loadlock and places it back into the FOUP.
+  </li>
+</ol>
+
+[cartoon of centura with arrows and numbers showing paths]
 
 <hr>
 
@@ -155,20 +396,22 @@ https://www.appliedmaterials.com/us/en/blog/blog-posts/a-new-equipment-platform-
 <h3 id="loadports">Loadports</h3>
 
 <p>
-  FOUPs are dropped off onto the loadport and their doors removed in order to be scanned by the tool in one of two ways:
+  FOUPs are dropped off onto the loadport by the AMHS and their doors removed in order for their wafers to be scanned by the tool in one of two ways:
 </p>
 
 <ol>
   <li>
-    The loadport door, which has a sensor at the top of it, moves up and down across the height of the FOUP. Each time the sensor's lightbeam is broken adds +1 to the wafer counter.
+    The loadport door, which has a sensor at the top of it, moves up and down across the height of the FOUP. Each time the sensor's light beam is broken adds +1 to the wafer counter.
   </li>
   <li>
-    The robot fork moves up and down across the height of the FOUP and counts the wafers using the same lightbeam methodology.
+    The robot fork moves up and down across the height of the FOUP and counts the wafers using the same light beam methodology.
   </li>
 </ol>
 
+[image of front of FI labeled]
+
 <p>
-  Most factories' automations provide the tool with the number of wafers they are sending, allowing the tool to verify the count itself and compare. The tool alarms if there's a mismatch so a technician can investigate. Did one wafer fall on top of the other, making it seem like there was one less? Did the robot miscount for some odd reason? Is there someone already on a plane back to North Korea to reverse engineer the chip? These are all possibilities.
+  Most factories' automations provide the tool with the number of wafers they are sending, allowing verification of the count itself. The tool alarms if there's a mismatch so a technician can investigate. Did one wafer fall on top of the other, making it seem like there was one less? Is there someone already on a plane back to North Korea to reverse engineer the chip? Did the robot miscount for some odd reason?
 </p>
 
 <p>
@@ -178,7 +421,7 @@ https://www.appliedmaterials.com/us/en/blog/blog-posts/a-new-equipment-platform-
 <h3 id="firobot">Robot</h3>
 
 <p>
-  There are multiple styles of FI robots (ordered by most to least modern):
+  The FI robot is responsible for moving wafers to and from places in the FI or loadlocks (e.g., from loadport1 to loadlock1) There are multiple styles of FI robots (ordered by most to least modern):
 </p>
 
 <ul>
@@ -186,10 +429,10 @@ https://www.appliedmaterials.com/us/en/blog/blog-posts/a-new-equipment-platform-
     Stationary: Robot is fixed in the middle of the FI, but multiple axes allow longer reach, eliminating the need for a track.
     <ul>
       <li>
-        Axes: Height (Z), extension (Y), and rotation (θ) are effectively present, but instead determined by wrists and links
+        Axes: Height (Z), extension (Y), rotation (θ), and track (X) effectively exist, but are instead determined by wrist and link positions
       </li>
       <li>
-        Speed: Uncomfortably fast, and that's on the medium setting
+        Speed: Give-you-a-major-concussion-if-it-hits-your-head fast, and that's on the medium setting!
       </li>
     </ul>
   </li>
@@ -208,7 +451,7 @@ https://www.appliedmaterials.com/us/en/blog/blog-posts/a-new-equipment-platform-
     Dual: Two robots at either end of the FI team up to move wafers by utilizing passthroughs, or small shelves they can set the wafer on to give to the other robot. It's like playing Overcooked with your partner, but instead of yelling at each other for messing up the robots just make mechanical noises and never any mistakes. For example, if loadport1 is running wafers, then robot1 will want to make sure robot2 is feeling the love, so she'll put waferX onto passthrough1 so robot2 can contribute to the cause.
     <ul>
       <li>
-        Axes: Height (Z), extension (Y), rotation (θ)
+        Axes: Height (Z), extension (Y), rotation (θ), left-right (X)
       </li>
       <li>
         Speed: Slow
@@ -217,49 +460,78 @@ https://www.appliedmaterials.com/us/en/blog/blog-posts/a-new-equipment-platform-
   </li>
 </ul>
 
+<button type="button" class="collapsible">FI Robot Details</button>
+
+<div class="content">
+
+<script src="media/fab/robot.js"></script>
+
 <p>
-  Robots have end effectors (in the form of a fork) that the wafer sits on when being transported. A plunger actuates forward by pneumatic (air) pressure to secure the wafer against the end of the blade to prevent movement while moving. The robot knows a wafer is present based on the plunger's position when activated: if it's too far forward then there's no wafer and if it's too far back there could be a wafer, but it won't know until it plunges.
-  </li>
+  
 </p>
+
+<hr>
+
+</div>
+
+<p></p>
+
+<p>
+  Here's a video showing an FI robot picking up and placing to from multiple positions:
+</p>
+
+<iframe width="560" height="315" class="center" src="https://www.youtube.com/embed/9RX4c1ZLf-0"></iframe>
+
+<p>
+  Robots have end effectors (in the form of a fork) that the wafer sits on when being transported. A plunger actuates forward by pneumatic (air) pressure to secure the wafer against the end of the blade to prevent movement while moving. The robot knows a wafer is present based on the plunger's position when activated: if the plunger is too far forward then there's no wafer and if it's too far back there could be a wafer, but it won't know until it plunges.
+</p>
+
+[image]
 
 <h3 id="aligner">Aligner</h3>
 
 <p>
-  Wafers have small notches on them to allow for more standardized processing, if desired. Some processes want to 
+  Wafers have small notches on them to allow for more standardized processing, if desired. Some processes prefer all wafers have their notches aligned before being processed to ensure processing is as identical as possible.
 </p>
 
 <p>
-  The aligner will "chuck" the wafer (apply vacuum to the backside so it doesn't go flying off and shatter into a million pieces), scan the wafer, find the notch, then align based on the desired angle before the robot picks it up.
+  The aligner will "chuck" the wafer (apply vacuum to the backside so it doesn't go flying off and shatter into a million pieces), scan the wafer, find the notch, then align based on the desired angle before the robot picks it up to transfer it elsewhere.
 </p>
-
-
-
-
 
 <h3 id="minienv">Mini Environment</h3>
 
-FFU
+<p>
+  Fabs like like clean air. They also like laminar (straight from top to bottom) flow. Which means they also really like mini environments (ME) that are the FIs themselves.
+</p>
 
-loadport seals
+<p>
+  The FI is a ME in and of itself. It's shielded from the main fab environment by doors and walls to prevent any contamination—be it particles, undesirable gases, etc—from entering. All entry points have seals that are enough to protect the ME's integrity. This means that when wafers are being transferred around in they aren't being (read: shouldn't be) subjected to potential harm.
+</p>
 
-
-
-
-
-
-
-
+<p>
+  A filter fan unit (FFU) installed on the top of the FI ensures that air flow is laminar and any particles are getting trapped inside the filter instead of on the wafer.
+</p>
 
 <hr>
 
 <h2 id="chambers">Chambers</h2>
 
+<h3 id="radiance">Radiance</h3>
 
+<p>
+  Here's a good overview of a 200 mm Radiance chamber:
+</p>
 
+<iframe width="560" height="315" class="center" src="https://www.youtube.com/embed/u-ZBVmIpV0s"></iframe>
 
+<p>
+  And here's the 300 mm version of the famous honeycomb structure:
+</p>
 
-
-
+<img src="media/fab/radiancelamphead.jpg">
+<figcaption>
+  
+</figcaption>
 
 
 
@@ -292,7 +564,22 @@ loadport seals
 
 <h2 id="see_also">See Also</h2>
 
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
 
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
 
 </body>
 </html>
