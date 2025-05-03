@@ -50,6 +50,8 @@ support for tools
 - no more manuals
 
 
+recipes
+
 -->
 
 <h1 id="fab">Semiconductor Fabs I: The Equipment</h1>
@@ -505,7 +507,7 @@ support for tools
 </p>
 
 <p>
-  The FI is a ME in and of itself. It's shielded from the main fab environment by doors and walls to prevent any contamination—be it particles, undesirable gases, etc—from entering. All entry points have seals that are enough to protect the ME's integrity. This means that when wafers are being transferred around in they aren't being (read: shouldn't be) subjected to potential harm.
+  The FI is a ME in and of itself. It's shielded from the main fab environment by doors and walls to prevent any contamination—be it particles, undesirable gases, etc—from entering. All entry points have seals that are enough to protect the ME's integrity so when wafers are being transferred around inside they aren't being (read: shouldn't be) subjected to potential harm of particles or unclean air.
 </p>
 
 <p>
@@ -519,7 +521,11 @@ support for tools
 <h3 id="radiance">Radiance</h3>
 
 <p>
-  Here's a good overview of a 200 mm Radiance chamber:
+  <a href="file:///Users/EthanMorse/Documents/nomagicpill.github.io/research/media/fab/US8254767%20Method%20and%20apparatus%20for%20extended%20temperature%20pyrometry.pdf">US 8,254,767 B2 Method and apparatus for extended temperature pyrometry</a> offers a detailed overview of the Radiance chamber and its operation, just in patentese.
+</p>
+
+<p>
+  Here's a good overview of a 200 mm Radiance chamber on a Centura mainframe:
 </p>
 
 <iframe width="560" height="315" class="center" src="https://www.youtube.com/embed/u-ZBVmIpV0s"></iframe>
@@ -530,11 +536,55 @@ support for tools
 
 <img src="media/fab/radiancelamphead.jpg">
 <figcaption>
-  
+  Yes, it's as heavy as it looks
 </figcaption>
 
+<p>
+  Each of those holes—all 409 of them—house an individual lamp that shines light to heat the wafer. Notice that holes are perfectly symmetrical across the entire structure, allowing for concentric rings of lamp zones that can be individually controlled to maximize wafer temperature uniformity.
+</p>
+
+<p>
+  So let's say the lamps are on and the wafer is heating up, causing it to emit light from the backside. A handy instrument called a <a href="https://en.wikipedia.org/wiki/Pyrometer">pyrometer</a> is then used to measure the temperature of the wafer based on the light it's emitting. (I won't go into the science-y details about radiation and blackbodies.) From here it can use a controller to adjust the lamp's output accordingly: more voltage = brighter = hotter, or less voltage = dimmer = colder.
+</p>
+
+<img src="media/fab/radiancepyrometer.png" style="width:200px">
+<figcaption>
+  Light enters the sapphire tip, gets transformed into temperature, and exits the other side
+</figcaption>
+
+<p></p>
+
+<button type="button" class="collapsible">Pyrometer Details</button>
+
+<div class="content">
+
+<p>
+  <a href="media/fab/US6406179%20Sensor%20for%20measuring%20a%20substrate%20temperature.pdf">US 6,406,179 Sensor for measuring a substrate temperature</a> describes the process of measuring a temperature given backside wafer radiation values.
+</p>
+
+[FINISH]
+
+<hr>
+
+</div>
+
+<p>
+  A magnetically-levitated (maglev) rotor spins upwards of 200 rpm to ensure temperature uniformity across the wafer. A rotatable stator is outside of the main chamber body and spins using a motor; with the rotor magnetically coupled to the stator, it can spin quite fast!
+</p>
 
 
+
+
+
+
+
+<h3 id="dpn">DPN</h3>
+
+
+<h3 id="polygen">Polygen</h3>
+
+
+https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pdf
 
 <hr>
 
