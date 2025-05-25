@@ -22,24 +22,6 @@
 context
 - flow chart?
 
-order of magnitude of cost of materials, tools, etc
-
-add credentials
-
-add brian potter's as a prereq
-
-general tool stuff:
-- alid
-- ecid
-- svid
-- interlocks
---- jumpers
-- devicenet comms
---- cdn49x cards https://www.artisantg.com/info/MKS_Instruments_CDN491R_Datasheet_201772793317.pdf?srsltid=AfmBOoqk92kpFCIgetBTG2Lvk7cpwPQ_WVy9DKbE71pGvpAgM1WTm8jT
-
-add collapsible sections that go into more detail if the reader wishes
-
-
 https://kawasakirobotics.com/blog/the-ins-outs-of-industrial-robot-arms/
 https://www.appliedmaterials.com/us/en/blog/blog-posts/a-new-equipment-platform-for-a-new-era-of-chipmaking.html
 
@@ -49,6 +31,7 @@ support for tools
 - lots of people have left the industry
 - no more manuals
 
+note about PCW
 
 recipes
 
@@ -75,17 +58,14 @@ recipes
     <a href="#selection">Tool Selection</a>
   </li>
   <li>
-    <a href="#overview">Overview</a>
-  </li>
-  <li>
-    <a href="#fi">Factory Interface</a>
-  </li>
-  <li>
-    <a href="#mainframe">Mainframe</a>
-  </li>
-  <li>
-    <a href="#chambers">Chambers</a>
+    <a href="#example">Example Tool: Gate Stack</a>
     <ul>
+      <li>
+        <a href="#fi">Factory Interface</a>
+      </li>
+      <li>
+        <a href="#mainframe">Mainframe</a>
+      </li>
       <li>
         <a href="#radiance">Radiance</a>
       </li>
@@ -95,10 +75,13 @@ recipes
       <li>
         <a href="#polygen">Polygen</a>
       </li>
+      <li>
+        <a href="#gaspanel">Gas Panel</a>
+      </li>
     </ul>
   </li>
   <li>
-    <a href="#considerations">Considerations</a>
+    <a href="#safety">Safety</a>
   </li>
   <li>
     <a href="#see_also">See Also</a>
@@ -110,15 +93,11 @@ recipes
 <h2 id="preface">Preface</h2>
 
 <p>
-  I tried to include as many links as possible. Some links are quoted but put directly in here because I think it helps to put everything in one space without having to hop tabs over and over.
+  I tried to include as many links as possible. Some links are quoted but put directly in here because I think it helps to put everything in one space without having to go between tabs.
 </p>
 
 <p>
-  While I think this is well-researched and reasonably written, <a href="https://en.wikipedia.org/wiki/Gell-Mann_amnesia_effect">Gell-Mann amnesia</a> is a potential side effect of reading this work. Please consult your personal semiconductor engineer if something sounds like bullshit.
-</p>
-
-<p>
-  I'm a semiconductor fab engineer working in both process and equipment engineering-related capacities at a you've-probably-heard-of-it company.
+  I also tried to keep info basic enough for the skimmers/laypeople to enjoy while still mentioning potentially more technical details for those interested. Pictures are sprinkled throughout to put an image with the words.
 </p>
 
 <p>
@@ -130,7 +109,7 @@ recipes
 <h2 id="context">Context</h2>
 
 <p>
-  Construction Physics' <a href="https://www.construction-physics.com/p/how-to-build-a-20-billion-semiconductor">How to Build a $20 Billion Semiconductor Fab</a> is an excellent introduction into both the semiconductor manufacturing process and the physical building that houses the manufacturing operations, but chooses not to expand on a critical component: the equipment used to make the semiconductor chips. (To be clear, you should probably read that first before reading this.)
+  Construction Physics' <a href="https://www.construction-physics.com/p/how-to-build-a-20-billion-semiconductor">How to Build a $20 Billion Semiconductor Fab</a> is an excellent introduction into both the semiconductor manufacturing process and the physical building that houses the manufacturing operations, but (understandably) chooses not to expand on a critical component: the equipment used to make the semiconductor chips. (To be clear, you should probably read that first before reading this.)
 </p>
 
 <p>
@@ -142,7 +121,7 @@ recipes
 </blockquote>
 
 <p>
-  The equipment, also known as tools to those in the industry, is what performs these individual process steps. In the same way that a traditional machine shop has a mille, lathe, and bandsaw to perform a variety of operations on a single piece of metal to create a final product, a fab has deposition tools, etch tools, and lithography tools (among many, many others) to perform a variety of operations on a single silicon wafer to create the final chip.
+  The equipment, also called tools or machines, is what performs these individual process steps. In the same way that a traditional machine shop has a mille, lathe, and bandsaw to perform a variety of operations on a single piece of metal to create a final product, a fab has deposition tools, etch tools, and lithography tools (among many, many others) to perform a variety of operations on a single silicon wafer to create the final chip.
 </p>
 
 <p>
@@ -150,7 +129,7 @@ recipes
 </p>
 
 <p>
-  Here's a picture of one of Applied Materials' (AMAT) tools, the Endura (note that while not perfectly box-like, it can still fit inside a nice rectangle):
+  Here's a picture of one of Applied Materials' (AMAT) tools, the Endura (note that while not perfectly box-like, it can still fit inside a basic rectangular area):
 </p>
 
 <img src="media/fab/endura.png">
@@ -256,7 +235,7 @@ recipes
     It may be better to find an equivalent platform that is much more common. I've heard of OEMs sunsetting support for certain tools because they want to force purchases of new equipment and there just isn't enough demand in the market to justify supporting it anymore. This can leave fabs in precarious situations, especially if the OEM isn't willing to release IP around the platform or provide contact details of former employees who could help, even if it won't hurt their bottom line.
   </li>
   <li>
-    Similarity: How similar is the tool to the rest of the fleet it will be added to? There is a delicate balance of wanting to ensure wafers are processed as identically as possible and getting newer revisions of the same platform to improve important fab metrics. Intel's <a href="media/fab/intelcopyexactly.pdf#page=11">Copy EXACTLY!</a> method takes this to an extreme, but not uncalled for, level. (To show how important identicality is to some fabs, I've heard of companies being asked by OEMs if they'd sell back a now-obsolete part for a massive markup in order for the OEM to facilitate making a tool that matched the customer's already-existing fleet.)
+    Similarity: How similar is the tool to the rest of the fleet it will be added to? There is a delicate balance of wanting to ensure wafers are processed as identically as possible and getting newer revisions of the same platform to improve important fab metrics. Intel's <a href="media/fab/intelcopyexactly.pdf#page=11">Copy EXACTLY!</a> method takes this to an extreme, but not uncalled for, level. (To show how important identicality is to some fabs, I've heard of companies being asked by OEMs if they'd sell back a now-obsolete part for a massive markup in order for the OEM to facilitate making a tool that matched another customer's already-existing fleet.)
   </li>
 </ul>
 
@@ -268,6 +247,10 @@ recipes
 
 <p>
   Once the design and final price are agreed upon, the customer purchases the tool.
+</p>
+
+<p>
+  How much do tools costs? Millions of dollars, at least. [FINISH]
 </p>
 
 <h3 id="manufacturing">Manufacturing</h3>
@@ -287,16 +270,28 @@ recipes
 <h3 id="installation">Installation</h3>
 
 <p>
-  The OEM includes installation labor and relevant parts in the price of the tool. OEM employees, often dedicated to installing equipment and very little else, will come in and follow step-by-step guides to ensure the installation is done correctly and completely.
+  The OEM includes installation labor and relevant parts in the price of the tool. OEM employees, often dedicated to installing equipment and very little else (unsurprisingly called the install team), will come in and follow step-by-step guides created by the tool experts to ensure the installation is done correctly, completely, and quickly.
 </p>
 
 <p>
-  The fab's electrical and gas teams will often prefabricate 
+  The fab's facility team will often have all the necessary facilities (power, gas, water) prepared for the tool when it arrives. They are able to do this because the OEM will have provided all of the necessary specifications in a document. For example:
 </p>
+
+<ul>
+  <li>
+    Power: How much power is needed? What gauge of wires are needed? How many connections? Do they need to be sheathed? Are transformers required?
+  </li>
+  <li>
+    Gas: What gases are needed? What supply pressures are needed? What flow rates are needed?
+  </li>
+  <li>
+    Water: What flow rates are needed? What type of connection will need to be made at the tool?
+  </li>
+</ul>
 
 <hr>
 
-<h2 id="overview">Overview</h2>
+<h2 id="example">Example Tool: Gate Stack</h2>
 
 <p>
   We'll look at the <a href="https://ir.appliedmaterials.com/news-releases/news-release-details/tsmc-qualifies-applied-materials-gate-stack-system-its-leading">Applied Materials Centura Gate Stack system</a>, which consists of the following modules:
@@ -503,7 +498,7 @@ recipes
 <h3 id="minienv">Mini Environment</h3>
 
 <p>
-  Fabs like like clean air. They also like laminar (straight from top to bottom) flow. Which means they also really like mini environments (ME) that are the FIs themselves.
+  Fabs like clean air. They also like laminar (straight from top to bottom) air flow. Which means they also really like mini environments (ME) that are the FIs themselves.
 </p>
 
 <p>
@@ -514,9 +509,13 @@ recipes
   A filter fan unit (FFU) installed on the top of the FI ensures that air flow is laminar and any particles are getting trapped inside the filter instead of on the wafer.
 </p>
 
-<hr>
+<h3 id="mainframe">Mainframe</h3>
 
-<h2 id="chambers">Chambers</h2>
+<p>
+  
+</p>
+
+
 
 <h3 id="radiance">Radiance</h3>
 
@@ -540,59 +539,363 @@ recipes
 </figcaption>
 
 <p>
-  Each of those holes—all 409 of them—house an individual lamp that shines light to heat the wafer. Notice that holes are perfectly symmetrical across the entire structure, allowing for concentric rings of lamp zones that can be individually controlled to maximize wafer temperature uniformity.
+  Each of those holes—all 409 of them—house an individual lamp that shines light to heat the wafer. Notice that holes are perfectly symmetrical across the entire structure, allowing for concentric rings of lamp zones that can be individually controlled by a high-speed computer to maximize wafer temperature uniformity.
 </p>
 
 <p>
-  So let's say the lamps are on and the wafer is heating up, causing it to emit light from the backside. A handy instrument called a <a href="https://en.wikipedia.org/wiki/Pyrometer">pyrometer</a> is then used to measure the temperature of the wafer based on the light it's emitting. (I won't go into the science-y details about radiation and blackbodies.) From here it can use a controller to adjust the lamp's output accordingly: more voltage = brighter = hotter, or less voltage = dimmer = colder.
+  So let's say the lamps are on and the wafer is heating up, causing it to emit light from the backside. A handy instrument called a <a href="https://en.wikipedia.org/wiki/Pyrometer">pyrometer</a> is then used to measure the temperature of the wafer based on the light it's emitting. (I won't go into the science-y details about radiation, blackbodies, and how the pyrometer translate light into a temperature reading. <a href="media/fab/US6406179%20Sensor%20for%20measuring%20a%20substrate%20temperature.pdf">US 6,406,179 Sensor for measuring a substrate temperature</a> is AMAT's patent on their pyrometer.)
 </p>
 
 <img src="media/fab/radiancepyrometer.png" style="width:200px">
 <figcaption>
-  Light enters the sapphire tip, gets transformed into temperature, and exits the other side
+  Light enters the sapphire tip and gets transformed into a temperatures signal
 </figcaption>
 
-<p></p>
-
-<button type="button" class="collapsible">Pyrometer Details</button>
-
-<div class="content">
-
 <p>
-  <a href="media/fab/US6406179%20Sensor%20for%20measuring%20a%20substrate%20temperature.pdf">US 6,406,179 Sensor for measuring a substrate temperature</a> describes the process of measuring a temperature given backside wafer radiation values.
+  From here it can use a high-speed controller—also called a temperature controller—to adjust the lamp's output accordingly: more voltage = brighter = hotter, or less voltage = dimmer = colder. 100s of adjustments are made per second to ensure either a) stable ramp rates (when the temperature is increasing to get to the final temperature), or b) stable temperatures during the "soak" step, aptly named because the wafer is soaking in all the heat and gases and steam, like a semiconductor sauna.
 </p>
 
-[FINISH]
-
-<hr>
-
-</div>
+<img src="media/fab/issgsauna.png" style="width:200px">
+<figcaption>
+  I know it's slop but at least it's relevant
+</figcaption>
 
 <p>
-  A magnetically-levitated (maglev) rotor spins upwards of 200 rpm to ensure temperature uniformity across the wafer. A rotatable stator is outside of the main chamber body and spins using a motor; with the rotor magnetically coupled to the stator, it can spin quite fast!
+  A magnetically-levitated (maglev) rotor spins upwards of 200 rpm to ensure temperature uniformity across the wafer. A rotatable stator is outside of the main chamber body and spins using a motor; with the rotor magnetically coupled to the stator, it can spin quite fast! The wafer rests on a few pieces that are generically called the process kit (see <a href="">U.S. [FINISH]</a>) and spins with the rotor.
 </p>
 
+<img src="media/fab/maglev.png" style="width:200px">
+<figcaption>
+  [FINISH]
+</figcaption>
 
+<p>
+  Gases vary by the film, but often include N<sub>2</sub>O, H<sub>2</sub>, O<sub>2</sub>, N<sub>2</sub>, or some combination thereof. They are fed in through the <a href="#gaspanel">gas panel</a> and get all nice and mixed together before entering one side of the chamber in a spray-like pattern that's pretty darn close to the width of the wafer. The gases are then "sucked" across the surface of the wafer by the vacuum pump port opposite the gas injection port. It's this combination—a pristine, freshly-cleaned wafer surface, the right ratio of 99.9999%-pure gases, an insane heat that rivals that of hell itself, the low pressure—that generates steam which in turn grows an oxide on the wafer surface. And you'd think that it wouldn't be <i>that</i> uniform right? That we couldn't get nanometer precision with such a barbaric process of heat plus gas plus vacuum? Well you'd be wrong. These bad boys are able to hit a range (maximum oxide thickness minus minimum oxide thickness) of [FINISH] nm wafer-over-wafer, year-over-year with minimal maintenance.
+</p>
 
+<img src="media/fab/gasinjection.png" style="width:200px">
+<figcaption>
+  Gases go weeeeeeeeee across the chamber
+</figcaption>
 
+<p>
+  The pressure is controlled by two main components: a vacuum pump and a throttle valve (TV). The pump is on all the time, blinding pumping away at whatever is thrown in its path. The TV adjusts its angle based on the pressure setpoint alone and a simple PID controller built in to the chamber controller. A 100%-open TV means the pressure setpoint is way lower than the actual pressure so it needs to pump quickly, while a 0%-open TV means the setpoint is way higher than actual so it needs to fill up with gas, or vent, quickly.
+</p>
 
-
+<p>
+  And that's about it for the Radiance chamber. Onto the...
+</p>
 
 <h3 id="dpn">DPN</h3>
 
+<p>
+  A more technical description from AMAT's <a href="https://www.appliedmaterials.com/us/en/product-library/centura-dpn-hd.html">DPN product page</a>:
+</p>
+
+<blockquote>
+  <p>
+    In the DPN [decoupled plasma nitridation] HD [high dose] nitridation process, silicon oxide dielectric is infused with nitrogen using low-energy, pulsed plasma to create the desired high nitrogen concentration at the oxynitride/poly interface and low concentration at the silicon/oxynitride interface of the gate stack for preserving high channel mobility. New chemistry and direct, high-temperature wafer heating generate the higher dosages of nitrogen needed for oxynitride gates at the 3X and 2Xnm nodes while simultaneously achieving superior leakage and threshold voltage performance. Conventional nitridation processes are limited in achieving the requisite leakage and threshold voltage.
+  </p>
+  <p>
+    Nitrogen concentration in the oxynitride decreases over time following the nitridation treatment. Because the Centura DPN HD system integrates DPN and PNA chambers in a single vacuum environment, the system can counteract this nitrogen loss by performing a high-temperature anneal immediately following the nitridation process. In addition, integrating the DPN and PNA chambers on a common platform removes time-dependent process variability, producing the more stable and robust process essential for manufacturing oxynitride gates. The PNA also eliminates an unstable bonding phase from the nitridation process that can cause variation in threshold voltage. By reducing or removing this unstable phase, the PNA contributes to improved device performance.
+  </p>
+</blockquote>
+
+<p>
+  A less technical description: the DPN chamber adds nitrogen to the ISSG oxide to increase its dielectric constant, an important factor that improves device performance for various reasons.
+</p>
+
+<p>
+  Now, onto the actual operation, which is pretty simple:
+</p>
+
+<ol>
+  <li>
+    Wafer is placed onto the chamber pedestal
+  </li>
+  <li>
+    A N<sub>2</sub>-rich plasma is struck
+  </li>
+  <li>
+    The wafer surface, which is now covered in an oxide, soaks in the plasma, absorbing N<sub>2</sub>
+  </li>
+  <li>
+    Finis!
+  </li>
+</ol>
+
+<p>
+  The chamber is equipped with two types of pumps: a turbomolecular pump located next to the chamber itself and a dry backing pump that a) supports the turbo's operation, and b) can pump 
+</p>
+
+<ul>
+  <li>
+    Turbomolecular: Also called a turbo, this pump bring the chamber down to very low pressures after it reaches low pressure.
+  </li>
+  <li>
+    Backing: Also called a dry pump, this pump helps keep the turbo at safe operating pressures and is able to bring the chamber down to pressures that the turbo can operate at.
+  </li>
+</ul>
+
+<p>
+  An RF (power) generator applies power to RF coils located above and outside the chamber, striking and maintaining a plasma inside the chamber. The RF power drives the N<sub>2</sub> [FINISH IS THIS RIGHT?? OR IS IT N2+]
+</p>
 
 <h3 id="polygen">Polygen</h3>
+
+<p>
+  The Polygen is a variant of the Xgen chamber, a tool that for whatever reason AMAT doesn't advertise on their website. I'll refer to it as Polygen—there are small differences between variants, but the basic principles stay the same.
+</p>
+
+<p>
+  The Polygen is a type of CVD (chemical vapor deposition) process. [FINISH]
+</p>
+
+<img src="media/fab/cvd.png">
+<figcaption>
+  Remember, those aren't marbles, they're atoms (<a href="https://www.cityu.edu.hk/phy/appkchu/AP6120/7.PDF">source</a>)
+</figcaption>
+
+<p>
+  There are two main parts to the Polygen chamber:
+</p>
+
+<ul>
+  <li>
+    A heater that maintains the wafer temperature in a regime that polysilicon can easily grow
+  </li>
+  <li>
+    A showerhead with 1000s of tiny holes that evenly distributes process gases from the top of the chamber towards the wafer
+  </li>
+</ul>
+
+[UPDATE PIC WITH ARROWS]
+
+<img src="media/fab/polygen.png">
+<figcaption>
+  If only you could put pizza on the heater and flow in sauce and cheese through the showerhead
+</figcaption>
+
+<p>
+  That's pretty much it. Most polysilicon processes simply use silane, SiH<sub>4</sub>, 
+</p>
+
+[RPS]
 
 
 https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pdf
 
+
+
+<h3 id="gaspanel">Gas Panel</h3>
+
+<p>
+  (This section describes a generic gas panel (GP). GP design varies by tool and manufacturer.)
+</p>
+
+<p>
+  Gas panels, made up of multiple individual gas lines, connect the gas supply to the chamber by way of multiple in-line components. The line's components, in order from supply to chamber, generally are:
+</p>
+
+<ol>
+  <li>
+    Manual isolation valve: This valve is operated by humans to isolate the gas panel from the gas supply. It rotates 90 degrees and is able to be locked out by a safety lock to ensure it doesn't get opened unintentionally. Nobody wants a bunch of H<sub>2</sub> floating around while they're working!
+  </li>
+  <li>
+    Three-way valve: This valve has two inputs and one output. One input is N<sub>2</sub> (or any inert gas, but it's almost always N<sub>2</sub> because of how cheap it is). N<sub>2</sub> acts as a purge gas to remove any residual process gas that's left in the gas line. The other input is the (often toxic) process gas, such as SiH<sub>4</sub> or PH<sub>3</sub>. The valves are pneumatically-controlled and interlocked such that only one input can be active at any given time.
+  </li>
+  <li>
+    Regulator: The regulator controls the pressure that the remaining components downstream (or closer to the chamber) see. For example, the supply pressure may be 100 psi, but we want 30 psi at the tool, so the regulator is used to reduce the pressure to the desired level.
+  </li>
+  <li>
+    Transducer: Shows the line pressure just past the regulator.
+  </li>
+  <li>
+    Filter: The filter prevents any particles (down to a certain size) in the gas line from making it past the other components.
+  </li>
+  <li>
+    Mass flow controller (MFC): The MFC controls how much gas flows through. The tool gives it a flow setpoint and an internal PID controller maintains the proper flow.
+  </li>
+  <li>
+    MFC isolation valves: Two pneumatic valves on either side of the MFC are open when the MFC is flowing and closed when the MFC is stopped.
+  </li>
+</ol>
+
+[FINISH ADD SIMULATION HERE]
+
+<img src="media/fab/gasstick.jpg">
+<figcaption>
+  Example; now imagine 15 of these side-by-size and having to replace a single component (<a href="https://www.glewengineering.com/high-purity-gas-panels-part-6-valves-as-flow-control/">source</a>)
+</figcaption>
+
+<p>
+  Each stick then connects to a gas manifold, or section of pipe that combines all the gases from their individual lines into one common line that feeds the chamber. A final valve on the manifold line allows or blocks flow of gas into the chamber. Depending on the gases and reactivities, there may be sub manifolds. For example, ISSG gas panels may be split up into two manifolds, fuels (gases containing hydrogen) and oxidizers (gases containing oxygen or hydrogen), that meet and mix shortly before they reach the chamber.
+</p>
+
+<p>
+  Valves are either normally-open (NO) or normally-closed (NC); they are also either fully-open or fully-closed, with no in between. NO valves go full open when they are de-energized and allow gas to flow through. NC valves go full closed when they are de-energized and stop the flow of gas. Can you guess which one you want for the purge gases and which you want for the process gases? If you chose NO and NC, congrats, you're right and have a shot at being a fab engineer. If you chose NO for the second one, congrats, you'll either destroy the fab or get fired–if it's the first, then the second will definitely happen. Almost all process gases' MFCs are configured to be NC and it would take some convincing of the vendor to get them NO.
+</p>
+
+<img src="media/fab/gaspanel.png">
+<figcaption>
+  Here's a full gas panel—only slightly more complicated than a single stick! (<a href="https://www.komachine.com/ko/companies/tk-fujikin/products/88115-igs-integrated-gas-system-uhp-igs-seires">source</a>)
+</figcaption>
+
+<p>
+  Glew Engineering has an excellent series of posts on semiconductor gas panels:
+</p>
+
+<ol>
+  <li>
+    <a href="https://www.glewengineering.com/high-purity-gas-panels-part-1-introduction/">Introduction</a>
+  </li>
+  <li>
+    <a href="https://www.glewengineering.com/high-purity-gas-panels-part-2-gas-distribution-in-the-fab/">Gas Distribution in the Fab</a>
+  </li>
+  <li>
+    <a href="https://www.glewengineering.com/high-purity-gas-panels-part-3-to-abatement-and-exhaust/">To Abatement and Exhaust</a>
+  </li>
+  <li>
+    <a href="https://www.glewengineering.com/high-purity-gas-panels-part-4-gas-distribution-lines/">Gas Distribution Lines</a>
+  </li>
+  <li>
+    <a href="https://www.glewengineering.com/high-purity-gas-panels-part-5-safety-interlocks/">Safety Interlocks</a>
+  </li>
+  <li>
+    <a href="https://www.glewengineering.com/high-purity-gas-panels-part-6-valves-as-flow-control/">Valves for On and Off Flow Control</a>
+  </li>
+  <li>
+    <a href="https://www.glewengineering.com/high-purity-gas-panels-part-7-pressure-control/">Gas Pressure Regulators and Pressure Control</a>
+  </li>
+  <li>
+    <a href="https://www.glewengineering.com/high-purity-gas-panels-part-8-flow-restrictors-2/">Flow Restrictors</a>
+  </li>
+  <li>
+    <a href="https://www.glewengineering.com/high-purity-gas-panels-part-9-pressure-measurement-in-the-fab/">Pressure Measurement in the Semiconductor Fab</a>
+  </li>
+  <li>
+    <a href="https://www.glewengineering.com/high-purity-gas-panels-part-10-pressure-measurement-on-semiconductor-tools/">Pressure Transducers in Semiconductor Equipment</a>
+  </li>
+  <li>
+    <a href="https://www.glewengineering.com/high-purity-gas-panels-part-11-mass-flow-controllers/">Mass Flow Controllers</a>
+  </li>
+</ol>
+
+<button type="button" class="collapsible">Connections</button>
+
+<div class="content">
+
+<p>
+  Connections also vary by gas panel with there being three main types:
+</p>
+
+<ul>
+  <li>
+    VCR: Swagelok, the manufacturer, can explain better than me:
+    <blockquote>
+      Swagelok VCR® metal gasket face seal fittings are the original vacuum coupling radius (VCR) fittings and have set the industry standard for metal-to-metal sealed connections. Swagelok VCR® fittings can feature an ultra-high purity construction and can be used in high-purity applications ranging from vacuum to positive pressure. Face seal fittings have less area of entrapment and are cleaner than tube fittings, limiting the potential for contamination in applications where low particulate levels are imperative. Metal-to-metal sealing allows for VCR® fitting use in applications where elastomers are incompatible with system fluid.
+    </blockquote>
+    <img src="media/fab/vcr.png">
+    <figcaption>
+      Cross-section of a VCR connection
+    </figcaption>
+  </li>
+  <li>
+    C-seal: Read <a href="https://votefordavid.wordpress.com/2009/09/09/difference-between-c-seal-and-w-seal-gas-fittings/">this blog post</a>
+  </li>
+  <li>
+    W-seal: Read <a href="https://votefordavid.wordpress.com/2009/09/09/difference-between-c-seal-and-w-seal-gas-fittings/">this blog post</a>
+  </li>
+</ul>
+
+</div>
+
+<p></p>
+
 <hr>
 
-<h2 id="considerations">Considerations</h2>
+<h2 id="safety">Safety</h2>
 
+<p>
+  Safety is paramount in fabs. Even if they're not featured in <a href="https://www.science.org/content/blog-post/things-i-won-t-work-dioxygen-difluoride">Things I Won't Work With</a>, some of the nastiest shit known to man is cooped up within fab walls, from <a href="https://en.wikipedia.org/wiki/Arsine#Microelectronics_applications">arsine</a> to <a href="https://en.wikipedia.org/wiki/Phosphine">phosphine [FINISH</a>, <a href="">hydrofluoric acid</a>. The list goes on. Basically stay the heck away from your neighborhood fab if you know what's good for you.
+</p>
 
+<img src="media/fab/ines.png">
+<figcaption>
+  Arsine, phosphine, all kinds of ines!!!!
+</figcaption>
 
+<p>
+  Thankfully the OEMs care about safety and design their tools accordingly. Two types of safety features will be discussed: interlocks and ergonomics.
+</p>
 
+<h3 id="interlocks">Interlocks</h3>
+
+<p>
+  Interlocks prevent unsafe operations from happening within one part of the tool. All interlocks must be satisfied in order for the part to operate. Interlocks are often configured at the hardware level to ensure something physical is activated or deactivated instead of relying on software to do it. The hardware is also designed such that, where possible, the interlock is automatically satisfied or dis
+</p>
+
+<p>
+  Here are some potential interlocks for a generic chamber (along with how they are designed and detected by the system in parentheses):
+</p>
+
+<ul>
+  <li>
+    Lid is closed
+    <ul>
+      <li>
+        
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+  </li>
+  <li>
+    Gas panel door is closed
+    <ul>
+      <li>
+        
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+  </li>
+  <li>
+    Cooling water is flowing
+    <ul>
+      <li>
+        
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+  </li>
+  <li>
+    Power is on
+    <ul>
+      <li>
+        
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+  </li>
+  <li>
+    Pressure is below X
+    <ul>
+      <li>
+        
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+  </li>
+</ul>
 
 
 

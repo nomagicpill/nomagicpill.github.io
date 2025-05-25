@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semiconductor Gas Panel Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+            overflow-x: auto;
+        }
+        
+        .container {
+            display: flex;
+            gap: 20px;
+            min-width: 1400px;
+        }
+        
+        .panel {
+            flex: 1;
+            background: #2a2a2a;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid #444;
+            position: relative;
+        }
+        
+        .controls {
+            width: 300px;
+            background: #333;
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
+        }
+        
+        .gas-column {
+            display: inline-block;
+            vertical-align: top;
+            margin: 0 80px;
+            position: relative;
+        }
+        
+        .gas-column h3 {
+            margin: 0 0 20px 0;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-align: center;
+            writing-mode: horizontal-tb;
+        }
+        
+        .sih4 h3 { background: #8b0000; }
+        .n2 h3 { background: #000080; }
+        .h2 h3 { background: #ff6600; }
+        
+        .vertical-line {
+            width: 20px;
+            background: #444;
+            border: 2px solid #666;
+            margin: 0 auto;
+            position: relative;
+            overflow: visible;
+        }
+        
+        .pipe-segment {
+            height: 40px;
+            width: 100%;
+            background: #444;
+            border-left: 2px solid #666;
+            border-right: 2px solid #666;
+            position: relative;
+        }
+        
+        .component {
+            width: 80px;
+            height: 50px;
+            background: #555;
+            border: 2px solid #777;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            text-align: center;
+            cursor: pointer;
+            margin: 0 auto 10px auto;
+            transition: all 0.3s ease;
+            position: relative;
+            left: -30px;
+        }
+        
+        .component:hover {
+            background: #666;
+            border-color: #888;
+        }
+        
+        .component.active {
+            background: #4a9eff;
+            border-color: #6bb6ff;
+            color: white;
+        }
+        
+        .component.closed {
+            background: #ff4444;
+            border-color: #ff6666;
+            color: white;
+        }
+        
+        .three-way-container {
+            position: relative;
+            height: 80px;
+            margin: 10px 0;
+        }
+        
+        .three-way {
+            width: 80px;
+            height: 60px;
+            left: -30px;
+        }
+        
+        .purge-line {
+            position: absolute;
+            right: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 20px;
+            background: #444;
+            border: 2px solid #666;
+            border-radius: 10px;
+        }
+        
+        .purge-supply {
+            position: absolute;
+            right: -120px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 40px;
+            background: #555;
+            border: 2px solid #777;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .purge-supply:hover {
+            background: #666;
+            border-color: #888;
+        }
+        
+        .purge-supply.active {
+            background: #4a9eff;
+            border-color: #6bb6ff;
+            color: white;
+        }
+        
+        .purge-supply.closed {
+            background: #ff4444;
+            border-color: #ff6666;
+            color: white;
+        }
+        
+        .manifold-container {
+            margin-top: 40px;
+            position: relative;
+            height: 100px;
+        }
+        
+        .horizontal-manifold {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: #444;
+            border: 2px solid #666;
+            transform: translateY(-50%);
+        }
+        
+        .manifold-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 80px;
+            background: #555;
+            border: 3px solid #777;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .connection-line {
+            position: absolute;
+            width: 20px;
+            height: 60px;
+            background: #444;
+            border: 2px solid #666;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-top: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            z-index: 10;
+        }
+        
+        .particle.sih4 { background: #ff4444; }
+        .particle.n2 { background: #4444ff; }
+        .particle.h2 { background: #ff8800; }
+        
+        .control-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #444;
+            border-radius: 8px;
+        }
+        
+        .control-group h4 {
+            margin: 0 0 10px 0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .control-group.sih4 h4 { background: #8b0000; }
+        .control-group.n2 h4 { background: #000080; }
+        .control-group.h2 h4 { background: #ff6600; }
+        
+        .control-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 8px 0;
+        }
+        
+        .control-row label {
+            font-size: 12px;
+            min-width: 80px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            margin: 0 10px;
+        }
+        
+        input[type="number"] {
+            width: 60px;
+            background: #555;
+            border: 1px solid #777;
+            color: white;
+            padding: 4px;
+            border-radius: 4px;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            background: #444;
+            border-radius: 8px;
+        }
+        
+        .status h4 {
+            margin: 0 0 10px 0;
+            color: #4a9eff;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-size: 12px;
+        }
+        
+        .purge-controls {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #666;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; margin-bottom: 30px;">Semiconductor Gas Panel Simulation</h1>
+    
+    <div class="container">
+        <div class="panel">
+            <!-- SiH4 Column -->
+            <div class="gas-column">
+                <h3 class="sih4">SiH4 (Silane)</h3>
+                <div class="vertical-line" id="sih4-line" style="height: 700px;">
+                    <!-- Gas Supply -->
+                    <div style="text-align: center; margin-bottom: 10px; font-size: 12px;">Supply</div>
+                    
+                    <!-- Manual Isolation Valve -->
+                    <div class="component closed" id="sih4-isolation" title="Manual Isolation Valve">ISO</div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Three-way Purge Valve with N2 line -->
+                    <div class="three-way-container">
+                        <div class="component three-way closed" id="sih4-purge" title="Three-way Purge Valve">3W</div>
+                        <div class="purge-line" id="sih4-purge-line"></div>
+                        <div class="purge-supply closed" id="sih4-n2-supply" title="N2 Purge Supply">N2</div>
+                    </div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Pressure Regulator -->
+                    <div class="component active" id="sih4-regulator" title="Pressure Regulator">REG</div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Valve 1 -->
+                    <div class="component closed" id="sih4-valve1" title="Valve 1">V1</div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- MFC -->
+                    <div class="component closed" id="sih4-mfc" title="Mass Flow Controller">MFC</div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Valve 2 -->
+                    <div class="component closed" id="sih4-valve2" title="Valve 2">V2</div>
+                    <div class="pipe-segment"></div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Connection to manifold -->
+                    <div class="connection-line"></div>
+                </div>
+            </div>
+            
+            <!-- N2 Column -->
+            <div class="gas-column">
+                <h3 class="n2">N2 (Nitrogen)</h3>
+                <div class="vertical-line" id="n2-line" style="height: 700px;">
+                    <!-- Gas Supply -->
+                    <div style="text-align: center; margin-bottom: 10px; font-size: 12px;">Supply</div>
+                    
+                    <!-- Manual Isolation Valve -->
+                    <div class="component closed" id="n2-isolation" title="Manual Isolation Valve">ISO</div>
+                    <div class="pipe-segment"></div>
+                    <div class="pipe-segment"></div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Pressure Regulator -->
+                    <div class="component active" id="n2-regulator" title="Pressure Regulator">REG</div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Valve 1 -->
+                    <div class="component closed" id="n2-valve1" title="Valve 1">V1</div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- MFC -->
+                    <div class="component closed" id="n2-mfc" title="Mass Flow Controller">MFC</div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Valve 2 -->
+                    <div class="component closed" id="n2-valve2" title="Valve 2">V2</div>
+                    <div class="pipe-segment"></div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Connection to manifold -->
+                    <div class="connection-line"></div>
+                </div>
+            </div>
+            
+            <!-- H2 Column -->
+            <div class="gas-column">
+                <h3 class="h2">H2 (Hydrogen)</h3>
+                <div class="vertical-line" id="h2-line" style="height: 700px;">
+                    <!-- Gas Supply -->
+                    <div style="text-align: center; margin-bottom: 10px; font-size: 12px;">Supply</div>
+                    
+                    <!-- Manual Isolation Valve -->
+                    <div class="component closed" id="h2-isolation" title="Manual Isolation Valve">ISO</div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Three-way Purge Valve with N2 line -->
+                    <div class="three-way-container">
+                        <div class="component three-way closed" id="h2-purge" title="Three-way Purge Valve">3W</div>
+                        <div class="purge-line" id="h2-purge-line"></div>
+                        <div class="purge-supply closed" id="h2-n2-supply" title="N2 Purge Supply">N2</div>
+                    </div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Pressure Regulator -->
+                    <div class="component active" id="h2-regulator" title="Pressure Regulator">REG</div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Valve 1 -->
+                    <div class="component closed" id="h2-valve1" title="Valve 1">V1</div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- MFC -->
+                    <div class="component closed" id="h2-mfc" title="Mass Flow Controller">MFC</div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Valve 2 -->
+                    <div class="component closed" id="h2-valve2" title="Valve 2">V2</div>
+                    <div class="pipe-segment"></div>
+                    <div class="pipe-segment"></div>
+                    
+                    <!-- Connection to manifold -->
+                    <div class="connection-line"></div>
+                </div>
+            </div>
+            
+            <!-- Horizontal Manifold -->
+            <div class="manifold-container">
+                <div class="horizontal-manifold" id="main-manifold"></div>
+                <div class="manifold-center">MANIFOLD</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <!-- SiH4 Controls -->
+            <div class="control-group sih4">
+                <h4>SiH4 Controls</h4>
+                <div class="control-row">
+                    <label>Pressure:</label>
+                    <input type="range" id="sih4-pressure" min="0" max="100" value="50">
+                    <input type="number" id="sih4-pressure-val" min="0" max="100" value="50">
+                    <span>psi</span>
+                </div>
+                <div class="control-row">
+                    <label>Flow:</label>
+                    <input type="range" id="sih4-flow" min="0" max="100" value="0">
+                    <input type="number" id="sih4-flow-val" min="0" max="100" value="0">
+                    <span>sccm</span>
+                </div>
+                <div class="purge-controls">
+                    <div class="control-row">
+                        <label>N2 Purge Flow:</label>
+                        <input type="range" id="sih4-purge-flow" min="0" max="50" value="0">
+                        <input type="number" id="sih4-purge-flow-val" min="0" max="50" value="0">
+                        <span>sccm</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- N2 Controls -->
+            <div class="control-group n2">
+                <h4>N2 Controls</h4>
+                <div class="control-row">
+                    <label>Pressure:</label>
+                    <input type="range" id="n2-pressure" min="0" max="100" value="50">
+                    <input type="number" id="n2-pressure-val" min="0" max="100" value="50">
+                    <span>psi</span>
+                </div>
+                <div class="control-row">
+                    <label>Flow:</label>
+                    <input type="range" id="n2-flow" min="0" max="100" value="0">
+                    <input type="number" id="n2-flow-val" min="0" max="100" value="0">
+                    <span>sccm</span>
+                </div>
+            </div>
+            
+            <!-- H2 Controls -->
+            <div class="control-group h2">
+                <h4>H2 Controls</h4>
+                <div class="control-row">
+                    <label>Pressure:</label>
+                    <input type="range" id="h2-pressure" min="0" max="100" value="50">
+                    <input type="number" id="h2-pressure-val" min="0" max="100" value="50">
+                    <span>psi</span>
+                </div>
+                <div class="control-row">
+                    <label>Flow:</label>
+                    <input type="range" id="h2-flow" min="0" max="100" value="0">
+                    <input type="number" id="h2-flow-val" min="0" max="100" value="0">
+                    <span>sccm</span>
+                </div>
+                <div class="purge-controls">
+                    <div class="control-row">
+                        <label>N2 Purge Flow:</label>
+                        <input type="range" id="h2-purge-flow" min="0" max="50" value="0">
+                        <input type="number" id="h2-purge-flow-val" min="0" max="50" value="0">
+                        <span>sccm</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Status Display -->
+            <div class="status">
+                <h4>System Status</h4>
+                <div class="status-item">
+                    <span>SiH4 Flow:</span>
+                    <span id="sih4-status">0 sccm</span>
+                </div>
+                <div class="status-item">
+                    <span>N2 Flow:</span>
+                    <span id="n2-status">0 sccm</span>
+                </div>
+                <div class="status-item">
+                    <span>H2 Flow:</span>
+                    <span id="h2-status">0 sccm</span>
+                </div>
+                <div class="status-item">
+                    <span>SiH4 N2 Purge:</span>
+                    <span id="sih4-purge-status">0 sccm</span>
+                </div>
+                <div class="status-item">
+                    <span>H2 N2 Purge:</span>
+                    <span id="h2-purge-status">0 sccm</span>
+                </div>
+                <div class="status-item">
+                    <span>Total Flow:</span>
+                    <span id="total-status">0 sccm</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class GasPanel {
+            constructor() {
+                this.gases = ['sih4', 'n2', 'h2'];
+                this.state = {};
+                this.particles = [];
+                this.animationFrame = null;
+                
+                // Initialize state for each gas
+                this.gases.forEach(gas => {
+                    this.state[gas] = {
+                        isolation: false,
+                        regulator: true,
+                        valve1: false,
+                        mfc: false,
+                        valve2: false,
+                        pressure: 50,
+                        flow: 0,
+                        actualFlow: 0,
+                        purgeFlow: 0,
+                        actualPurgeFlow: 0
+                    };
+                });
+                
+                this.initializeEventListeners();
+                this.updateDisplay();
+                this.startAnimation();
+            }
+            
+            initializeEventListeners() {
+                // Component click handlers
+                this.gases.forEach(gas => {
+                    document.getElementById(`${gas}-isolation`).addEventListener('click', () => {
+                        this.toggleComponent(gas, 'isolation');
+                    });
+                    
+                    document.getElementById(`${gas}-valve1`).addEventListener('click', () => {
+                        this.toggleComponent(gas, 'valve1');
+                    });
+                    
+                    document.getElementById(`${gas}-mfc`).addEventListener('click', () => {
+                        this.toggleComponent(gas, 'mfc');
+                    });
+                    
+                    document.getElementById(`${gas}-valve2`).addEventListener('click', () => {
+                        this.toggleComponent(gas, 'valve2');
+                    });
+                    
+                    // Purge supply for SiH4 and H2
+                    if (gas !== 'n2') {
+                        document.getElementById(`${gas}-n2-supply`).addEventListener('click', () => {
+                            this.state[gas].purgeActive = !this.state[gas].purgeActive;
+                            this.updateDisplay();
+                        });
+                    }
+                });
+                
+                // Control panel event listeners
+                this.gases.forEach(gas => {
+                    // Pressure controls
+                    const pressureSlider = document.getElementById(`${gas}-pressure`);
+                    const pressureInput = document.getElementById(`${gas}-pressure-val`);
+                    
+                    pressureSlider.addEventListener('input', (e) => {
+                        const value = parseInt(e.target.value);
+                        this.state[gas].pressure = value;
+                        pressureInput.value = value;
+                        this.updateDisplay();
+                    });
+                    
+                    pressureInput.addEventListener('input', (e) => {
+                        const value = parseInt(e.target.value);
+                        this.state[gas].pressure = value;
+                        pressureSlider.value = value;
+                        this.updateDisplay();
+                    });
+                    
+                    // Flow controls
+                    const flowSlider = document.getElementById(`${gas}-flow`);
+                    const flowInput = document.getElementById(`${gas}-flow-val`);
+                    
+                    flowSlider.addEventListener('input', (e) => {
+                        const value = parseInt(e.target.value);
+                        this.state[gas].flow = value;
+                        flowInput.value = value;
+                        this.updateDisplay();
+                    });
+                    
+                    flowInput.addEventListener('input', (e) => {
+                        const value = parseInt(e.target.value);
+                        this.state[gas].flow = value;
+                        flowSlider.value = value;
+                        this.updateDisplay();
+                    });
+                    
+                    // Purge flow controls for SiH4 and H2
+                    if (gas !== 'n2') {
+                        const purgeFlowSlider = document.getElementById(`${gas}-purge-flow`);
+                        const purgeFlowInput = document.getElementById(`${gas}-purge-flow-val`);
+                        
+                        purgeFlowSlider.addEventListener('input', (e) => {
+                            const value = parseInt(e.target.value);
+                            this.state[gas].purgeFlow = value;
+                            purgeFlowInput.value = value;
+                            this.updateDisplay();
+                        });
+                        
+                        purgeFlowInput.addEventListener('input', (e) => {
+                            const value = parseInt(e.target.value);
+                            this.state[gas].purgeFlow = value;
+                            purgeFlowSlider.value = value;
+                            this.updateDisplay();
+                        });
+                    }
+                });
+            }
+            
+            toggleComponent(gas, component) {
+                this.state[gas][component] = !this.state[gas][component];
+                
+                // MFC and valve coordination
+                if (component === 'mfc') {
+                    this.state[gas].valve1 = this.state[gas][component];
+                    this.state[gas].valve2 = this.state[gas][component];
+                }
+                
+                this.updateDisplay();
+            }
+            
+            calculateActualFlow(gas) {
+                const state = this.state[gas];
+                
+                // Check if gas can flow through the entire line
+                let canFlow = state.isolation && state.regulator && state.valve1 && state.mfc && state.valve2;
+                
+                // For gases with 3-way valves, check if they're in process mode
+                if (gas !== 'n2' && state.purgeActive) {
+                    canFlow = false; // When purge is active, process gas cannot flow
+                }
+                
+                if (!canFlow) {
+                    return 0;
+                }
+                
+                return state.flow;
+            }
+            
+            calculateActualPurgeFlow(gas) {
+                if (gas === 'n2') return 0;
+                
+                const state = this.state[gas];
+                
+                // Purge flow only works if purge supply is active AND main line is open to manifold
+                if (!state.purgeActive) {
+                    return 0;
+                }
+                
+                // Need downstream path to be open for purge to flow
+                let downstreamOpen = state.regulator && state.valve1 && state.mfc && state.valve2;
+                
+                if (!downstreamOpen) {
+                    return 0;
+                }
+                
+                return state.purgeFlow;
+            }
+            
+            updateDisplay() {
+                this.gases.forEach(gas => {
+                    const state = this.state[gas];
+                    
+                    // Update component visual states
+                    this.updateComponentState(`${gas}-isolation`, state.isolation);
+                    this.updateComponentState(`${gas}-regulator`, state.regulator);
+                    this.updateComponentState(`${gas}-valve1`, state.valve1);
+                    this.updateComponentState(`${gas}-mfc`, state.mfc);
+                    this.updateComponentState(`${gas}-valve2`, state.valve2);
+                    
+                    // Update purge supply states for SiH4 and H2
+                    if (gas !== 'n2') {
+                        this.updateComponentState(`${gas}-n2-supply`, state.purgeActive);
+                    }
+                    
+                    // Calculate actual flows
+                    state.actualFlow = this.calculateActualFlow(gas);
+                    state.actualPurgeFlow = this.calculateActualPurgeFlow(gas);
+                    
+                    // Update status display
+                    document.getElementById(`${gas}-status`).textContent = `${state.actualFlow} sccm`;
+                    
+                    if (gas !== 'n2') {
+                        document.getElementById(`${gas}-purge-status`).textContent = `${state.actualPurgeFlow} sccm`;
+                    }
+                });
+                
+                // Update total flow (including purge flows)
+                const totalFlow = this.gases.reduce((sum, gas) => {
+                    return sum + this.state[gas].actualFlow;
+                }, 0) + this.state.sih4.actualPurgeFlow + this.state.h2.actualPurgeFlow;
+                
+                document.getElementById('total-status').textContent = `${totalFlow} sccm`;
+            }
+            
+            updateComponentState(elementId, isActive) {
+                const element = document.getElementById(elementId);
+                element.className = element.className.replace(/ (active|closed)/g, '');
+                element.classList.add(isActive ? 'active' : 'closed');
+            }
+            
+            createParticle(gas, flow, isPurge = false) {
+                if (flow === 0) return;
+                
+                const particle = document.createElement('div');
+                let particleClass = isPurge ? 'n2' : gas;
+                particle.className = `particle ${particleClass}`;
+                
+                // Start at the top of the gas line
+                const gasLine = document.getElementById(`${gas}-line`);
+                const rect = gasLine.getBoundingClientRect();
+                const panelRect = document.querySelector('.panel').getBoundingClientRect();
+                
+                particle.style.left = `${rect.left - panelRect.left + 8}px`;
+                particle.style.top = `${rect.top - panelRect.top + 30}px`;
+                
+                document.querySelector('.panel').appendChild(particle);
+                
+                const speed = flow * 0.8;
+                let position = 0;
+                const totalDistance = 650; // Height of gas line
+                
+                const animate = () => {
+                    position += speed;
+                    particle.style.top = `${rect.top - panelRect.top + 30 + position}px`;
+                    
+                    if (position >= totalDistance) {
+                        // Move particle into manifold
+                        const manifold = document.getElementById('main-manifold');
+                        const manifoldRect = manifold.getBoundingClientRect();
+                        
+                        particle.style.top = `${manifoldRect.top - panelRect.top + 12}px`;
+                        
+                        // Animate horizontally in manifold
+                        let horizontalPos = rect.left - panelRect.left + 8;
+                        const centerX = manifoldRect.left - panelRect.left + manifoldRect.width / 2;
+                        
+                        const horizontalAnimate = () => {
+                            if (horizontalPos < centerX) {
+                                horizontalPos += 2;
+                            } else {
+                                horizontalPos -= 2;
+                            }
+                            
+                            particle.style.left = `${horizontalPos}px`;
+                            
+                            if (Math.abs(horizontalPos - centerX) < 5) {
+                                particle.remove();
+                                return;
+                            }
+                            
+                            requestAnimationFrame(horizontalAnimate);
+                        };
+                        
+                        horizontalAnimate();
+                        return;
+                    }
+                    
+                    requestAnimationFrame(animate);
+                };
+                
+                animate();
+            }
+            
+            createPurgeParticle(gas, flow) {
+                if (flow === 0) return;
+                
+                const particle = document.createElement('div');
+                particle.className = 'particle n2';
+                
+                // Start at the purge supply
+                const purgeSupply = document.getElementById(`${gas}-n2-supply`);
+                const rect = purgeSupply.getBoundingClientRect();
+                const panelRect = document.querySelector('.panel').getBoundingClientRect();
+                
+                particle.style.left = `${rect.left - panelRect.left}px`;
+                particle.style.top = `${rect.top - panelRect.top + 20}px`;
+                
+                document.querySelector('.panel').appendChild(particle);
+                
+                const speed = flow * 0.8;
+                let position = 0;
+                const distance = 70; // Distance to main line
+                
+                const animate = () => {
+                    position += speed * 0.5;
+                    particle.style.left = `${rect.left - panelRect.left - position}px`;
+                    
+                    if (position >= distance) {
+                        // Switch to vertical movement in main line
+                        const gasLine = document.getElementById(`${gas}-line`);
+                        const gasRect = gasLine.getBoundingClientRect();
+                        
+                        particle.style.left = `${gasRect.left - panelRect.left + 8}px`;
+                        
+                        let verticalPos = rect.top - panelRect.top + 20;
+                        const targetY = gasRect.top - panelRect.top + 680;
+                        
+                        const verticalAnimate = () => {
+                            verticalPos += speed;
+                            particle.style.top = `${verticalPos}px`;
+                            
+                            if (verticalPos >= targetY) {
+                                // Move into manifold
+                                const manifold = document.getElementById('main-manifold');
+                                const manifoldRect = manifold.getBoundingClientRect();
+                                
+                                particle.style.top = `${manifoldRect.top - panelRect.top + 12}px`;
+                                
+                                // Animate horizontally in manifold
+                                let horizontalPos = gasRect.left - panelRect.left + 8;
+                                const centerX = manifoldRect.left - panelRect.left + manifoldRect.width / 2;
+                                
+                                const horizontalAnimate = () => {
+                                    if (horizontalPos < centerX) {
+                                        horizontalPos += 2;
+                                    } else {
+                                        horizontalPos -= 2;
+                                    }
+                                    
+                                    particle.style.left = `${horizontalPos}px`;
+                                    
+                                    if (Math.abs(horizontalPos - centerX) < 5) {
+                                        particle.remove();
+                                        return;
+                                    }
+                                    
+                                    requestAnimationFrame(horizontalAnimate);
+                                };
+                                
+                                horizontalAnimate();
+                                return;
+                            }
+                            
+                            requestAnimationFrame(verticalAnimate);
+                        };
+                        
+                        verticalAnimate();
+                        return;
+                    }
+                    
+                    requestAnimationFrame(animate);
+                };
+                
+                animate();
+            }
+            
+            startAnimation() {
+                const animate = () => {
+                    // Create particles at random intervals based on flow rate
+                    this.gases.forEach(gas => {
+                        // Main gas flow particles
+                        if (this.state[gas].actualFlow > 0 && Math.random() < 0.08) {
+                            this.createParticle(gas, this.state[gas].actualFlow);
+                        }
+                        
+                        // Purge flow particles for SiH4 and H2
+                        if (gas !== 'n2' && this.state[gas].actualPurgeFlow > 0 && Math.random() < 0.08) {
+                            this.createPurgeParticle(gas, this.state[gas].actualPurgeFlow);
+                        }
+                    });
+                    
+                    this.animationFrame = requestAnimationFrame(animate);
+                };
+                
+                animate();
+            }
+        }
+        
+        // Initialize the gas panel simulation
+        const gasPanel = new GasPanel();
+    </script>
+</body>
+</html>

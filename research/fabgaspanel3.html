@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Semiconductor Fabs I: Gas Panel Simulation - No Magic Pill</title>
+    <link rel="icon" href="../media/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semiconductor Fabs I: Gas Panel Simulation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #00000;
+            color: #fff;
+        }
+        
+        #container {
+            display: flex;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        #canvasContainer {
+            flex: 1;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        canvas {
+            background-color: #0a0a0a;
+            border: 2px solid #444;
+            border-radius: 4px;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        #controls {
+            width: 300px;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .gas-control {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #333;
+            border-radius: 6px;
+            border: 1px solid #444;
+        }
+        
+        .gas-control h3 {
+            margin: 0 0 15px 0;
+            padding: 0;
+            font-size: 18px;
+        }
+        
+        .gas-control.sih4 h3 { color: #ff4444; }
+        .gas-control.n2 h3 { color: #4444ff; }
+        .gas-control.h2 h3 { color: #ff8844; }
+        
+        .control-row {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        label {
+            display: block;
+            font-size: 14px;
+            color: #ccc;
+        }
+        
+        input[type="range"] {
+            width: 120px;
+            margin: 0 10px;
+        }
+        
+        input[type="number"] {
+            width: 60px;
+            padding: 4px;
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 3px;
+        }
+        
+        .value-display {
+            font-weight: bold;
+            color: #4CAF50;
+            min-width: 50px;
+            text-align: right;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #000000;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #000000;
+        }
+        
+        .info {
+            background-color: #333;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+        
+        .info h4 {
+            margin: 0 0 10px 0;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <h1>Semiconductor Gas Panel Simulation</h1>
+
+    <h2>See the main page <a href="fab.html">here</a></h2>
+    
+    <div id="container">
+        <div id="canvasContainer">
+            <canvas id="gasPanel" width="900" height="700"></canvas>
+        </div>
+        
+        <div id="controls">
+            <div class="gas-control sih4">
+                <h3>SiH4 (Silane)</h3>
+                <div class="control-row">
+                    <label>Pressure (psi):</label>
+                    <input type="range" id="sih4Pressure" min="0" max="100" value="50">
+                    <span class="value-display" id="sih4PressureVal">50</span>
+                </div>
+                <div class="control-row">
+                    <label>MFC Flow (sccm):</label>
+                    <input type="number" id="sih4Flow" min="0" max="1000" value="0" step="10">
+                </div>
+            </div>
+            
+            <div class="gas-control n2">
+                <h3>N2 (Nitrogen)</h3>
+                <div class="control-row">
+                    <label>Pressure (psi):</label>
+                    <input type="range" id="n2Pressure" min="0" max="100" value="50">
+                    <span class="value-display" id="n2PressureVal">50</span>
+                </div>
+                <div class="control-row">
+                    <label>MFC Flow (sccm):</label>
+                    <input type="number" id="n2Flow" min="0" max="1000" value="0" step="10">
+                </div>
+            </div>
+            
+            <div class="gas-control h2">
+                <h3>H2 (Hydrogen)</h3>
+                <div class="control-row">
+                    <label>Pressure (psi):</label>
+                    <input type="range" id="h2Pressure" min="0" max="100" value="50">
+                    <span class="value-display" id="h2PressureVal">50</span>
+                </div>
+                <div class="control-row">
+                    <label>MFC Flow (sccm):</label>
+                    <input type="number" id="h2Flow" min="0" max="1000" value="0" step="10">
+                </div>
+            </div>
+            
+            <div class="info">
+                <h4>Instructions:</h4>
+                • Click manual valves to open/close<br>
+                • Click 3-way valves to switch between process gas and N2 purge<br>
+                • Set MFC flow rates to activate MFC and associated valves<br>
+                • Particles animate based on flow rate<br>
+                • Pressure affects particle density
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gasPanel');
+        const ctx = canvas.getContext('2d');
+        
+        // Gas colors
+        const gasColors = {
+            SiH4: '#ff4444',
+            N2: '#4444ff',
+            H2: '#ff8844'
+        };
+        
+        // Component dimensions
+        const compWidth = 60;
+        const compHeight = 40;
+        const pipeWidth = 8;
+        const lineSpacing = 250;
+        
+        // Gas line configuration
+        class GasLine {
+            constructor(name, x, hasThreeWay) {
+                this.name = name;
+                this.x = x;
+                this.hasThreeWay = hasThreeWay;
+                this.components = [];
+                this.particles = [];
+                this.manualValveOpen = true;
+                this.threeWayPosition = 'process'; // 'process' or 'purge'
+                this.mfcFlow = 0;
+                this.pressure = 50;
+                
+                // Initialize components from bottom to top
+                let y = 600;
+                
+                // Manual isolation valve
+                this.components.push({
+                    type: 'manual-valve',
+                    x: x - compWidth/2,
+                    y: y,
+                    width: compWidth,
+                    height: compHeight,
+                    open: true
+                });
+                
+                y -= 70;
+                
+                // Three-way valve (for SiH4 and H2)
+                if (hasThreeWay) {
+                    this.components.push({
+                        type: 'three-way-valve',
+                        x: x - compWidth/2,
+                        y: y,
+                        width: compWidth,
+                        height: compHeight,
+                        position: 'process'
+                    });
+                    y -= 70;
+                }
+                
+                // Pressure regulator
+                this.components.push({
+                    type: 'pressure-regulator',
+                    x: x - compWidth/2,
+                    y: y,
+                    width: compWidth,
+                    height: compHeight
+                });
+                
+                y -= 70;
+                
+                // Valve before MFC
+                this.components.push({
+                    type: 'valve',
+                    x: x - compWidth/2,
+                    y: y,
+                    width: compWidth,
+                    height: compHeight,
+                    open: false,
+                    mfcValve: true
+                });
+                
+                y -= 70;
+                
+                // MFC
+                this.components.push({
+                    type: 'mfc',
+                    x: x - compWidth/2,
+                    y: y,
+                    width: compWidth,
+                    height: compHeight,
+                    flow: 0
+                });
+                
+                y -= 70;
+                
+                // Valve after MFC
+                this.components.push({
+                    type: 'valve',
+                    x: x - compWidth/2,
+                    y: y,
+                    width: compWidth,
+                    height: compHeight,
+                    open: false,
+                    mfcValve: true
+                });
+            }
+            
+            updateMFC(flow) {
+                this.mfcFlow = flow;
+                // Find MFC and associated valves
+                this.components.forEach(comp => {
+                    if (comp.type === 'mfc') {
+                        comp.flow = flow;
+                    } else if (comp.type === 'valve' && comp.mfcValve) {
+                        comp.open = flow > 0;
+                    }
+                });
+            }
+            
+            isFlowing() {
+                if (!this.manualValveOpen) return false;
+                if (this.mfcFlow === 0) return false;
+                
+                // Check if all valves are open
+                let allValvesOpen = true;
+                this.components.forEach(comp => {
+                    if (comp.type === 'valve' && !comp.open) {
+                        allValvesOpen = false;
+                    }
+                });
+                
+                return allValvesOpen;
+            }
+            
+            getActiveGas() {
+                if (this.hasThreeWay && this.threeWayPosition === 'purge') {
+                    return 'N2';
+                }
+                return this.name;
+            }
+        }
+        
+        // Initialize gas lines
+        const gasLines = {
+            SiH4: new GasLine('SiH4', 200, true),
+            N2: new GasLine('N2', 450, false),
+            H2: new GasLine('H2', 700, true)
+        };
+        
+        // Particle system
+        class Particle {
+            constructor(x, y, gas, speed, isPurge = false, targetLine = null) {
+                this.x = x;
+                this.y = y;
+                this.gas = gas;
+                this.speed = speed;
+                this.size = 3;
+                this.targetY = 100; // Manifold position
+                this.isPurge = isPurge;
+                this.targetLine = targetLine;
+                this.mergeY = 550; // Y position where purge particles merge into main line
+            }
+            
+            update() {
+                if (this.isPurge) {
+                    // For purge particles, move up to merge point, then horizontally to main line
+                    if (this.y > this.mergeY) {
+                        this.y -= this.speed;
+                    } else if (Math.abs(this.x - this.targetLine) > 5) {
+                        // Move horizontally towards the main line
+                        if (this.x < this.targetLine) {
+                            this.x += this.speed * 2;
+                        } else {
+                            this.x -= this.speed * 2;
+                        }
+                    } else {
+                        // Once merged, continue up the main line
+                        this.x = this.targetLine; // Snap to main line
+                        this.y -= this.speed;
+                        
+                        // Once at manifold, move horizontally to the left
+                        if (this.y <= this.targetY) {
+                            this.y = this.targetY;
+                            this.x -= this.speed * 2;
+                        }
+                    }
+                } else {
+                    // Normal particles behavior
+                    if (this.y > this.targetY) {
+                        this.y -= this.speed;
+                        //this.x += (Math.random() - 0.5) * 0.5;
+                    } else {
+                        this.y = this.targetY;
+                        this.x -= this.speed * 2;
+                    }
+                }
+            }
+            
+            draw() {
+                ctx.fillStyle = gasColors[this.gas];
+                ctx.globalAlpha = 0.8;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+        
+        // Drawing functions
+        function drawComponent(comp) {
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 2;
+            ctx.fillStyle = '#444';
+            
+            switch(comp.type) {
+                case 'manual-valve':
+                    ctx.fillStyle = comp.open ? '#4CAF50' : '#f44336';
+                    ctx.fillRect(comp.x, comp.y, comp.width, comp.height);
+                    ctx.strokeRect(comp.x, comp.y, comp.width, comp.height);
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('MV', comp.x + comp.width/2, comp.y + comp.height/2 + 4);
+                    break;
+                    
+                case 'three-way-valve':
+                    ctx.fillStyle = '#666';
+                    ctx.fillRect(comp.x, comp.y, comp.width, comp.height);
+                    ctx.strokeRect(comp.x, comp.y, comp.width, comp.height);
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('3WV', comp.x + comp.width/2, comp.y + comp.height/2 + 4);
+                    
+                    // Draw indicator
+                    ctx.fillStyle = comp.position === 'process' ? '#4CAF50' : '#2196F3';
+                    ctx.fillRect(comp.x + 5, comp.y + 5, 10, 10);
+                    break;
+                    
+                case 'pressure-regulator':
+                    ctx.fillStyle = '#555';
+                    ctx.fillRect(comp.x, comp.y, comp.width, comp.height);
+                    ctx.strokeRect(comp.x, comp.y, comp.width, comp.height);
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('PR', comp.x + comp.width/2, comp.y + comp.height/2 + 4);
+                    break;
+                    
+                case 'valve':
+                    ctx.fillStyle = comp.open ? '#4CAF50' : '#666';
+                    ctx.fillRect(comp.x, comp.y, comp.width, comp.height);
+                    ctx.strokeRect(comp.x, comp.y, comp.width, comp.height);
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('V', comp.x + comp.width/2, comp.y + comp.height/2 + 4);
+                    break;
+                    
+                case 'mfc':
+                    ctx.fillStyle = comp.flow > 0 ? '#2196F3' : '#555';
+                    ctx.fillRect(comp.x, comp.y, comp.width, comp.height);
+                    ctx.strokeRect(comp.x, comp.y, comp.width, comp.height);
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('MFC', comp.x + comp.width/2, comp.y + comp.height/2 + 4);
+                    break;
+            }
+        }
+        
+        function drawPipes() {
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = pipeWidth;
+            
+            // Draw vertical pipes for each gas line
+            Object.values(gasLines).forEach(line => {
+                ctx.beginPath();
+                ctx.moveTo(line.x, 650);
+                ctx.lineTo(line.x, 100);
+                ctx.stroke();
+            });
+            
+            // Draw horizontal manifold (extended to the left)
+            ctx.beginPath();
+            ctx.moveTo(50, 100);
+            ctx.lineTo(750, 100);
+            ctx.stroke();
+            
+            // Draw arrow indicating flow direction
+            ctx.strokeStyle = '#888';
+            ctx.beginPath();
+            ctx.moveTo(100, 95);
+            ctx.lineTo(80, 100);
+            ctx.lineTo(100, 105);
+            ctx.stroke();
+            
+            // Draw separate N2 purge lines (not connected to main N2 line)
+            ctx.strokeStyle = '#445';
+            ctx.lineWidth = pipeWidth - 2;
+            
+            // Independent N2 purge line to SiH4 3WV
+            if (gasLines.SiH4.hasThreeWay) {
+                ctx.beginPath();
+                ctx.moveTo(300, 650); // Start from bottom
+                ctx.lineTo(300, 550); // Go up to middle of 3WV
+                ctx.lineTo(230, 550); // Connect to middle of 3WV component
+                ctx.stroke();
+                
+                // N2 label for purge line
+                ctx.fillStyle = gasColors.N2;
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('N2', 300, 670);
+            }
+            
+            // Independent N2 purge line to H2 3WV
+            if (gasLines.H2.hasThreeWay) {
+                ctx.beginPath();
+                ctx.moveTo(600, 650); // Start from bottom
+                ctx.lineTo(600, 550); // Go up to middle of 3WV
+                ctx.lineTo(670, 550); // Connect to middle of 3WV component
+                ctx.stroke();
+                
+                // N2 label for purge line
+                ctx.fillStyle = gasColors.N2;
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('N2', 600, 670);
+            }
+        }
+        
+        function drawLabels() {
+            ctx.fillStyle = '#ccc';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            
+            ctx.fillStyle = gasColors.SiH4;
+            ctx.fillText('SiH4', 200, 680);
+            
+            ctx.fillStyle = gasColors.N2;
+            ctx.fillText('N2', 450, 680);
+            
+            ctx.fillStyle = gasColors.H2;
+            ctx.fillText('H2', 700, 680);
+            
+            ctx.fillStyle = '#ccc';
+            ctx.fillText('Manifold', 450, 80);
+            
+            // Add "to chamber" label
+            ctx.fillStyle = '#4CAF50';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('To Chamber →', 60, 120);
+        }
+        
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw pipes first
+            drawPipes();
+            
+            // Draw components
+            Object.values(gasLines).forEach(line => {
+                line.components.forEach(comp => drawComponent(comp));
+            });
+            
+            // Update and draw particles
+            Object.values(gasLines).forEach(line => {
+                // Generate new particles based on flow rate
+                if (line.isFlowing() && Math.random() < line.mfcFlow / 1000) {
+                    const gas = line.getActiveGas();
+                    const particleCount = Math.ceil(line.pressure / 20);
+                    
+                    // Determine particle spawn location
+                    let spawnX = line.x;
+                    let spawnY = 600;
+                    
+                    // If using N2 purge, spawn from the N2 purge line
+                    if (line.hasThreeWay && line.threeWayPosition === 'purge') {
+                        if (line.name === 'SiH4') {
+                            spawnX = 300; // N2 purge line for SiH4
+                        } else if (line.name === 'H2') {
+                            spawnX = 600; // N2 purge line for H2
+                        }
+                        spawnY = 600;
+                    }
+                    
+                    for (let i = 0; i < particleCount; i++) {
+                        const isPurge = line.hasThreeWay && line.threeWayPosition === 'purge';
+                        line.particles.push(new Particle(
+                            spawnX,
+                            spawnY,
+                            gas,
+                            line.mfcFlow / 100,
+                            isPurge,
+                            line.x // Target main line x position
+                        ));
+                    }
+                }
+                
+                // Update particles
+                line.particles = line.particles.filter(particle => {
+                    particle.update();
+                    particle.draw();
+                    return particle.x > -50 && particle.y > 0; // Allow particles to go slightly off-screen left
+                });
+            });
+            
+            // Draw labels
+            drawLabels();
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // Event handlers
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            Object.values(gasLines).forEach(line => {
+                line.components.forEach(comp => {
+                    if (x >= comp.x && x <= comp.x + comp.width &&
+                        y >= comp.y && y <= comp.y + comp.height) {
+                        
+                        if (comp.type === 'manual-valve') {
+                            comp.open = !comp.open;
+                            line.manualValveOpen = comp.open;
+                        } else if (comp.type === 'three-way-valve') {
+                            comp.position = comp.position === 'process' ? 'purge' : 'process';
+                            line.threeWayPosition = comp.position;
+                        }
+                    }
+                });
+            });
+        });
+        
+        // Control panel event listeners
+        document.getElementById('sih4Pressure').addEventListener('input', (e) => {
+            gasLines.SiH4.pressure = e.target.value;
+            document.getElementById('sih4PressureVal').textContent = e.target.value;
+        });
+        
+        document.getElementById('n2Pressure').addEventListener('input', (e) => {
+            gasLines.N2.pressure = e.target.value;
+            document.getElementById('n2PressureVal').textContent = e.target.value;
+        });
+        
+        document.getElementById('h2Pressure').addEventListener('input', (e) => {
+            gasLines.H2.pressure = e.target.value;
+            document.getElementById('h2PressureVal').textContent = e.target.value;
+        });
+        
+        document.getElementById('sih4Flow').addEventListener('input', (e) => {
+            gasLines.SiH4.updateMFC(parseInt(e.target.value));
+        });
+        
+        document.getElementById('n2Flow').addEventListener('input', (e) => {
+            gasLines.N2.updateMFC(parseInt(e.target.value));
+        });
+        
+        document.getElementById('h2Flow').addEventListener('input', (e) => {
+            gasLines.H2.updateMFC(parseInt(e.target.value));
+        });
+        
+        // Start animation
+        animate();
+    </script>
+</body>
+</html>
