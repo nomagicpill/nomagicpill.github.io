@@ -164,7 +164,7 @@ recipes
 </figcaption>
 
 <p>
-  Jokes aside, there is some amount of direction from the head honchos on balancing out cost considerations with device performance depending on the size of the company's coffers, the (potential) demand of the product, and the raw expected value of the proposed flow. Does the flow really need that one step that requires a brand new one-of-a-kind (OAK) tool in the fab, or can they figure out another way to achieve the same results? Do they really need to use the oh-so-expensive, but incredibly reliable and proven, nitrous oxide (N<sub>2</sub>O) as a primary gas when growing gate oxides, or can they find a way to make an N<sub>2</sub>-O<sub>2</sub> chemistry work, despite the literature saying it is worse in almost all ways? Do they really need all that helium to help cool the wafer faster, or can they make do with N<sub>2</sub>.
+  Jokes aside, there is some amount of direction from the head honchos on balancing out cost considerations with device performance depending on the size of the company's coffers, the (potential) demand of the product, and the raw expected value of the proposed flow. Does the flow really need that one step that requires a brand new one-of-a-kind (OAK) tool in the fab, or can they figure out another way to achieve the same results? Do they really need to use the oh-so-expensive, but incredibly reliable and proven, nitrous oxide (N<sub>2</sub>O) as a primary gas when growing gate oxides, or can they find a way to make an N<sub>2</sub>-O<sub>2</sub> chemistry work, despite the literature saying it is worse in almost all ways? Do they really need all that helium to help cool the wafer faster, or can they make do with N<sub>2</sub>? The tradeoffs are infinite.
 </p>
 
 <img src="media/fab/chemistries.png">
@@ -250,8 +250,13 @@ recipes
 </p>
 
 <p>
-  How much do tools costs? Millions of dollars, at least. [FINISH]
+  How much do tools costs? At least $1MM (and no, that's not a Dr. Evil meme opportunity, I'm being serious), but it really depends on the tool configuration, which can and will cause it to go higher very quickly. The most expensive machine on the markert is ASML's high-NA EUV machine with an <a href="https://www.cnbc.com/2025/05/22/exclusive-look-at-high-na-asmls-new-400-million-chipmaking-colossus.html">infamous price tag of $400MM</a>. 
 </p>
+
+<img src="media/fab/euv.jpg">
+<figcaption>
+  Decades of research, no competitors, and excellent operation merits $400MM
+</figcaption>
 
 <h3 id="manufacturing">Manufacturing</h3>
 
@@ -289,9 +294,18 @@ recipes
   </li>
 </ul>
 
+<img src="media/fab/emptyfab.png">
+<figcaption>
+  An empty fab before the overhead transportation system is installed
+</figcaption>
+
 <hr>
 
 <h2 id="example">Example Tool: Gate Stack</h2>
+
+<p>
+  High level, you can think of a tool as a miniature kitchen. Some tools perform a singular process (like putting a piece of bread in a toaster) and others perform multiple processes (like baking, adding an ingredient, then baking again).
+</p>
 
 <p>
   We'll look at the <a href="https://ir.appliedmaterials.com/news-releases/news-release-details/tsmc-qualifies-applied-materials-gate-stack-system-its-leading">Applied Materials Centura Gate Stack system</a>, which consists of the following modules:
@@ -299,13 +313,13 @@ recipes
 
 <ol>
   <li>
-    Factory interface: Connects the rest of the factory to tool by allowing a place to load the wafers
+    Factory interface: Connects the rest of the factory to tool by allowing a place to automatically load the wafers into and out of the tool
   </li>
   <li>
-    Loadlocks: Allows transfer of wafers between atmospheric and reduced pressure (vacuum) sides of tool
+    Loadlocks: Allows transfer of wafers between atmospheric and reduced pressure (vacuum) sides of tool. Keeping the "process" side of the tool under vacuum minimizes contamination risk.
   </li>
   <li>
-    Buffer chamber: Allows transfer of wafers between chambers while maintaining vacuum
+    Buffer chamber: Allows transfer of wafers between chambers while maintaining vacuum. This is like an atrium of a house, where there are four different rooms (the process chambers) that are accessible.
   </li>
   <li>
     Process chambers (listed in order of processing):
@@ -343,44 +357,47 @@ recipes
 
 <ol>
   <li>
-    FOUP with wafer (W) inside lands on a loadport. This is dropped off by the AMHS (automatic material handling system).
+    FOUP with wafer inside lands on a loadport. This is dropped off by the AMHS (automatic material handling system).
   </li>
   <li>
     Loadport scans the FOUP to determine the correct number of wafers is present.
   </li>
   <li>
-    W gets aligned based on its notch's position. 
+    Wafer gets aligned based on its notch's position. 
   </li>
   <li>
-    W is placed into loadlock that is at atmospheric pressure (760 Torr) by the factory interface robot (FIR).
+    Wafer is placed into loadlock that is at atmospheric pressure by the factory interface robot.
   </li>
   <li>
     Loadlock pumps down to the same pressure as the buffer chamber to minimize any pressure differential between the two chambers.
   </li>
   <li>
-    Buffer chamber robot (BR) picks up the W from the loadlock after the door separating the buffer chamber and loadlock opens.
+    Buffer chamber robot (BR) picks up the wafer from the loadlock after the door separating the buffer chamber and loadlock opens.
   </li>
   <li>
-    BR places W into Radiance ISSG chamber for processing.
+    BR picks up wafer from loadlock and places it into Radiance ISSG chamber for processing.
   </li>
   <li>
-    BR picks up W from ISSG chamber and places it into DPN chamber for processing.
+    BR picks up wafer from ISSG chamber and places it into DPN chamber for processing.
   </li>
   <li>
-    BR picks up W from DPN chamber and places it into PNA chamber for processing.
+    BR picks up wafer from DPN chamber and places it into PNA chamber for processing.
   </li>
   <li>
-    BR picks up W from PNA chamber and places it in the loadlock for cooling.
+    BR picks up wafer from PNA chamber and places it in the loadlock for cooling.
   </li>
   <li>
-    BR picks up W from Polygen chamber and places it in the loadlock for transfer back to the FOUP.
+    BR picks up wafer from Polygen chamber and places it in the loadlock for transfer back to the FOUP.
   </li>
   <li>
-    FIR picks up W from loadlock and places it back into the FOUP.
+    FIR picks up wafer from loadlock and places it back into the FOUP.
   </li>
 </ol>
 
-[cartoon of centura with arrows and numbers showing paths]
+<img src="media/fab/path.png">
+<figcaption>
+  Remember that the buffer robot has to pick up and drop off the wafer between chambers
+</figcaption>
 
 <hr>
 
@@ -418,7 +435,23 @@ recipes
 <h3 id="firobot">Robot</h3>
 
 <p>
-  The FI robot is responsible for moving wafers to and from places in the FI or loadlocks (e.g., from loadport1 to loadlock1) There are multiple styles of FI robots (ordered by most to least modern):
+  The FI robot is responsible for moving wafers to and from places in the FI or loadlocks (e.g., from loadport1 to loadlock1). Here's a video showing an FI robot picking up and placing to from multiple positions:
+</p>
+
+<iframe width="560" height="315" class="center" src="https://www.youtube.com/embed/9RX4c1ZLf-0"></iframe>
+
+<p>
+  Robots have end effectors (in the form of a fork) that the wafer sits on when being transported. A plunger actuates forward by pneumatic (air) pressure to secure the wafer against the end of the blade to prevent movement while moving. The robot knows a wafer is present based on the plunger's position when activated: if the plunger is too far forward then there's no wafer and if it's too far back there could be a wafer, but it won't know until it plunges.
+</p>
+
+<button type="button" class="collapsible">FI Robot Details</button>
+
+<div class="content">
+
+<script src="media/fab/robot.js"></script>
+
+<p>
+  There are multiple styles of FI robots (ordered by most to least modern):
 </p>
 
 <ul>
@@ -457,43 +490,11 @@ recipes
   </li>
 </ul>
 
-<button type="button" class="collapsible">FI Robot Details</button>
-
-<div class="content">
-
-<script src="media/fab/robot.js"></script>
-
-<p>
-  
-</p>
-
 <hr>
 
 </div>
 
 <p></p>
-
-<p>
-  Here's a video showing an FI robot picking up and placing to from multiple positions:
-</p>
-
-<iframe width="560" height="315" class="center" src="https://www.youtube.com/embed/9RX4c1ZLf-0"></iframe>
-
-<p>
-  Robots have end effectors (in the form of a fork) that the wafer sits on when being transported. A plunger actuates forward by pneumatic (air) pressure to secure the wafer against the end of the blade to prevent movement while moving. The robot knows a wafer is present based on the plunger's position when activated: if the plunger is too far forward then there's no wafer and if it's too far back there could be a wafer, but it won't know until it plunges.
-</p>
-
-[image]
-
-<h3 id="aligner">Aligner</h3>
-
-<p>
-  Wafers have small notches on them to allow for more standardized processing, if desired. Some processes prefer all wafers have their notches aligned before being processed to ensure processing is as identical as possible.
-</p>
-
-<p>
-  The aligner will "chuck" the wafer (apply vacuum to the backside so it doesn't go flying off and shatter into a million pieces), scan the wafer, find the notch, then align based on the desired angle before the robot picks it up to transfer it elsewhere.
-</p>
 
 <h3 id="minienv">Mini Environment</h3>
 
@@ -512,7 +513,7 @@ recipes
 <h3 id="mainframe">Mainframe</h3>
 
 <p>
-  
+  The mainframe consists of the loadlocks (LL) and buffer chamber. 
 </p>
 
 
@@ -520,11 +521,7 @@ recipes
 <h3 id="radiance">Radiance</h3>
 
 <p>
-  <a href="file:///Users/EthanMorse/Documents/nomagicpill.github.io/research/media/fab/US8254767%20Method%20and%20apparatus%20for%20extended%20temperature%20pyrometry.pdf">US 8,254,767 B2 Method and apparatus for extended temperature pyrometry</a> offers a detailed overview of the Radiance chamber and its operation, just in patentese.
-</p>
-
-<p>
-  Here's a good overview of a 200 mm Radiance chamber on a Centura mainframe:
+  <a href="file:///Users/EthanMorse/Documents/nomagicpill.github.io/research/media/fab/US8254767%20Method%20and%20apparatus%20for%20extended%20temperature%20pyrometry.pdf">US 8,254,767 B2 Method and apparatus for extended temperature pyrometry</a> offers a detailed overview of the Radiance chamber and its operation, just in patentese. So instead I'm here to explain it in layman's terms and with a video primer of the 200 mm version, which isn't all that different from the 300 mm version:
 </p>
 
 <iframe width="560" height="315" class="center" src="https://www.youtube.com/embed/u-ZBVmIpV0s"></iframe>
@@ -535,11 +532,11 @@ recipes
 
 <img src="media/fab/radiancelamphead.jpg">
 <figcaption>
-  Yes, it's as heavy as it looks
+  Yes, it's as heavy as it looks, and yes, you don't want to drop it on your foot
 </figcaption>
 
 <p>
-  Each of those holes—all 409 of them—house an individual lamp that shines light to heat the wafer. Notice that holes are perfectly symmetrical across the entire structure, allowing for concentric rings of lamp zones that can be individually controlled by a high-speed computer to maximize wafer temperature uniformity.
+  Each of those holes—all 400+ of them—house an individual lamp that shines light to heat the wafer. Notice that holes are perfectly concentrically symmetrical across the entire structure, allowing for concentric rings of lamp zones that can be individually controlled by a high-speed computer to maximize wafer temperature uniformity in real-time.
 </p>
 
 <p>
@@ -548,20 +545,20 @@ recipes
 
 <img src="media/fab/radiancepyrometer.png" style="width:200px">
 <figcaption>
-  Light enters the sapphire tip and gets transformed into a temperatures signal
+  Light enters the sapphire tip (bottom of picture) and gets transformed into a temperatures signal
 </figcaption>
 
 <p>
-  From here it can use a high-speed controller—also called a temperature controller—to adjust the lamp's output accordingly: more voltage = brighter = hotter, or less voltage = dimmer = colder. 100s of adjustments are made per second to ensure either a) stable ramp rates (when the temperature is increasing to get to the final temperature), or b) stable temperatures during the "soak" step, aptly named because the wafer is soaking in all the heat and gases and steam, like a semiconductor sauna.
+  From here the chamber can use a high-speed controller—also called a temperature controller—to adjust the lamp's output accordingly: more voltage = brighter = hotter, or less voltage = dimmer = colder. 100s of adjustments are made per second to ensure either a) stable ramp rates (when the temperature is increasing to get to the final temperature), or b) stable temperatures during the "soak" step, aptly named because the wafer is soaking in all the heat and gases and steam, like a semiconductor sauna.
 </p>
 
-<img src="media/fab/issgsauna.png" style="width:200px">
+<img src="media/fab/issgsauna.png" style="width:300px">
 <figcaption>
   I know it's slop but at least it's relevant
 </figcaption>
 
 <p>
-  A magnetically-levitated (maglev) rotor spins upwards of 200 rpm to ensure temperature uniformity across the wafer. A rotatable stator is outside of the main chamber body and spins using a motor; with the rotor magnetically coupled to the stator, it can spin quite fast! The wafer rests on a few pieces that are generically called the process kit (see <a href="">U.S. [FINISH]</a>) and spins with the rotor.
+  A magnetically-levitated (maglev) rotor spins at 200+ rpm to ensure temperature uniformity across the wafer. A rotatable stator is outside of the main chamber body and spins using a motor; with the rotor magnetically coupled to the stator, it can spin quite fast! The wafer rests on a few pieces that are generically called the process kit (see <a href="">U.S. [FINISH]</a>) and spins with the rotor. Why does rotation help here? Let's say there's a particular hot or cold spot in the chamber somewhere for whatever reason. It would be detrimental if one part of the wafer experienced said spot for the entire process, so we choose to minimize the time spent seeing that by spreading the love throughout the rest of the wafer by spinning it.
 </p>
 
 <img src="media/fab/maglev.png" style="width:200px">
@@ -570,10 +567,10 @@ recipes
 </figcaption>
 
 <p>
-  Gases vary by the film, but often include N<sub>2</sub>O, H<sub>2</sub>, O<sub>2</sub>, N<sub>2</sub>, or some combination thereof. They are fed in through the <a href="#gaspanel">gas panel</a> and get all nice and mixed together before entering one side of the chamber in a spray-like pattern that's pretty darn close to the width of the wafer. The gases are then "sucked" across the surface of the wafer by the vacuum pump port opposite the gas injection port. It's this combination—a pristine, freshly-cleaned wafer surface, the right ratio of 99.9999%-pure gases, an insane heat that rivals that of hell itself, the low pressure—that generates steam which in turn grows an oxide on the wafer surface. And you'd think that it wouldn't be <i>that</i> uniform right? That we couldn't get nanometer precision with such a barbaric process of heat plus gas plus vacuum? Well you'd be wrong. These bad boys are able to hit a range (maximum oxide thickness minus minimum oxide thickness) of [FINISH] nm wafer-over-wafer, year-over-year with minimal maintenance.
+  Gases vary by the film, but often include N<sub>2</sub>O, H<sub>2</sub>, O<sub>2</sub>, N<sub>2</sub>, or some combination thereof. They are fed in through the <a href="#gaspanel">gas panel</a> and get all nice and mixed together before entering one side of the chamber in a spray-like pattern that's pretty darn close to the width of the wafer. The gases are then "sucked" across the surface of the wafer by the vacuum pump port opposite the gas injection port. It's this combination—a pristine, freshly-cleaned wafer surface, the right ratio of 99.9999%-pure gases, an insane heat that rivals that of hell itself, the low pressure—that generates steam which in turn grows an oxide on the wafer surface. And you'd think that it wouldn't be <i>that</i> uniform right? That we couldn't get nanometer precision with such a barbaric process of heat plus gas plus vacuum? Well you'd be wrong. These bad boys are able to hit a range (maximum oxide thickness minus minimum oxide thickness) of only a few nanometres  wafer-over-wafer, year-over-year with minimal maintenance. Talk about repeatability!
 </p>
 
-<img src="media/fab/gasinjection.png" style="width:200px">
+<img src="media/fab/gasinjection.png">
 <figcaption>
   Gases go weeeeeeeeee across the chamber
 </figcaption>
@@ -602,8 +599,13 @@ recipes
 </blockquote>
 
 <p>
-  A less technical description: the DPN chamber adds nitrogen to the ISSG oxide to increase its dielectric constant, an important factor that improves device performance for various reasons.
+  A less technical description: the DPN chamber adds nitrogen to the ISSG oxide to increase its <a href="https://en.wikipedia.org/wiki/Relative_permittivity">dielectric constant</a>, an important factor that improves device performance for various reasons.
 </p>
+
+<img src="media/fab/dpnplasma.png" style="width:300px">
+<figcaption>
+  Little known fact: N<sub>2</sub> plasmas rejuvenate the skin
+</figcaption>
 
 <p>
   Now, onto the actual operation, which is pretty simple:
@@ -642,10 +644,6 @@ recipes
 </p>
 
 <h3 id="polygen">Polygen</h3>
-
-<p>
-  The Polygen is a variant of the Xgen chamber, a tool that for whatever reason AMAT doesn't advertise on their website. I'll refer to it as Polygen—there are small differences between variants, but the basic principles stay the same.
-</p>
 
 <p>
   The Polygen is a type of CVD (chemical vapor deposition) process. [FINISH]
@@ -699,37 +697,39 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
 
 <ol>
   <li>
-    Manual isolation valve: This valve is operated by humans to isolate the gas panel from the gas supply. It rotates 90 degrees and is able to be locked out by a safety lock to ensure it doesn't get opened unintentionally. Nobody wants a bunch of H<sub>2</sub> floating around while they're working!
+    Manual isolation valve: This valve is operated by humans to isolate the gas panel from the gas supply for safety when working on the tool. It rotates 90 degrees and is able to be locked out by a safety lock to ensure it doesn't get opened unintentionally. Nobody wants a bunch of flammable H<sub>2</sub> floating around while they're working!
   </li>
   <li>
-    Three-way valve: This valve has two inputs and one output. One input is N<sub>2</sub> (or any inert gas, but it's almost always N<sub>2</sub> because of how cheap it is). N<sub>2</sub> acts as a purge gas to remove any residual process gas that's left in the gas line. The other input is the (often toxic) process gas, such as SiH<sub>4</sub> or PH<sub>3</sub>. The valves are pneumatically-controlled and interlocked such that only one input can be active at any given time.
+    Three-way valve: This valve has two inputs and one output. One input is N<sub>2</sub> (or any inert gas, but it's almost always N<sub>2</sub> because of how cheap it is). N<sub>2</sub> acts as a "purge" gas to remove any residual process gas that's left in the gas line. The other input is the (often toxic) process gas, such as SiH<sub>4</sub> or PH<sub>3</sub>. The valves are opened and closed using air (pneumatics) and configured such that at most one gas can be flowing at a time.
   </li>
   <li>
-    Regulator: The regulator controls the pressure that the remaining components downstream (or closer to the chamber) see. For example, the supply pressure may be 100 psi, but we want 30 psi at the tool, so the regulator is used to reduce the pressure to the desired level.
+    Regulator: The regulator controls the pressure that the remaining components closer to the chamber see. For example, the supply pressure may be 100 psi, but we want 30 psi at the tool, so the regulator is used to reduce the pressure to the desired level.
   </li>
   <li>
-    Transducer: Shows the line pressure just past the regulator.
+    Transducer: Shows the pressure just past the regulator on a digital display for the operator to adjust.
   </li>
   <li>
-    Filter: The filter prevents any particles (down to a certain size) in the gas line from making it past the other components.
+    Filter: The filter prevents any particles (above a certain size) in the gas line from making it to the chamber.
   </li>
   <li>
-    Mass flow controller (MFC): The MFC controls how much gas flows through. The tool gives it a flow setpoint and an internal PID controller maintains the proper flow.
+    Mass flow controller (MFC): The MFC controls how much gas flows through the line. The tool gives it a flow setpoint and a PID controller inside the MFC maintains the proper flow.
   </li>
   <li>
-    MFC isolation valves: Two pneumatic valves on either side of the MFC are open when the MFC is flowing and closed when the MFC is stopped.
+    MFC isolation valves: Two pneumatic valves on either side of the MFC are open when the MFC is flowing and closed when the MFC is stopped. These are secondary measures to ensure gas isn't flowing in case something is leaking.
   </li>
 </ol>
 
-[FINISH ADD SIMULATION HERE]
+<h3 class="center">
+  Simulation: <a href="fabgaspanel4.html">Click here to play around with a gas panel!</a>
+</h3>
 
 <img src="media/fab/gasstick.jpg">
 <figcaption>
-  Example; now imagine 15 of these side-by-size and having to replace a single component (<a href="https://www.glewengineering.com/high-purity-gas-panels-part-6-valves-as-flow-control/">source</a>)
+  Example; now imagine 15 of these side-by-side and having to replace a single component (<a href="https://www.glewengineering.com/high-purity-gas-panels-part-6-valves-as-flow-control/">source</a>)
 </figcaption>
 
 <p>
-  Each stick then connects to a gas manifold, or section of pipe that combines all the gases from their individual lines into one common line that feeds the chamber. A final valve on the manifold line allows or blocks flow of gas into the chamber. Depending on the gases and reactivities, there may be sub manifolds. For example, ISSG gas panels may be split up into two manifolds, fuels (gases containing hydrogen) and oxidizers (gases containing oxygen or hydrogen), that meet and mix shortly before they reach the chamber.
+  Each stick then connects to a gas manifold, or section of pipe that combines all the gases from their individual lines into one common line that feeds directly into the chamber. Depending on the gases and reactivities, there may be sub manifolds. For example, ISSG gas panels may be split up into two manifolds, flammables (gases containing hydrogen) and oxidizers (gases containing oxygen), that meet and mix shortly before they reach the chamber.
 </p>
 
 <p>
@@ -781,7 +781,7 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
   </li>
 </ol>
 
-<button type="button" class="collapsible">Connections</button>
+<button type="button" class="collapsible">Types of Gas Panel Connections</button>
 
 <div class="content">
 
@@ -817,12 +817,12 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
 <h2 id="safety">Safety</h2>
 
 <p>
-  Safety is paramount in fabs. Even if they're not featured in <a href="https://www.science.org/content/blog-post/things-i-won-t-work-dioxygen-difluoride">Things I Won't Work With</a>, some of the nastiest shit known to man is cooped up within fab walls, from <a href="https://en.wikipedia.org/wiki/Arsine#Microelectronics_applications">arsine</a> to <a href="https://en.wikipedia.org/wiki/Phosphine">phosphine [FINISH</a>, <a href="">hydrofluoric acid</a>. The list goes on. Basically stay the heck away from your neighborhood fab if you know what's good for you.
+  Safety is paramount in fabs. Even if they're not featured in <a href="https://www.science.org/content/blog-post/things-i-won-t-work-dioxygen-difluoride">Things I Won't Work With</a>, some of the nastiest shit known to man is cooped up within fab walls, from <a href="https://en.wikipedia.org/wiki/Arsine#Microelectronics_applications">arsine</a> to <a href="https://en.wikipedia.org/wiki/Phosphine">phosphine</a> to bromine to <a href="https://en.wikipedia.org/wiki/Hydrofluoric_acid#Health_and_safety">hydrofluoric acid</a>. The list goes on. Basically stay the heck away from your local neighborhood fab if you know what's good for you.
 </p>
 
-<img src="media/fab/ines.png">
+<img src="media/fab/dodgeball.png">
 <figcaption>
-  Arsine, phosphine, all kinds of ines!!!!
+  Fabs got arsine, phosphine, bromine and <a href="https://www.youtube.com/watch?v=h_uqIHKm1w0">all kinds of ines</a>!!!!
 </figcaption>
 
 <p>
@@ -832,7 +832,7 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
 <h3 id="interlocks">Interlocks</h3>
 
 <p>
-  Interlocks prevent unsafe operations from happening within one part of the tool. All interlocks must be satisfied in order for the part to operate. Interlocks are often configured at the hardware level to ensure something physical is activated or deactivated instead of relying on software to do it. The hardware is also designed such that, where possible, the interlock is automatically satisfied or dis
+  Interlocks prevent unsafe operations from happening within one part of the tool. All interlocks must be satisfied in order for the tool to operate with fully capabilities. Interlocks are often configured at the hardware level to ensure something physical is activated or deactivated instead of relying on software—which could have undiscovered bugs or reliance on something else—to do it. The hardware is also designed such that, where possible, the interlock is automatically satisfied or dissatisfied based on physical conditions, like a button being pressed because of weight or water flowiing through hoses.
 </p>
 
 <p>
@@ -844,10 +844,7 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
     Lid is closed
     <ul>
       <li>
-        
-      </li>
-      <li>
-        
+        Button is depressed if and only if chamber lid is closed
       </li>
     </ul>
   </li>
@@ -855,10 +852,7 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
     Gas panel door is closed
     <ul>
       <li>
-        
-      </li>
-      <li>
-        
+        Button is depressed if and only if chamber lid is closed
       </li>
     </ul>
   </li>
@@ -866,10 +860,7 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
     Cooling water is flowing
     <ul>
       <li>
-        
-      </li>
-      <li>
-        
+        Water flow meter detects if water is flowing and sends electrical signal back to tool.
       </li>
     </ul>
   </li>
@@ -888,7 +879,7 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
     Pressure is below X
     <ul>
       <li>
-        
+        Pressure manometer
       </li>
       <li>
         
@@ -897,7 +888,9 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
   </li>
 </ul>
 
-
+<p>
+  Certain interlocks can be overriden if specific maintenance needs to be done.
+</p>
 
 
 
@@ -916,6 +909,12 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
 <hr>
 
 <h2 id="see_also">See Also</h2>
+
+<ul>
+  <li>
+    <a href="https://christopherbrown.com/2016/07/a-summer-morning-in-the-ruins-of-the-future/">Sunday morning spelunking in the abandoned semiconductor fab</a>
+  </li>
+</ul>
 
 <script>
 var coll = document.getElementsByClassName("collapsible");
