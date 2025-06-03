@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wafer Temperature Control</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .game-container {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00ffff, #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+        }
+        
+        .menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .difficulty-btn {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: #0080ff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 300px;
+        }
+        
+        .difficulty-btn:hover {
+            background: #00a0ff;
+            transform: scale(1.05);
+        }
+        
+        .game-area {
+            display: none;
+        }
+        
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #252525;
+            border-radius: 10px;
+        }
+        
+        .timer {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .setpoint {
+            font-size: 1.3em;
+            color: #00ffff;
+        }
+        
+        .status {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            color: #00ff00;
+        }
+        
+        .status.waiting {
+            color: #ffaa00;
+        }
+        
+        .wafer-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .lamp-zone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .wafer-zone {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .wafer-zone::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.2; }
+            100% { transform: scale(0.8); opacity: 0.5; }
+        }
+        
+        .zone-label {
+            font-size: 1.1em;
+            color: #aaa;
+        }
+        
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .power-slider {
+            width: 150px;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #333;
+            outline: none;
+            border-radius: 5px;
+        }
+        
+        .power-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #00ffff;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        
+        .power-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #00ffff;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        
+        .power-input {
+            width: 60px;
+            padding: 5px;
+            background: #333;
+            border: 1px solid #555;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .back-btn, .reset-btn {
+            padding: 10px 20px;
+            background: #666;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover, .reset-btn:hover {
+            background: #888;
+        }
+        
+        .game-over {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2a2a2a;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+            z-index: 1000;
+        }
+        
+        .game-over h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        
+        .game-over.success h2 {
+            color: #00ff00;
+        }
+        
+        .game-over.failure h2 {
+            color: #ff0000;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="title">Wafer Temperature Control</h1>
+        <p class="subtitle">Simply adjust each lamp's power to reach the temperature!</p>
+        
+        <div class="menu" id="menu">
+            <button class="difficulty-btn" onclick="startGame('easy')">Easy Mode (1 Lamp)</button>
+            <button class="difficulty-btn" onclick="startGame('medium')">Medium Mode (3 Lamps)</button>
+            <button class="difficulty-btn" onclick="startGame('hard')">Hard Mode (5 Lamps)</button>
+        </div>
+        
+        <div class="game-area" id="gameArea">
+            <div class="game-header">
+                <button class="back-btn" onclick="backToMenu()">Back to Menu</button>
+                <div class="timer">Time: <span id="timer">60</span>s</div>
+                <div class="setpoint">Target: <span id="setpoint">---</span>°C</div>
+                <div class="status waiting" id="status">Adjusting...</div>
+            </div>
+            
+            <div class="wafer-container" id="waferContainer"></div>
+        </div>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+    <div class="game-over" id="gameOver">
+        <h2 id="gameOverTitle">Game Over</h2>
+        <p id="gameOverMessage"></p>
+        <button class="reset-btn" onclick="backToMenu()">Play Again</button>
+    </div>
+    
+    <script>
+        let gameState = {
+            difficulty: 'easy',
+            lamps: [],
+            targetTemp: 0,
+            timer: 60,
+            timerInterval: null,
+            successTimer: 0,
+            successInterval: null,
+            animationFrame: null,
+            isRunning: false
+        };
+        
+        const AMBIENT_TEMP = 40;
+        const MAX_TEMP = 1200;
+        const TOLERANCE = 5;
+        const SUCCESS_DURATION = 5;
+        const CROSSTALK_FACTOR = 0.25;
+        const COOLING_RATE = 0.02;
+        const HEATING_RATE = 0.03;
+        
+        const difficultySettings = {
+            easy: { lamps: 1, time: 60 },
+            medium: { lamps: 3, time: 90 },
+            hard: { lamps: 5, time: 120 }
+        };
+        
+        class Lamp {
+            constructor(id) {
+                this.id = id;
+                this.power = 0;
+                this.temperature = AMBIENT_TEMP;
+                this.targetTemperature = AMBIENT_TEMP;
+            }
+            
+            calculateSteadyStateTemp(power, crosstalkContribution = 0) {
+                const baseTempRise = (power / 100) * (MAX_TEMP - AMBIENT_TEMP);
+                const crosstalkTempRise = crosstalkContribution * (MAX_TEMP - AMBIENT_TEMP);
+                return AMBIENT_TEMP + baseTempRise + crosstalkTempRise;
+            }
+            
+            updateTemperature(dt, neighbors) {
+                let crosstalkContribution = 0;
+                
+                neighbors.forEach(neighbor => {
+                    crosstalkContribution += (neighbor.power / 100) * CROSSTALK_FACTOR;
+                });
+                
+                this.targetTemperature = this.calculateSteadyStateTemp(this.power, crosstalkContribution);
+                
+                const diff = this.targetTemperature - this.temperature;
+                const rate = diff > 0 ? HEATING_RATE : COOLING_RATE;
+                
+                this.temperature += diff * rate * dt;
+                this.temperature = Math.max(AMBIENT_TEMP, Math.min(MAX_TEMP, this.temperature));
+            }
+        }
+        
+        function startGame(difficulty) {
+            gameState.difficulty = difficulty;
+            gameState.lamps = [];
+            gameState.targetTemp = Math.floor(Math.random() * (1100 - 800 + 1)) + 800;
+            gameState.timer = difficultySettings[difficulty].time;
+            gameState.successTimer = 0;
+            gameState.isRunning = true;
+            
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'block';
+            document.getElementById('setpoint').textContent = gameState.targetTemp;
+            document.getElementById('timer').textContent = gameState.timer;
+            
+            initializeLamps();
+            startTimer();
+            animate();
+        }
+        
+        function initializeLamps() {
+            const container = document.getElementById('waferContainer');
+            container.innerHTML = '';
+            
+            const numLamps = difficultySettings[gameState.difficulty].lamps;
+            
+            for (let i = 0; i < numLamps; i++) {
+                const lamp = new Lamp(i);
+                gameState.lamps.push(lamp);
+                
+                const lampZone = document.createElement('div');
+                lampZone.className = 'lamp-zone';
+                
+                const waferZone = document.createElement('div');
+                waferZone.className = 'wafer-zone';
+                waferZone.id = `zone-${i}`;
+                waferZone.textContent = `${AMBIENT_TEMP}°C`;
+                
+                const zoneLabel = document.createElement('div');
+                zoneLabel.className = 'zone-label';
+                zoneLabel.textContent = `Zone ${i + 1}`;
+                
+                const controls = document.createElement('div');
+                controls.className = 'controls';
+                
+                const slider = document.createElement('input');
+                slider.type = 'range';
+                slider.className = 'power-slider';
+                slider.min = 0;
+                slider.max = 100;
+                slider.value = 0;
+                slider.id = `slider-${i}`;
+                
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.className = 'power-input';
+                input.min = 0;
+                input.max = 100;
+                input.value = 0;
+                input.id = `input-${i}`;
+                input.placeholder = '0%';
+                
+                slider.addEventListener('input', (e) => updatePower(i, e.target.value));
+                input.addEventListener('input', (e) => updatePower(i, e.target.value));
+                
+                controls.appendChild(slider);
+                controls.appendChild(input);
+                controls.appendChild(document.createTextNode('%'));
+                
+                lampZone.appendChild(waferZone);
+                lampZone.appendChild(zoneLabel);
+                lampZone.appendChild(controls);
+                
+                container.appendChild(lampZone);
+            }
+        }
+        
+        function updatePower(lampId, value) {
+            value = Math.max(0, Math.min(100, parseFloat(value) || 0));
+            gameState.lamps[lampId].power = value;
+            
+            document.getElementById(`slider-${lampId}`).value = value;
+            document.getElementById(`input-${lampId}`).value = value;
+        }
+        
+        function getNeighbors(lampId) {
+            const neighbors = [];
+            if (lampId > 0) neighbors.push(gameState.lamps[lampId - 1]);
+            if (lampId < gameState.lamps.length - 1) neighbors.push(gameState.lamps[lampId + 1]);
+            return neighbors;
+        }
+        
+        function animate() {
+            if (!gameState.isRunning) return;
+            
+            const dt = 0.1;
+            
+            gameState.lamps.forEach((lamp, i) => {
+                const neighbors = getNeighbors(i);
+                lamp.updateTemperature(dt, neighbors);
+                
+                const zone = document.getElementById(`zone-${i}`);
+                zone.textContent = `${Math.round(lamp.temperature)}°C`;
+                
+                const temp = lamp.temperature;
+                const normalizedTemp = (temp - AMBIENT_TEMP) / (MAX_TEMP - AMBIENT_TEMP);
+                
+                let r, g, b;
+                if (normalizedTemp < 0.5) {
+                    r = Math.floor(normalizedTemp * 2 * 255);
+                    g = Math.floor(normalizedTemp * 2 * 100);
+                    b = Math.floor((1 - normalizedTemp * 2) * 255);
+                } else {
+                    r = 255;
+                    g = Math.floor((1 - (normalizedTemp - 0.5) * 2) * 100);
+                    b = 0;
+                }
+                
+                zone.style.background = `rgb(${r}, ${g}, ${b})`;
+                zone.style.boxShadow = `0 0 ${20 + normalizedTemp * 30}px rgba(${r}, ${g}, ${b}, 0.6)`;
+            });
+            
+            checkSuccess();
+            gameState.animationFrame = requestAnimationFrame(animate);
+        }
+        
+        function checkSuccess() {
+            const allInRange = gameState.lamps.every(lamp => 
+                Math.abs(lamp.temperature - gameState.targetTemp) <= TOLERANCE
+            );
+            
+            const status = document.getElementById('status');
+            
+            if (allInRange) {
+                status.textContent = `Stabilizing... ${Math.ceil(SUCCESS_DURATION - gameState.successTimer)}s`;
+                status.className = 'status success';
+                
+                if (!gameState.successInterval) {
+                    gameState.successInterval = setInterval(() => {
+                        gameState.successTimer += 0.1;
+                        if (gameState.successTimer >= SUCCESS_DURATION) {
+                            endGame(true);
+                        }
+                    }, 100);
+                }
+            } else {
+                status.textContent = 'Adjusting...';
+                status.className = 'status waiting';
+                
+                if (gameState.successInterval) {
+                    clearInterval(gameState.successInterval);
+                    gameState.successInterval = null;
+                    gameState.successTimer = 0;
+                }
+            }
+        }
+        
+        function startTimer() {
+            gameState.timerInterval = setInterval(() => {
+                gameState.timer--;
+                document.getElementById('timer').textContent = gameState.timer;
+                
+                if (gameState.timer <= 0) {
+                    endGame(false);
+                }
+            }, 1000);
+        }
+        
+        function endGame(success) {
+            gameState.isRunning = false;
+            
+            if (gameState.timerInterval) clearInterval(gameState.timerInterval);
+            if (gameState.successInterval) clearInterval(gameState.successInterval);
+            if (gameState.animationFrame) cancelAnimationFrame(gameState.animationFrame);
+            
+            const overlay = document.getElementById('overlay');
+            const gameOver = document.getElementById('gameOver');
+            const title = document.getElementById('gameOverTitle');
+            const message = document.getElementById('gameOverMessage');
+            
+            overlay.style.display = 'block';
+            gameOver.style.display = 'block';
+            
+            if (success) {
+                gameOver.className = 'game-over success';
+                title.textContent = 'Success!';
+                message.textContent = `You stabilized all zones at ${gameState.targetTemp}°C! Time remaining: ${gameState.timer}s`;
+            } else {
+                gameOver.className = 'game-over failure';
+                title.textContent = 'Time\'s Up!';
+                message.textContent = `You couldn't stabilize the temperature in time. Target was ${gameState.targetTemp}°C.`;
+            }
+        }
+        
+        function backToMenu() {
+            gameState.isRunning = false;
+            
+            if (gameState.timerInterval) clearInterval(gameState.timerInterval);
+            if (gameState.successInterval) clearInterval(gameState.successInterval);
+            if (gameState.animationFrame) cancelAnimationFrame(gameState.animationFrame);
+            
+            document.getElementById('menu').style.display = 'flex';
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('gameOver').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

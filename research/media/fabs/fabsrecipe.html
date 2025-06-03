@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semiconductor Recipe Simulator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .step {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .step h3 {
+            margin-top: 0;
+            color: #555;
+            text-align: center;
+        }
+        .step label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #666;
+            font-size: 14px;
+        }
+        .step input, .step select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #startBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #startBtn:hover:not(:disabled) {
+            background-color: #45a049;
+        }
+        #resetBtn {
+            background-color: #f44336;
+            color: white;
+        }
+        #resetBtn:hover {
+            background-color: #da190b;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #chartContainer {
+            position: relative;
+            height: 400px;
+            margin-top: 30px;
+        }
+        .legend {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .legend span {
+            margin: 0 15px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+        }
+        .temp-legend { background-color: #ff6384; }
+        .n2-legend { background-color: #36a2eb; }
+        .pressure-legend { background-color: #4bc0c0; }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .endpoint-value {
+            margin-top: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Semiconductor Recipe Simulator</h1>
+        
+        <div class="steps-container">
+            <div class="step" id="step1">
+                <h3>Step 1</h3>
+                <label>Temperature (°C)</label>
+                <input type="number" id="temp1" min="800" max="1100" value="900">
+                
+                <label>Ramp Rate (°C/s)</label>
+                <input type="number" id="ramp1" min="30" max="80" value="50">
+                
+                <label>N2 Flow (SLM)</label>
+                <input type="number" id="n2_1" min="5" max="30" value="15">
+                
+                <label>Pressure (Torr)</label>
+                <input type="number" id="pressure1" min="10" max="780" value="100">
+                
+                <label>Endpoint</label>
+                <select id="endpoint1" onchange="updateEndpointInput(1)">
+                    <option value="time">Time (sec)</option>
+                    <option value="tempAbove">Temperature Above X</option>
+                    <option value="tempBelow">Temperature Below X</option>
+                </select>
+                <input type="number" id="endpointValue1" class="endpoint-value" value="30">
+                <div id="error1" class="error"></div>
+            </div>
+            
+            <div class="step" id="step2">
+                <h3>Step 2</h3>
+                <label>Temperature (°C)</label>
+                <input type="number" id="temp2" min="800" max="1100" value="1000">
+                
+                <label>Ramp Rate (°C/s)</label>
+                <input type="number" id="ramp2" min="30" max="80" value="40">
+                
+                <label>N2 Flow (SLM)</label>
+                <input type="number" id="n2_2" min="5" max="30" value="20">
+                
+                <label>Pressure (Torr)</label>
+                <input type="number" id="pressure2" min="10" max="780" value="200">
+                
+                <label>Endpoint</label>
+                <select id="endpoint2" onchange="updateEndpointInput(2)">
+                    <option value="time">Time (sec)</option>
+                    <option value="tempAbove">Temperature Above X</option>
+                    <option value="tempBelow">Temperature Below X</option>
+                </select>
+                <input type="number" id="endpointValue2" class="endpoint-value" value="60">
+                <div id="error2" class="error"></div>
+            </div>
+            
+            <div class="step" id="step3">
+                <h3>Step 3</h3>
+                <label>Temperature (°C)</label>
+                <input type="number" id="temp3" min="800" max="1100" value="1050">
+                
+                <label>Ramp Rate (°C/s)</label>
+                <input type="number" id="ramp3" min="30" max="80" value="35">
+                
+                <label>N2 Flow (SLM)</label>
+                <input type="number" id="n2_3" min="5" max="30" value="25">
+                
+                <label>Pressure (Torr)</label>
+                <input type="number" id="pressure3" min="10" max="780" value="300">
+                
+                <label>Endpoint</label>
+                <select id="endpoint3" onchange="updateEndpointInput(3)">
+                    <option value="time">Time (sec)</option>
+                    <option value="tempAbove">Temperature Above X</option>
+                    <option value="tempBelow">Temperature Below X</option>
+                </select>
+                <input type="number" id="endpointValue3" class="endpoint-value" value="90">
+                <div id="error3" class="error"></div>
+            </div>
+            
+            <div class="step" id="step4">
+                <h3>Step 4</h3>
+                <label>Temperature (°C)</label>
+                <input type="number" id="temp4" min="800" max="1100" value="950">
+                
+                <label>Ramp Rate (°C/s)</label>
+                <input type="number" id="ramp4" min="30" max="80" value="60">
+                
+                <label>N2 Flow (SLM)</label>
+                <input type="number" id="n2_4" min="5" max="30" value="15">
+                
+                <label>Pressure (Torr)</label>
+                <input type="number" id="pressure4" min="10" max="780" value="150">
+                
+                <label>Endpoint</label>
+                <select id="endpoint4" onchange="updateEndpointInput(4)">
+                    <option value="time">Time (sec)</option>
+                    <option value="tempAbove">Temperature Above X</option>
+                    <option value="tempBelow">Temperature Below X</option>
+                </select>
+                <input type="number" id="endpointValue4" class="endpoint-value" value="45">
+                <div id="error4" class="error"></div>
+            </div>
+            
+            <div class="step" id="step5">
+                <h3>Step 5 (Ramp Down)</h3>
+                <label>Temperature (°C) - Target: 0</label>
+                <input type="number" id="temp5" value="0" disabled>
+                
+                <label>Ramp Rate (°C/s)</label>
+                <input type="number" id="ramp5" min="30" max="80" value="70">
+                
+                <label>N2 Flow (SLM) - Target: 0</label>
+                <input type="number" id="n2_5" value="0" disabled>
+                
+                <label>Pressure (Torr) - Target: 0</label>
+                <input type="number" id="pressure5" value="0" disabled>
+                
+                <label>Endpoint</label>
+                <select id="endpoint5" onchange="updateEndpointInput(5)">
+                    <option value="tempBelow">Temperature Below X</option>
+                </select>
+                <input type="number" id="endpointValue5" class="endpoint-value" value="100" max="600">
+                <div id="error5" class="error"></div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="startBtn" onclick="startSimulation()">Start Recipe</button>
+            <button id="resetBtn" onclick="resetSimulation()">Reset</button>
+        </div>
+        
+        <div id="chartContainer">
+            <canvas id="recipeChart"></canvas>
+        </div>
+        
+        <div class="legend">
+            <span class="temp-legend">Temperature (°C)</span>
+            <span class="n2-legend">N2 Flow (SLM)</span>
+            <span class="pressure-legend">Pressure (Torr)</span>
+        </div>
+    </div>
+
+    <script>
+        let chart;
+        let simulationInterval;
+        let isRunning = false;
+        let currentTime = 0;
+        let currentStep = 1;
+        let currentTemp = 0;
+        let stepStartTime = 0;
+        let stepStartTemp = 0;
+        
+        // Initialize chart
+        const ctx = document.getElementById('recipeChart').getContext('2d');
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Temperature (°C)',
+                        data: [],
+                        borderColor: '#ff6384',
+                        backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                        tension: 0,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'N2 Flow (SLM)',
+                        data: [],
+                        borderColor: '#36a2eb',
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                        tension: 0,
+                        yAxisID: 'y1'
+                    },
+                    {
+                        label: 'Pressure (Torr)',
+                        data: [],
+                        borderColor: '#4bc0c0',
+                        backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                        tension: 0,
+                        yAxisID: 'y2'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Time (seconds)'
+                        }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Temperature (°C)'
+                        },
+                        min: 0,
+                        max: 1200
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'N2 Flow (SLM)'
+                        },
+                        min: 0,
+                        max: 35,
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                    },
+                    y2: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Pressure (Torr)'
+                        },
+                        min: 0,
+                        max: 800,
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                    }
+                }
+            }
+        });
+        
+        function updateEndpointInput(step) {
+            const endpoint = document.getElementById(`endpoint${step}`).value;
+            const input = document.getElementById(`endpointValue${step}`);
+            
+            if (endpoint === 'time') {
+                input.placeholder = 'seconds';
+                input.min = 1;
+                input.max = '';
+            } else {
+                input.placeholder = '°C';
+                validateEndpointTemp(step);
+            }
+        }
+        
+        function validateEndpointTemp(step) {
+            const endpoint = document.getElementById(`endpoint${step}`).value;
+            const value = parseFloat(document.getElementById(`endpointValue${step}`).value);
+            const errorDiv = document.getElementById(`error${step}`);
+            
+            if (endpoint === 'tempAbove' || endpoint === 'tempBelow') {
+                if (step < 5) {
+                    const currentTemp = parseFloat(document.getElementById(`temp${step}`).value);
+                    const nextTemp = step < 4 ? parseFloat(document.getElementById(`temp${step + 1}`).value) : 0;
+                    
+                    if (currentTemp < nextTemp) { // Ramp up
+                        if (endpoint === 'tempAbove' && (value < nextTemp - 5 || value > nextTemp + 5)) {
+                            errorDiv.textContent = `For ramp up, X must be within ±5°C of next step (${nextTemp}°C)`;
+                            return false;
+                        }
+                    } else { // Ramp down
+                        if (endpoint === 'tempBelow' && value >= 600) {
+                            errorDiv.textContent = 'For ramp down, X must be less than 600°C';
+                            return false;
+                        }
+                    }
+                } else { // Step 5
+                    if (value >= 600) {
+                        errorDiv.textContent = 'X must be less than 600°C';
+                        return false;
+                    }
+                }
+            }
+            
+            errorDiv.textContent = '';
+            return true;
+        }
+        
+        function validateAllSteps() {
+            let valid = true;
+            for (let i = 1; i <= 5; i++) {
+                if (!validateEndpointTemp(i)) {
+                    valid = false;
+                }
+            }
+            return valid;
+        }
+        
+        function getStepParameters(step) {
+            if (step === 5) {
+                return {
+                    temp: 0,
+                    ramp: parseFloat(document.getElementById(`ramp5`).value),
+                    n2: 0,
+                    pressure: 0,
+                    endpoint: document.getElementById(`endpoint5`).value,
+                    endpointValue: parseFloat(document.getElementById(`endpointValue5`).value)
+                };
+            }
+            
+            return {
+                temp: parseFloat(document.getElementById(`temp${step}`).value),
+                ramp: parseFloat(document.getElementById(`ramp${step}`).value),
+                n2: parseFloat(document.getElementById(`n2_${step}`).value),
+                pressure: parseFloat(document.getElementById(`pressure${step}`).value),
+                endpoint: document.getElementById(`endpoint${step}`).value,
+                endpointValue: parseFloat(document.getElementById(`endpointValue${step}`).value)
+            };
+        }
+        
+        function checkEndpointReached(params, stepElapsedTime) {
+            switch (params.endpoint) {
+                case 'time':
+                    return stepElapsedTime >= params.endpointValue;
+                case 'tempAbove':
+                    return currentTemp >= params.endpointValue;
+                case 'tempBelow':
+                    return currentTemp <= params.endpointValue;
+            }
+            return false;
+        }
+        
+        function startSimulation() {
+            if (!validateAllSteps()) {
+                alert('Please fix the validation errors before starting');
+                return;
+            }
+            
+            isRunning = true;
+            currentTime = 0;
+            currentStep = 1;
+            currentTemp = 0;
+            stepStartTime = 0;
+            stepStartTemp = 0;
+            
+            document.getElementById('startBtn').disabled = true;
+            
+            // Clear chart data
+            chart.data.labels = [];
+            chart.data.datasets.forEach(dataset => dataset.data = []);
+            
+            // Start simulation loop
+            simulationInterval = setInterval(updateSimulation, 100); // Update every 100ms
+        }
+        
+        function updateSimulation() {
+            currentTime += 0.1; // Increment by 100ms
+            
+            const params = getStepParameters(currentStep);
+            const stepElapsedTime = currentTime - stepStartTime;
+            
+            // Calculate temperature based on ramp
+            const targetTemp = params.temp;
+            const tempDiff = targetTemp - stepStartTemp;
+            const rampTime = Math.abs(tempDiff) / params.ramp;
+            
+            if (stepElapsedTime < rampTime) {
+                // Still ramping
+                if (tempDiff > 0) {
+                    currentTemp = stepStartTemp + params.ramp * stepElapsedTime;
+                } else {
+                    currentTemp = stepStartTemp - params.ramp * stepElapsedTime;
+                }
+            } else {
+                // Reached target temperature
+                currentTemp = targetTemp;
+            }
+            
+            // Add data point
+            chart.data.labels.push(currentTime.toFixed(1));
+            chart.data.datasets[0].data.push(currentTemp);
+            chart.data.datasets[1].data.push(params.n2);
+            chart.data.datasets[2].data.push(params.pressure);
+            
+            // Update chart
+            chart.update('none'); // 'none' animation mode for smooth real-time updates
+            
+            // Check if endpoint reached
+            if (checkEndpointReached(params, stepElapsedTime)) {
+                if (currentStep < 5) {
+                    // Move to next step
+                    currentStep++;
+                    stepStartTime = currentTime;
+                    stepStartTemp = currentTemp;
+                } else {
+                    // Recipe complete
+                    clearInterval(simulationInterval);
+                    isRunning = false;
+                    document.getElementById('startBtn').disabled = false;
+                }
+            }
+        }
+        
+        function resetSimulation() {
+            if (simulationInterval) {
+                clearInterval(simulationInterval);
+            }
+            
+            isRunning = false;
+            currentTime = 0;
+            currentStep = 1;
+            currentTemp = 0;
+            stepStartTime = 0;
+            stepStartTemp = 0;
+            
+            document.getElementById('startBtn').disabled = false;
+            
+            // Clear chart
+            chart.data.labels = [];
+            chart.data.datasets.forEach(dataset => dataset.data = []);
+            chart.update();
+        }
+        
+        // Add input validation listeners
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const min = parseFloat(this.min);
+                const max = parseFloat(this.max);
+                const value = parseFloat(this.value);
+                
+                if (value < min) this.value = min;
+                if (max && value > max) this.value = max;
+                
+                // Validate endpoint temperatures when relevant values change
+                const stepMatch = this.id.match(/(\d+)$/);
+                if (stepMatch) {
+                    validateEndpointTemp(parseInt(stepMatch[1]));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

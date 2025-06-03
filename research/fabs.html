@@ -15,14 +15,7 @@
 - add in more pictures
 - add in more links
 - finish all the [FINISH] sections
-- simulations:
-  - radiance: manually control 1-3-5 lamp zones to get the correct temperature; have to find steady state value
-  - recipe: fixed number of steps (3 total), set all conditions, watch as it traces it out on the screen
-  - buffer robot teaching:
-    - you have to get the wafer perfectly centered inside the pocket, but you don't know the correct position
-    - if you get it drastically wrong, that costs hours and money
-    - points for the better you get it
-- ecids and svids? probs not
+- add summary section
 
 -->
 
@@ -123,7 +116,7 @@
 </p>
 
 <p>
-  Interactive animations are denoted by the large "Click here to [X]!". While rudimentary, they get the job done. These were vibe coded using Claude 4 Opus.
+  Interactive animations are denoted by the large "Click here to [X]!". While rudimentary, they get the job done. These were vibe coded using Claude 4 Opus with extended thinking and a few iterations.
 </p>
 
 
@@ -148,13 +141,11 @@
 </blockquote>
 
 <p>
-  These individual process steps are performed by semiconductor equipment, also called tools or machines. In the same way that a traditional machine shop has a mille, lathe, and bandsaw to perform a variety of operations on a single piece of metal to create a final product, a fab has deposition tools, etch tools, and lithography tools (among many, many others) to perform a variety of operations on a single silicon wafer to create the final chip.
+  These individual process steps are performed by semiconductor equipment, also called tools or machines. In the same way that a traditional machine shop has a mill, lathe, and bandsaw to perform a variety of operations on a single piece of metal to create a final product, a fab has deposition tools, etch tools, and lithography tools (among many, many others) to perform a variety of operations on a single silicon wafer to create the final chip.
 </p>
 
-[FINISH CLEAN UP TRANSITION]
-
 <p>
-  Some tools are quite boxy to help minimize the area used, or the footprint. Some tools are less boxy due to sheer requirements, i.e., the original equipment manufacturer (OEM) could only make it so small area-wise before it lost some functionality or performance. OEMs are incentivized to minimize footprint so companies will buy more of their tools. Large-scale OEMs include Applied Materials (AMAT), Tokyo Electron Limited (TEL), and LAM Research.
+  There are 100s to 1000s of tools in a single fab, making it important to use the available space in an efficient manner. Some tools are quite boxy to help minimize the area used, or the footprint. Some tools are less boxy due to sheer requirements, i.e., the original equipment manufacturer (OEM) could only make it so small area-wise before it lost some functionality or performance. OEMs are incentivized to minimize footprint so companies will buy more of their tools. Large-scale OEMs include Applied Materials (AMAT), Tokyo Electron Limited (TEL), and LAM Research.
 </p>
 
 <p>
@@ -578,7 +569,7 @@
 </ul>
 
 <h1 class="center">
-  <a href="media/fabs/fabsrobot.html">Click here to operate a robot!</a>
+  <a href="media/fabs/fabsrobot.html">Click here to play with a buffer robot!</a>
 </h1>
 
 <p>
@@ -594,7 +585,7 @@
 <iframe width="560" height="315" class="center" src="https://www.youtube.com/embed/u-ZBVmIpV0s"></iframe>
 
 <p>
-  In sum: a bunch of lamps shine light that heats the wafer while another part of the tool measures that temperature and adjusts the lamp's brightness based on the desired temperature. Easy!
+  In sum: a bunch of lamps emit light that heats the wafer while another part of the tool measures that temperature and adjusts the lamp's brightness based on the desired temperature. Easy!
 </p>
 
 <p>
@@ -623,8 +614,8 @@
   From here the chamber can use a high-speed computer—also called a temperature controller—to adjust the lamp's brightness accordingly: more voltage = brighter = hotter, or less voltage = dimmer = colder. 100s of adjustments are made per second to ensure either a) stable ramp rates (when the temperature is increasing to get to the final temperature), or b) stable temperatures during the "soak" step, aptly named because the wafer is soaking in all the heat and gases and steam, like a semiconductor sauna.
 </p>
 
-<h1 class="center">
-  <a href="media/fabs/fabsradiance.html">Click here to stabilize temperatures!</a>
+<h1 class="center" style="font-size:24px">
+  <a href="media/fabs/fabsradiance.html">Click here to play with temperature stabilization!</a>
 </h1>
 
 <img src="media/fabs/issgsauna.png" style="width:300px">
@@ -633,13 +624,8 @@
 </figcaption>
 
 <p>
-  A magnetically-levitated (maglev) rotor spins at 200+ rpm to ensure temperature uniformity across the wafer. A rotatable stator is outside of the main chamber body and spins using a motor; with the rotor magnetically coupled to the stator, it can spin quite fast! The wafer rests on a few pieces that are generically called the process kit (see <a href="">U.S. [FINISH]</a>) and spins with the rotor. Why does rotation help here? Let's say there's a particular hot or cold spot in the chamber somewhere for whatever reason. It would be detrimental if one part of the wafer experienced said spot for the entire process, so we choose to minimize the time spent seeing that by spreading the love throughout the rest of the wafer by spinning it.
+  A magnetically-levitated (maglev) rotor spins at 200+ rpm to ensure temperature uniformity across the wafer. A rotatable stator is outside of the main chamber body and spins using a motor; with the rotor magnetically coupled to the stator, it can spin quite fast! The wafer rests on a few pieces that are generically called the process kit and spins with the rotor. Why does rotation help here? Let's say there's a particular hot or cold spot in the chamber somewhere for whatever reason. It would be detrimental if one part of the wafer experienced said spot for the entire process, so we choose to minimize the time spent seeing that by spreading the love throughout the rest of the wafer by spinning it.
 </p>
-
-<img src="media/fabs/maglev.png" style="width:200px">
-<figcaption>
-  [FINISH]
-</figcaption>
 
 <p>
   Gases vary by the film, but often include N<sub>2</sub>O, H<sub>2</sub>, O<sub>2</sub>, N<sub>2</sub>, or some combination thereof. They are fed in through the <a href="#gaspanel">gas panel</a> and get all nice and mixed together before entering one side of the chamber in a spray-like pattern that's pretty darn close to the width of the wafer. The gases are then "sucked" across the surface of the wafer by the vacuum pump port opposite the gas injection port. It's this combination—a pristine, freshly-cleaned wafer surface, the right ratio of 99.9999%-pure gases, an insane heat that rivals that of hell itself, the low pressure—that generates steam which in turn grows an oxide on the wafer surface. And you'd think that it wouldn't be <i>that</i> uniform right? That we couldn't get nanometer precision with such a barbaric process of heat plus gas plus vacuum? Well you'd be wrong. These bad boys are able to hit a range (maximum oxide thickness minus minimum oxide thickness) of only a few nanometres  wafer-over-wafer, year-over-year with minimal maintenance. Talk about repeatability!
@@ -651,11 +637,7 @@
 </figcaption>
 
 <p>
-  The pressure is controlled by two main components: a vacuum pump and a throttle valve (TV). The pump is on all the time, blinding pumping away at whatever is thrown in its path. The TV adjusts its angle based on the pressure setpoint alone and a simple PID controller built in to the chamber controller. A 100%-open TV means the pressure setpoint is way lower than the actual pressure so it needs to pump quickly, while a 0%-open TV means the setpoint is way higher than actual so it needs to fill up with gas, or vent, quickly.
-</p>
-
-<p>
-  And that's about it for the Radiance chamber. Onto the...
+  The pressure is controlled by two main components: a vacuum pump and a throttle valve (TV). The pump is on all the time, blindly pumping away at whatever is thrown in its path. The TV adjusts its angle based on the pressure setpoint alone and a simple PID controller built in to the chamber controller. A 100%-open TV means the pressure setpoint is way lower than the actual pressure so it needs to pump quickly, while a 0%-open TV means the setpoint is way higher than actual so it needs to fill up with gas, or vent, quickly.
 </p>
 
 <h3 id="dpn">DPN</h3>
@@ -702,7 +684,7 @@
 </ul>
 
 <p>
-  An RF (power) generator applies power to RF coils located above the chamber that strike and maintain a plasma inside the chamber. The RF power drives the N<sub>2</sub> into the oxide. [FINISH IS THIS RIGHT?? OR IS IT N2+]
+  An RF (power) generator applies power to RF coils located above the chamber that strike and maintain a plasma inside the chamber. The RF power then drives the nitrogen into the oxide. We can increase both dose (concentration) and depth of dose (X concentration that is Y deep into oxide) a variety of ways.
 </p>
 
 <button type="button" class="collapsible">Extra: DPN Details</button>
@@ -752,21 +734,33 @@
   </li>
 </ul>
 
-[UPDATE PIC WITH ARROWS]
-
-<img src="media/fabs/polygen.png">
+<img src="media/fabs/polygen.png" style="width:300px">
 <figcaption>
-  If only you could put pizza on the heater and flow in sauce and cheese through the showerhead
+  In theory you could put pizza on the heater and flow in sauce and cheese through the showerhead
 </figcaption>
 
 <p>
   That's pretty much it. Most polysilicon processes exclusively use silane, SiH<sub>4</sub>. Fun fact about silane: it ignites into flames if exposed to air. You can imagine how joyful it is to work on a silane-equipped tool.
 </p>
 
+<p>
+  See also:
+</p>
 
-https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pdf
-
-
+<ul>
+  <li>
+    <a href="https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pdf">US 7,172,792 B2 Method for Forming a High Quality Low Temperature Silicon Nitride Film</a>
+  </li>
+  <li>
+    <a href="https://ppubs.uspto.gov/api/pdf/downloadPdf/6423949?requestToken=eyJzdWIiOiJlODI5ZGY3ZS0xMmMyLTQ1ODQtYjlhZi1hMWNlZThjM2FiNjIiLCJ2ZXIiOiJlMmQzMGZlZS1mMmI4LTQ5YmUtYmFjYi00Y2Y5NTM3Y2VhNWIiLCJleHAiOjB9">US 6,423,949 B1 Multi-zone resistive heater</a>
+  </li>
+  <li>
+    <a href="https://ppubs.uspto.gov/api/pdf/downloadPdf/6646235?requestToken=eyJzdWIiOiJlODI5ZGY3ZS0xMmMyLTQ1ODQtYjlhZi1hMWNlZThjM2FiNjIiLCJ2ZXIiOiJlMmQzMGZlZS1mMmI4LTQ5YmUtYmFjYi00Y2Y5NTM3Y2VhNWIiLCJleHAiOjB9">US 6,646,235 B2 Multi-zone resistive heater</a>
+  </li>
+  <li>
+    <a href="https://ppubs.uspto.gov/api/pdf/downloadPdf/6364949?requestToken=eyJzdWIiOiJlODI5ZGY3ZS0xMmMyLTQ1ODQtYjlhZi1hMWNlZThjM2FiNjIiLCJ2ZXIiOiJhMmIwMWYwZi00NjFiLTRmOGYtYjU5ZS1mNjRkMmVlZjBhMzQiLCJleHAiOjB9">US 6,364,949 B1 300 mm CVD chamber design for metal-organic thin film deposition</a>
+  </li>
+</ul>
 
 <h3 id="gaspanel">Gas Panel</h3>
 
@@ -983,13 +977,13 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
 </figcaption>
 
 <p>
-  Thankfully the OEMs care about safety and design their tools accordingly.
+  Thankfully the OEMs greatly care about safety and design their tools accordingly for those who have to work on them.
 </p>
 
 <h3 id="interlocks">Interlocks</h3>
 
 <p>
-  Interlocks prevent unsafe operations from happening within one part of the tool. All interlocks must be satisfied in order for the tool to operate with fully capabilities. Interlocks are often configured at the hardware level to ensure something physical is activated or deactivated instead of relying on software—which could have undiscovered bugs or reliance on something else—to do it. The hardware is also designed such that, where possible, the interlock is automatically satisfied or dissatisfied based on physical conditions, like a button being pressed because of weight or water flowiing through hoses.
+  Interlocks prevent unsafe operations from happening within one part of the tool. All interlocks must be satisfied in order for the tool to operate with fully capabilities. Interlocks are often configured at the hardware level to ensure something physical is activated or deactivated instead of relying on software—which could have undiscovered bugs or reliance on something else—to do it. The hardware is also designed such that, where possible, the interlock is automatically satisfied or dissatisfied based on physical conditions, like a button being pressed because of weight or water flowing through hoses.
 </p>
 
 <p>
@@ -1035,6 +1029,11 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
   Certain interlocks can be overriden if specific maintenance needs to be done, e.g., the lid-closed buttons can be manually depressed using clamps. Overriding interlocks is either a big no-no event, a big get-permission-before-you-kill-yourself event, or a definitely-look-around-to-see-if-anyone-is-coming event. Risk calculation is left as an exercise to the reader.
 </p>
 
+<img src="media/fabs/interlockboard.png">
+<figcaption>
+  An AMAT interlock board from eBay
+</figcaption>
+
 <p>
   Some interlocks are set at the software level and are impossible to override for the average fab engineer. In other words, you can almost never change that the chamber requires IL1, IL2, ..., ILX; you can only override said interlocks.
 </p>
@@ -1048,7 +1047,7 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
 <h3 id="monitoring">Monitoring</h3>
 
 <p>
-  <a href="">Toxic gas monitoring systems</a> are constantly monitoring for leaks of toxic gases. If a leak is detected, it immediately shuts down the source to prevent more from getting out into the atmosphere. 
+  <a href="https://www.rcsystemsco.com/toxic-and-oxygen-gas-detectors">Toxic gas monitoring systems</a> are constantly monitoring for leaks of toxic gases. If a leak is detected, it immediately shuts down the source to prevent more from getting out into the atmosphere. 
 </p>
 
 <hr>
@@ -1060,7 +1059,7 @@ https://patentimages.storage.googleapis.com/70/ea/8d/d17665bc24b37e/US7172792.pd
     <a href="https://christopherbrown.com/2016/07/a-summer-morning-in-the-ruins-of-the-future/">Sunday morning spelunking in the abandoned semiconductor fab</a>
   </li>
   <li>
-    <a href="">Non Fiction Writing Advice</a>
+    <a href="https://slatestarcodex.com/2016/02/20/writing-advice/">Nonfiction Writing Advice</a>
   </li>
 </ul>
 

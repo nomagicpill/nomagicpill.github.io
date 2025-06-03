@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Teaching Game</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1a1a2e;
+            color: #eee;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-header {
+            margin-bottom: 20px;
+        }
+        .game-title {
+            color: #00ff88;
+            font-size: 24px;
+            margin: 0;
+        }
+        .game-subtitle {
+            color: #888;
+            margin: 5px 0 0 0;
+        }
+        .game-container {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        .canvas-container {
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: #0f0f23;
+        }
+        .controls {
+            background: #16213e;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #333;
+            min-width: 250px;
+        }
+        .control-group {
+            margin-bottom: 15px;
+        }
+        .control-group label {
+            display: block;
+            color: #00ff88;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .control-group input {
+            width: 100%;
+            padding: 8px;
+            background: #0f0f23;
+            border: 1px solid #555;
+            color: #eee;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        .limits {
+            font-size: 12px;
+            color: #888;
+            margin-top: 2px;
+        }
+        .button {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background: #00cc6a;
+        }
+        .button:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+        }
+        .status {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .attempts {
+            color: #ffaa00;
+            font-weight: bold;
+        }
+        .success {
+            color: #00ff88;
+            font-weight: bold;
+        }
+        .failure {
+            color: #ff4444;
+            font-weight: bold;
+        }
+        .game-over {
+            background: #2a1810;
+            border: 2px solid #ff4444;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .new-game {
+            background: #ff4444;
+            color: white;
+        }
+        .new-game:hover {
+            background: #cc3333;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-header">
+        <h1 class="game-title" style="text-align: center">ROBOT TEACHING SIMULATOR</h1>
+        <p class="game-subtitle" style="text-align: center">Position the wafer in the target zone. Precision required!</p>
+        <div style="background: #16213e; padding: 15px; border-radius: 8px; border: 2px solid #333; margin: 10px 0; max-width: 950px;">
+            <h3 style="color: #00ff88; margin: 0 0 10px 0;">Instructions:</h3>
+            <ul style="color: #ccc; margin: 0; padding-left: 20px; line-height: 1.4;">
+                <li>Position the silicon wafer (grey disk) precisely in the center of the red target circle</li>
+                <li>Use <strong>Extension</strong> to move the arm in/out and <strong>Rotation</strong> to pivot left/right</li>
+                <li>Remember: rotation creates an arc motion - changing rotation affects where the wafer ends up!</li>
+                <li>You must get within 5 pixels of the target center to succeed</li>
+                <li>You have 5 attempts before your boss gets impatient</li>
+                <li>The target location changes for each new game, but your input values carry over between attempts</li>
+                <li>Use the attempt history table to track your adjustments</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div class="canvas-container">
+            <canvas id="gameCanvas" width="600" height="500"></canvas>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="extension">Extension (mm)</label>
+                <input type="number" id="extension" min="100" max="500" step="1" value="300">
+                <div class="limits">Range: 100 - 500 mm</div>
+            </div>
+
+            <div class="control-group">
+                <label for="rotation">Rotation (degrees)</label>
+                <input type="number" id="rotation" min="0" max="90" step="0.1" value="0">
+                <div class="limits">Range: 0° to +90°</div>
+            </div>
+
+            <button class="button" id="moveButton" onclick="moveRobot()">MOVE ROBOT</button>
+            <button class="button" id="nextButton" onclick="nextAttempt()" style="display: none;">NEXT ATTEMPT</button>
+            <button class="button new-game" id="newGameButton" onclick="newGame()" style="display: none;">NEW GAME</button>
+
+            <div class="status">
+                <div class="attempts" id="attemptsLeft">Attempts remaining: 5</div>
+                <div id="gameStatus"></div>
+            </div>
+
+            <div class="history-section" id="historySection" style="display: none;">
+                <h3 style="color: #00ff88; margin: 15px 0 10px 0; font-size: 16px;">Attempt History</h3>
+                <table id="historyTable" style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                    <thead>
+                        <tr style="background: #0f0f23; color: #00ff88;">
+                            <th style="border: 1px solid #555; padding: 5px;">#</th>
+                            <th style="border: 1px solid #555; padding: 5px;">Extension</th>
+                            <th style="border: 1px solid #555; padding: 5px;">Rotation</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Game state
+        let currentAttempt = 1;
+        let maxAttempts = 5;
+        let gameOver = false;
+        let hasWon = false;
+        let waferPlaced = false;
+        let attemptHistory = [];
+        let isAnimating = false;
+        let animationProgress = 0;
+        let animationStartExtension = 0;
+        let animationStartRotation = 0;
+        let animationTargetExtension = 0;
+        let animationTargetRotation = 0;
+        
+        // Robot and wafer properties
+        const robotBase = { x: 100, y: 400 };
+        const waferRadius = 25;
+        const targetRadius = 32; // Just slightly larger than wafer
+        let targetCenter = { x: 500, y: 150 }; // Will be randomized
+        
+        // Current robot position
+        let currentExtension = 175;
+        let currentRotation = 0;
+        let startingExtension, startingRotation;
+        
+        function initGame() {
+            // Always start from horizontal (0 degrees) and standard extension
+            startingExtension = 250;
+            startingRotation = 0;
+            
+            currentExtension = startingExtension;
+            currentRotation = startingRotation;
+            
+            // Randomize target location within visible canvas bounds
+            targetCenter.x = 300 + Math.random() * 250; // 300-550 (keep within canvas)
+            targetCenter.y = 100 + Math.random() * 200; // 100-300 (keep within canvas)
+            
+            // Clear attempt history
+            attemptHistory = [];
+            updateHistoryTable();
+            
+            document.getElementById('extension').value = Math.round(currentExtension);
+            document.getElementById('rotation').value = Math.round(currentRotation * 10) / 10;
+            
+            draw();
+        }
+        
+        function updateHistoryTable() {
+            const historySection = document.getElementById('historySection');
+            const historyBody = document.getElementById('historyBody');
+            
+            if (attemptHistory.length === 0) {
+                historySection.style.display = 'none';
+                return;
+            }
+            
+            historySection.style.display = 'block';
+            historyBody.innerHTML = '';
+            
+            attemptHistory.forEach((attempt, index) => {
+                const row = document.createElement('tr');
+                row.style.backgroundColor = index % 2 === 0 ? '#16213e' : '#0f0f23';
+                row.innerHTML = `
+                    <td style="border: 1px solid #555; padding: 5px; text-align: center;">${attempt.number}</td>
+                    <td style="border: 1px solid #555; padding: 5px; text-align: center;">${attempt.extension}</td>
+                    <td style="border: 1px solid #555; padding: 5px; text-align: center;">${attempt.rotation}</td>
+                `;
+                historyBody.appendChild(row);
+            });
+        }
+        
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+        
+        function animateRobotMovement(targetExtension, targetRotation, callback) {
+            isAnimating = true;
+            animationProgress = 0;
+            animationStartExtension = currentExtension;
+            animationStartRotation = currentRotation;
+            animationTargetExtension = targetExtension;
+            animationTargetRotation = targetRotation;
+            
+            const animationDuration = 1500; // 1.5 seconds
+            const startTime = Date.now();
+            
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                animationProgress = Math.min(elapsed / animationDuration, 1);
+                
+                // Apply easing
+                const easedProgress = easeInOutCubic(animationProgress);
+                
+                // Interpolate values
+                currentExtension = animationStartExtension + (animationTargetExtension - animationStartExtension) * easedProgress;
+                currentRotation = animationStartRotation + (animationTargetRotation - animationStartRotation) * easedProgress;
+                
+                draw();
+                
+                if (animationProgress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Animation complete
+                    currentExtension = animationTargetExtension;
+                    currentRotation = animationTargetRotation;
+                    isAnimating = false;
+                    draw();
+                    if (callback) callback();
+                }
+            }
+            
+            animate();
+        }
+        
+        function getWaferPosition() {
+            const radians = (currentRotation * Math.PI) / 180;
+            return {
+                x: robotBase.x + currentExtension * Math.cos(radians),
+                y: robotBase.y - currentExtension * Math.sin(radians)
+            };
+        }
+        
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw target circle
+            ctx.strokeStyle = '#ff4444';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(targetCenter.x, targetCenter.y, targetRadius, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Draw target center crosshair
+            ctx.strokeStyle = '#ff4444';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(targetCenter.x - 10, targetCenter.y);
+            ctx.lineTo(targetCenter.x + 10, targetCenter.y);
+            ctx.moveTo(targetCenter.x, targetCenter.y - 10);
+            ctx.lineTo(targetCenter.x, targetCenter.y + 10);
+            ctx.stroke();
+            
+            // Draw robot base
+            ctx.fillStyle = '#666';
+            ctx.fillRect(robotBase.x - 15, robotBase.y - 15, 30, 30);
+            
+            // Draw robot arm
+            const waferPos = getWaferPosition();
+            ctx.strokeStyle = '#888';
+            ctx.lineWidth = 8;
+            ctx.beginPath();
+            ctx.moveTo(robotBase.x, robotBase.y);
+            ctx.lineTo(waferPos.x, waferPos.y);
+            ctx.stroke();
+            
+            // Draw wafer
+            ctx.fillStyle = '#888';
+            ctx.strokeStyle = '#555';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(waferPos.x, waferPos.y, waferRadius, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Draw wafer pattern (to show rotation)
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 8; i++) {
+                const angle = (i * Math.PI) / 4 + (currentRotation * Math.PI) / 180;
+                const startX = waferPos.x + Math.cos(angle) * 10;
+                const startY = waferPos.y + Math.sin(angle) * 10;
+                const endX = waferPos.x + Math.cos(angle) * 20;
+                const endY = waferPos.y + Math.sin(angle) * 20;
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+            }
+            
+            // Draw labels
+            ctx.fillStyle = '#aaa';
+            ctx.font = '14px Courier New';
+            ctx.fillText('TARGET ZONE', targetCenter.x - 50, targetCenter.y - 50);
+            ctx.fillText('ROBOT BASE', robotBase.x - 40, robotBase.y + 35);
+            
+            // Draw coordinate system
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            // X axis
+            ctx.moveTo(50, 450);
+            ctx.lineTo(550, 450);
+            // Y axis  
+            ctx.moveTo(80, 420);
+            ctx.lineTo(80, 50);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#666';
+            ctx.font = '12px Courier New';
+            ctx.fillText('X (rotation)', 500, 470);
+            ctx.save();
+            ctx.translate(60, 100);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Y (extension)', 0, 0);
+            ctx.restore();
+        }
+        
+        function moveRobot() {
+            if (gameOver || isAnimating) return;
+            
+            const targetExtension = parseFloat(document.getElementById('extension').value);
+            const targetRotation = parseFloat(document.getElementById('rotation').value);
+            
+            // Clamp values
+            const clampedExtension = Math.max(100, Math.min(500, targetExtension));
+            const clampedRotation = Math.max(0, Math.min(90, targetRotation));
+            
+            // Disable controls during animation
+            document.getElementById('moveButton').disabled = true;
+            document.getElementById('extension').disabled = true;
+            document.getElementById('rotation').disabled = true;
+            
+            // Animate robot movement
+            animateRobotMovement(clampedExtension, clampedRotation, () => {
+                // Animation complete callback
+                waferPlaced = true;
+                
+                // Check if wafer is in target
+                const waferPos = getWaferPosition();
+                const distance = Math.sqrt(
+                    Math.pow(waferPos.x - targetCenter.x, 2) + 
+                    Math.pow(waferPos.y - targetCenter.y, 2)
+                );
+                
+                // Record attempt in history
+                attemptHistory.push({
+                    number: currentAttempt,
+                    extension: Math.round(clampedExtension),
+                    rotation: Math.round(clampedRotation * 10) / 10
+                });
+                updateHistoryTable();
+                
+                // Re-enable controls and switch buttons
+                document.getElementById('extension').disabled = false;
+                document.getElementById('rotation').disabled = false;
+                document.getElementById('moveButton').style.display = 'none';
+                document.getElementById('nextButton').style.display = 'block';
+                
+                // Check win condition (within 5 pixels of center)
+                if (distance <= 5) {
+                    hasWon = true;
+                    document.getElementById('gameStatus').innerHTML = '<div class="success">PERFECT PLACEMENT! WELL DONE!</div>';
+                    document.getElementById('nextButton').textContent = 'FINISH SHIFT';
+                }
+            });
+        }
+        
+        function nextAttempt() {
+            if (hasWon) {
+                newGame();
+                return;
+            }
+            
+            currentAttempt++;
+            
+            if (currentAttempt > maxAttempts) {
+                gameOver = true;
+                document.getElementById('gameStatus').innerHTML = '<div class="failure">TOO SLOW! Your boss is not happy...</div>';
+                document.getElementById('nextButton').style.display = 'none';
+                document.getElementById('newGameButton').style.display = 'block';
+                
+                // Show game over message
+                const gameOverDiv = document.createElement('div');
+                gameOverDiv.className = 'game-over';
+                gameOverDiv.innerHTML = '<h2>GAME OVER</h2><p>"Move faster next time! We have production quotas to meet!"</p><p>- Your Boss</p>';
+                document.body.appendChild(gameOverDiv);
+                return;
+            }
+            
+            // Keep current values - don't reset to starting position
+            // Player can build on their previous attempt
+            
+            waferPlaced = false;
+            document.getElementById('attemptsLeft').textContent = `Attempts remaining: ${maxAttempts - currentAttempt + 1}`;
+            document.getElementById('gameStatus').textContent = '';
+            document.getElementById('moveButton').style.display = 'block';
+            document.getElementById('moveButton').disabled = false;
+            document.getElementById('nextButton').style.display = 'none';
+            
+            draw();
+        }
+        
+        function newGame() {
+            // Remove any game over message
+            const gameOverDiv = document.querySelector('.game-over');
+            if (gameOverDiv) {
+                gameOverDiv.remove();
+            }
+            
+            currentAttempt = 1;
+            gameOver = false;
+            hasWon = false;
+            waferPlaced = false;
+            isAnimating = false;
+            
+            document.getElementById('attemptsLeft').textContent = `Attempts remaining: ${maxAttempts}`;
+            document.getElementById('gameStatus').textContent = '';
+            document.getElementById('moveButton').style.display = 'block';
+            document.getElementById('moveButton').disabled = false;
+            document.getElementById('extension').disabled = false;
+            document.getElementById('rotation').disabled = false;
+            document.getElementById('nextButton').style.display = 'none';
+            document.getElementById('newGameButton').style.display = 'none';
+            document.getElementById('nextButton').textContent = 'NEXT ATTEMPT';
+            
+            initGame();
+        }
+        
+        // Initialize the game
+        initGame();
+    </script>
+</body>
+</html>
