@@ -10,24 +10,29 @@
 
 <body>
 
-<!--
-
-- add in more pictures
-- add in more links
-- finish all the [FINISH] sections
-- add summary section
-
--->
-
 <h3 id="home"><a href="../index.html">Home</a></h3>
 
 <h1 id="fab">Semiconductor Fabs I: The Equipment</h1>
 
 <p>
-  An in-depth look at semiconductor processing equipment.
+  In-depth look at semiconductor chip processing equipment.
 </p>
 
 <hr>
+
+<!--
+
+<h2 id="series">Semiconductor Fab Series</h2>
+
+<p>
+  <a href="fabs">Semiconductor Fabs I: The Equipment</a>
+</p>
+
+<p>
+  <a href="fabs">Semiconductor Fabs II: The Operations</a>
+</p>
+
+-->
 
 <h2 id="contents">Contents</h2>
 
@@ -184,7 +189,7 @@
 </figcaption>
 
 <p>
-  Jokes aside, there is some amount of direction from the head honchos on balancing out cost considerations with device performance depending on the size of the company's coffers, the (potential) demand of the product, and the raw expected value of the proposed flow. Does the flow really need that one step that requires a brand new one-of-a-kind (OAK) tool in the fab, or can they figure out another way to achieve the same results? Do they really need to use the oh-so-expensive, but incredibly reliable and proven, nitrous oxide (N<sub>2</sub>O) as a primary gas when growing gate oxides, or can they find a way to make an N<sub>2</sub>-O<sub>2</sub> chemistry work, despite the literature saying it is worse in almost all ways? Do they really need all that helium to help cool the wafer faster, or can they make do with N<sub>2</sub>? The tradeoffs are infinite.
+  Jokes aside, there is some amount of direction from the head honchos on balancing out cost considerations with device performance depending on the size of the company's coffers, the (potential) demand of the product, and the raw expected value of the proposed flow. Does the flow really need that one step that requires a brand new one-of-a-kind (OAK) tool in the fab, or can they figure out another way to achieve the same results? Do they really need to use the oh-so-expensive, but incredibly reliable and proven, [redacted chemistry] when doing [process] or can they find a way to make an [redacted chemistry] work, despite the literature saying it is worse in almost all ways? Do they really need all that helium to help cool the wafer faster, or can they make do with N<sub>2</sub>? The tradeoffs are infinite.
 </p>
 
 <img src="media/fabs/chemistries.png">
@@ -258,6 +263,11 @@
     Similarity: How similar is the tool to the rest of the fleet it will be added to? There is a delicate balance of wanting to ensure wafers are processed as identically as possible and getting newer revisions of the same platform to improve important fab metrics. Intel's <a href="media/fabs/intelcopyexactly.pdf#page=11">Copy EXACTLY!</a> method takes this to an extreme, but not uncalled for, level. (To show how important identicality is to some fabs, I've heard of companies being asked by OEMs if they'd sell back a now-obsolete part for a massive markup in order for the OEM to facilitate making a tool that matched another customer's already-existing fleet.)
   </li>
 </ul>
+
+<img src="media/fabs/copyexactly.jpg">
+<figcaption>
+  What about "<u>Exactly!</u>" did you not understand?
+</figcaption>
 
 <h3 id="purchasing">Purchasing</h3>
 
@@ -556,7 +566,7 @@
 <h4 id="buffer">Buffer</h4>
 
 <p>
-  The buffer serves as the common connection point between the process chambers. There is a robot that has two axes:
+  The buffer serves as the common connection point between the process chambers. There is a robot (seen working in the thumbnail of the <a href="#radiance">Radiance</a> section's initial YouTube video) that has two axes:
 </p>
 
 <ul>
@@ -628,7 +638,7 @@
 </p>
 
 <p>
-  Gases vary by the film, but often include N<sub>2</sub>O, H<sub>2</sub>, O<sub>2</sub>, N<sub>2</sub>, or some combination thereof. They are fed in through the <a href="#gaspanel">gas panel</a> and get all nice and mixed together before entering one side of the chamber in a spray-like pattern that's pretty darn close to the width of the wafer. The gases are then "sucked" across the surface of the wafer by the vacuum pump port opposite the gas injection port. It's this combination—a pristine, freshly-cleaned wafer surface, the right ratio of 99.9999%-pure gases, an insane heat that rivals that of hell itself, the low pressure—that generates steam which in turn grows an oxide on the wafer surface. And you'd think that it wouldn't be <i>that</i> uniform right? That we couldn't get nanometer precision with such a barbaric process of heat plus gas plus vacuum? Well you'd be wrong. These bad boys are able to hit a range (maximum oxide thickness minus minimum oxide thickness) of only a few nanometres  wafer-over-wafer, year-over-year with minimal maintenance. Talk about repeatability!
+  Gases vary by the film, but often include H<sub>2</sub>, O<sub>2</sub>, N<sub>2</sub>, or some combination thereof. They are fed in through the <a href="#gaspanel">gas panel</a> and get all nice and mixed together before entering one side of the chamber in a spray-like pattern that's pretty darn close to the width of the wafer. The gases are then "sucked" across the surface of the wafer by the vacuum pump port opposite the gas injection port. It's this combination—a pristine, freshly-cleaned wafer surface, the right ratio of 99.9999%-pure gases, an insane heat that rivals that of hell itself, the low pressure—that generates steam which in turn grows an oxide on the wafer surface. And you'd think that it wouldn't be <i>that</i> uniform right? That we couldn't get nanometer precision with such a barbaric process of heat plus gas plus vacuum? Well you'd be wrong. These bad boys are able to hit a range (maximum oxide thickness minus minimum oxide thickness) of only a few nanometres  wafer-over-wafer, year-over-year with minimal maintenance. Talk about repeatability!
 </p>
 
 <img src="media/fabs/gasinjection.png">
@@ -639,6 +649,16 @@
 <p>
   The pressure is controlled by two main components: a vacuum pump and a throttle valve (TV). The pump is on all the time, blindly pumping away at whatever is thrown in its path. The TV adjusts its angle based on the pressure setpoint alone and a simple PID controller built in to the chamber controller. A 100%-open TV means the pressure setpoint is way lower than the actual pressure so it needs to pump quickly, while a 0%-open TV means the setpoint is way higher than actual so it needs to fill up with gas, or vent, quickly.
 </p>
+
+<p>
+  See also:
+</p>
+
+<ul>
+  <li>
+    <a href="https://sci-hub.ru/10.1109/RTP.2001.1013750">Exploring ISSG Process Space</a>
+  </li>
+</ul>
 
 <h3 id="dpn">DPN</h3>
 
