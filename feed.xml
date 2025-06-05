@@ -5,7 +5,7 @@
     <link>https://nomagicpill.com</link>
     <description>Thoughts, research, knowledge, and experiences in my life.</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 04 Jun 2025 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 05 Jun 2025 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://nomagicpill.com/feed.xml" rel="self" type="application/rss+xml" />
 
     <!--
@@ -19,6 +19,14 @@
     </item>
 
     -->
+
+    <item>
+      <title>Prominent Pictureless Peopleo</title>
+      <link>https://nomagicpill.com/knowledge/pictureless.html</link>
+      <description>Mysterious people who have few to no pictures on the internet</description>
+      <pubDate>Wed, 04 Jun 2025 00:00:00 GMT</pubDate>
+      <guid>https://nomagicpill.com/knowledge/pictureless.html</guid>
+    </item>
 
     <item>
       <title>San Diego</title>
