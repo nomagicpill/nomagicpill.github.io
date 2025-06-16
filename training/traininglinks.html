@@ -18,6 +18,10 @@
 
 <hr>
 
+<button type="button" class="collapsible">Information About Tags/Categories</button>
+
+<div class="content">
+
 <p>
   I organize by the following tags appended to the end of each entry. Search the page by tag to find specific types of links. As of 19 November 2022, I only use tags for select links.
 </p>
@@ -72,6 +76,8 @@
     <td></td>
   </tr>
 </table>
+
+</div>
 
 <hr>
 
@@ -1065,6 +1071,23 @@
     <a href="https://squatuniversity.com/2018/04/28/how-to-screen-your-low-back-pain/">How to Screen Your Low Back Pain</a>: A few simple tests to see what is causing low back pain. [!injury_prevention]
   </li>
 </ul>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
 
 </body>
 </html>
