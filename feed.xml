@@ -14,11 +14,19 @@
       <title></title>
       <link>https://nomagicpill.com/</link>
       <description></description>
-      <pubDate>00:00:00 GMT</pubDate>
+      <pubDate>day, xx xxx xxxx 00:00:00 GMT</pubDate>
       <guid>https://nomagicpill.com/</guid>
     </item>
 
     -->
+
+    <item>
+      <title>Orlando</title>
+      <link>https://nomagicpill.com/experiences/orlando.html</link>
+      <description>Parties, quality time, and Disney</description>
+      <pubDate>Tue, 01 Jul 2025 00:00:00 GMT</pubDate>
+      <guid>https://nomagicpill.com/experiences/orlando.html</guid>
+    </item>
 
     <item>
       <title>Things I Will Subsidize</title>
