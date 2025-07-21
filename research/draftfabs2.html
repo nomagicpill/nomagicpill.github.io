@@ -14,18 +14,79 @@
 
 <!--
 
-<img src="media//.">
+<img src="media/fabs2/.">
 <figcaption>
 
 </figcaption>
 
 
+
+
+<button type="button" class="collapsible"></button>
+
+<div class="content">
+
+<p>
+  
+</p>
+
+<hr>
+
+</div>
+
+<p></p>
+
+
+
+
+- priority lots
+  - customers can pay; prototype devices; qualifying new tools; hold tool and non-hold tool; starting multiple just in case
+- automate everything!!!!
+- MES (the brain of the fab)
+  - include AMAT videos
+- reference tool selection section in fabs1
+- where to place tools
+
+- manufacturing:
+  - equations
+  - photo tools are constraint
+    - most important tool in the fab!!
+    - https://ieomsociety.org/ieom2011/pdfs/IEOM002.pdf
+  - MES
+  - smart manufacturing
+  - delivery systems
+  - https://en.wikipedia.org/wiki/Scheduling_(production_processes)
+  - job shop scheduling
+
+- layout:
+  - are tools layed out in a specific fashion?
+  - photo tools central to fab?
+    - https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=2703&context=all_theses
+  - metal vs non-metal locations
+  - https://www.sciencedirect.com/science/article/abs/pii/S0360835216300390
+  - if you put all types in one location and location goes down, all types go down
+
+
+- https://www.inficon.com/media/11486/download/FabTime-Cycle-Time-Tutorial-And-Queueing-Formulas.pdf?v=1&inline=true&language=en
+- https://semiengineering.com/battling-fab-cycle-times/
 -->
 
 <h1 id="fabs2">Semiconductor Fabs II: The Operation</h1>
 
 <p>
+  In-depth look at semiconductor fab operations.
+</p>
 
+<hr>
+
+<h2 id="series">Fab Series</h2>
+
+<p>
+  <a href="fabs.html">Semiconductor Fabs I: The Equipment</a>
+</p>
+
+<p>
+  <a href="fabs2.html">Semiconductor Fabs II: The Equipment</a>
 </p>
 
 <hr>
@@ -34,7 +95,22 @@
 
 <ul>
   <li>
-
+    <a href="#preface">Preface</a>
+  </li>
+  <li>
+    <a href="#context">Context</a>
+  </li>
+  <li>
+    <a href="#overview">What Do Fabs Want? Chips! When Do They Want Them? Now!</a>
+  </li>
+  <li>
+    <a href="#terminology">Terminology, Also Known as Fabspeak</a>
+  </li>
+  <li>
+    <a href="#planning">Planning to Fill the Fab</a>
+  </li>
+  <li>
+    <a href="#modeling">Modeling a Fab's Throughput Capabilities</a>
   </li>
   <li>
     <a href="#see_also">See Also</a>
@@ -43,7 +119,157 @@
 
 <hr>
 
-<h2 id=""></h2>
+<h2 id="preface">Preface</h2>
+
+<p>
+  I tried to include as many links as possible to allow the reader to go down rabbit holes as they see fit.
+</p>
+
+<p>
+  I tried to keep info basic enough for the skimmers/laypeople to enjoy while still adding more technical details located at the end of each section in the collapsible element. As you'll see, there are a lot of "for example"s. As the great <a href="https://en.wikipedia.org/wiki/Paul_Halmos">Paul Halmos</a> once said, "a good stock of examples, as large as possible, is indispensable for a thorough understanding of any concept, and when I want to learn something new, I make it my first job to build one".
+</p>
+
+<p>
+  Interactive animations are denoted by the large "Click here to [X]!". While rudimentary, they get the job done. These were vibe coded using Claude 4 Opus with extended thinking and a few iterations.
+</p>
+
+<p>
+  This information is current as of August 2025.
+</p>
+
+<p>
+  Sections or sentenced with an asterisk (*) I am less knowledgable about the information in this post than in <a href="fabs.html">Fabs I</a>.
+</p>
+
+<hr>
+
+<h2 id="context">Context</h2>
+
+<p>
+  Go read Construction Physics' (Brian Potter) <a href="https://www.construction-physics.com/p/how-to-build-a-20-billion-semiconductor">How to Build a $20 Billion Semiconductor Fab</a>. Seriously, go read it or you will (probably) be lost over the rest of this post.
+</p>
+
+<hr>
+
+<h2 id="overview">What Do Fabs Want? Chips! When Do They Want Them? Now!</h2>
+
+<p>
+  And that isn't an exaggeration. Like most manufacturing operations, fabs want to pump out as many wafers as possible in as little time as possible for as little cost as possible with as many defects as possible. Sound familiar?
+</p>
+
+<img src="media/fabs2/choosetwo.png" style="width:300px">
+<figcaption>
+  So many choose-two triangles exist in the world!
+</figcaption>
+
+<p>
+  Fabs are often skirting around the impossible region depending on a variety of factors.
+</p>
+
+<p>
+  First and foremost, market conditions. If the market is desperate for chips, fabs are willing to spend more to satisfy the customer demand. If a downturn is happening, the money belt gets tightened and fabs are more focused on going slow to make sure everything they output is of acceptable quality.
+</p>
+
+<p>
+  Second, leadership. A fab's <a href="../thoughts/culture.html">culture comes from the top</a>. Is the fab leadership more risk averse to the point of wanting to slow things down to make sure the final product is high quality and cheap? Or are they willing to risk it for the biscuit (read: a fat bonus) and go into warp speed (read: turn off some quality checks)?
+</p>
+
+<p>
+  Combine these factors with the Eye of Sauron that is the company's top brass constantly scanning fab performance metrics (speed, cost, quality) and you get ever-changing priorities, especially if one metric was particularly poor, e.g., poor quality will lead to less risk taking at the cost of other metrics getting worse. 
+</p>
+
+<img src="media/fabs2/sauron.jpg" style="width:400px">
+<figcaption>
+  Scanning for fab leaders who made poor decisions or can be blamed for others' poor decisions
+</figcaption>
+
+<p>
+  Onto the operations. A fab's operations consists of people and systems dedicated to producing as many wafers as possible in as little time as possible without botching the process flow. They (mostly) don't care about cost because that's an engineer's job. They only care about quality when it affects their metrics, otherwise it's the quality group's job.
+</p>
+
+<p>
+  Because I'm only familiar with one or two fab's operations styles, I'll pull what I can from the literature and the rest out of my as...breadth of semiconductor knowledge. There may also be some "this would be super nice to have moments" in there.
+</p>
+
+<hr>
+
+<h2 id="terminology">Terminology, Also Known as Fabspeak</h2>
+
+<p>
+  Defining key terms upfront is helpful for obvious reasons, so here they are in no particular order:
+</p>
+
+<ul>
+  <li>
+    Cycle time: time required to produce a part or complete a process. From Semi Engineering's <a href="https://semiengineering.com/battling-fab-cycle-times/">Battling Fab Cycle Times</a>:
+    <blockquote>
+      Generally, the most common metric for cycle time in the fab is “days per mask layer.” On average, a fab takes 1 to 1.5 days to process a layer.
+    </blockquote>
+  </li>
+  <li>
+    WIP: Work in progress, or the number of wafers currently in progress at X, where X can be a specific step, a group of steps, etc. "Loadings" is similar. For example, fab X's loadings/WIP may consist of product1 at 60% of total WIP, product2 at 30% of total WIP, and product3 at 10%. The start numbers (the next term) reflect these numbers.
+  </li>
+  <li>
+    Starts: The number of wafers that are started each day. For example, a 500 WPD fab will add 500 WPD to its total WIP each day. Hopefully they are completing more than 500 WPD, otherwise WIP will start to build up quickly!
+  </li>
+  <li>
+    Product or technology: Each wafer is a unique product, also called technology. Product1 may be for your car's braking system and product2 may be for your GPU. These require different processing steps but may still share the same machine at some point in their life cycles. For example, all cars go through the paint step but not all paint steps apply to the same car.
+  </li>
+</ul>
+
+
+
+
+<hr>
+
+<h2 id="planning">Planning to Fill the Fab*</h2>
+
+<p>
+  Planning groups work across a company's fabs to ensure the best loadings based on current demand, forecasted demand, and each fab's capabilities. Shift in the market? Adjust the numbers! Change in another factory's capabilities? Adjust the numbers?
+</p>
+
+<p>
+  Planning groups work with each fab's industrial engineers to make sure the numbers they're looking for can run, bringing us to...
+</p>
+
+<hr>
+
+<h2 id="modeling">Modeling a Fab's Throughput Capabilities</h2>
+
+<p>
+  Before actually running any material, the fab must know how much it can run. You can't just say I'm going to start 1000 WPD without knowing if those numbers can actually be supported.
+</p>
+
+<p>
+  That's where the industrial engineers come in. Trained in the art—okaaaaay, science—of modeling, they're able to tell: 
+</p>
+
+<ol>
+  <li>
+    How quickly each product can make it through each machine, and thus the fab
+  </li>
+  <li>
+    Which tools each product uses
+  </li>
+</ol>
+
+<p>
+  Those numbers can then be normalized into a specified time period to determine the possible product mixes that can run, i.e, how much of product1, ..., productN can be run at any given time without interfering (too much) with the other products.
+</p>
+
+<button type="button" class="collapsible">Thank God For Excel Because It Gets Complicated Quickly</button>
+
+<div class="content">
+
+<p>
+  
+</p>
+
+<hr>
+
+</div>
+
+<p></p>
 
 
 <hr>
@@ -51,6 +277,23 @@
 <h2 id="see_also">See Also</h2>
 
 
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
 
 </body>
 </html>
