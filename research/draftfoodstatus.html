@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Restaurants and Status - No Magic Pill</title>
+  <title>Food and Status - No Magic Pill</title>
   <link rel="stylesheet" type="text/css" href="../css/main.css">
   <link rel="icon" href="../media/favicon.png">
 </head>
@@ -16,11 +16,14 @@
   - this effect is already well-established. no need to run experiments. just tell people how they should spend their money.
   - can we mathematicize this? look at price vs. ability to tell vs. satisfaction
 
-    - 
+
+- create simple game that asks people which review is real between two (get brier score)
+--- see winebullshit.pdf for a few examples for use
+
 - you should go to a restaurant because the experience (food, setting, etc) interests you. nothing else.
 -->
 
-<h1 id="restaurantstatus">Restaurants and Status</h1>
+<h1 id="foodstatus">Food and Status</h1>
 
 <p>
   Jim Leff, <a href="https://jimleff.blogspot.com/2024/04/dallas-2024.html">Dallas 2024</a>:
@@ -92,7 +95,7 @@
 
 <h2 id="literature">Literature</h2>
 
-<h3>[FINISH</h3>
+<h3>[FINISH]</h3>
 
 <p>
   The influence of price on rating is well-documented and, in other words, the lack of knowledge on price results in similar ratings between.
@@ -100,20 +103,26 @@
 
 <ul>
   <li>
-    <a href="media/restaurantstatus/Marketing%20actions%20can%20modulate%20neural%20representations%20of%20experienced%20pleasantness.pdf">Marketing actions can modulate neural representations of experienced pleasantness</a>:
+    <a href="media/foodstatus/Marketing%20actions%20can%20modulate%20neural%20representations%20of%20experienced%20pleasantness.pdf">Marketing actions can modulate neural representations of experienced pleasantness</a>:
     <blockquote>
       increasing the price of a wine increases subjective reports of flavor pleasantness as well as blood-oxygen-level-dependent activity in medial orbitofrontal cortex, an area that is widely thought to encode for experienced pleasantness during experiential tasks
     </blockquote>
     See Fig. 1E for the main result. There may be something placebo-like going on for brain activation aspect, but then a cost-benefit analysis must come into play: is the difference in experienced pleasantness worth the difference in price?
   </li>
   <li>
-    <a href="media/restaurantstatus/LOWER%20BUFFET%20PRICES%20LEAD%20TO%20LESS%20TASTE%20SATISFACTION.pdf">Lower Buffet Prices Lead to Less Taste Satisfaction</a>:
+    <a href="media/foodstatus/LOWER%20BUFFET%20PRICES%20LEAD%20TO%20LESS%20TASTE%20SATISFACTION.pdf">Lower Buffet Prices Lead to Less Taste Satisfaction</a>:
     <blockquote>
       This study demonstrates that when eating in a less expensive all-you-can-eat (AYCE) buffet, people find the food less tasty.
     </blockquote>
   </li>
   <li>
-
+    <a href="">Richard E. Quandt</a>'s <a href="media/foodstatus/winebullshit.pdf">On Wine Bullshit: Some New Software?</a>:
+    <blockquote>
+      Liquid Assets Wine Group: a stable group of eight persons who have been doing regular, blind wine tastings for about ten years. They are all experienced wine drinkers and yet in many cases (not in the majority of cases but in a sizeable minority) the disagreements are substantial. The relatively ideal conditions of this group do not hold for wine writers who, with rare exceptions, do not taste the wines that they write about blind, nor do they taste the same set of wines together on the same occasion, and hence their views are, at best, compromised. 
+    </blockquote>
+    <blockquote>
+      For the Santenay Gravières we have to juggle 20 different fl avors, from sweaty Pinot fruit to smoky fruit, from pinches of prune, animal (what kind? Lions smell very different from dogs), bread, plus earth, spice, skin, seeds, citrus and oat. The pretense that we shall be able to discern all those tastes and aromas is pure bullshit and only a bullshit artist can claim to be able to do that.
+    </blockquote>
   </li>
   <li>
 
@@ -135,7 +144,7 @@
   </li>
 </ul>
 
-<h3 id="youtube">YouTube Anecdata</h3>
+<h3 id="anecdata">Anecdata</h3>
 
 <p>
   YouTube has a wealth of people performing blind taste tests between two foods. While I didn't do this, one could get a better idea of taste differences by assigning probabilities to guesses to obtain a Brier score: the lower the Brier score, the greater the difference in taste (or more sensitive taste buds). Keep in mind everyone has different palates and may be better or worse at distinguishing differences between foods—those with better detection skills may find it worthwhile to go to the nicer places.
@@ -159,23 +168,68 @@
   </li>
 </ul>
 
+<h3>Summary</h3>
 
+<p>
+  After a certain price food and drink don't taste much better. That price varies by individual, but it's still there for the vast majority of people.
+</p>
 
+<p>
+  So what should you spend your money on food- and drink-wise if not status games? A friend gave an excellent—albeit inadvertent—suggestion after I ranted the following to him about food and status:
+</p>
 
+<blockquote>
+  <p>
+    disclaimer: i don't think my palate is *that* sophisticated, but i've been to a decent amount of well-rated restaurants if that lends any credence to my claims. this also may not be revolutionary, but i don't hear many people talk about it.
+  </p>
+  <p>
+    i think i've come to the conclusion that the perceived status of food (based on difficulty of getting a reservation, price, review metrics, social media hype, etc) influences our rating of the restaurant (food and atmosphere) a significant amount. the food can be mid, the portions miniscule (i respect and understand that bigger price doesn't equal bigger portions), the atmosphere offputting, but if it meets a certain number of status criteria, then patrons will just assume they're not sophisticated enough to understand and pretend they like it, because if you don't like it, you're low status and "just don't understand". heck, the same could be said for a majority of things we buy whose utility increases marginally after a certain price. am i just now discovering what robin hanson did so many years ago??
+  </p>
+  <p>
+    i recently paid $140 at an upscale italian place for a burrata appetizer and two "entree-sized" pasta dishes and no wine. the music was not fitting and seating was uncomfortably close to other customers. the taste was a solid 6.5 using jim leff's rating system and portions meager. i could've spent $30 on the wonderful fried chicken place down the street that's a consistent, legitimate 8.5 in my book, then gotten one of my favorite desserts.
+  </p>
+  <p>
+    so i'm gonna put the food part of this theory to the test with some experiments: i'll blind friends to the food/restaurant they're eating and ask them to rate the meal (among a few tests). i don't need side-by-side comparisons since restaurants are eaten at in isolation to each other (ie your palate essentially resets between meals).
+  </p>
+</blockquote>
 
+<p>
+  To which he replied:
+</p>
 
+<blockquote>
+  ... there are multiple things going on when one eats at a restaurant beyond the quality of the food: ie how it makes the person feel, does it make the person seem like a certain type of person, is the space comfortable, is the food familiar, is the food innovative, is the food something they could make at home etc. If you tried to isolate what people were specifically evaluating when they rate a restaurant/dish with a narrowly defined criteria, I think you would find more consensus than you’d otherwise expect.
+</blockquote>
 
+<p>
+  I knew about these going-ons deep down, but had never verbalized or thought too deeply about them until the above message. I have changed the tune of my restaurant recommendations so that you answer the following questions:
+</p>
 
-
-
-
-
-
-
+<ul>
+  <li>
+    How does the food or restaurant make you feel? Do you feel happy eating at an upscale restaurant because it makes you feel like you made it? Awesome! Do you feel happy ordering the expensive bottle of wine because it makes you feel more sophisticated than others? Awesome! Do you feel happy ordering the cheapest bottle of wine because it makes you feel better than others for not playing status games? Do you feel like you're getting an experience that very few others get? 
+  </li>
+  <li>
+    Is the food familiar or nostalgic? Does it remind you of a time or place or person or thing that is difficult to replicate elsewhere through pictures or videos or music? See Swann's Way and the madeleine cake.
+  </li>
+  <li>
+    Is the food different? Is this a flavor or texture or type of food you rarely, if ever, get to taste? Will it open up a door into a new section of your food palace that you've never ventured into before or didn't know existed?  
+  </li>
+  <li>
+    Will the food allow you to connect to someone or something? My having and enjoying a not-well-known cuisine may open up a bridge between myself and a native person who enjoys that food.
+  </li>
+  <li>
+    [FINISH]
+  </li>
+</ul>
 
 <hr>
 
 <h2 id="experiments">Experiments</h2>
+
+<p>
+  But forget about the literature—it's only so representative of me and my friends as a person. And it doesn't let me try a variety of different foods. It also doesn't let me go "Aha! You were bullshitting about being able to tell expensive from cheap the entire time and now owe me a bunch of money for forcing me to go to those restaurants!"
+</p>
 
 <p>
   Brier scores are used in some of the experiments below, so a few thoughts:
@@ -183,7 +237,7 @@
 
 <ul>
   <li>
-    It is difficult to discern whether a person with a medium Brier score (i.e., they are often is) are simply uncalibrated or getting lucky.
+    It is difficult to discern whether a person with a medium Brier score (i.e., they are often is [FINISH?]) are simply uncalibrated or getting lucky. Moar samplez!!!
   </li>
 </ul>
 
@@ -195,32 +249,80 @@
   Food types and restaurants to test (expensive vs. cheap):
 </p>
 
-<ul>
-  <li>
-    Sushi: Namo vs. Blue Sushi
-  </li>
-  <li>
-    Burgers: Loro vs. Braum's
-  </li>
-  <li>
-    American: xx vs. xx
-  </li>
-  <li>
-    Italian: xx vs. Olive Garden
-  </li>
-  <li>
-    Coffee: vs. Starbucks
-  </li>
-  <li>
-    Dessert: vs. Tom Thumb/Kroger
-  </li>
-  <li>
-    Wine: vs. Two-Buck Chuck
-  </li>
-  <li> 
-    Scotch: Clan MacGregor ($13) vs. Dead Rabbit ($40)
-  </li>
-</ul>
+<table>
+    <thead>
+        <tr>
+            <th>Type of Food</th>
+            <th>Expensive</th>
+            <th>Cheap</th>
+            <th>Results</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Sushi</td>
+            <td><a href="https://www.namosushi.com/">Namo</a></td>
+            <td><a href="https://www.bluesushisakegrill.com/">Blue Sushi</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Burgers</td>
+            <td><a href="https://www.loroeats.com/">Loro</a></td>
+            <td><a href="https://www.braums.com/">Braum's</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Italian</td>
+            <td></td>
+            <td><a href="https://www.olivegarden.com/home">Olive Garden</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Coffee</td>
+            <td></td>
+            <td><a href="https://www.starbucks.com/">Starbucks</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Cookies</td>
+            <td><a href="https://www.jdschippery.com/">JD's Chippery</a></td>
+            <td><a href="https://www.target.com/p/nestle-tollhouse-chocolate-chip-cookies-3ct/-/A-15006395">Target Tollhouse</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Wine</td>
+            <td></td>
+            <td><a href="https://en.wikipedia.org/wiki/Charles_Shaw_wine">Two-Buck Chuck</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Scotch</td>
+            <td><a href="https://www.totalwine.com/spirits/irish-whiskey/dead-rabbit-irish-whiskey/p/226910750">Dead Rabbit</a></td>
+            <td><a href="https://www.totalwine.com/spirits/deals/scotch/blended-scotch/clan-macgregor-blended-scotch-whisky/p/2736175">Clan MacGregor</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Chocolate</td>
+            <td><a href="https://laderach.com/us-en/10099743-chocolate-napolitains-box-small">Läderach</a></td>
+            <td><a href="https://www.ghirardelli.com/milk-chocolate-squares-540-count-case-70858cs">Ghirardelli</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Cheese</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<p></p>
 
 <button type="button" class="collapsible">Experiment 1: Blind Tasting With Known Sources</button>
 
@@ -347,11 +449,34 @@ Analyze if higher prices correlate with higher perceived value despite actual ta
 
 
 
+<hr>
 
+<h2 id="quotes">Quotes</h2>
+
+<p>
+  Nassim Taleb:
+</p>
+
+<blockquote>
+  Actually I've used wine most of my life as a marker for stupidity, lack of realism, social climbing/poor social confidence, desire to attend Davos, financial insecurity, education in economics, sucker-proneness, etc. Drink what your taste buds like.
+</blockquote>
+
+<blockquote>
+  I ordered as per my custom "the second cheapest Chardonnay."
+</blockquote>
 
 <hr>
 
 <h2 id="see_also">See Also</h2>
+
+<ul>
+  <li>
+    <a href="https://www.tasteatlas.com/truffle-industry-is-a-big-scam">The truffle industry is a big scam. Not just truffle oil, everything</a>
+  </li>
+  <li>
+    <a href="https://www.stefanzukin.com/enigma/">Enigma</a>: Guess which abstract is fake, as generated by an AI model.
+  </li>
+</ul>
 
 <script>
 var coll = document.getElementsByClassName("collapsible");
