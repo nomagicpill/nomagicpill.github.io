@@ -28,6 +28,7 @@ img {
 	image-orientation: from-image;
 	max-width: 75%;
 	height: auto;
+  border-radius: 6px; /* Subtle rounding */
 }
 
 .spoiler{
@@ -44,12 +45,21 @@ blockquote {
 	padding: 0.25em 10px;
 }
 
+/* Better list styling */
+ul, ol {
+  margin-bottom: 1.5em;
+}
+
 ul ul {
-    list-style-type: circle;
+  list-style-type: circle;
 }
 
 ol ul {
-    list-style-type: disc;
+  list-style-type: disc;
+}
+
+li {
+  margin-bottom: 0.5em;
 }
 
 code {
@@ -134,4 +144,39 @@ pre {
   color: white;
   float: right;
   margin-left: 5px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better link styling */
+a {
+  color: #2563eb; /* Nice blue */
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom-color 0.2s ease;
+}
+
+a:hover {
+  border-bottom-color: #2563eb;
+}
+
+/* Better spacing for content sections */
+p {
+  margin-bottom: 1.2em;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
 }

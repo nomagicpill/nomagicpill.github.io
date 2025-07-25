@@ -57,6 +57,7 @@
   - delivery systems
   - https://en.wikipedia.org/wiki/Scheduling_(production_processes)
   - job shop scheduling
+  - batching
 
 - layout:
   - are tools layed out in a specific fashion?
@@ -210,19 +211,25 @@
     WIP: Work in progress, or the number of wafers currently in progress at X, where X can be a specific step, a group of steps, etc. "Loadings" is similar. For example, fab X's loadings/WIP may consist of product1 at 60% of total WIP, product2 at 30% of total WIP, and product3 at 10%. The start numbers (the next term) reflect these numbers.
   </li>
   <li>
-    Starts: The number of wafers that are started each day. For example, a 500 WPD fab will add 500 WPD to its total WIP each day. Hopefully they are completing more than 500 WPD, otherwise WIP will start to build up quickly!
+    Starts: The number of wafers that are started each day, or WPD. For example, a 500 WPD fab will add 500 WPD to its total WIP each day. Hopefully they are completing more than 500 WPD, otherwise WIP will start to build up quickly!
   </li>
   <li>
     Product or technology: Each wafer is a unique product, also called technology. Product1 may be for your car's braking system and product2 may be for your GPU. These require different processing steps but may still share the same machine at some point in their life cycles. For example, all cars go through the paint step but not all paint steps apply to the same car.
   </li>
+  <li>
+    Device: A subset of a technology. Device1, ..., deviceX may all be of type technologyX, but have slightly different functions. For example, if a Toyota Prius is the technology, then the Prius LE, Prius XLE, and so on are the specific devices.
+  </li>
+  <li>
+    <a href="https://en.wikipedia.org/wiki/Lot_number">Lot</a>: A set of 25 wafers that all follow the exact same steps (unless some are getting experimented on). These all have a specific number for tracking purposes.
+  </li>
 </ul>
 
-
+[FINISH]
 
 
 <hr>
 
-<h2 id="planning">Planning to Fill the Fab*</h2>
+<h2 id="planning">Filling the Fab Full of FOUPs*</h2>
 
 <p>
   Planning groups work across a company's fabs to ensure the best loadings based on current demand, forecasted demand, and each fab's capabilities. Shift in the market? Adjust the numbers! Change in another factory's capabilities? Adjust the numbers?
@@ -254,7 +261,7 @@
 </ol>
 
 <p>
-  Those numbers can then be normalized into a specified time period to determine the possible product mixes that can run, i.e, how much of product1, ..., productN can be run at any given time without interfering (too much) with the other products.
+  Those numbers can then be normalized to determine the possible product mixes that can run, i.e, how much of product1, ..., productN can be run at any given time without interfering (too much) with the other products. We want everything to move smoothly!
 </p>
 
 <button type="button" class="collapsible">Thank God For Excel Because It Gets Complicated Quickly</button>
@@ -262,15 +269,20 @@
 <div class="content">
 
 <p>
-  
+  [FINISH]
 </p>
-
-<hr>
 
 </div>
 
 <p></p>
 
+<hr>
+
+<h2 id=""></h2>
+
+<p>
+  Now that the loadings are decided, the fab can actually start running that material. Fresh lots are started and assigned both a lot number and device
+</p>
 
 <hr>
 
