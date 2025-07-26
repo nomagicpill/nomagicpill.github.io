@@ -327,14 +327,122 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 
 [FINISH]
 
-<h3 id="rtd">Real-Time Dispatch</h3>
+<h3 id="rtd">Real-Time Dispatch (RTD)</h3>
 
 <p>
-  The Planning Master has an excellent <a href="https://theplanningmaster.com/real-time-dispatch-fabs/">real-time dispatch post</a> that goes into great detail and gives great examples of RTD rules:
+  The Planning Master has an excellent <a href="https://theplanningmaster.com/real-time-dispatch-fabs/">real-time dispatch post</a> that goes into great detail and gives great examples of RTD rules. Here are some shamelessly-copy-and-pasted quotes from the post that summarize RTD:
 </p>
 
+<blockquote>
+  <p>
+    The idea [of RTD] is to reduce WIP bubbles by spreading the WIP across the flow as evenly as possible. Another goal is to do the best local optimization so we can maximize throughput across the various [processing steps].
+  </p> 
+  <p>
+    We can do this by combining global rules with local rules:
+  </p>
+  <ul>
+    <li>
+      Global rules – looks at all the WIP that is running in the FAB and prioritizes the lots.
+    </li>
+    <li>
+      Local rules – looks at the WIP in a specific station and optimizes the throughput (for example by picking the same type of lots to run in a cascade)
+    </li>
+  </ul>
+</blockquote>
 
+<p>
+  Pretty self-explanatory. There's a ton of math that goes into this on the backend.
+</p>
 
+<button type="button" class="collapsible">RTD Rule Examples</button>
+
+<div class="content">
+
+<p>
+  The Planning Master also gives examples of some rules (I've added some that have "[NMP]" at the beginning):
+</p>
+
+<blockquote>
+  <p>
+    Implant:
+  </p>
+  <ul>
+    <li>
+      We would like to have lots running the same gas one after the other.
+    </li>
+    <li>
+      We would like to have lots with the same energy levels running one after the other.    
+    </li>
+    <li>
+      We would change gas if the number of wafers waiting in the implant station is more than 100 and 50%-60% of the lots needs a different gas.
+    </li>
+  </ul>
+  <p>
+    Diffusion:
+  </p>
+  <ul>
+    <li>
+      Largest batch first. [if a batch process]
+    </li>
+    <li>
+      Running test wafers as part of a production batch if possible. 
+    </li>
+    <li>
+      [NMP] We would like to have lots running the same temperature one after the other.
+    </li>
+    <li>
+      [NMP] Can we wait X time to increase batch size?
+    </li>
+  </ul>
+  <p>
+    Photo:
+  </p>
+  <ul>
+    <li>
+      Using masks already on the photo magazine.
+    </li>
+    <li>
+      Promote lots in different processes that needs this masks, to increase batching on the photo tool.
+    </li>
+    <li>
+      Changing mask will be done if the number of wafers waiting for different maks is more than 100 and 50%-60% of the lots needs different mask.
+    </li>
+  </ul>
+  <p>
+    [NMP] Metrology:
+  </p>
+  <ul>
+    <li>
+      [NMP] Prioritze metrology tools that are physically closer to the tools that use them
+    </li>
+  </ul>
+</blockquote>
+
+<hr>
+
+</div>
+
+<p></p>
+
+<h4 id="see_also_rtd">See Also (RTD)</h4>
+
+<ul>
+  <li>
+    <a href="media/fabs2/AN%20INTEGRATED%20APPROACH%20TO%20REAL%20TIME%20DISPATCHING%20RULES%20ANALYSIS%20AT%20SEAGATE%20TECHNOLOGY.pdf">An Integrated Approach to Real Time Dispatching Rules Analysis At Seagate Technology</a>
+  </li>
+  <li>
+    <a href="media/fabs2/COMPARISON%20OF%20DISPATCHING%20RULES%20FOR%20SEMICONDUCTOR%20MANUFACTURING%20USING%20LARGE%20FACILITY%20MODELS.pdf">Comparison of Dispatching Rules for Semiconductor Manufacturing Using Large Facility Models</a>
+  </li>
+  <li>
+    <a href="media/fabs2/Multi-objective%20real-time%20dispatching%20for%20integrated%20delivery%20in%20a%20Fab%20using%20GA%20based%20simulation%20optimization.pdf">Multi-objective real-time dispatching for integrated delivery in a Fab using GA based simulation optimization</a>
+  </li>
+  <li>
+    <a href="media/fabs2/Deep%20Reinforcement%20Learning%20for%20Queue-Time%20Management%20In%20Semiconductor%20Manufacturing.pdf">Deep Reinforcement Learning for Queue-Time Management In Semiconductor Manufacturing</a>
+  </li>
+  <li>
+    <a href="media/fabs2/Short-Term%20Scheduling%20Model%20of%20Cluster%20Tool%20in%20Wafer%20Fabrication.pdf">Short-Term Scheduling Model of Cluster Tool in Wafer Fabrication</a>
+  </li>
+</ul>
 
 <hr>
 

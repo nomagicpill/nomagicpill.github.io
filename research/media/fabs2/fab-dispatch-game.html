@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fab Dispatch Simulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .game-container {
+            display: flex;
+            height: 100vh;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .left-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 400px;
+        }
+
+        .incoming-panel {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .incoming-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .arrival-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .status-normal { background: #2c3e50; }
+        .status-surge { background: #e74c3c; animation: pulse 1s infinite; }
+        .status-lull { background: #3498db; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .incoming-wafers {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            overflow-y: auto;
+            flex-grow: 1;
+            max-height: 400px;
+            padding: 10px;
+            background: #0f0f0f;
+            border-radius: 8px;
+        }
+
+        .wafer {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            position: relative;
+            cursor: grab;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .wafer.priority {
+            animation: priorityPulse 1s infinite;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        @keyframes priorityPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+            50% { transform: scale(1.1); box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
+        }
+
+        .priority-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ffd700;
+            color: #000;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .wafer.dragging {
+            cursor: grabbing;
+            opacity: 0.7;
+            transform: scale(1.1);
+        }
+
+        .wafer.selected {
+            box-shadow: 0 0 40px rgba(255,255,255,0.6);
+            transform: scale(1.2);
+        }
+
+        .wafer.T1 { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .wafer.T2 { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .wafer.T3 { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .wafer.T4 { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+
+        .timer-panel {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .timer {
+            font-size: 48px;
+            font-weight: bold;
+            color: #3498db;
+            margin: 10px 0;
+        }
+
+        .timer.warning {
+            color: #f39c12;
+        }
+
+        .timer.critical {
+            color: #e74c3c;
+        }
+
+        .stats-panel {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .priority-stat {
+            color: #ffd700;
+        }
+
+        .controls {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .play-btn {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .play-btn:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+
+        .pause-btn {
+            background: #f39c12;
+            color: white;
+        }
+
+        .pause-btn:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        .mode-toggle {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: #555;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #3498db;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(30px);
+        }
+
+        .equipment-grid {
+            flex: 2;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .equipment {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .equipment.compatible {
+            box-shadow: 0 0 30px rgba(52, 152, 219, 0.5);
+        }
+
+        .equipment.broken {
+            background: #2c1a1a;
+            opacity: 0.7;
+        }
+
+        .equipment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .equipment-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .equipment-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-idle { background: #2c3e50; }
+        .status-processing { background: #2ecc71; }
+        .status-broken { background: #e74c3c; }
+
+        .compatibility-info {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #2c3e50;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            transition: width 0.1s linear;
+            border-radius: 4px;
+        }
+
+        .queue {
+            margin-top: 15px;
+            min-height: 100px;
+            background: #0f0f0f;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .queue-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .queue-wafer {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            position: relative;
+        }
+
+        .queue-time {
+            font-size: 12px;
+            color: #95a5a6;
+        }
+
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #e74c3c;
+            color: white;
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 1000;
+            animation: alertPulse 0.5s ease-in-out;
+        }
+
+        .alert.warning {
+            background: #f39c12;
+        }
+
+        .alert.success {
+            background: #2ecc71;
+        }
+
+        @keyframes alertPulse {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .utilization-bar {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .util-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .util-value {
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .game-over-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .game-over-content {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .game-over-title {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+
+        .final-score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffd700;
+            margin: 20px 0;
+        }
+
+        .game-stats {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .play-again-btn {
+            background: #2ecc71;
+            color: white;
+            padding: 15px 30px;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        .play-again-btn:hover {
+            background: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="left-panel">
+            <div class="timer-panel">
+                <h2>Time Remaining</h2>
+                <div class="timer" id="timer">3:00</div>
+            </div>
+            
+            <div class="incoming-panel">
+                <div class="incoming-header">
+                    <h2>Wafer Queue (<span id="queueCount">0</span>)</h2>
+                    <div class="arrival-status status-normal" id="arrivalStatus">Normal</div>
+                </div>
+                <div class="incoming-wafers" id="incomingWafers"></div>
+            </div>
+            
+            <div class="stats-panel">
+                <h2>Performance Metrics</h2>
+                <div class="stat-item">
+                    <span>Score:</span>
+                    <span class="stat-value" id="score">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Throughput:</span>
+                    <span class="stat-value" id="throughput">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Avg Wait Time:</span>
+                    <span class="stat-value" id="avgWaitTime">0s</span>
+                </div>
+                <div class="stat-item">
+                    <span>Wafers Completed:</span>
+                    <span class="stat-value" id="completed">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Priority Success:</span>
+                    <span class="stat-value priority-stat" id="prioritySuccess">0/0</span>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="play-btn" id="playBtn">Start 3-Min Sprint</button>
+                <button class="pause-btn" id="pauseBtn" style="display:none">Pause</button>
+                <div class="mode-toggle">
+                    <span>Easy Mode</span>
+                    <div class="toggle-switch" id="modeToggle">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="equipment-grid" id="equipmentGrid"></div>
+    </div>
+
+    <script>
+        class FabDispatchGame {
+            constructor() {
+                this.equipment = [];
+                this.incomingQueue = [];
+                this.score = 0;
+                this.throughput = 0;
+                this.totalWaitTime = 0;
+                this.wafersCompleted = 0;
+                this.priorityCompleted = 0;
+                this.priorityTotal = 0;
+                this.isPlaying = false;
+                this.isPaused = false;
+                this.easyMode = false;
+                this.draggedWafer = null;
+                this.selectedWafer = null;
+                this.gameStartTime = 0;
+                this.gameDuration = 180000; // 3 minutes
+                this.timeRemaining = this.gameDuration;
+                
+                // Technology definitions
+                this.technologies = {
+                    T1: { processingTime: 10, probability: 0.4, color: '#3498db' },
+                    T2: { processingTime: 15, probability: 0.3, color: '#2ecc71' },
+                    T3: { processingTime: 25, probability: 0.2, color: '#f39c12' },
+                    T4: { processingTime: 35, probability: 0.1, color: '#e74c3c' }
+                };
+                
+                // Equipment compatibility matrix
+                this.compatibility = {
+                    E1: ['T1', 'T2'],
+                    E2: ['T2', 'T3'],
+                    E3: ['T3', 'T4'],
+                    E4: ['T1', 'T4']
+                };
+                
+                this.arrivalRate = 2000; // Base arrival rate (ms)
+                this.arrivalState = 'normal'; // normal, surge, lull
+                
+                this.init();
+            }
+            
+            init() {
+                this.createEquipment();
+                this.setupEventListeners();
+                this.generateInitialQueue();
+                this.updateUI();
+            }
+            
+            createEquipment() {
+                const grid = document.getElementById('equipmentGrid');
+                grid.innerHTML = '';
+                
+                for (let i = 1; i <= 4; i++) {
+                    const equipmentId = `E${i}`;
+                    const eq = {
+                        id: equipmentId,
+                        status: 'idle',
+                        currentWafer: null,
+                        queue: [],
+                        processingProgress: 0,
+                        totalProcessingTime: 0,
+                        idleTime: 0,
+                        broken: false,
+                        breakdownTimer: null
+                    };
+                    
+                    this.equipment.push(eq);
+                    
+                    const equipmentEl = document.createElement('div');
+                    equipmentEl.className = 'equipment';
+                    equipmentEl.id = equipmentId;
+                    equipmentEl.innerHTML = `
+                        <div class="equipment-header">
+                            <div class="equipment-title">${equipmentId}</div>
+                            <div class="equipment-status status-idle">Idle</div>
+                        </div>
+                        <div class="compatibility-info">Can process: ${this.compatibility[equipmentId].join(', ')}</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="utilization-bar">
+                            <div class="util-label">
+                                <span>Utilization:</span>
+                                <span class="util-value">0%</span>
+                            </div>
+                        </div>
+                        <div class="queue" ondrop="game.handleDrop(event, '${equipmentId}')" ondragover="game.handleDragOver(event)" onclick="game.handleEquipmentClick('${equipmentId}')"></div>
+                    `;
+                    
+                    grid.appendChild(equipmentEl);
+                }
+            }
+            
+            setupEventListeners() {
+                document.getElementById('playBtn').addEventListener('click', () => this.startGame());
+                document.getElementById('pauseBtn').addEventListener('click', () => this.togglePause());
+                document.getElementById('modeToggle').addEventListener('click', () => this.toggleMode());
+            }
+            
+            toggleMode() {
+                this.easyMode = !this.easyMode;
+                const toggle = document.getElementById('modeToggle');
+                toggle.classList.toggle('active');
+                
+                if (!this.easyMode && this.isPaused) {
+                    this.togglePause();
+                }
+                
+                if (!this.easyMode) {
+                    document.getElementById('pauseBtn').style.display = 'none';
+                } else if (this.isPlaying) {
+                    document.getElementById('pauseBtn').style.display = 'block';
+                }
+            }
+            
+            generateInitialQueue() {
+                for (let i = 0; i < 15; i++) {
+                    this.incomingQueue.push(this.generateWafer());
+                }
+            }
+            
+            generateWafer() {
+                const rand = Math.random();
+                let cumProb = 0;
+                
+                let type = 'T1';
+                for (const [t, config] of Object.entries(this.technologies)) {
+                    cumProb += config.probability;
+                    if (rand < cumProb) {
+                        type = t;
+                        break;
+                    }
+                }
+                
+                // 10% chance of priority wafer
+                const isPriority = Math.random() < 0.1;
+                if (isPriority) {
+                    this.priorityTotal++;
+                }
+                
+                return {
+                    type,
+                    id: `W${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                    arrivalTime: Date.now(),
+                    waitTime: 0,
+                    priority: isPriority
+                };
+            }
+            
+            startGame() {
+                this.isPlaying = true;
+                this.gameStartTime = Date.now();
+                this.timeRemaining = this.gameDuration;
+                document.getElementById('playBtn').style.display = 'none';
+                if (this.easyMode) {
+                    document.getElementById('pauseBtn').style.display = 'block';
+                }
+                
+                this.gameLoop();
+                this.spawnWafers();
+                this.scheduleRandomEvents();
+                this.updateTimer();
+            }
+            
+            togglePause() {
+                if (!this.easyMode) return;
+                
+                this.isPaused = !this.isPaused;
+                document.getElementById('pauseBtn').textContent = this.isPaused ? 'Resume' : 'Pause';
+            }
+            
+            updateTimer() {
+                if (!this.isPlaying || this.isPaused) {
+                    setTimeout(() => this.updateTimer(), 100);
+                    return;
+                }
+                
+                this.timeRemaining -= 100;
+                
+                if (this.timeRemaining <= 0) {
+                    this.endGame();
+                    return;
+                }
+                
+                const minutes = Math.floor(this.timeRemaining / 60000);
+                const seconds = Math.floor((this.timeRemaining % 60000) / 1000);
+                const timerEl = document.getElementById('timer');
+                timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (this.timeRemaining < 30000) {
+                    timerEl.classList.add('critical');
+                } else if (this.timeRemaining < 60000) {
+                    timerEl.classList.add('warning');
+                }
+                
+                setTimeout(() => this.updateTimer(), 100);
+            }
+            
+            endGame() {
+                this.isPlaying = false;
+                
+                const avgWait = this.wafersCompleted > 0 ? 
+                    (this.totalWaitTime / this.wafersCompleted).toFixed(1) : 0;
+                
+                const modal = document.createElement('div');
+                modal.className = 'game-over-modal';
+                modal.innerHTML = `
+                    <div class="game-over-content">
+                        <h1 class="game-over-title">Sprint Complete!</h1>
+                        <div class="final-score">${Math.floor(this.score)}</div>
+                        <div class="game-stats">
+                            <div class="stat-item">
+                                <span>Wafers Completed:</span>
+                                <span class="stat-value">${this.wafersCompleted}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Average Wait Time:</span>
+                                <span class="stat-value">${avgWait}s</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Priority Success Rate:</span>
+                                <span class="stat-value priority-stat">${this.priorityCompleted}/${this.priorityTotal} (${this.priorityTotal > 0 ? Math.round(this.priorityCompleted/this.priorityTotal*100) : 0}%)</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Peak Throughput:</span>
+                                <span class="stat-value">${this.throughput} wpm</span>
+                            </div>
+                        </div>
+                        <button class="play-again-btn" onclick="location.reload()">Play Again</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+            
+            gameLoop() {
+                if (!this.isPlaying) return;
+                
+                if (!this.isPaused) {
+                    this.updateEquipment();
+                    this.updateWaitTimes();
+                    this.updateUtilization();
+                }
+                
+                this.updateUI();
+                requestAnimationFrame(() => this.gameLoop());
+            }
+            
+            spawnWafers() {
+                if (!this.isPlaying) {
+                    return;
+                }
+                
+                if (this.isPaused) {
+                    setTimeout(() => this.spawnWafers(), 100);
+                    return;
+                }
+                
+                // Keep queue at 15-20 wafers
+                while (this.incomingQueue.length < 20) {
+                    this.incomingQueue.push(this.generateWafer());
+                }
+                
+                let rate = this.arrivalRate;
+                if (this.arrivalState === 'surge') {
+                    rate = this.arrivalRate * 0.4; // Much faster
+                } else if (this.arrivalState === 'lull') {
+                    rate = this.arrivalRate * 3; // Much slower
+                }
+                
+                setTimeout(() => this.spawnWafers(), rate + Math.random() * 500);
+            }
+            
+            scheduleRandomEvents() {
+                // Random equipment breakdowns
+                setInterval(() => {
+                    if (this.isPaused || !this.isPlaying) return;
+                    
+                    const eq = this.equipment[Math.floor(Math.random() * this.equipment.length)];
+                    if (!eq.broken && Math.random() < 0.1) {
+                        this.breakEquipment(eq);
+                    }
+                }, 15000);
+                
+                // Lull followed by surge pattern
+                setInterval(() => {
+                    if (this.isPaused || !this.isPlaying) return;
+                    
+                    if (this.arrivalState === 'normal' && Math.random() < 0.3) {
+                        this.startLull();
+                    }
+                }, 25000);
+            }
+            
+            startLull() {
+                this.arrivalState = 'lull';
+                this.showAlert('Arrival Lull...', 'warning');
+                document.getElementById('arrivalStatus').className = 'arrival-status status-lull';
+                document.getElementById('arrivalStatus').textContent = 'Lull';
+                
+                // Lull lasts 15 seconds, then surge
+                setTimeout(() => {
+                    if (!this.isPlaying) return;
+                    this.startSurge();
+                }, 15000);
+            }
+            
+            startSurge() {
+                this.arrivalState = 'surge';
+                this.showAlert('ARRIVAL SURGE!', 'alert');
+                document.getElementById('arrivalStatus').className = 'arrival-status status-surge';
+                document.getElementById('arrivalStatus').textContent = 'SURGE!';
+                
+                // Surge lasts 20 seconds
+                setTimeout(() => {
+                    if (!this.isPlaying) return;
+                    this.arrivalState = 'normal';
+                    document.getElementById('arrivalStatus').className = 'arrival-status status-normal';
+                    document.getElementById('arrivalStatus').textContent = 'Normal';
+                }, 20000);
+            }
+            
+            breakEquipment(eq) {
+                eq.broken = true;
+                eq.status = 'broken';
+                const breakDuration = 60000; // 60 seconds
+                
+                this.showAlert(`${eq.id} BREAKDOWN! (60s)`, 'alert');
+                
+                eq.breakdownTimer = setTimeout(() => {
+                    eq.broken = false;
+                    if (eq.currentWafer) {
+                        eq.status = 'processing';
+                    } else {
+                        eq.status = 'idle';
+                    }
+                    this.showAlert(`${eq.id} REPAIRED!`, 'success');
+                    this.updateEquipmentUI(eq);
+                }, breakDuration);
+                
+                this.updateEquipmentUI(eq);
+            }
+            
+            showAlert(message, type = 'alert') {
+                const alert = document.createElement('div');
+                alert.className = `alert ${type}`;
+                alert.textContent = message;
+                document.body.appendChild(alert);
+                
+                setTimeout(() => {
+                    alert.remove();
+                }, 3000);
+            }
+            
+            handleWaferClick(wafer, event) {
+                if (this.isPaused) return;
+                
+                // Deselect previous wafer
+                if (this.selectedWafer) {
+                    document.querySelectorAll('.wafer').forEach(w => w.classList.remove('selected'));
+                }
+                
+                // Select new wafer
+                this.selectedWafer = wafer;
+                if (event && event.target) {
+                    event.target.classList.add('selected');
+                }
+                this.updateCompatibleEquipment(wafer.type);
+            }
+            
+            handleDragStart(event, wafer) {
+                if (this.isPaused) return;
+                
+                this.draggedWafer = wafer;
+                event.dataTransfer.effectAllowed = 'move';
+                event.target.classList.add('dragging');
+            }
+            
+            handleDragEnd(event) {
+                event.target.classList.remove('dragging');
+            }
+            
+            handleDragOver(event) {
+                event.preventDefault();
+                event.dataTransfer.dropEffect = 'move';
+            }
+            
+            handleDrop(event, equipmentId) {
+                event.preventDefault();
+                
+                if (!this.draggedWafer || this.isPaused) return;
+                
+                this.dispatchWaferToEquipment(this.draggedWafer, equipmentId);
+                this.draggedWafer = null;
+                
+                this.updateCompatibleEquipment(null);
+            }
+            
+            handleEquipmentClick(equipmentId) {
+                if (this.isPaused || !this.selectedWafer) return;
+                
+                this.dispatchWaferToEquipment(this.selectedWafer, equipmentId);
+                
+                // Clear selection
+                this.selectedWafer = null;
+                document.querySelectorAll('.wafer').forEach(w => w.classList.remove('selected'));
+                this.updateCompatibleEquipment(null);
+            }
+            
+            dispatchWaferToEquipment(wafer, equipmentId) {
+                const eq = this.equipment.find(e => e.id === equipmentId);
+                
+                // Check compatibility
+                if (!this.compatibility[equipmentId].includes(wafer.type)) {
+                    this.showAlert(`${wafer.type} cannot run on ${equipmentId}!`);
+                    return;
+                }
+                
+                // Check if equipment is broken
+                if (eq.broken) {
+                    this.showAlert(`${equipmentId} is broken!`);
+                    return;
+                }
+                
+                // Priority wafer penalty check
+                if (wafer.priority && wafer.waitTime > 30) {
+                    this.showAlert('Priority wafer delayed!', 'warning');
+                    this.score -= 50; // Penalty for delayed priority wafer
+                }
+                
+                // Add to equipment queue
+                eq.queue.push(wafer);
+                
+                // Remove from incoming queue
+                const index = this.incomingQueue.indexOf(wafer);
+                if (index > -1) {
+                    this.incomingQueue.splice(index, 1);
+                }
+            }
+            
+            updateEquipment() {
+                const currentTime = Date.now();
+                
+                this.equipment.forEach(eq => {
+                    if (eq.broken) return;
+                    
+                    if (eq.status === 'idle' && eq.queue.length > 0) {
+                        // Start processing next wafer
+                        eq.currentWafer = eq.queue.shift();
+                        eq.status = 'processing';
+                        eq.processingProgress = 0;
+                        eq.currentWafer.processingStartTime = currentTime;
+                    } else if (eq.status === 'processing' && eq.currentWafer) {
+                        // Update processing progress
+                        const processingTime = this.technologies[eq.currentWafer.type].processingTime * 1000;
+                        const elapsed = currentTime - eq.currentWafer.processingStartTime;
+                        eq.processingProgress = Math.min(100, (elapsed / processingTime) * 100);
+                        
+                        if (eq.processingProgress >= 100) {
+                            // Complete processing
+                            this.completeWafer(eq.currentWafer);
+                            eq.currentWafer = null;
+                            eq.status = 'idle';
+                            eq.processingProgress = 0;
+                            eq.totalProcessingTime += processingTime;
+                        }
+                    } else if (eq.status === 'idle') {
+                        eq.idleTime += 16; // Approximate frame time
+                    }
+                    
+                    this.updateEquipmentUI(eq);
+                });
+            }
+            
+            updateWaitTimes() {
+                const currentTime = Date.now();
+                
+                // Update wait times for queued wafers
+                this.incomingQueue.forEach(wafer => {
+                    wafer.waitTime = (currentTime - wafer.arrivalTime) / 1000;
+                });
+                
+                this.equipment.forEach(eq => {
+                    eq.queue.forEach(wafer => {
+                        wafer.waitTime = (currentTime - wafer.arrivalTime) / 1000;
+                    });
+                });
+            }
+            
+            updateUtilization() {
+                this.equipment.forEach(eq => {
+                    const totalTime = eq.totalProcessingTime + eq.idleTime;
+                    const utilization = totalTime > 0 ? (eq.totalProcessingTime / totalTime) * 100 : 0;
+                    
+                    // Award utilization bonus
+                    if (utilization > 80 && totalTime > 30000) {
+                        this.score += 0.1;
+                    }
+                });
+            }
+            
+            completeWafer(wafer) {
+                this.wafersCompleted++;
+                this.score += 10; // Base score for completion
+                
+                // Priority wafer bonus
+                if (wafer.priority) {
+                    this.priorityCompleted++;
+                    if (wafer.waitTime < 30) {
+                        this.score += 50; // Bonus for fast priority processing
+                        this.showAlert('Priority wafer success! +50', 'success');
+                    }
+                }
+                
+                // Penalty for wait time
+                this.totalWaitTime += wafer.waitTime;
+                this.score -= Math.floor(wafer.waitTime / 2);
+                
+                // Update throughput
+                const gameTime = this.gameStartTime > 0 ? (Date.now() - this.gameStartTime) / 60000 : 1;
+                this.throughput = gameTime > 0 ? (this.wafersCompleted / gameTime).toFixed(1) : 0;
+            }
+            
+            updateCompatibleEquipment(waferType) {
+                this.equipment.forEach(eq => {
+                    const element = document.getElementById(eq.id);
+                    if (!element) return;
+                    
+                    if (waferType && this.compatibility[eq.id] && this.compatibility[eq.id].includes(waferType) && !eq.broken) {
+                        element.classList.add('compatible');
+                    } else {
+                        element.classList.remove('compatible');
+                    }
+                });
+            }
+            
+            updateEquipmentUI(eq) {
+                const element = document.getElementById(eq.id);
+                const statusEl = element.querySelector('.equipment-status');
+                const progressEl = element.querySelector('.progress-fill');
+                const queueEl = element.querySelector('.queue');
+                const utilEl = element.querySelector('.util-value');
+                
+                // Update status
+                statusEl.className = `equipment-status status-${eq.status}`;
+                statusEl.textContent = eq.broken ? 'Broken' : eq.status.charAt(0).toUpperCase() + eq.status.slice(1);
+                
+                // Update broken state
+                if (eq.broken) {
+                    element.classList.add('broken');
+                } else {
+                    element.classList.remove('broken');
+                }
+                
+                // Update progress bar
+                progressEl.style.width = `${eq.processingProgress}%`;
+                
+                // Update utilization
+                const totalTime = eq.totalProcessingTime + eq.idleTime;
+                const utilization = totalTime > 0 ? (eq.totalProcessingTime / totalTime) * 100 : 0;
+                utilEl.textContent = `${utilization.toFixed(1)}%`;
+                
+                // Update queue display
+                queueEl.innerHTML = '';
+                if (eq.currentWafer) {
+                    const item = document.createElement('div');
+                    item.className = 'queue-item';
+                    item.innerHTML = `
+                        <div class="queue-wafer ${eq.currentWafer.type}">
+                            ${eq.currentWafer.type}
+                            ${eq.currentWafer.priority ? '<div class="priority-badge" style="width:20px;height:20px;font-size:12px;">!</div>' : ''}
+                        </div>
+                        <div class="queue-time">Processing</div>
+                    `;
+                    queueEl.appendChild(item);
+                }
+                
+                eq.queue.forEach(wafer => {
+                    const item = document.createElement('div');
+                    item.className = 'queue-item';
+                    item.innerHTML = `
+                        <div class="queue-wafer ${wafer.type}">
+                            ${wafer.type}
+                            ${wafer.priority ? '<div class="priority-badge" style="width:20px;height:20px;font-size:12px;">!</div>' : ''}
+                        </div>
+                        <div class="queue-time">${wafer.waitTime.toFixed(0)}s</div>
+                    `;
+                    queueEl.appendChild(item);
+                });
+            }
+            
+            updateUI() {
+                // Update incoming wafers display
+                const incomingEl = document.getElementById('incomingWafers');
+                incomingEl.innerHTML = '';
+                
+                this.incomingQueue.forEach(wafer => {
+                    const waferEl = document.createElement('div');
+                    waferEl.className = `wafer ${wafer.type} ${wafer.priority ? 'priority' : ''}`;
+                    waferEl.innerHTML = wafer.type;
+                    if (wafer.priority) {
+                        waferEl.innerHTML += '<div class="priority-badge">!</div>';
+                    }
+                    waferEl.draggable = true;
+                    waferEl.ondragstart = (e) => this.handleDragStart(e, wafer);
+                    waferEl.ondragend = (e) => this.handleDragEnd(e);
+                    waferEl.onclick = (e) => this.handleWaferClick(wafer, e);
+                    waferEl.onmouseover = () => {
+                        if (wafer) {
+                            this.updateCompatibleEquipment(wafer.type);
+                        }
+                    };
+                    waferEl.onmouseout = () => {
+                        if (!this.selectedWafer) {
+                            this.updateCompatibleEquipment(null);
+                        }
+                    };
+                    incomingEl.appendChild(waferEl);
+                });
+                
+                // Update stats
+                document.getElementById('queueCount').textContent = this.incomingQueue.length;
+                document.getElementById('score').textContent = Math.floor(this.score);
+                document.getElementById('throughput').textContent = `${this.throughput} wpm`;
+                const avgWait = this.wafersCompleted > 0 ? (this.totalWaitTime / this.wafersCompleted).toFixed(1) : 0;
+                document.getElementById('avgWaitTime').textContent = `${avgWait}s`;
+                document.getElementById('completed').textContent = this.wafersCompleted;
+                document.getElementById('prioritySuccess').textContent = `${this.priorityCompleted}/${this.priorityTotal}`;
+            }
+        }
+        
+        const game = new FabDispatchGame();
+    </script>
+</body>
+</html>
