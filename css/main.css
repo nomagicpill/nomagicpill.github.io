@@ -3,8 +3,9 @@ body {
 	font-size: 16px;
 	line-height: 1.5;
 	margin: 40px auto;
-	max-width: 700px;
+	max-width: 770px;
 	padding: 0 10px;
+  font-family: Arial
 }
 
 table, th, td, tr {
@@ -47,7 +48,7 @@ blockquote {
 
 /* Better list styling */
 ul, ol {
-  margin-bottom: 1.5em;
+  margin-bottom: 1.2em;
 }
 
 ul ul {
@@ -56,10 +57,6 @@ ul ul {
 
 ol ul {
   list-style-type: disc;
-}
-
-li {
-  margin-bottom: 0.5em;
 }
 
 code {
@@ -146,11 +143,6 @@ pre {
   margin-left: 5px;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
 /* Better link styling */
 a {
   color: #2563eb; /* Nice blue */
@@ -180,3 +172,26 @@ p {
     scroll-behavior: auto;
   }
 }
+
+/* Remove margin from the last item in any list */
+li:last-child {
+    margin-bottom: 0;
+}
+
+/* Reset default list margins and set consistent spacing */
+ul, ol {
+    margin: 0 0 1.2em 0;
+    padding-left: 2em; /* Consistent indentation */
+}
+
+/* Nested lists should have no bottom margin */
+ul ul, ol ol, ul ol, ol ul {
+    margin: 0; /* Remove bottom margin from nested lists */
+    padding-left: 1.5em; /* Slightly less indentation for sub-items */
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+

@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacturing Tool Timing Challenge</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 1200px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .instructions {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .factory-floor {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+
+        .tool {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 180px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .tool.stopped {
+            background: rgba(255, 100, 100, 0.2);
+            border-color: #ff6464;
+        }
+
+        .tool.ready {
+            background: rgba(100, 255, 100, 0.2);
+            border-color: #64ff64;
+            animation: readyPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes readyPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .tool-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .tool-name {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .tool-speed {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .tool-status {
+            font-size: 0.85em;
+            margin-top: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-running { color: #64ff64; }
+        .status-stopped { color: #ff6464; }
+        .status-ready { color: #FFD700; }
+
+        .tool-display {
+            height: 100px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .lot {
+            position: absolute;
+            width: 60px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            top: 30px;
+            transition: left 0.1s linear;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .regular-lot {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border: 2px solid #2E7D32;
+        }
+
+        .priority-lot {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: 3px solid #FF6347;
+            animation: pulse 1s infinite;
+            z-index: 10;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .control-button {
+            width: 100%;
+            padding: 12px;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .stop-button {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .stop-button:hover:not(:disabled) {
+            background: linear-gradient(135deg, #c0392b, #a93226);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .restart-button {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+
+        .restart-button:hover:not(:disabled) {
+            background: linear-gradient(135deg, #229954, #1e8449);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+        }
+
+        .control-button:disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .main-button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+        }
+
+        .start-button:hover:not(:disabled) {
+            background: linear-gradient(135deg, #229954, #1e8449);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .reset-button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .reset-button:hover {
+            background: linear-gradient(135deg, #2980b9, #21618c);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .message {
+            text-align: center;
+            font-size: 1.3em;
+            margin-top: 20px;
+            min-height: 30px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #4CAF50;
+            text-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+        }
+
+        .warning {
+            color: #FFA500;
+            text-shadow: 0 0 20px rgba(255, 165, 0, 0.5);
+        }
+
+        .error {
+            color: #ff6464;
+            text-shadow: 0 0 20px rgba(255, 100, 100, 0.5);
+        }
+
+        .queue-display {
+            margin-top: 10px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .stopped-time {
+            font-size: 0.8em;
+            color: #ff6464;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>⚙️ Manufacturing Tool Timing Challenge ⚙️</h1>
+        <div class="instructions">
+            Stop tools to let the PRIORITY lot pass, then restart them quickly to keep processing!
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-label">Score</div>
+                <div class="stat-value" id="score">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Utilization</div>
+                <div class="stat-value" id="utilization">100%</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Priority Wait Time</div>
+                <div class="stat-value" id="wait-time">0s</div>
+            </div>
+        </div>
+
+        <div class="factory-floor" id="factory-floor">
+            <!-- Tools will be generated here -->
+        </div>
+
+        <div class="controls">
+            <button class="main-button start-button" id="start-button">Start Game</button>
+            <button class="main-button reset-button" id="reset-button">Reset</button>
+        </div>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        // Game configuration with longer timings
+        const TOOLS = [
+            { id: 1, name: 'Tool 1', processTime: 5000, color: '#e74c3c' },
+            { id: 2, name: 'Tool 2', processTime: 4500, color: '#3498db' },
+            { id: 3, name: 'Tool 3', processTime: 6000, color: '#2ecc71' },
+            { id: 4, name: 'Tool 4', processTime: 3500, color: '#f39c12' },
+            { id: 5, name: 'Tool 5', processTime: 7000, color: '#9b59b6' }
+        ];
+
+        // Game state
+        let gameState = {
+            running: false,
+            score: 0,
+            priorityLot: null,
+            tools: [],
+            startTime: null,
+            priorityWaitTime: 0,
+            totalStoppedTime: 0
+        };
+
+        // Initialize the game
+        function initGame() {
+            const factoryFloor = document.getElementById('factory-floor');
+            factoryFloor.innerHTML = '';
+
+            gameState.tools = TOOLS.map(tool => ({
+                ...tool,
+                element: createToolElement(tool),
+                lots: [],
+                stopped: false,
+                currentLot: null,
+                queuedLots: 0,
+                stoppedStartTime: null,
+                totalStoppedTime: 0,
+                canRestart: false
+            }));
+        }
+
+        // Create tool element
+        function createToolElement(tool) {
+            const toolDiv = document.createElement('div');
+            toolDiv.className = 'tool';
+            toolDiv.id = `tool-${tool.id}`;
+            toolDiv.innerHTML = `
+                <div class="tool-header">
+                    <div class="tool-name">${tool.name}</div>
+                    <div class="tool-speed">Process: ${tool.processTime/1000}s</div>
+                    <div class="tool-status status-running" id="status-${tool.id}">Running</div>
+                </div>
+                <div class="tool-display" id="display-${tool.id}"></div>
+                <button class="control-button stop-button" id="stop-${tool.id}" onclick="stopTool(${tool.id})">
+                    Stop Tool
+                </button>
+                <button class="control-button restart-button" id="restart-${tool.id}" onclick="restartTool(${tool.id})" style="display: none;">
+                    Restart Tool
+                </button>
+                <div class="queue-display" id="queue-${tool.id}">Queue: 0 lots</div>
+                <div class="stopped-time" id="stopped-time-${tool.id}"></div>
+            `;
+            document.getElementById('factory-floor').appendChild(toolDiv);
+            return toolDiv;
+        }
+
+        // Start the game
+        function startGame() {
+            if (gameState.running) return;
+
+            gameState.running = true;
+            gameState.startTime = Date.now();
+            gameState.score = 0;
+            gameState.priorityWaitTime = 0;
+            gameState.totalStoppedTime = 0;
+
+            document.getElementById('start-button').disabled = true;
+            updateMessage('Game started! Stop and restart tools at the perfect time!', 'success');
+
+            // Create priority lot starting at Tool 1
+            gameState.priorityLot = {
+                id: 'PRIORITY',
+                isPriority: true,
+                currentTool: 0,
+                position: -70,
+                waitStartTime: null
+            };
+
+            // Start regular lot generation for all tools
+            gameState.tools.forEach((tool, index) => {
+                if (index > 0) { // Don't generate lots for Tool 1 initially
+                    generateRegularLots(index);
+                }
+                tool.queuedLots = Math.floor(Math.random() * 3) + 2;
+                updateQueueDisplay(tool.id);
+                updateToolStatus(tool);
+            });
+
+            // Start the game loop
+            gameLoop();
+        }
+
+        // Generate regular lots for a tool
+        function generateRegularLots(toolIndex) {
+            const tool = gameState.tools[toolIndex];
+            if (!gameState.running) return;
+
+            // Add a new lot to the queue
+            tool.queuedLots++;
+            updateQueueDisplay(tool.id);
+
+            // Schedule next lot generation
+            const interval = tool.processTime + Math.random() * 3000;
+            setTimeout(() => generateRegularLots(toolIndex), interval);
+        }
+
+        // Main game loop
+        function gameLoop() {
+            if (!gameState.running) return;
+
+            // Update priority lot
+            updatePriorityLot();
+
+            // Update each tool
+            gameState.tools.forEach(tool => {
+                updateTool(tool);
+                updateStoppedTimeDisplay(tool);
+            });
+
+            // Update score and stats
+            updateStats();
+
+            // Check win condition
+            if (gameState.priorityLot && gameState.priorityLot.currentTool >= TOOLS.length) {
+                endGame();
+                return;
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Update priority lot position
+        function updatePriorityLot() {
+            const lot = gameState.priorityLot;
+            if (!lot) return;
+
+            // Continue moving if past all tools
+            if (lot.currentTool >= TOOLS.length) {
+                lot.position += 2;
+                return;
+            }
+
+            const currentTool = gameState.tools[lot.currentTool];
+            if (!currentTool) return;
+
+            // Check if lot is waiting
+            if (currentTool.currentLot && !currentTool.stopped) {
+                if (!lot.waitStartTime) {
+                    lot.waitStartTime = Date.now();
+                    updateMessage(`⚠️ Priority lot waiting at ${currentTool.name}!`, 'warning');
+                }
+                gameState.priorityWaitTime += 16; // Add frame time to wait time
+            } else {
+                lot.waitStartTime = null;
+            }
+
+            // Move the lot if tool is available
+            if (!currentTool.currentLot || currentTool.stopped) {
+                lot.position += 2;
+
+                // Check if lot has completed current tool
+                if (lot.position > 120) {
+                    // Mark current tool as ready to restart if stopped
+                    const currentToolToMark = gameState.tools[lot.currentTool];
+                    if (currentToolToMark && currentToolToMark.stopped) {
+                        currentToolToMark.canRestart = true;
+                        currentToolToMark.element.classList.add('ready');
+                        updateToolStatus(currentToolToMark);
+                    }
+
+                    lot.currentTool++;
+                    lot.position = -70;
+                    
+                    if (lot.currentTool < TOOLS.length) {
+                        updateMessage(`Priority lot moved to ${gameState.tools[lot.currentTool].name}`, 'success');
+                    }
+                }
+            }
+
+            // Render priority lot
+            renderLot(lot, currentTool);
+        }
+
+        // Update tool state
+        function updateTool(tool) {
+            // Track stopped time
+            if (tool.stopped && tool.stoppedStartTime) {
+                tool.totalStoppedTime = Date.now() - tool.stoppedStartTime;
+                gameState.totalStoppedTime += 16; // Frame time
+            }
+
+            // Process current lot
+            if (tool.currentLot && !tool.stopped) {
+                tool.currentLot.position += 2;
+
+                // Check if lot is complete
+                if (tool.currentLot.position > 120) {
+                    tool.currentLot = null;
+                    gameState.score += 10;
+                }
+            }
+
+            // Start processing next lot from queue
+            if (!tool.currentLot && tool.queuedLots > 0 && !tool.stopped) {
+                tool.currentLot = {
+                    id: `R${Date.now()}`,
+                    isPriority: false,
+                    position: -70
+                };
+                tool.queuedLots--;
+                updateQueueDisplay(tool.id);
+            }
+
+            // Render current lot
+            if (tool.currentLot) {
+                renderLot(tool.currentLot, tool);
+            }
+
+            // Clear display if no lot
+            if (!tool.currentLot && !isPriorityLotAtTool(tool)) {
+                const display = document.getElementById(`display-${tool.id}`);
+                display.innerHTML = '';
+            }
+        }
+
+        // Update tool status display
+        function updateToolStatus(tool) {
+            const statusDiv = document.getElementById(`status-${tool.id}`);
+            if (tool.stopped && tool.canRestart) {
+                statusDiv.textContent = 'Ready to Restart';
+                statusDiv.className = 'tool-status status-ready';
+            } else if (tool.stopped) {
+                statusDiv.textContent = 'Stopped';
+                statusDiv.className = 'tool-status status-stopped';
+            } else {
+                statusDiv.textContent = 'Running';
+                statusDiv.className = 'tool-status status-running';
+            }
+        }
+
+        // Update stopped time display
+        function updateStoppedTimeDisplay(tool) {
+            const stoppedTimeDiv = document.getElementById(`stopped-time-${tool.id}`);
+            if (tool.stopped && tool.totalStoppedTime > 0) {
+                stoppedTimeDiv.textContent = `Stopped: ${(tool.totalStoppedTime / 1000).toFixed(1)}s`;
+            } else {
+                stoppedTimeDiv.textContent = '';
+            }
+        }
+
+        // Check if priority lot is at a specific tool
+        function isPriorityLotAtTool(tool) {
+            return gameState.priorityLot && 
+                   gameState.tools[gameState.priorityLot.currentTool] === tool;
+        }
+
+        // Render a lot in the tool display
+        function renderLot(lot, tool) {
+            const display = document.getElementById(`display-${tool.id}`);
+            
+            // Clear and recreate lots
+            display.innerHTML = '';
+            
+            // Render regular lot if exists
+            if (tool.currentLot && !lot.isPriority) {
+                const lotDiv = document.createElement('div');
+                lotDiv.className = 'lot regular-lot';
+                lotDiv.style.left = `${tool.currentLot.position}px`;
+                lotDiv.textContent = 'LOT';
+                display.appendChild(lotDiv);
+            }
+            
+            // Render priority lot if at this tool
+            if (lot.isPriority && gameState.tools[gameState.priorityLot.currentTool] === tool) {
+                const lotDiv = document.createElement('div');
+                lotDiv.className = 'lot priority-lot';
+                lotDiv.style.left = `${lot.position}px`;
+                lotDiv.textContent = 'PRIORITY';
+                display.appendChild(lotDiv);
+            }
+        }
+
+        // Stop a tool
+        function stopTool(toolId) {
+            const tool = gameState.tools.find(t => t.id === toolId);
+            if (!tool || tool.stopped || !gameState.running) return;
+
+            tool.stopped = true;
+            tool.stoppedStartTime = Date.now();
+            tool.element.classList.add('stopped');
+            document.getElementById(`stop-${toolId}`).style.display = 'none';
+            document.getElementById(`restart-${toolId}`).style.display = 'block';
+            updateToolStatus(tool);
+
+            // Clear current lot
+            if (tool.currentLot) {
+                gameState.score -= 5; // Penalty for wasted lot
+                tool.currentLot = null;
+            }
+
+            // Calculate timing bonus/penalty
+            const priorityDistance = calculatePriorityDistance(tool);
+            if (priorityDistance < 100) {
+                gameState.score -= 20; // Stopped too late
+                updateMessage(`${tool.name} stopped too late!`, 'error');
+            } else if (priorityDistance > 400) {
+                gameState.score -= 10; // Stopped too early
+                updateMessage(`${tool.name} stopped too early!`, 'warning');
+            } else {
+                gameState.score += 30; // Perfect timing
+                updateMessage(`Perfect timing on ${tool.name}!`, 'success');
+            }
+        }
+
+        // Restart a tool
+        function restartTool(toolId) {
+            const tool = gameState.tools.find(t => t.id === toolId);
+            if (!tool || !tool.stopped || !gameState.running) return;
+
+            if (!tool.canRestart) {
+                updateMessage(`Wait! Priority lot hasn't cleared ${tool.name} yet!`, 'error');
+                return;
+            }
+
+            tool.stopped = false;
+            tool.canRestart = false;
+            tool.stoppedStartTime = null;
+            tool.totalStoppedTime = 0;
+            tool.element.classList.remove('stopped', 'ready');
+            document.getElementById(`stop-${toolId}`).style.display = 'block';
+            document.getElementById(`restart-${toolId}`).style.display = 'none';
+            updateToolStatus(tool);
+
+            // Bonus for quick restart
+            gameState.score += 15;
+            updateMessage(`${tool.name} restarted! +15 points`, 'success');
+        }
+
+        // Calculate distance of priority lot from tool
+        function calculatePriorityDistance(tool) {
+            if (!gameState.priorityLot) return Infinity;
+            
+            const priorityToolIndex = gameState.priorityLot.currentTool;
+            const toolIndex = gameState.tools.indexOf(tool);
+            
+            if (toolIndex < priorityToolIndex) return -1;
+            if (toolIndex === priorityToolIndex) return 120 - gameState.priorityLot.position;
+            
+            // Calculate approximate distance through remaining tools
+            let distance = 120 - gameState.priorityLot.position;
+            for (let i = priorityToolIndex + 1; i <= toolIndex; i++) {
+                distance += 190; // Approximate distance between tools
+            }
+            
+            return distance;
+        }
+
+        // Update queue display
+        function updateQueueDisplay(toolId) {
+            const tool = gameState.tools.find(t => t.id === toolId);
+            const queueDiv = document.getElementById(`queue-${toolId}`);
+            queueDiv.textContent = `Queue: ${tool.queuedLots} lots`;
+        }
+
+        // Update game statistics
+        function updateStats() {
+            document.getElementById('score').textContent = Math.max(0, gameState.score);
+            document.getElementById('wait-time').textContent = `${(gameState.priorityWaitTime / 1000).toFixed(1)}s`;
+            
+            // Calculate utilization (penalize stopped time more heavily)
+            const totalTime = Date.now() - gameState.startTime;
+            const utilization = Math.max(0, 100 - (gameState.totalStoppedTime / totalTime) * 200);
+            document.getElementById('utilization').textContent = `${utilization.toFixed(0)}%`;
+        }
+
+        // Update message
+        function updateMessage(text, type = '') {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+        }
+
+        // End the game
+        function endGame() {
+            gameState.running = false;
+            document.getElementById('start-button').disabled = false;
+
+            // Completion bonus for restarting all tools
+            gameState.score += 50;
+            updateMessage('All tools restarted! +50 completion bonus', 'success');
+
+            // Calculate final score
+            const waitPenalty = Math.floor(gameState.priorityWaitTime / 100);
+            const stoppedPenalty = Math.floor(gameState.totalStoppedTime / 200);
+            gameState.score -= waitPenalty + stoppedPenalty;
+
+            const finalScore = Math.max(0, gameState.score);
+            
+            setTimeout(() => {
+                let message = `Game Complete! Final Score: ${finalScore}`;
+                if (finalScore > 200) {
+                    message += ' - Perfect Scheduler! 🏆🌟';
+                } else if (finalScore > 150) {
+                    message += ' - Master Scheduler! 🏆';
+                } else if (finalScore > 100) {
+                    message += ' - Excellent timing! ⭐';
+                } else if (finalScore > 50) {
+                    message += ' - Good job! 👍';
+                } else {
+                    message += ' - Keep practicing! 💪';
+                }
+                
+                updateMessage(message, finalScore > 50 ? 'success' : 'warning');
+            }, 1500);
+            
+            updateStats();
+        }
+
+        // Reset the game
+        function resetGame() {
+            gameState.running = false;
+            gameState.score = 0;
+            gameState.priorityWaitTime = 0;
+            gameState.totalStoppedTime = 0;
+            gameState.priorityLot = null;
+            
+            document.getElementById('start-button').disabled = false;
+            updateMessage('', '');
+            
+            // Reset all tools
+            gameState.tools.forEach(tool => {
+                tool.stopped = false;
+                tool.currentLot = null;
+                tool.queuedLots = 0;
+                tool.stoppedStartTime = null;
+                tool.totalStoppedTime = 0;
+                tool.canRestart = false;
+                tool.element.classList.remove('stopped', 'ready');
+                document.getElementById(`stop-${tool.id}`).style.display = 'block';
+                document.getElementById(`restart-${tool.id}`).style.display = 'none';
+                document.getElementById(`display-${tool.id}`).innerHTML = '';
+                document.getElementById(`stopped-time-${tool.id}`).textContent = '';
+                updateQueueDisplay(tool.id);
+                updateToolStatus(tool);
+            });
+            
+            updateStats();
+        }
+
+        // Event listeners
+        document.getElementById('start-button').addEventListener('click', startGame);
+        document.getElementById('reset-button').addEventListener('click', resetGame);
+
+        // Initialize on load
+        initGame();
+        updateStats();
+    </script>
+</body>
+</html>

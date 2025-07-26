@@ -39,8 +39,6 @@
 
 
 
-- priority lots
-  - customers can pay; prototype devices; qualifying new tools; hold tool and non-hold tool; starting multiple just in case
 - automate everything!!!!
 - MES (the brain of the fab)
   - include AMAT videos
@@ -67,9 +65,14 @@
   - https://www.sciencedirect.com/science/article/abs/pii/S0360835216300390
   - if you put all types in one location and location goes down, all types go down
 
-
+- https://theplanningmaster.com/real-time-dispatch-fabs/
 - https://www.inficon.com/media/11486/download/FabTime-Cycle-Time-Tutorial-And-Queueing-Formulas.pdf?v=1&inline=true&language=en
 - https://semiengineering.com/battling-fab-cycle-times/
+https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-part-1/
+
+
+- staging FOUPs 
+
 -->
 
 <h1 id="fabs2">Semiconductor Fabs II: The Operation</h1>
@@ -139,7 +142,7 @@
 </p>
 
 <p>
-  Sections or sentenced with an asterisk (*) I am less knowledgable about the information in this post than in <a href="fabs.html">Fabs I</a>.
+  Sections or sentenced with an asterisk (*) I am less knowledgable about the information in this post than in <a href="fabs.html">Fabs I</a>. I only have firsthand experience in a few fabs, but do have secondhand experience through colleauges and friends working at more advanced fabs.
 </p>
 
 <hr>
@@ -227,6 +230,10 @@
 [FINISH]
 
 
+
+
+
+
 <hr>
 
 <h2 id="planning">Filling the Fab Full of FOUPs*</h2>
@@ -278,10 +285,91 @@
 
 <hr>
 
-<h2 id=""></h2>
+<h2 id="starting">Starting Fresh Wafers</h2>
 
 <p>
-  Now that the loadings are decided, the fab can actually start running that material. Fresh lots are started and assigned both a lot number and device
+  Now that the loadings are decided, the fab can actually start running wafers. Fresh lots are started and assigned both a lot number and device name.
+</p>
+
+<p>
+  They then go out into the fab, get processed according to their flow, and get shipped out for testing (that's outside the scope of this post).
+</p>
+
+<p>
+  It's at this point that the MES takes over.
+</p>
+
+<hr>
+
+<h2 id="mes">The Brains of the Fab: Manufacturing Execution System</h2>
+
+<p>
+  As the heading implies, the <a href="https://en.wikipedia.org/wiki/Manufacturing_execution_system">manufacturing execution system</a> (MES) is the brains, helping to coordinate and keep track of every single lot that's currently active and its history. Everything you need to know—past steps, future steps, current steps, etc—is in one central location. It's from the MES that you can do a gagillion different things:
+</p>
+
+<ul>
+  <li>
+    Set up new process flows for new devices entering the fab
+  </li>
+  <li>
+    Change (improve) existing process flows 
+  </li>
+  <li>
+    Run experiments on lots
+  </li>
+  <li>
+    <a href="#priority">Prioritize</a> lots
+  </li>
+  <li>
+    Review lot history
+  </li>
+</ul>
+
+[FINISH]
+
+<h3 id="rtd">Real-Time Dispatch</h3>
+
+<p>
+  The Planning Master has an excellent <a href="https://theplanningmaster.com/real-time-dispatch-fabs/">real-time dispatch post</a> that goes into great detail and gives great examples of RTD rules:
+</p>
+
+
+
+
+<hr>
+
+<h2 id="priority">Priority Lots</h2>
+
+<p>
+  Sometimes lots need to get expedited. Reasons range from it being a prototype device that the company or another group wants quick results on; a product that a customer is willing to pay extra for; or a lot involved in qualifying a new tool or improving a process.
+</p>
+
+<p>
+  The MES allows priority levels to be set to speed up the processing of the lot. This can be achieved a few different ways:
+</p>
+
+<ul>
+  <li>
+    Allowing that lot to skip ahead of other lots that were already waiting at a processing step. For example, if lot1-lot5 are waiting to process at step 64 and lot6, the priority lot, shows up, then lot6 will process before any of the waiting ones.
+  </li>
+  <li>
+    Ensuring tools are empty when the priority lot arrives. Time per process step is both known and stable, so the MES can know at what time to stop processing lots on tools that the priority lot is going to arrive it. It can also restart tools that the priority lot has passed.
+  </li>
+  <li>
+    The overhead transport system moving the lot before others. This is like an ambulance choosing the highest priority patient and then all the cars pulling over to the side to let it get through more quickly.
+  </li>
+</ul>
+
+<h1 align="middle">
+  <a href="media/fabs2/fabs2priority.html">Click here to prioritize a lot!</a>
+</h1>
+
+<p>
+  Priority lots are no joke. Time is critical here because it can add up so quickly. An extra 30 minutes per processing step—which is on the low end if not managed properly—across 300 total steps results in an extra week of processing time! This is important enough that engineers will get called if there's a hold up. Multiple lots of the same priority device will often be started at the same time in case something unfortunate happens to the leading lot.
+</p>
+
+<p>
+  They also aren't handed out lightly because if every lot is a priority then no lot is a priority. They also slow down other material from processing.
 </p>
 
 <hr>
