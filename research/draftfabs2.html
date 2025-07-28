@@ -65,7 +65,6 @@
   - https://www.sciencedirect.com/science/article/abs/pii/S0360835216300390
   - if you put all types in one location and location goes down, all types go down
 
-- https://theplanningmaster.com/real-time-dispatch-fabs/
 - https://www.inficon.com/media/11486/download/FabTime-Cycle-Time-Tutorial-And-Queueing-Formulas.pdf?v=1&inline=true&language=en
 - https://semiengineering.com/battling-fab-cycle-times/
 https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-part-1/
@@ -115,6 +114,15 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
   </li>
   <li>
     <a href="#modeling">Modeling a Fab's Throughput Capabilities</a>
+  </li>
+  <li>
+    <a href="#starting">Starting Fresh Wafers</a>
+  </li>
+  <li>
+    <a href="#mes">The Brains of the Fab: Manufacturing Execution System</a>
+  </li>
+  <li>
+    <a href="#priority">Priority Lots</a>
   </li>
   <li>
     <a href="#see_also">See Also</a>
@@ -205,7 +213,7 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 
 <ul>
   <li>
-    Cycle time: time required to produce a part or complete a process. From Semi Engineering's <a href="https://semiengineering.com/battling-fab-cycle-times/">Battling Fab Cycle Times</a>:
+    Cycle time: Time required to produce a part or complete a process. From Semi Engineering's <a href="https://semiengineering.com/battling-fab-cycle-times/">Battling Fab Cycle Times</a>:
     <blockquote>
       Generally, the most common metric for cycle time in the fab is “days per mask layer.” On average, a fab takes 1 to 1.5 days to process a layer.
     </blockquote>
@@ -220,7 +228,7 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
     Product or technology: Each wafer is a unique product, also called technology. Product1 may be for your car's braking system and product2 may be for your GPU. These require different processing steps but may still share the same machine at some point in their life cycles. For example, all cars go through the paint step but not all paint steps apply to the same car.
   </li>
   <li>
-    Device: A subset of a technology. Device1, ..., deviceX may all be of type technologyX, but have slightly different functions. For example, if a Toyota Prius is the technology, then the Prius LE, Prius XLE, and so on are the specific devices.
+    Device: A subset of a technology. Device1, ..., deviceX may all be of type technologyX, but have slightly different functions. For example, if a Toyota Prius is the technology, then the Prius LE, Prius XLE, and so on are the specific devices. This is also like saying a specific <a href="https://www.nxp.com/webapp/chemical-content/MC68CK16Z1CAG16.html">manufacturer part number</a>. Individual chips, also called die, on the wafer are all made up of the same device.
   </li>
   <li>
     <a href="https://en.wikipedia.org/wiki/Lot_number">Lot</a>: A set of 25 wafers that all follow the exact same steps (unless some are getting experimented on). These all have a specific number for tracking purposes.
@@ -351,8 +359,14 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 </blockquote>
 
 <p>
-  Pretty self-explanatory. There's a ton of math that goes into this on the backend.
+  Pretty self-explanatory. There's a ton of math that goes into this on the backend to ensure optimal utilization.
 </p>
+
+[FINISH]
+
+<h1 align="middle">
+  <a href="media/fabs2/fabs2rtd.html">Click here to test your dispatch skills!</a>
+</h1>
 
 <button type="button" class="collapsible">RTD Rule Examples</button>
 

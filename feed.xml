@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>No Magic Pill</title>
-    <link>https://nomagicpill.com</link>
-    <description>Thoughts, research, knowledge, and experiences in my life.</description>
+    <link>https://nomagicpill.github.io</link>
+    <description>Thoughts, research, knowledge, and experiences in my life</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Jun 2025 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 18 Jul 2025 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://nomagicpill.com/feed.xml" rel="self" type="application/rss+xml" />
 
     <!--

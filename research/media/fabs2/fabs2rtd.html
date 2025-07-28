@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" href="../../../media/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fab Dispatch Simulator</title>
+    <title>Fab Dispatch Simulator - No Magic Pill</title>
     <style>
         * {
             margin: 0;
@@ -16,44 +17,49 @@
             background: #0a0a0a;
             color: #fff;
             overflow: hidden;
+            font-size: 12px;
         }
 
         .game-container {
             display: flex;
             height: 100vh;
-            gap: 20px;
-            padding: 20px;
+            gap: 10px;
+            padding: 10px;
         }
 
         .left-panel {
-            flex: 1;
+            flex: 0 0 280px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            max-width: 400px;
+            gap: 10px;
         }
 
         .incoming-panel {
             background: #1a1a1a;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border-radius: 6px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            max-height: 250px;
         }
 
         .incoming-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
+        }
+
+        .incoming-header h2 {
+            font-size: 14px;
         }
 
         .arrival-status {
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: bold;
         }
 
@@ -69,54 +75,31 @@
         .incoming-wafers {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 6px;
             overflow-y: auto;
             flex-grow: 1;
-            max-height: 400px;
-            padding: 10px;
+            padding: 6px;
             background: #0f0f0f;
-            border-radius: 8px;
+            border-radius: 4px;
         }
 
         .wafer {
-            width: 70px;
-            height: 70px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 12px;
             position: relative;
-            cursor: grab;
+            cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
 
-        .wafer.priority {
-            animation: priorityPulse 1s infinite;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-        }
-
-        @keyframes priorityPulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
-            50% { transform: scale(1.1); box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
-        }
-
-        .priority-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ffd700;
-            color: #000;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
+        .wafer:hover {
+            transform: scale(1.1);
         }
 
         .wafer.dragging {
@@ -125,9 +108,45 @@
             transform: scale(1.1);
         }
 
+        .wafer.priority {
+            animation: priorityPulse 1s infinite;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+        }
+
+        .wafer.overdue {
+            animation: overduePulse 0.8s infinite;
+            box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+        }
+
+        @keyframes priorityPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(255, 215, 0, 0.6); }
+            50% { transform: scale(1.05); box-shadow: 0 0 16px rgba(255, 215, 0, 0.8); }
+        }
+
+        @keyframes overduePulse {
+            0%, 100% { box-shadow: 0 0 12px rgba(255, 0, 0, 0.6); }
+            50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.9); }
+        }
+
+        .priority-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ffd700;
+            color: #000;
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: bold;
+        }
+
         .wafer.selected {
-            box-shadow: 0 0 40px rgba(255,255,255,0.6);
-            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(255,255,255,0.8);
+            transform: scale(1.15);
         }
 
         .wafer.T1 { background: linear-gradient(135deg, #3498db, #2980b9); }
@@ -137,17 +156,21 @@
 
         .timer-panel {
             background: #1a1a1a;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border-radius: 6px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
             text-align: center;
         }
 
+        .timer-panel h2 {
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
         .timer {
-            font-size: 48px;
+            font-size: 24px;
             font-weight: bold;
             color: #3498db;
-            margin: 10px 0;
         }
 
         .timer.warning {
@@ -160,16 +183,21 @@
 
         .stats-panel {
             background: #1a1a1a;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border-radius: 6px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .stats-panel h2 {
+            font-size: 14px;
+            margin-bottom: 6px;
         }
 
         .stat-item {
             display: flex;
             justify-content: space-between;
-            margin: 10px 0;
-            font-size: 18px;
+            margin: 5px 0;
+            font-size: 12px;
         }
 
         .stat-value {
@@ -183,19 +211,19 @@
 
         .controls {
             background: #1a1a1a;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border-radius: 6px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
             display: flex;
-            gap: 15px;
+            gap: 8px;
             align-items: center;
         }
 
         button {
-            padding: 10px 20px;
+            padding: 6px 12px;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 4px;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -208,7 +236,7 @@
 
         .play-btn:hover {
             background: #27ae60;
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
         .pause-btn {
@@ -218,22 +246,23 @@
 
         .pause-btn:hover {
             background: #e67e22;
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
         .mode-toggle {
             margin-left: auto;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
+            font-size: 11px;
         }
 
         .toggle-switch {
             position: relative;
-            width: 60px;
-            height: 30px;
+            width: 36px;
+            height: 20px;
             background: #555;
-            border-radius: 15px;
+            border-radius: 10px;
             cursor: pointer;
             transition: background 0.3s;
         }
@@ -244,31 +273,31 @@
 
         .toggle-slider {
             position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 24px;
-            height: 24px;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
             background: white;
             border-radius: 50%;
             transition: transform 0.3s;
         }
 
         .toggle-switch.active .toggle-slider {
-            transform: translateX(30px);
+            transform: translateX(16px);
         }
 
         .equipment-grid {
-            flex: 2;
+            flex: 1;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 10px;
         }
 
         .equipment {
             background: #1a1a1a;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
             position: relative;
@@ -276,7 +305,11 @@
         }
 
         .equipment.compatible {
-            box-shadow: 0 0 30px rgba(52, 152, 219, 0.5);
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.5);
+        }
+
+        .equipment.full {
+            opacity: 0.6;
         }
 
         .equipment.broken {
@@ -288,18 +321,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
 
         .equipment-title {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: bold;
         }
 
         .equipment-status {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 10px;
             font-weight: bold;
         }
 
@@ -308,16 +341,16 @@
         .status-broken { background: #e74c3c; }
 
         .compatibility-info {
-            font-size: 14px;
+            font-size: 11px;
             color: #7f8c8d;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
 
         .progress-bar {
-            height: 8px;
+            height: 5px;
             background: #2c3e50;
-            border-radius: 4px;
-            margin: 10px 0;
+            border-radius: 3px;
+            margin: 6px 0;
             overflow: hidden;
         }
 
@@ -325,17 +358,17 @@
             height: 100%;
             background: linear-gradient(90deg, #3498db, #2980b9);
             transition: width 0.1s linear;
-            border-radius: 4px;
+            border-radius: 3px;
         }
 
         .queue {
-            margin-top: 15px;
-            min-height: 100px;
+            margin-top: 8px;
+            min-height: 60px;
             background: #0f0f0f;
-            border-radius: 8px;
-            padding: 10px;
+            border-radius: 4px;
+            padding: 6px;
             display: flex;
-            gap: 10px;
+            gap: 6px;
             flex-wrap: wrap;
             align-items: center;
         }
@@ -344,40 +377,40 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 2px;
         }
 
         .queue-wafer {
-            width: 50px;
-            height: 50px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 11px;
             position: relative;
         }
 
         .queue-time {
-            font-size: 12px;
+            font-size: 9px;
             color: #95a5a6;
         }
 
         .alert {
             position: fixed;
-            top: 50%;
+            top: 15px;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             background: #e74c3c;
             color: white;
-            padding: 20px 40px;
-            border-radius: 12px;
-            font-size: 24px;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
             font-weight: bold;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             z-index: 1000;
-            animation: alertPulse 0.5s ease-in-out;
+            animation: alertSlide 0.3s ease-in-out;
         }
 
         .alert.warning {
@@ -388,26 +421,35 @@
             background: #2ecc71;
         }
 
-        @keyframes alertPulse {
-            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-            50% { transform: translate(-50%, -50%) scale(1.1); }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        .alert.error {
+            background: #c0392b;
+        }
+
+        @keyframes alertSlide {
+            0% { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+            100% { transform: translateX(-50%) translateY(0); opacity: 1; }
         }
 
         .utilization-bar {
-            margin-top: 10px;
-            font-size: 14px;
+            margin-top: 6px;
+            font-size: 11px;
         }
 
         .util-label {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .util-value {
             color: #3498db;
             font-weight: bold;
+        }
+
+        .queue-limit {
+            font-size: 10px;
+            color: #e74c3c;
+            margin-top: 4px;
         }
 
         .game-over-modal {
@@ -425,36 +467,37 @@
 
         .game-over-content {
             background: #1a1a1a;
-            border-radius: 20px;
-            padding: 40px;
+            border-radius: 12px;
+            padding: 25px;
             text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 350px;
         }
 
         .game-over-title {
-            font-size: 36px;
-            margin-bottom: 20px;
+            font-size: 24px;
+            margin-bottom: 12px;
             color: #3498db;
         }
 
         .final-score {
-            font-size: 48px;
+            font-size: 32px;
             font-weight: bold;
             color: #ffd700;
-            margin: 20px 0;
+            margin: 12px 0;
         }
 
         .game-stats {
-            margin: 20px 0;
+            margin: 12px 0;
             text-align: left;
         }
 
         .play-again-btn {
             background: #2ecc71;
             color: white;
-            padding: 15px 30px;
-            font-size: 20px;
-            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            margin-top: 12px;
         }
 
         .play-again-btn:hover {
@@ -479,34 +522,38 @@
             </div>
             
             <div class="stats-panel">
-                <h2>Performance Metrics</h2>
+                <h2>Performance</h2>
                 <div class="stat-item">
                     <span>Score:</span>
                     <span class="stat-value" id="score">0</span>
                 </div>
                 <div class="stat-item">
                     <span>Throughput:</span>
-                    <span class="stat-value" id="throughput">0</span>
+                    <span class="stat-value" id="throughput">0 wpm</span>
                 </div>
                 <div class="stat-item">
-                    <span>Avg Wait Time:</span>
+                    <span>Avg Wait:</span>
                     <span class="stat-value" id="avgWaitTime">0s</span>
                 </div>
                 <div class="stat-item">
-                    <span>Wafers Completed:</span>
+                    <span>Completed:</span>
                     <span class="stat-value" id="completed">0</span>
                 </div>
                 <div class="stat-item">
-                    <span>Priority Success:</span>
+                    <span>Priority:</span>
                     <span class="stat-value priority-stat" id="prioritySuccess">0/0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Overdue:</span>
+                    <span class="stat-value" id="overduePenalty" style="color:#e74c3c">0</span>
                 </div>
             </div>
             
             <div class="controls">
-                <button class="play-btn" id="playBtn">Start 3-Min Sprint</button>
+                <button class="play-btn" id="playBtn">Start</button>
                 <button class="pause-btn" id="pauseBtn" style="display:none">Pause</button>
                 <div class="mode-toggle">
-                    <span>Easy Mode</span>
+                    <span>Easy</span>
                     <div class="toggle-switch" id="modeToggle">
                         <div class="toggle-slider"></div>
                     </div>
@@ -528,14 +575,18 @@
                 this.wafersCompleted = 0;
                 this.priorityCompleted = 0;
                 this.priorityTotal = 0;
+                this.overduePenalty = 0;
                 this.isPlaying = false;
                 this.isPaused = false;
                 this.easyMode = false;
-                this.draggedWafer = null;
                 this.selectedWafer = null;
+                this.draggedWafer = null;
                 this.gameStartTime = 0;
                 this.gameDuration = 180000; // 3 minutes
                 this.timeRemaining = this.gameDuration;
+                this.maxQueueSize = 3; // Maximum wafers per equipment
+                this.overdueThreshold = 60; // Seconds before wafer is overdue
+                this.maxIncomingQueue = 12; // Maximum wafers in incoming queue
                 
                 // Technology definitions
                 this.technologies = {
@@ -553,7 +604,7 @@
                     E4: ['T1', 'T4']
                 };
                 
-                this.arrivalRate = 2000; // Base arrival rate (ms)
+                this.arrivalRate = 3000; // Base arrival rate (ms) - 50% slower
                 this.arrivalState = 'normal'; // normal, surge, lull
                 
                 this.init();
@@ -605,6 +656,7 @@
                             </div>
                         </div>
                         <div class="queue" ondrop="game.handleDrop(event, '${equipmentId}')" ondragover="game.handleDragOver(event)" onclick="game.handleEquipmentClick('${equipmentId}')"></div>
+                        <div class="queue-limit" style="display:none">Queue Full (3/3)</div>
                     `;
                     
                     grid.appendChild(equipmentEl);
@@ -634,7 +686,7 @@
             }
             
             generateInitialQueue() {
-                for (let i = 0; i < 15; i++) {
+                for (let i = 0; i < 10; i++) {
                     this.incomingQueue.push(this.generateWafer());
                 }
             }
@@ -738,12 +790,12 @@
                                 <span class="stat-value">${avgWait}s</span>
                             </div>
                             <div class="stat-item">
-                                <span>Priority Success Rate:</span>
-                                <span class="stat-value priority-stat">${this.priorityCompleted}/${this.priorityTotal} (${this.priorityTotal > 0 ? Math.round(this.priorityCompleted/this.priorityTotal*100) : 0}%)</span>
+                                <span>Priority Success:</span>
+                                <span class="stat-value priority-stat">${this.priorityCompleted}/${this.priorityTotal}</span>
                             </div>
                             <div class="stat-item">
-                                <span>Peak Throughput:</span>
-                                <span class="stat-value">${this.throughput} wpm</span>
+                                <span>Overdue Penalties:</span>
+                                <span class="stat-value" style="color:#e74c3c">-${this.overduePenalty}</span>
                             </div>
                         </div>
                         <button class="play-again-btn" onclick="location.reload()">Play Again</button>
@@ -759,10 +811,23 @@
                     this.updateEquipment();
                     this.updateWaitTimes();
                     this.updateUtilization();
+                    this.checkOverdueWafers();
                 }
                 
                 this.updateUI();
                 requestAnimationFrame(() => this.gameLoop());
+            }
+            
+            checkOverdueWafers() {
+                this.incomingQueue.forEach(wafer => {
+                    if (wafer.waitTime > this.overdueThreshold && !wafer.penalized) {
+                        wafer.penalized = true;
+                        const penalty = Math.floor(wafer.waitTime - this.overdueThreshold);
+                        this.score -= penalty;
+                        this.overduePenalty += penalty;
+                        this.showAlert(`Overdue wafer! -${penalty}`, 'error');
+                    }
+                });
             }
             
             spawnWafers() {
@@ -775,16 +840,16 @@
                     return;
                 }
                 
-                // Keep queue at 15-20 wafers
-                while (this.incomingQueue.length < 20) {
+                // Keep queue at max size
+                while (this.incomingQueue.length < this.maxIncomingQueue) {
                     this.incomingQueue.push(this.generateWafer());
                 }
                 
                 let rate = this.arrivalRate;
                 if (this.arrivalState === 'surge') {
-                    rate = this.arrivalRate * 0.4; // Much faster
+                    rate = this.arrivalRate * 0.5; // Faster
                 } else if (this.arrivalState === 'lull') {
-                    rate = this.arrivalRate * 3; // Much slower
+                    rate = this.arrivalRate * 2.5; // Slower
                 }
                 
                 setTimeout(() => this.spawnWafers(), rate + Math.random() * 500);
@@ -817,7 +882,6 @@
                 document.getElementById('arrivalStatus').className = 'arrival-status status-lull';
                 document.getElementById('arrivalStatus').textContent = 'Lull';
                 
-                // Lull lasts 15 seconds, then surge
                 setTimeout(() => {
                     if (!this.isPlaying) return;
                     this.startSurge();
@@ -830,7 +894,6 @@
                 document.getElementById('arrivalStatus').className = 'arrival-status status-surge';
                 document.getElementById('arrivalStatus').textContent = 'SURGE!';
                 
-                // Surge lasts 20 seconds
                 setTimeout(() => {
                     if (!this.isPlaying) return;
                     this.arrivalState = 'normal';
@@ -842,7 +905,7 @@
             breakEquipment(eq) {
                 eq.broken = true;
                 eq.status = 'broken';
-                const breakDuration = 60000; // 60 seconds
+                const breakDuration = 60000;
                 
                 this.showAlert(`${eq.id} BREAKDOWN! (60s)`, 'alert');
                 
@@ -929,6 +992,13 @@
             dispatchWaferToEquipment(wafer, equipmentId) {
                 const eq = this.equipment.find(e => e.id === equipmentId);
                 
+                // Check if queue is full
+                const totalInQueue = eq.queue.length + (eq.currentWafer ? 1 : 0);
+                if (totalInQueue >= this.maxQueueSize) {
+                    this.showAlert(`${equipmentId} queue full! (Max 3)`, 'error');
+                    return;
+                }
+                
                 // Check compatibility
                 if (!this.compatibility[equipmentId].includes(wafer.type)) {
                     this.showAlert(`${wafer.type} cannot run on ${equipmentId}!`);
@@ -941,10 +1011,23 @@
                     return;
                 }
                 
+                // FIFO violation check (unless priority)
+                if (!wafer.priority) {
+                    const olderWafers = this.incomingQueue.filter(w => 
+                        w.arrivalTime < wafer.arrivalTime && 
+                        !w.priority &&
+                        this.compatibility[equipmentId].includes(w.type)
+                    );
+                    if (olderWafers.length > 0) {
+                        this.score -= 10; // FIFO violation penalty
+                        this.showAlert('FIFO violation! -10', 'warning');
+                    }
+                }
+                
                 // Priority wafer penalty check
                 if (wafer.priority && wafer.waitTime > 30) {
                     this.showAlert('Priority wafer delayed!', 'warning');
-                    this.score -= 50; // Penalty for delayed priority wafer
+                    this.score -= 50;
                 }
                 
                 // Add to equipment queue
@@ -984,7 +1067,7 @@
                             eq.totalProcessingTime += processingTime;
                         }
                     } else if (eq.status === 'idle') {
-                        eq.idleTime += 16; // Approximate frame time
+                        eq.idleTime += 16;
                     }
                     
                     this.updateEquipmentUI(eq);
@@ -1011,7 +1094,6 @@
                     const totalTime = eq.totalProcessingTime + eq.idleTime;
                     const utilization = totalTime > 0 ? (eq.totalProcessingTime / totalTime) * 100 : 0;
                     
-                    // Award utilization bonus
                     if (utilization > 80 && totalTime > 30000) {
                         this.score += 0.1;
                     }
@@ -1020,14 +1102,14 @@
             
             completeWafer(wafer) {
                 this.wafersCompleted++;
-                this.score += 10; // Base score for completion
+                this.score += 10;
                 
                 // Priority wafer bonus
                 if (wafer.priority) {
                     this.priorityCompleted++;
                     if (wafer.waitTime < 30) {
-                        this.score += 50; // Bonus for fast priority processing
-                        this.showAlert('Priority wafer success! +50', 'success');
+                        this.score += 50;
+                        this.showAlert('Priority success! +50', 'success');
                     }
                 }
                 
@@ -1045,10 +1127,19 @@
                     const element = document.getElementById(eq.id);
                     if (!element) return;
                     
-                    if (waferType && this.compatibility[eq.id] && this.compatibility[eq.id].includes(waferType) && !eq.broken) {
+                    const totalInQueue = eq.queue.length + (eq.currentWafer ? 1 : 0);
+                    const isFull = totalInQueue >= this.maxQueueSize;
+                    
+                    if (waferType && this.compatibility[eq.id] && this.compatibility[eq.id].includes(waferType) && !eq.broken && !isFull) {
                         element.classList.add('compatible');
+                        element.classList.remove('full');
                     } else {
                         element.classList.remove('compatible');
+                        if (isFull) {
+                            element.classList.add('full');
+                        } else {
+                            element.classList.remove('full');
+                        }
                     }
                 });
             }
@@ -1059,6 +1150,7 @@
                 const progressEl = element.querySelector('.progress-fill');
                 const queueEl = element.querySelector('.queue');
                 const utilEl = element.querySelector('.util-value');
+                const limitEl = element.querySelector('.queue-limit');
                 
                 // Update status
                 statusEl.className = `equipment-status status-${eq.status}`;
@@ -1079,6 +1171,16 @@
                 const utilization = totalTime > 0 ? (eq.totalProcessingTime / totalTime) * 100 : 0;
                 utilEl.textContent = `${utilization.toFixed(1)}%`;
                 
+                // Check if queue is full
+                const totalInQueue = eq.queue.length + (eq.currentWafer ? 1 : 0);
+                if (totalInQueue >= this.maxQueueSize) {
+                    limitEl.style.display = 'block';
+                    element.classList.add('full');
+                } else {
+                    limitEl.style.display = 'none';
+                    element.classList.remove('full');
+                }
+                
                 // Update queue display
                 queueEl.innerHTML = '';
                 if (eq.currentWafer) {
@@ -1087,7 +1189,7 @@
                     item.innerHTML = `
                         <div class="queue-wafer ${eq.currentWafer.type}">
                             ${eq.currentWafer.type}
-                            ${eq.currentWafer.priority ? '<div class="priority-badge" style="width:20px;height:20px;font-size:12px;">!</div>' : ''}
+                            ${eq.currentWafer.priority ? '<div class="priority-badge" style="width:12px;height:12px;font-size:8px;">!</div>' : ''}
                         </div>
                         <div class="queue-time">Processing</div>
                     `;
@@ -1100,7 +1202,7 @@
                     item.innerHTML = `
                         <div class="queue-wafer ${wafer.type}">
                             ${wafer.type}
-                            ${wafer.priority ? '<div class="priority-badge" style="width:20px;height:20px;font-size:12px;">!</div>' : ''}
+                            ${wafer.priority ? '<div class="priority-badge" style="width:12px;height:12px;font-size:8px;">!</div>' : ''}
                         </div>
                         <div class="queue-time">${wafer.waitTime.toFixed(0)}s</div>
                     `;
@@ -1113,9 +1215,17 @@
                 const incomingEl = document.getElementById('incomingWafers');
                 incomingEl.innerHTML = '';
                 
-                this.incomingQueue.forEach(wafer => {
+                // Sort wafers: priority first, then FIFO
+                const sortedQueue = [...this.incomingQueue].sort((a, b) => {
+                    if (a.priority && !b.priority) return -1;
+                    if (!a.priority && b.priority) return 1;
+                    return a.arrivalTime - b.arrivalTime;
+                });
+                
+                sortedQueue.forEach(wafer => {
                     const waferEl = document.createElement('div');
-                    waferEl.className = `wafer ${wafer.type} ${wafer.priority ? 'priority' : ''}`;
+                    const isOverdue = wafer.waitTime > this.overdueThreshold;
+                    waferEl.className = `wafer ${wafer.type} ${wafer.priority ? 'priority' : ''} ${isOverdue ? 'overdue' : ''}`;
                     waferEl.innerHTML = wafer.type;
                     if (wafer.priority) {
                         waferEl.innerHTML += '<div class="priority-badge">!</div>';
@@ -1145,6 +1255,7 @@
                 document.getElementById('avgWaitTime').textContent = `${avgWait}s`;
                 document.getElementById('completed').textContent = this.wafersCompleted;
                 document.getElementById('prioritySuccess').textContent = `${this.priorityCompleted}/${this.priorityTotal}`;
+                document.getElementById('overduePenalty').textContent = `-${this.overduePenalty}`;
             }
         }
         

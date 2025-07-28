@@ -184,17 +184,9 @@
 <h3 id="home"><a href="../index.html">Home</a></h3>
 
 <!--
-  - include dan frank's email correspondence
-  - https://web.archive.org/web/20160304215225/http://www.wine-economics.org/aawe/wp-content/uploads/2012/10/Vol.2-No.2-2007-Some-New-Software.pdf
-  - this effect is already well-established. no need to run experiments. just tell people how they should spend their money.
-  - can we mathematicize this? look at price vs. ability to tell vs. satisfaction
-
-
-- create simple game that asks people which review is real between two (get brier score)
---- see winebullshit.pdf for a few examples for use
-
-- you should go to a restaurant because the experience (food, setting, etc) interests you. nothing else.
--->
+ 
+--
+ -->
 
 <h1 id="foodstatus">Food and Status</h1>
 
@@ -244,6 +236,10 @@
   What's the motivation behind this? Why can't I just let people pay the money they want to eat where they want? Because I paid $140 for an extremely meh meal that I probably could've gotten for $40 at any ol' strip mall joint. I want to see if people in general, including myself, can tell the difference between good and bad so I can choose restaurants accordingly in the future. Why should I pay extra money for zero, if not negative, extra enjoyment?
 </p>
 
+<p>
+  (Again, there are definitely <a href="https://www.youtube.com/playlist?list=PLz3-p2q6vFYUpr-f2wOSQ5uCQlvWM9iGm">people who can distinguish from tiers of food and drink</a>, but they are experts in their craft and have spent years refining it. This essay is focused on the layeater.)
+</p>
+
 <hr>
 
 <h2 id="origins">Origins of High-Status Restaurants</h2>
@@ -253,70 +249,74 @@
 </p>
 
 <p>
-  Two reasons stand out: exclusivity and name recognition.
+  Three reasons stand out: exclusivity, name recognition, and signaling of care.
 </p>
 
 <p>
-  Exclusivity of a restaurant is primarily determined by menu prices or difficulty of getting reservations: the higher the price, the fewer the people who choose to afford it; the fewer the spots, the fewer people who are able to eat there. If a restaurant sets its prices high immediately upon opening, patrons will likely assume it's good because of the price (because nothing can taste bad if the restaurant has a $$$ or $$$$ rating on Google!). This isn't unreasonable because better ingredients cost more and more skillful chefs cost more to employ and retain. However, a lot of restaurants that are "better" are in nicer areas, causing higher rents and in turn higher prices, because I doubt most restauranteurs are willing to eat that cost when they can just pass it on to the ignorant consumer. (I could not find any literature discussing how restaurants' rent influences their prices.) More exclusive restaurants thus cater to a more elite clientele through pricing, giving it the reputation as a place where the high-status dine. Food quality may decline as reputation becomes more solidified and able to compensate for other aspects of the restaurant.
+  Exclusivity of a restaurant is primarily determined by menu prices or difficulty of getting reservations: the higher the price, the fewer the people who choose to afford it; the fewer the spots, the fewer people who are able to eat there. If a restaurant sets its prices high immediately upon opening, patrons will likely assume it's good because of the price (because nothing can taste bad if the restaurant has a $$$ or $$$$ rating on Google!). This isn't unreasonable because better ingredients cost more and more skillful chefs cost more to employ and retain. However, a lot of restaurants that are "better" are in nicer areas, causing higher rents and in turn higher prices, because I doubt most restauranteurs are willing to eat that cost when they can just pass it on to the ignorant consumer. (I could not find any literature discussing how restaurants' rent influences their prices.) More exclusive restaurants thus cater to a more elite clientele through pricing, giving it the reputation as a place where the high-status dine. Food quality may decline as reputation becomes more solidified and able to compensate for other aspects of the restaurant. These high prices also tend to keep the riff-raff out so you can enjoy your meal in peace.
 </p>
 
 <p>
-  Name recognition is perhaps a subcategory of exclusivity given the elite few able to eat there, and corresponds with ingredient names (truffles, caviar, etc), chef names (Gordon Ramsay, Wolfgang Puck, etc), and restaurant brands (Nobu, Capital Grille, Truluck's, etc).
+  Name recognition is perhaps a subcategory of exclusivity given the few that are able to eat there, and often corresponds with ingredient names (truffles, caviar, champagne, etc), chef names (Gordon Ramsay, Wolfgang Puck, Thomas Keller, etc), restaurant brands (Nobu, Capital Grille, Truluck's, etc), or even standalone restaurants (The French Laundry, El Bulli, Noma, etc). I've had ears perk up when I told someone I ate at Nobu (which, if we're being honest, isn't <i>that</i> impressive of a restaurant compared to others (not that I can tell!).).
 </p>
 
-<hr>
-
-<div class="review-game-container">
-        <h2>Choose the Real Review!</h2>
-        
-        <div class="rg-game-screen">
-            <div class="rg-progress">
-                <div class="rg-progress-fill"></div>
-            </div>
-            
-            <div class="rg-question">Question <span id="rg-current">1</span> of 5</div>
-            
-            <div class="rg-reviews">
-                <div class="rg-review-card" data-index="0">
-                    <div class="rg-label">REAL</div>
-                    <p class="rg-review-text"></p>
-                </div>
-                <div class="rg-review-card" data-index="1">
-                    <div class="rg-label">FAKE</div>
-                    <p class="rg-review-text"></p>
-                </div>
-            </div>
-            
-            <div class="rg-confidence">
-                <label class="rg-confidence-label">Confidence in your choice:</label>
-                <input type="range" class="rg-slider" min="50" max="100" value="75">
-                <div class="rg-confidence-value">75%</div>
-            </div>
-            
-            <button class="rg-button" id="rg-submit" disabled>Submit Answer</button>
-            <button class="rg-button rg-hidden" id="rg-next">Next Question</button>
-        </div>
-        
-        <div class="rg-results">
-            <h3>Game Complete!</h3>
-            <p>Your Brier Score:</p>
-            <div class="rg-score">0.000</div>
-            <div class="rg-message"></div>
-            <div class="rg-explanation">
-                <strong>About Brier Scores:</strong> Lower is better! Perfect = 0.000, Random guessing = 0.250, Worst = 1.000
-            </div>
-            <button class="rg-button" onclick="location.reload()">Play Again</button>
-        </div>
-    </div>
+<p>
+  Performing a costly action signals commitment to the goal, whether it's taking a significant other out for a weekend getaway on your dime or treating a potential business partner to a nice dinner. Nice restaurants offer the opportunity to do this both overtly (hey look at the menu prices) and covertly (hey let's go enjoy a delicious meal).
+</p>
 
 <hr>
 
 <h2 id="literature">Literature</h2>
 
-<h3>[FINISH]</h3>
+<p>
+  Before reading the few studies that I compiled and the report that Claude wrote, see if you can discern the difference between real and fake reviews:
+</p>
+
+<div class="review-game-container">
+    <h2>Choose the Real Review!</h2>
+
+    <div class="rg-game-screen">
+        <div class="rg-progress">
+            <div class="rg-progress-fill"></div>
+        </div>
+        
+        <div class="rg-question">Question <span id="rg-current">1</span> of 5</div>
+        
+        <div class="rg-reviews">
+            <div class="rg-review-card" data-index="0">
+                <div class="rg-label">REAL</div>
+                <p class="rg-review-text"></p>
+            </div>
+            <div class="rg-review-card" data-index="1">
+                <div class="rg-label">FAKE</div>
+                <p class="rg-review-text"></p>
+            </div>
+        </div>
+        
+        <div class="rg-confidence">
+            <label class="rg-confidence-label">Confidence in your choice:</label>
+            <input type="range" class="rg-slider" min="50" max="100" value="75">
+            <div class="rg-confidence-value">75%</div>
+        </div>
+        
+        <button class="rg-button" id="rg-submit" disabled>Submit Answer</button>
+        <button class="rg-button rg-hidden" id="rg-next">Next Question</button>
+    </div>
+
+    <div class="rg-results">
+        <h3>Game Complete!</h3>
+        <p>Your Brier Score:</p>
+        <div class="rg-score">0.000</div>
+        <div class="rg-message"></div>
+        <div class="rg-explanation">
+            <strong>About Brier Scores:</strong> Lower is better! Perfect = 0.000, Random guessing = 0.250, Worst = 1.000
+        </div>
+        <button class="rg-button" onclick="location.reload()">Play Again</button>
+    </div>
+</div>
 
 <p>
-  The influence of price on rating is well-documented and, in other words, the lack of knowledge on price results in similar ratings between.
+  Was that easier or more difficult than expected? You'll see after reading <a href="#winebullshit">Quandt's views on wine</a> that different words can be substituted at random and they still sound the same.
 </p>
 
 <ul>
@@ -333,13 +333,13 @@
       This study demonstrates that when eating in a less expensive all-you-can-eat (AYCE) buffet, people find the food less tasty.
     </blockquote>
   </li>
-  <li>
-    <a href="">Richard E. Quandt</a>'s <a href="media/foodstatus/winebullshit.pdf">On Wine Bullshit: Some New Software?</a>:
+  <li id="winebullshit">
+    Richard E. Quandt's <a href="media/foodstatus/winebullshit.pdf">On Wine Bullshit: Some New Software?</a>:
     <blockquote>
       Liquid Assets Wine Group: a stable group of eight persons who have been doing regular, blind wine tastings for about ten years. They are all experienced wine drinkers and yet in many cases (not in the majority of cases but in a sizeable minority) the disagreements are substantial. The relatively ideal conditions of this group do not hold for wine writers who, with rare exceptions, do not taste the wines that they write about blind, nor do they taste the same set of wines together on the same occasion, and hence their views are, at best, compromised. 
     </blockquote>
     <blockquote>
-      For the Santenay Gravières we have to juggle 20 different fl avors, from sweaty Pinot fruit to smoky fruit, from pinches of prune, animal (what kind? Lions smell very different from dogs), bread, plus earth, spice, skin, seeds, citrus and oat. The pretense that we shall be able to discern all those tastes and aromas is pure bullshit and only a bullshit artist can claim to be able to do that.
+      For the Santenay Gravières we have to juggle 20 different flavors, from sweaty Pinot fruit to smoky fruit, from pinches of prune, animal (what kind? Lions smell very different from dogs), bread, plus earth, spice, skin, seeds, citrus and oat. The pretense that we shall be able to discern all those tastes and aromas is pure bullshit and only a bullshit artist can claim to be able to do that.
     </blockquote>
   </li>
   <li>
@@ -570,10 +570,10 @@ Understanding these mechanisms becomes increasingly critical as globalization cr
   </li>
 </ul>
 
-<h3>Summary</h3>
+<h3>What Does This All Mean?</h3>
 
 <p>
-  After a certain price food and drink don't taste much better. That price varies by individual, but it's still there for the vast majority of people.
+  After a certain price food and drink don't taste much better. That price varies by individual, but it's still present for the vast majority of people.
 </p>
 
 <p>
@@ -604,7 +604,7 @@ Understanding these mechanisms becomes increasingly critical as globalization cr
 </blockquote>
 
 <p>
-  I knew about these going-ons deep down, but had never verbalized or thought too deeply about them until the above message. I have changed the tune of my restaurant recommendations so that you answer the following questions:
+  I knew about these going-ons deep down, but had never verbalized or thought too deeply about them until the above message. I have changed the tune of my restaurant recommendations based on the following questions:
 </p>
 
 <ul>
@@ -630,25 +630,23 @@ Understanding these mechanisms becomes increasingly critical as globalization cr
 <h2 id="experiments">Experiments</h2>
 
 <p>
-  But forget about the literature—it's only so representative of me and my friends as a person. And it doesn't let me try a variety of different foods. It also doesn't let me go "Aha! You were bullshitting about being able to tell expensive from cheap the entire time and now owe me a bunch of money for forcing me to go to those restaurants!"
+  But forget about the literature—it's only so representative of me as a person. And it doesn't let me try a variety of different foods. It also doesn't let me go "Aha! You were bullshitting about being able to tell expensive from cheap the entire time and now owe me a bunch of money for forcing me to go to those restaurants!"
 </p>
+
+<h3 id="considerations">Considerations</h3>
 
 <p>
-  Brier scores are used in some of the experiments below, so a few thoughts:
+  <a href="https://en.wikipedia.org/wiki/Brier_score">Brier scores</a> are used in some of the experiments below. My average Brier score prediction (timedated to 27 July 2025 at 19:14) across participants is BS<sub>avg</sub> = (1 - 0.6)<sup>2</sup> = 0.16, or an average confidence of 60%.
 </p>
-
-<ul>
-  <li>
-    It is difficult to discern whether a person with a medium Brier score (i.e., they are often is [FINISH?]) are simply uncalibrated or getting lucky. Moar samplez!!!
-  </li>
-</ul>
 
 <p>
   Note that it's not necessary to test high- and low-end restaurants against each other in the same session because the palate effectively "resets", making the taste of food absolute and not relative in most situations. If the taste really matters, it should be distinguishable on its own!
 </p>
 
+<h3 id="specifics">Specifics</h3>
+
 <p>
-  Food types and restaurants to test (expensive vs. cheap):
+  Food types, restaurants, and dishes (and associated per unit cost) to test:
 </p>
 
 <table>
@@ -657,57 +655,57 @@ Understanding these mechanisms becomes increasingly critical as globalization cr
             <th>Type of Food</th>
             <th>Expensive</th>
             <th>Cheap</th>
-            <th>Results</th>
+            <th>Dish</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>Sushi</td>
-            <td><a href="https://www.namosushi.com/">Namo</a></td>
-            <td><a href="https://www.bluesushisakegrill.com/">Blue Sushi</a></td>
+            <td><a href="https://www.namosushi.com/">Namo</a> ($)</td>
+            <td><a href="https://www.bluesushisakegrill.com/">Blue Sushi</a> ($)</td>
             <td></td>
         </tr>
         <tr>
             <td>Burgers</td>
-            <td><a href="https://www.loroeats.com/">Loro</a></td>
-            <td><a href="https://www.braums.com/">Braum's</a></td>
-            <td></td>
+            <td><a href="https://www.loroeats.com/">Loro</a> ($15)</td>
+            <td><a href="https://www.braums.com/">Braum's</a> ($)</td>
+            <td>Cheeseburger (bun-meat-cheese)</td>
         </tr>
         <tr>
             <td>Italian</td>
-            <td></td>
+            <td> ($)</td>
+            <td><a href="https://www.starbucks.com/">Starbucks</a> ($)</td>
             <td><a href="https://www.olivegarden.com/home">Olive Garden</a></td>
-            <td></td>
         </tr>
         <tr>
             <td>Coffee</td>
-            <td></td>
-            <td><a href="https://www.starbucks.com/">Starbucks</a></td>
+            <td> ($)</td>
+            <td><a href="https://www.starbucks.com/">Starbucks</a> ($)</td>
             <td></td>
         </tr>
         <tr>
             <td>Cookies</td>
-            <td><a href="https://www.jdschippery.com/">JD's Chippery</a></td>
-            <td><a href="https://www.target.com/p/nestle-tollhouse-chocolate-chip-cookies-3ct/-/A-15006395">Target Tollhouse</a></td>
-            <td></td>
+            <td><a href="https://www.jdschippery.com/">JD's Chippery</a> ($1.7)</td>
+            <td><a href="https://www.target.com/p/nestle-tollhouse-chocolate-chip-cookies-3ct/-/A-15006395">Target Tollhouse</a> ($0.50)</td>
+            <td>Chocolate chip cookie</td>
         </tr>
         <tr>
             <td>Wine</td>
-            <td></td>
-            <td><a href="https://en.wikipedia.org/wiki/Charles_Shaw_wine">Two-Buck Chuck</a></td>
-            <td></td>
+            <td> ($)</td>
+            <td><a href="https://www.traderjoes.com/home/products/pdp/charles-shaw-cabernet-sauvignon-052437">Two-Buck Chuck</a> ($4)</td>
+            <td>Cabernet Sauvignon</td>
         </tr>
         <tr>
             <td>Scotch</td>
-            <td><a href="https://www.totalwine.com/spirits/irish-whiskey/dead-rabbit-irish-whiskey/p/226910750">Dead Rabbit</a></td>
-            <td><a href="https://www.totalwine.com/spirits/deals/scotch/blended-scotch/clan-macgregor-blended-scotch-whisky/p/2736175">Clan MacGregor</a></td>
-            <td></td>
+            <td><a href="https://www.totalwine.com/spirits/irish-whiskey/dead-rabbit-irish-whiskey/p/226910750">Dead Rabbit</a> ($38)</td>
+            <td><a href="https://www.totalwine.com/spirits/deals/scotch/blended-scotch/clan-macgregor-blended-scotch-whisky/p/2736175">Clan MacGregor</a> ($7)</td>
+            <td>[self-explanatory]</td>
         </tr>
         <tr>
             <td>Chocolate</td>
-            <td><a href="https://laderach.com/us-en/10099743-chocolate-napolitains-box-small">Läderach</a></td>
-            <td><a href="https://www.ghirardelli.com/milk-chocolate-squares-540-count-case-70858cs">Ghirardelli</a></td>
-            <td></td>
+            <td><a href="https://laderach.com/us-en/10099743-chocolate-napolitains-box-small">Läderach</a> ($)</td>
+            <td><a href="https://www.ghirardelli.com/milk-chocolate-squares-540-count-case-70858cs">Ghirardelli</a> ($)</td>
+            <td>Milk chocolate</td>
         </tr>
         <tr>
             <td>Cheese</td>
@@ -717,8 +715,8 @@ Understanding these mechanisms becomes increasingly critical as globalization cr
         </tr>
         <tr>
             <td>Ice Cream</td>
-            <td><a href="https://www.tillamook.com/products/ice-cream">Tillamook</a></td>
-            <td>Signature Select</td>
+            <td>TBD ($)</td>
+            <td>Signature Select ($)</td>
             <td></td>
         </tr>
     </tbody>
@@ -726,146 +724,225 @@ Understanding these mechanisms becomes increasingly critical as globalization cr
 
 <p></p>
 
-<button type="button" class="collapsible">Experiment 1: Blind Tasting With Known Sources</button>
+<h3 id="design">Experiment Design</h3>
+
+<p>
+  Notes on how I designed the experiments (specific information available in each <a href="#results">Results</a> section):
+</p>
+
+<ul>
+  <li>
+    Participants were only what they were tasting besides the type and dish
+  </li>
+  <li>
+    Participants were not told anything regarding price or source of the food/drink
+  </li>
+  <li>
+    Participants were blindfolded and unaware of the location (if driving to restaurants)
+  </li>
+  <li>
+    Temperatures and delivery mechanisms were standardized within dishes and across participants
+  </li>
+  <li>
+    Wait periods between each dish were standardized
+  </li>
+</ul>
+
+<button type="button" class="collapsible">Experiment Types</button>
 
 <div class="content">
+
+<p>
+  Claude 3.7 Sonnet recommended the following experiment types:
+</p>
+
+<h4 id="experiment1">Experiment 1: Blind Tasting With Known Price Points but Unknown Sources</h4>
 
 <p>
   Participants know the sources are expensive and cheap, but are told nothing else. Tasting is given at the same time under same conditions (temperature, atmosphere of the dining room, etc) to minimize variables.
 </p>
 
-<h4>Results</h4>
-
-<ul>
-  <li>
-    Scotch: Out of 10 total tastings in a random order, I got 30% correct (but that was my second time ever drinking scotch). My Brier score would have been subpar, as there were a few times I was confident it was expensive when it was actually cheap and vice versa, and I even got some of those wrongs! My friend got 60% chance, but also a worse Brier score given his confidences.
-  </li>
-</ul>
-
-</div>
-
-<p></p>
-
-<button type="button" class="collapsible">Experiment 2: Blind Tasting With Unknown Sources</button>
-
-<div class="content">
-
-Have participants blind-taste food from high-status and low-status restaurants without knowing the source.
-Ask them to rate the food on taste, presentation, and overall satisfaction.
+<h4 id="experiment2">Experiment 2: Blind Tasting With Unknown Price Points and Unknown Sources</h4>
 
 <p>
-  Participants are blindfolded and given food from either a high- or low-end restaurant—they know the food type but nothing else.
+  Have participants blind-taste food from high-status and low-status restaurants without knowing the source. Ask them to rate the food on taste, presentation, and overall satisfaction.
 </p>
 
-
-
-<h4>Results</h4>
-
-
-
-</div>
-
-<p></p>
-
-<button type="button" class="collapsible">Experiment 3: Price Information Manipulation</button>
-
-<div class="content">
-
-
-Serve the same dish to two groups: one group is told it’s from a high-end restaurant, and the other is told it’s from a low-cost eatery.
-Compare their ratings to see if perceived price influences their evaluation.
-
-
-
-
-
-
-<h4>Results</h4>
-
-
-
-</div>
-
-<p></p>
-
-<button type="button" class="collapsible">Experiment 4: Social Media Hype</button>
-
-<div class="content">
-
-
-Present food from the same restaurant to two groups but provide one group with rave reviews and social media hype about the place.
-Measure the difference in their ratings and overall satisfaction.
-
-
-
-<h4>Results</h4>
-
-
-</div>
-
-<p></p>
-
-
-
-
-
-
-
-
-
-
-<!--
-backup experiments
-
-Longitudinal Study:
-Over several weeks, have participants visit a mix of high-status and low-status restaurants without prior knowledge of the places.
-Track their ratings and preferences over time to see if initial perceptions change with repeated exposure.
-
-
-Value Comparison:
-Compare participants’ ratings of meals from high-status and low-status restaurants in terms of value for money.
-Analyze if higher prices correlate with higher perceived value despite actual taste and satisfaction levels.
-
--->
-
-
-<!--
+<h4 id="experiment3">Experiment 3: Price Information Manipulation</h4>
 
 <p>
-  A friend offered a defense of eating at upscale places in a private email exchange:
+  Serve the same dish to two groups: one group is told it’s from a high-end restaurant, and the other is told it’s from a low-cost eatery. Compare their ratings to see if perceived price influences their evaluation.
 </p>
 
-<blockquote>
-  there are multiple things going on when one eats at a restaurant beyond the quality of the food: ie how it makes the person feel, does it make the person seem like a certain type of person, is the space comfortable, is the food familiar, is the food innovative, is the food something they could make at home etc. If you tried to isolate what people were specifically evaluating when they rate a restaurant/dish with a narrowly defined criteria, I think you would find more consensus than you’d otherwise expect. 
-</blockquote>
+<h4 id="experiment4">Experiment 4: Social Media Hype</h4>
 
 <p>
-  And I am doubtful people consciously consider these things [DOES THAT MEAN YOU STILL SHOULDNT EAT THERE EVEN IF ITS SUBCONSCIOUS]
+  Present food from the same restaurant to two groups but provide one group with rave reviews and social media hype about the place. Measure the difference in their ratings and overall satisfaction.
 </p>
 
+<h4 id="experiment5">Experiment 5: Longitudinal Study</h4>
 
+<p>
+  Over several weeks, have participants visit a mix of high-status and low-status restaurants without prior knowledge of the places. Track their ratings and preferences over time to see if initial perceptions change with repeated exposure.
+</p>
 
+<h4 id="experiment6">Experiment 6: Value Comparison</h4>
 
-
--->
-
-
+<p>
+  Compare participants’ ratings of meals from high-status and low-status restaurants in terms of value for money. Analyze if higher prices correlate with higher perceived value despite actual taste and satisfaction levels.
+</p>
 
 <hr>
 
-<h2 id="quotes">Quotes</h2>
+</div>
+
+<p></p>
+
+<h3 id="results">Results</h3>
 
 <p>
-  Nassim Taleb:
+  Below are the results for each food type. Names are anonymized, but consistent throughout if one participant tested multiple food types (e.g., if Alice is anonymized to Bob and participated in sushi, cookies, and wine, then each instance of Bob is always Alice).
 </p>
 
-<blockquote>
-  Actually I've used wine most of my life as a marker for stupidity, lack of realism, social climbing/poor social confidence, desire to attend Davos, financial insecurity, education in economics, sucker-proneness, etc. Drink what your taste buds like.
-</blockquote>
+<button type="button" class="collapsible">Sushi</button>
 
-<blockquote>
-  I ordered as per my custom "the second cheapest Chardonnay."
-</blockquote>
+<div class="content">
+
+<p>
+  
+</p>
+
+<hr>
+
+</div>
+
+<p></p>
+
+<button type="button" class="collapsible">Burgers</button>
+
+<div class="content">
+
+<p>
+  
+</p>
+
+<hr>
+
+</div>
+
+<p></p>
+
+<button type="button" class="collapsible">Italian</button>
+
+<div class="content">
+
+<p>
+  
+</p>
+
+<hr>
+
+</div>
+
+<p></p>
+
+<button type="button" class="collapsible">Coffee</button>
+
+<div class="content">
+
+<p>
+  
+</p>
+
+<hr>
+
+</div>
+
+<p></p>
+
+<button type="button" class="collapsible">Cookies</button>
+
+<div class="content">
+
+<p>
+  
+</p>
+
+<hr>
+
+</div>
+
+<p></p>
+
+<button type="button" class="collapsible">Wine</button>
+
+<div class="content">
+
+<p>
+  
+</p>
+
+<hr>
+
+</div>
+
+<p></p>
+
+<button type="button" class="collapsible">Scotch</button>
+
+<div class="content">
+
+<p>
+  Out of 10 total tastings in a random order, I got 30% correct (but that was my second time ever drinking scotch). My Brier score would have been subpar, as there were a few times I was confident it was expensive when it was actually cheap and vice versa, and I even got some of those wrongs! My friend got 60% chance, but also a worse Brier score given his confidences.
+</p>
+
+<hr>
+
+</div>
+
+<p></p>
+
+<button type="button" class="collapsible">Chocolate</button>
+
+<div class="content">
+
+<p>
+  
+</p>
+
+<hr>
+
+</div>
+
+<p></p>
+
+<button type="button" class="collapsible">Cheese</button>
+
+<div class="content">
+
+<p>
+  
+</p>
+
+<hr>
+
+</div>
+
+<p></p>
+
+<button type="button" class="collapsible">Ice Cream</button>
+
+<div class="content">
+
+<p>
+  
+</p>
+
+<hr>
+
+</div>
+
+<p></p>
 
 <hr>
 
@@ -877,6 +954,9 @@ Analyze if higher prices correlate with higher perceived value despite actual ta
   </li>
   <li>
     <a href="https://www.stefanzukin.com/enigma/">Enigma</a>: Guess which abstract is fake, as generated by an AI model.
+  </li>
+  <li>
+    <a href="https://slatestarcodex.com/2014/12/12/beware-the-man-of-one-study/">Beware The Man Of One Study</a>
   </li>
 </ul>
 
