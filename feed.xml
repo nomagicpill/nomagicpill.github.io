@@ -6,2138 +6,2138 @@
     <description>Thoughts, research, knowledge, and experiences in my life</description>
     <language>en-us</language>
     <lastBuildDate>Fri, 18 Jul 2025 00:00:00 GMT</lastBuildDate>
-    <atom:link href="https://nomagicpill.com/feed.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://nomagicpill.github.io/feed.xml" rel="self" type="application/rss+xml" />
 
     <!--
 
     <item>
       <title></title>
-      <link>https://nomagicpill.com/</link>
+      <link>https://nomagicpill.github.io/</link>
       <description></description>
       <pubDate>day, xx xxx xxxx 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/</guid>
+      <guid>https://nomagicpill.github.io/</guid>
     </item>
 
     -->
 
     <item>
       <title>Exercises to Improve Agency</title>
-      <link>https://nomagicpill.com/knowledge/agencyexercises.html</link>
+      <link>https://nomagicpill.github.io/knowledge/agencyexercises.html</link>
       <description>You can just do things</description>
       <pubDate>Fri, 18 Jul 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/agencyexercises.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/agencyexercises.html</guid>
     </item>
 
     <item>
       <title>Identity IV: Turmoil</title>
-      <link>https://nomagicpill.com/thoughts/identity4.html</link>
+      <link>https://nomagicpill.github.io/thoughts/identity4.html</link>
       <description>Locus of control involuntarily going from internal to external</description>
       <pubDate>Tue, 15 Jul 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/identity4.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/identity4.html</guid>
     </item>
 
     <item>
       <title>Montreal</title>
-      <link>https://nomagicpill.com/experiences/montreal.html</link>
+      <link>https://nomagicpill.github.io/experiences/montreal.html</link>
       <description>Squalls, Quebec, green, games</description>
       <pubDate>Thu, 10 Jul 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/montreal.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/montreal.html</guid>
     </item>
 
     <item>
       <title>Orlando</title>
-      <link>https://nomagicpill.com/experiences/orlando.html</link>
+      <link>https://nomagicpill.github.io/experiences/orlando.html</link>
       <description>Parties, quality time, and Disney</description>
       <pubDate>Tue, 01 Jul 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/orlando.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/orlando.html</guid>
     </item>
 
     <item>
       <title>Things I Will Subsidize</title>
-      <link>https://nomagicpill.com/knowledge/subsidy.html</link>
+      <link>https://nomagicpill.github.io/knowledge/subsidy.html</link>
       <description>Books, movies, food, drink, and others</description>
       <pubDate>Wed, 25 Jun 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/subsidy.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/subsidy.html</guid>
     </item>
 
     <item>
       <title>LessOnline 2025</title>
-      <link>https://nomagicpill.com/experiences/lessonline2025.html</link>
+      <link>https://nomagicpill.github.io/experiences/lessonline2025.html</link>
       <description>Talking, talking, talking</description>
       <pubDate>Tue, 24 Jun 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/lessonline2025.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/lessonline2025.html</guid>
     </item>
 
     <item>
       <title>Travel Notes</title>
-      <link>https://nomagicpill.com/experiences/travelnotes.html</link>
+      <link>https://nomagicpill.github.io/experiences/travelnotes.html</link>
       <description>Checklist, tips and tricks, etc.</description>
       <pubDate>Thu, 19 Jun 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/travelnotes.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/travelnotes.html</guid>
     </item>
 
     <item>
       <title>Prominent Pictureless People</title>
-      <link>https://nomagicpill.com/knowledge/pictureless.html</link>
+      <link>https://nomagicpill.github.io/knowledge/pictureless.html</link>
       <description>Mysterious people who have few to no pictures on the internet</description>
       <pubDate>Wed, 04 Jun 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/pictureless.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/pictureless.html</guid>
     </item>
 
     <item>
       <title>San Diego</title>
-      <link>https://nomagicpill.com/experiences/sandiego.html</link>
+      <link>https://nomagicpill.github.io/experiences/sandiego.html</link>
       <description>Reuniting with friends, beaches, zoos, and flavors</description>
       <pubDate>Wed, 04 Jun 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/sandiego.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/sandiego.html</guid>
     </item>
 
     <item>
       <title>Semiconductor Fabs I: The Equipment</title>
-      <link>https://nomagicpill.com/research/fabs.html</link>
+      <link>https://nomagicpill.github.io/research/fabs.html</link>
       <description>In-depth look at semiconductor chip processing equipment</description>
       <pubDate>Tue, 03 Jun 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/fabs.html</guid>
+      <guid>https://nomagicpill.github.io/research/fabs.html</guid>
     </item>
 
     <item>
       <title>Consider Others' Cost Tolerances</title>
-      <link>https://nomagicpill.com/thoughts/research/fabs.html</link>
+      <link>https://nomagicpill.github.io/thoughts/research/fabs.html</link>
       <description>Just because you won't, doesn't mean they won't</description>
       <pubDate>Thu, 15 May 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/costtolerance.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/costtolerance.html</guid>
     </item>
 
     <item>
       <title>Clothing Choices for Overlooked Purposes</title>
-      <link>https://nomagicpill.com/thoughts/clothing.html</link>
+      <link>https://nomagicpill.github.io/thoughts/clothing.html</link>
       <description>Being boring, obvious, and weird can pay dividends</description>
       <pubDate>Sun, 11 May 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/clothing.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/clothing.html</guid>
     </item>
 
     <item>
       <title>New York City III</title>
-      <link>https://nomagicpill.com/experiences/nyc3.html</link>
+      <link>https://nomagicpill.github.io/experiences/nyc3.html</link>
       <description>Revelations, confirmations, and reflections</description>
       <pubDate>Sat, 03 May 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/nyc3.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/nyc3.html</guid>
     </item>
 
     <item>
       <title>Pro-Natalist vs. Pets</title>
-      <link>https://nomagicpill.com/thoughts/natalistpets.html</link>
+      <link>https://nomagicpill.github.io/thoughts/natalistpets.html</link>
       <description>Fur babies must be stopped for the future of our regular babies</description>
       <pubDate>Sat, 03 May 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/natalistpets.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/natalistpets.html</guid>
     </item>
 
     <item>
       <title>House of Horror (Movies)</title>
-      <link>https://nomagicpill.com/thoughts/horror.html</link>
+      <link>https://nomagicpill.github.io/thoughts/horror.html</link>
       <description>Prove those movie characters are idiots by beating the villain</description>
       <pubDate>Mon, 07 Apr 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/horror.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/horror.html</guid>
     </item>
 
     <item>
       <title>Climbing the Hill of Experiments</title>
-      <link>https://nomagicpill.com/thoughts/experimenting.html</link>
+      <link>https://nomagicpill.github.io/thoughts/experimenting.html</link>
       <description>A better anything can be achieved with simple tests at low costs</description>
       <pubDate>Wed, 12 Mar 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/experimenting.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/experimenting.html</guid>
     </item>
 
     <item>
       <title>Uganda</title>
-      <link>https://nomagicpill.com/experiences/uganda.html</link>
+      <link>https://nomagicpill.github.io/experiences/uganda.html</link>
       <description>Nature is both peaceful and metal, just not at the same time</description>
       <pubDate>Sun, 02 Mar 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/uganda.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/uganda.html</guid>
     </item>
 
     <item>
       <title>Bone Tomahawk Review</title>
-      <link>https://nomagicpill.com/knowledge/bonetomahawk.html</link>
+      <link>https://nomagicpill.github.io/knowledge/bonetomahawk.html</link>
       <description>Extreme violence peppered in between long bouts of boredom</description>
       <pubDate>Tue, 04 Feb 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/bonetomahawk.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/bonetomahawk.html</guid>
     </item>
 
     <item>
       <title>Apathy About Incompetence Isn't Endearing</title>
-      <link>https://nomagicpill.com/thoughts/endearing.html</link>
+      <link>https://nomagicpill.github.io/thoughts/endearing.html</link>
       <description>Try harder or explain otherwise</description>
       <pubDate>Fri, 17 Jan 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/endearing.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/endearing.html</guid>
     </item>
 
     <item>
       <title>Is Reserved Parking Worth It?</title>
-      <link>https://nomagicpill.com/research/reservedparking.html</link>
+      <link>https://nomagicpill.github.io/research/reservedparking.html</link>
       <description>Calculations and potential improvements to parking systems</description>
       <pubDate>Tue, 14 Jan 2025 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/reservedparking.html</guid>
+      <guid>https://nomagicpill.github.io/research/reservedparking.html</guid>
     </item>
 
     <item>
       <title>Peters Hide Amongst Us and Must Be Exposed</title>
-      <link>https://nomagicpill.com/thoughts/incompetence.html</link>
+      <link>https://nomagicpill.github.io/thoughts/incompetence.html</link>
       <description>It's not that they got there, it's that they stay there</description>
       <pubDate>Sun, 29 Dec 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/incompetence.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/incompetence.html</guid>
     </item>
 
     <item>
       <title>Weight Loss Using Small Items</title>
-      <link>https://nomagicpill.com/training/weight2.html</link>
+      <link>https://nomagicpill.github.io/training/weight2.html</link>
       <description>Wielding inconvenience as a weapon against fat</description>
       <pubDate>Sun, 15 Dec 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/weight2.html</guid>
+      <guid>https://nomagicpill.github.io/training/weight2.html</guid>
     </item>
 
     <item>
       <title>My American Dream Is Choosing Where to Live</title>
-      <link>https://nomagicpill.com/thoughts/americandream.html</link>
+      <link>https://nomagicpill.github.io/thoughts/americandream.html</link>
       <description>Freedom is everything</description>
       <pubDate>Wed, 11 Dec 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/americandream.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/americandream.html</guid>
     </item>
 
     <item>
       <title>Midwit Memes</title>
-      <link>https://nomagicpill.com/knowledge/midwit.html</link>
+      <link>https://nomagicpill.github.io/knowledge/midwit.html</link>
       <description>Background and collection of midwit memes</description>
       <pubDate>Sat, 16 Nov 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/midwit.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/midwit.html</guid>
     </item>
 
     <item>
       <title>Predictions</title>
-      <link>https://nomagicpill.com/knowledge/predictions.html</link>
+      <link>https://nomagicpill.github.io/knowledge/predictions.html</link>
       <description>Accountability and improving thinking skills</description>
       <pubDate>Thu, 07 Nov 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/predictions.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/predictions.html</guid>
     </item>
 
     <item>
       <title>Iceland</title>
-      <link>https://nomagicpill.com/experiences/iceland.html</link>
+      <link>https://nomagicpill.github.io/experiences/iceland.html</link>
       <description>Green and black sprinkled with trust and horses</description>
       <pubDate>Wed, 30 Oct 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/iceland.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/iceland.html</guid>
     </item>
 
     <item>
       <title>Concert Voting</title>
-      <link>https://nomagicpill.com/thoughts/concertvoting.html</link>
+      <link>https://nomagicpill.github.io/thoughts/concertvoting.html</link>
       <description>Crowdsourcing playlists for maximum fan satisfaction</description>
       <pubDate>Sat, 14 Sep 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/concertvoting.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/concertvoting.html</guid>
     </item>
 
     <item>
       <title>Identity III: Automatic Connection</title>
-      <link>https://nomagicpill.com/thoughts/identity3.html</link>
+      <link>https://nomagicpill.github.io/thoughts/identity3.html</link>
       <description>Strangers to friends in an instant</description>
       <pubDate>Sun, 04 Aug 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/identity3.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/identity3.html</guid>
     </item>
 
     <item>
       <title>Misaligned Incentives in Service-Based Industries</title>
-      <link>https://nomagicpill.com/thoughts/incentives.html</link>
+      <link>https://nomagicpill.github.io/thoughts/incentives.html</link>
       <description>Holding clients hostage without realizing it</description>
       <pubDate>Sun, 28 Jul 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/incentives.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/incentives.html</guid>
     </item>
 
     <item>
       <title>The Trust Function</title>
-      <link>https://nomagicpill.com/thoughts/trust.html</link>
+      <link>https://nomagicpill.github.io/thoughts/trust.html</link>
       <description>Calculating flakiness one commitment at a time</description>
       <pubDate>Wed, 24 Jul 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/trust.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/trust.html</guid>
     </item>
 
     <item>
       <title>Boston</title>
-      <link>https://nomagicpill.com/experiences/boston.html</link>
+      <link>https://nomagicpill.github.io/experiences/boston.html</link>
       <description>American history combined with American food and American prices</description>
       <pubDate>Sun, 30 Jun 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/boston.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/boston.html</guid>
     </item>
 
     <item>
       <title>Identity II: Use Identities to Guide Behaviors</title>
-      <link>https://nomagicpill.com/thoughts/identity2.html</link>
+      <link>https://nomagicpill.github.io/thoughts/identity2.html</link>
       <description>Behave or join the outgroup</description>
       <pubDate>Tue, 21 May 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/identity2.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/identity2.html</guid>
     </item>
 
     <item>
       <title>Environment I: Ambition</title>
-      <link>https://nomagicpill.com/thoughts/environment.html</link>
+      <link>https://nomagicpill.github.io/thoughts/environment.html</link>
       <description>Success by osmosis</description>
       <pubDate>Wed, 15 May 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/environment.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/environment.html</guid>
     </item>
 
     <item>
       <title>Social Defection</title>
-      <link>https://nomagicpill.com/thoughts/defection.html</link>
+      <link>https://nomagicpill.github.io/thoughts/defection.html</link>
       <description>Rules separate us from the animals</description>
       <pubDate>Mon, 18 Mar 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/defection.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/defection.html</guid>
     </item>
 
     <item>
       <title>Fredericksburg</title>
-      <link>https://nomagicpill.com/experiences/fredericksburg.html</link>
+      <link>https://nomagicpill.github.io/experiences/fredericksburg.html</link>
       <description>Embracing my German heritage through copious amounts of wine and beer</description>
       <pubDate>Thu, 14 Mar 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/fredericksburg.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/fredericksburg.html</guid>
     </item>
 
     <item>
       <title>Nootropics</title>
-      <link>https://nomagicpill.com/research/nootropics.html</link>
+      <link>https://nomagicpill.github.io/research/nootropics.html</link>
       <description>Blinded experiments in an effort to improve</description>
       <pubDate>Mon, 04 Mar 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/nootropics.html</guid>
+      <guid>https://nomagicpill.github.io/research/nootropics.html</guid>
     </item>
 
     <item>
       <title>Sleep Deprivation Training for Endurance Athletes</title>
-      <link>https://nomagicpill.com/training/sleepdeprivation.html</link>
+      <link>https://nomagicpill.github.io/training/sleepdeprivation.html</link>
       <description>Literature, experiments, solutions</description>
       <pubDate>Thu, 29 Feb 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/sleepdeprivation.html</guid>
+      <guid>https://nomagicpill.github.io/training/sleepdeprivation.html</guid>
     </item>
 
     <item>
       <title>Selling Out</title>
-      <link>https://nomagicpill.com/thoughts/sellingout.html</link>
+      <link>https://nomagicpill.github.io/thoughts/sellingout.html</link>
       <description>Compromising principles for materials and status</description>
       <pubDate>Sun, 25 Feb 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/sellingout.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/sellingout.html</guid>
     </item>
 
     <item>
       <title>Death IV: Friends</title>
-      <link>https://nomagicpill.com/thoughts/death4.html</link>
+      <link>https://nomagicpill.github.io/thoughts/death4.html</link>
       <description>Is losing a friend the same as them dying?</description>
       <pubDate>Sun, 21 Jan 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/death4.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/death4.html</guid>
     </item>
 
     <item>
       <title>Predicting iPhone vs. Non-iPhone Users</title>
-      <link>https://nomagicpill.com/research/phones.html</link>
+      <link>https://nomagicpill.github.io/research/phones.html</link>
       <description>Can you tell if someone is going to mess up the group chat?</description>
       <pubDate>Sat, 20 Jan 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/phones.html</guid>
+      <guid>https://nomagicpill.github.io/research/phones.html</guid>
     </item>
 
     <item>
       <title>Pacing III: Steady State</title>
-      <link>https://nomagicpill.com/thoughts/pacing3.html</link>
+      <link>https://nomagicpill.github.io/thoughts/pacing3.html</link>
       <description>Staying consistent in efforts and in life</description>
       <pubDate>Wed, 17 Jan 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/pacing3.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/pacing3.html</guid>
     </item>
 
     <item>
       <title>AI-Generated Music for Learning</title>
-      <link>https://nomagicpill.com/thoughts/aimusic.html</link>
+      <link>https://nomagicpill.github.io/thoughts/aimusic.html</link>
       <description>Catchy tunes are easy to remember</description>
       <pubDate>Wed, 10 Jan 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/aimusic.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/aimusic.html</guid>
     </item>
 
     <item>
       <title>Eliminating Phone Addiction</title>
-      <link>https://nomagicpill.com/knowledge/phoneaddiction.html</link>
+      <link>https://nomagicpill.github.io/knowledge/phoneaddiction.html</link>
       <description>Using settings, practices, and principles</description>
       <pubDate>Sun, 07 Jan 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/phoneaddiction.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/phoneaddiction.html</guid>
     </item>
 
     <item>
       <title>Reflections on Sermons</title>
-      <link>https://nomagicpill.com/thoughts/sermons.html</link>
+      <link>https://nomagicpill.github.io/thoughts/sermons.html</link>
       <description>Asking, pondering, and answering difficult questions</description>
       <pubDate>Thu, 04 Jan 2024 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/sermons.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/sermons.html</guid>
     </item>
 
     <item>
       <title>Conversation Visualizer</title>
-      <link>https://nomagicpill.com/thoughts/visualizer.html</link>
+      <link>https://nomagicpill.github.io/thoughts/visualizer.html</link>
       <description>Voice to text to image to reflection</description>
       <pubDate>Sat, 30 Dec 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/visualizer.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/visualizer.html</guid>
     </item>
 
     <item>
       <title>Tulum</title>
-      <link>https://nomagicpill.com/experiences/tulum.html</link>
+      <link>https://nomagicpill.github.io/experiences/tulum.html</link>
       <description>Eating, tanning, and swimming in the ancient Mayan city</description>
       <pubDate>Fri, 22 Dec 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/tulum.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/tulum.html</guid>
     </item>
 
     <item>
       <title>Get Your Focus Right</title>
-      <link>https://nomagicpill.com/thoughts/focus.html</link>
+      <link>https://nomagicpill.github.io/thoughts/focus.html</link>
       <description>Seek the important and dismiss the trivial</description>
       <pubDate>Tue, 05 Dec 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/focus.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/focus.html</guid>
     </item>
 
     <item>
       <title>Riding with Death at 50 mph</title>
-      <link>https://nomagicpill.com/experiences/50mph.html</link>
+      <link>https://nomagicpill.github.io/experiences/50mph.html</link>
       <description>His whispers sound like gale force winds</description>
       <pubDate>Wed, 29 Nov 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/50mph.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/50mph.html</guid>
     </item>
 
     <item>
       <title>Ruined</title>
-      <link>https://nomagicpill.com/thoughts/ruined.html</link>
+      <link>https://nomagicpill.github.io/thoughts/ruined.html</link>
       <description>Has trying to get better made me worse?</description>
       <pubDate>Tue, 28 Nov 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/ruined.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/ruined.html</guid>
     </item>
 
     <item>
       <title>Comfort Zone Expansion for Social Interactions</title>
-      <link>https://nomagicpill.com/knowledge/comfortzone.html</link>
+      <link>https://nomagicpill.github.io/knowledge/comfortzone.html</link>
       <description>Theory and varying difficulties of exercises</description>
       <pubDate>Sun, 19 Nov 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/comfortzone.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/comfortzone.html</guid>
     </item>
 
     <item>
       <title>Personal Convenience Drones</title>
-      <link>https://nomagicpill.com/thoughts/drones.html</link>
+      <link>https://nomagicpill.github.io/thoughts/drones.html</link>
       <description>Freeing up hands and minds for more important things</description>
       <pubDate>Sun, 19 Nov 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/drones.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/drones.html</guid>
     </item>
 
     <item>
       <title>Global Entry Cost-Benefit Analysis</title>
-      <link>https://nomagicpill.com/research/globalentry.html</link>
+      <link>https://nomagicpill.github.io/research/globalentry.html</link>
       <description>Definitely worth it for flexing, but financially?</description>
       <pubDate>Sun, 05 Nov 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/globalentry.html</guid>
+      <guid>https://nomagicpill.github.io/research/globalentry.html</guid>
     </item>
 
     <item>
       <title>Seconds Matter</title>
-      <link>https://nomagicpill.com/thoughts/seconds.html</link>
+      <link>https://nomagicpill.github.io/thoughts/seconds.html</link>
       <description>Accumulation is real... and fast</description>
       <pubDate>Sun, 05 Nov 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/seconds.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/seconds.html</guid>
     </item>
 
     <item>
       <title>Scenic Routes in Map Apps</title>
-      <link>https://nomagicpill.com/thoughts/scenic.html</link>
+      <link>https://nomagicpill.github.io/thoughts/scenic.html</link>
       <description>Taking the longer way for fun</description>
       <pubDate>Sat, 04 Nov 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/scenic.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/scenic.html</guid>
     </item>
 
     <item>
       <title>Germany</title>
-      <link>https://nomagicpill.com/experiences/germany.html</link>
+      <link>https://nomagicpill.github.io/experiences/germany.html</link>
       <description>A whole lotta walkin' and a whole lotta talkin' in Deutschland</description>
       <pubDate>Fri, 03 Nov 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/germany.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/germany.html</guid>
     </item>
 
     <item>
       <title>Social Inertia</title>
-      <link>https://nomagicpill.com/thoughts/inertia.html</link>
+      <link>https://nomagicpill.github.io/thoughts/inertia.html</link>
       <description>Present interactions influence all future interactions</description>
       <pubDate>Tue, 26 Sep 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/inertia.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/inertia.html</guid>
     </item>
 
     <item>
       <title>New York City II</title>
-      <link>https://nomagicpill.com/experiences/nyc2.html</link>
+      <link>https://nomagicpill.github.io/experiences/nyc2.html</link>
       <description>(Dis)connecting with others in the City That Never Sleeps</description>
       <pubDate>Tue, 26 Sep 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/nyc2.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/nyc2.html</guid>
     </item>
 
     <item>
       <title>Europe</title>
-      <link>https://nomagicpill.com/experiences/europe.html</link>
+      <link>https://nomagicpill.github.io/experiences/europe.html</link>
       <description>Embracing and disguising my Americanism in four countries</description>
       <pubDate>Mon, 11 Sep 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/europe.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/europe.html</guid>
     </item>
 
     <item>
       <title>Discipline V: Non-zero-Sum Efforts</title>
-      <link>https://nomagicpill.com/thoughts/discipline5.html</link>
+      <link>https://nomagicpill.github.io/thoughts/discipline5.html</link>
       <description>Unproductive time removed ≠ productive time gained</description>
       <pubDate>Sun, 06 Aug 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/discipline5.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/discipline5.html</guid>
     </item>
 
     <item>
       <title>Salt Lake City</title>
-      <link>https://nomagicpill.com/experiences/slc.html</link>
+      <link>https://nomagicpill.github.io/experiences/slc.html</link>
       <description>Climbing Utah's highest peak with an old friend</description>
       <pubDate>Sun, 06 Aug 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/slc.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/slc.html</guid>
     </item>
 
     <item>
       <title>Filtering Through Low Bars</title>
-      <link>https://nomagicpill.com/thoughts/lowbars.html</link>
+      <link>https://nomagicpill.github.io/thoughts/lowbars.html</link>
       <description>Easy barriers provide valuable information when not passed</description>
       <pubDate>Tue, 25 Jul 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/lowbars.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/lowbars.html</guid>
     </item>
 
     <item>
       <title>Culture Comes From the Top</title>
-      <link>https://nomagicpill.com/thoughts/culture.html</link>
+      <link>https://nomagicpill.github.io/thoughts/culture.html</link>
       <description>And pours down, whether asked for or not</description>
       <pubDate>Tue, 25 Jul 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/culture.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/culture.html</guid>
     </item>
 
     <item>
       <title>Vancouver-Seattle</title>
-      <link>https://nomagicpill.com/experiences/vansea.html</link>
+      <link>https://nomagicpill.github.io/experiences/vansea.html</link>
       <description>Mountain biking, hiking, and friending in the Pacific Northwest</description>
       <pubDate>Fri, 21 Jul 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/vansea.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/vansea.html</guid>
     </item>
 
     <item>
       <title>Notes V: Miscellaneous</title>
-      <link>https://nomagicpill.com/knowledge/notes5.html</link>
+      <link>https://nomagicpill.github.io/knowledge/notes5.html</link>
       <description>Miscellaneous notes</description>
       <pubDate>Fri, 21 Jul 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes5.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes5.html</guid>
     </item>
 
     <item>
       <title>The Airline Smell Tax</title>
-      <link>https://nomagicpill.com/thoughts/smell.html</link>
+      <link>https://nomagicpill.github.io/thoughts/smell.html</link>
       <description>Passengers must smell not-bad to fly for no extra charge</description>
       <pubDate>Fri, 09 Jun 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/smell.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/smell.html</guid>
     </item>
 
     <item>
       <title>Systems to Eschew Eschewing Performance</title>
-      <link>https://nomagicpill.com/thoughts/eschew.html</link>
+      <link>https://nomagicpill.github.io/thoughts/eschew.html</link>
       <description>Competitors must earn statuses</description>
       <pubDate>Sun, 28 May 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/eschew.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/eschew.html</guid>
     </item>
 
     <item>
       <title>Boredom II: Preying on the Ignorant</title>
-      <link>https://nomagicpill.com/thoughts/boredom2.html</link>
+      <link>https://nomagicpill.github.io/thoughts/boredom2.html</link>
       <description>Selling snake oil for a hefty profit</description>
       <pubDate>Tue, 23 May 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/boredom2.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/boredom2.html</guid>
     </item>
 
     <item>
       <title>Identity I: Adjectives vs. Nouns</title>
-      <link>https://nomagicpill.com/thoughts/identity.html</link>
+      <link>https://nomagicpill.github.io/thoughts/identity.html</link>
       <description>Nouns are specific and adjectives are general</description>
       <pubDate>Sun, 21 May 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/identity.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/identity.html</guid>
     </item>
 
     <item>
       <title>Mexico City</title>
-      <link>https://nomagicpill.com/experiences/mexicocity.html</link>
+      <link>https://nomagicpill.github.io/experiences/mexicocity.html</link>
       <description>Food and history in an arborist's and artist's dream city</description>
       <pubDate>Sun, 14 May 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/mexicocity.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/mexicocity.html</guid>
     </item>
 
     <item>
       <title>Everesting III: Success by Support</title>
-      <link>https://nomagicpill.com/training/everesting3.html</link>
+      <link>https://nomagicpill.github.io/training/everesting3.html</link>
       <description>29,000 ft and 21 hours of riding, resting, and whining</description>
       <pubDate>Wed, 19 Apr 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/everesting3.html</guid>
+      <guid>https://nomagicpill.github.io/training/everesting3.html</guid>
     </item>
 
     <item>
       <title>Bike Rack Positions Cost-Benefit Analysis</title>
-      <link>https://nomagicpill.com/research/bikerack.html</link>
+      <link>https://nomagicpill.github.io/research/bikerack.html</link>
       <description>Roof vs. hitch</description>
       <pubDate>Mon, 03 Apr 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/bikerack.html</guid>
+      <guid>https://nomagicpill.github.io/research/bikerack.html</guid>
     </item>
 
     <item>
       <title>Ads and Gas Pumping Rate</title>
-      <link>https://nomagicpill.com/research/gas.html</link>
+      <link>https://nomagicpill.github.io/research/gas.html</link>
       <description>Do gas stations intentionally throttle pumping rates to improve profits?</description>
       <pubDate>Wed, 29 Mar 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/gas.html</guid>
+      <guid>https://nomagicpill.github.io/research/gas.html</guid>
     </item>
 
     <item>
       <title>Nostalgia II: Good Ol' Days</title>
-      <link>https://nomagicpill.com/thoughts/nostalgia2.html</link>
+      <link>https://nomagicpill.github.io/thoughts/nostalgia2.html</link>
       <description>Recognition of reality can reduce future heartache</description>
       <pubDate>Sat, 11 Mar 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/nostalgia2.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/nostalgia2.html</guid>
     </item>
 
     <item>
       <title>Roommates</title>
-      <link>https://nomagicpill.com/thoughts/roommates.html</link>
+      <link>https://nomagicpill.github.io/thoughts/roommates.html</link>
       <description>Why they're an all-around great idea</description>
       <pubDate>Sat, 11 Mar 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/roommates.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/roommates.html</guid>
     </item>
 
     <item>
       <title>New York City I</title>
-      <link>https://nomagicpill.com/experiences/nyc.html</link>
+      <link>https://nomagicpill.github.io/experiences/nyc.html</link>
       <description>Four late nights fueled by pizza and alcohol</description>
       <pubDate>Fri, 10 Mar 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/nyc.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/nyc.html</guid>
     </item>
 
     <item>
       <title>Penances</title>
-      <link>https://nomagicpill.com/knowledge/penances.html</link>
+      <link>https://nomagicpill.github.io/knowledge/penances.html</link>
       <description>Creative punishments for a variety of needs</description>
       <pubDate>Sun, 19 Feb 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/penances.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/penances.html</guid>
     </item>
 
     <item>
       <title>Core Training</title>
-      <link>https://nomagicpill.com/training/core.html</link>
+      <link>https://nomagicpill.github.io/training/core.html</link>
       <description>Myths, programming, thoughts</description>
       <pubDate>Wed, 01 Feb 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/core.html</guid>
+      <guid>https://nomagicpill.github.io/training/core.html</guid>
     </item>
 
     <item>
       <title>Keep It Up</title>
-      <link>https://nomagicpill.com/training/keepitup.html</link>
+      <link>https://nomagicpill.github.io/training/keepitup.html</link>
       <description>Programming for the long haul</description>
       <pubDate>Sun, 15 Jan 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/keepitup.html</guid>
+      <guid>https://nomagicpill.github.io/training/keepitup.html</guid>
     </item>
 
     <item>
       <title>Notes III: Books, Podcasts</title>
-      <link>https://nomagicpill.com/knowledge/notes3.html</link>
+      <link>https://nomagicpill.github.io/knowledge/notes3.html</link>
       <description>Notes from books and podcasts</description>
       <pubDate>Sun, 15 Jan 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes3.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes3.html</guid>
     </item>
 
     <item>
       <title>Sleep: Effects and Hygiene</title>
-      <link>https://nomagicpill.com/knowledge/sleep.html</link>
+      <link>https://nomagicpill.github.io/knowledge/sleep.html</link>
       <description>Information on sleep's importance and hygiene</description>
       <pubDate>Mon, 02 Jan 2023 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/sleep.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/sleep.html</guid>
     </item>
 
     <item>
       <title>Fear is a Lack of Understanding</title>
-      <link>https://nomagicpill.com/thoughts/fear.html</link>
+      <link>https://nomagicpill.github.io/thoughts/fear.html</link>
       <description>Take time to learn before making an assessment</description>
       <pubDate>Mon, 26 Dec 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/fear.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/fear.html</guid>
     </item>
 
     <item>
       <title>Discipline IV: Digging Graves</title>
-      <link>https://nomagicpill.com/thoughts/discipline4.html</link>
+      <link>https://nomagicpill.github.io/thoughts/discipline4.html</link>
       <description>Make decisions that risk livelihood if not completed</description>
       <pubDate>Sat, 24 Dec 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/discipline4.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/discipline4.html</guid>
     </item>
 
     <item>
       <title>Excuses</title>
-      <link>https://nomagicpill.com/thoughts/excuses.html</link>
+      <link>https://nomagicpill.github.io/thoughts/excuses.html</link>
       <description>Competitors don't bitch, they compensate</description>
       <pubDate>Fri, 23 Dec 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/excuses.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/excuses.html</guid>
     </item>
 
     <item>
       <title>Weight Loss in Just a Few Hard Steps</title>
-      <link>https://nomagicpill.com/training/weight.html</link>
+      <link>https://nomagicpill.github.io/training/weight.html</link>
       <description>"Nothing tastes as good as skinny feels"</description>
       <pubDate>Tue, 06 Dec 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/weight.html</guid>
+      <guid>https://nomagicpill.github.io/training/weight.html</guid>
     </item>
 
     <item>
       <title>Dates</title>
-      <link>https://nomagicpill.com/knowledge/dates.html</link>
+      <link>https://nomagicpill.github.io/knowledge/dates.html</link>
       <description>Out-of-the-box options for both committed relationships and casual partners</description>
       <pubDate>Thu, 24 Nov 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/dates.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/dates.html</guid>
     </item>
 
     <item>
       <title>Puzzle Learning</title>
-      <link>https://nomagicpill.com/thoughts/puzzle.html</link>
+      <link>https://nomagicpill.github.io/thoughts/puzzle.html</link>
       <description>An approach to learning new subjects</description>
       <pubDate>Wed, 16 Nov 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/puzzle.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/puzzle.html</guid>
     </item>
 
     <item>
       <title>Death of the American Shopping Scene</title>
-      <link>https://nomagicpill.com/thoughts/shopping.html</link>
+      <link>https://nomagicpill.github.io/thoughts/shopping.html</link>
       <description>A look at the current state of American shopping culture</description>
       <pubDate>Tue, 15 Nov 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/shopping.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/shopping.html</guid>
     </item>
 
     <item>
       <title>In Praise of Libraries</title>
-      <link>https://nomagicpill.com/thoughts/library.html</link>
+      <link>https://nomagicpill.github.io/thoughts/library.html</link>
       <description>All the good public libraries have to offer</description>
       <pubDate>Wed, 09 Nov 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/library.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/library.html</guid>
     </item>
 
     <item>
       <title>Nostalgia I: Seeing Ghosts</title>
-      <link>https://nomagicpill.com/thoughts/nostalgia.html</link>
+      <link>https://nomagicpill.github.io/thoughts/nostalgia.html</link>
       <description>Memories conjure up ghosts in distant places</description>
       <pubDate>Sun, 06 Nov 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/nostalgia.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/nostalgia.html</guid>
     </item>
 
     <item>
       <title>Everesting II: Defeat by Darkness</title>
-      <link>https://nomagicpill.com/training/everesting2.html</link>
+      <link>https://nomagicpill.github.io/training/everesting2.html</link>
       <description>Hubris and underestimation get the best of me</description>
       <pubDate>Sun, 06 Nov 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/everesting2.html</guid>
+      <guid>https://nomagicpill.github.io/training/everesting2.html</guid>
     </item>
 
     <item>
       <title>Fucking Around to Find Out</title>
-      <link>https://nomagicpill.com/thoughts/fafo.html</link>
+      <link>https://nomagicpill.github.io/thoughts/fafo.html</link>
       <description>Unrestrained exploration can be a valuable learning opportunity</description>
       <pubDate>Fri, 04 Nov 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/fafo.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/fafo.html</guid>
     </item>
 
     <item>
       <title>Writing Styles</title>
-      <link>https://nomagicpill.com/thoughts/styles.html</link>
+      <link>https://nomagicpill.github.io/thoughts/styles.html</link>
       <description>Some are ugly and fleeting, others aesthetic and timeless</description>
       <pubDate>Tue, 01 Nov 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/styles.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/styles.html</guid>
     </item>
 
     <item>
       <title>Create an Environment of Convenience</title>
-      <link>https://nomagicpill.com/thoughts/convenience.html</link>
+      <link>https://nomagicpill.github.io/thoughts/convenience.html</link>
       <description>Personal convenience makes everything better</description>
       <pubDate>Tue, 01 Nov 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/convenience.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/convenience.html</guid>
     </item>
 
     <item>
       <title>Privilege Violations Need Stricter Punishments</title>
-      <link>https://nomagicpill.com/thoughts/privilege.html</link>
+      <link>https://nomagicpill.github.io/thoughts/privilege.html</link>
       <description>Lack of punishment incentivizes violating rules</description>
       <pubDate>Tue, 01 Nov 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/privilege.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/privilege.html</guid>
     </item>
 
     <item>
       <title>Rationality Meetup Organizers Retreat</title>
-      <link>https://nomagicpill.com/experiences/retreat.html</link>
+      <link>https://nomagicpill.github.io/experiences/retreat.html</link>
       <description>Cult congregation in California</description>
       <pubDate>Sun, 30 Oct 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/retreat.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/retreat.html</guid>
     </item>
 
     <item>
       <title>Discipline III: Ebb and Flow</title>
-      <link>https://nomagicpill.com/thoughts/discipline3.html</link>
+      <link>https://nomagicpill.github.io/thoughts/discipline3.html</link>
       <description>Motivation fluctuates, but the front line always pushes or holds</description>
       <pubDate>Sun, 16 Oct 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/discipline3.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/discipline3.html</guid>
     </item>
 
     <item>
       <title>Why Are Most of My Thoughts Posts Advice-Flavored?</title>
-      <link>https://nomagicpill.com/thoughts/flavored.html</link>
+      <link>https://nomagicpill.github.io/thoughts/flavored.html</link>
       <description>A critical look at the why behind some essays</description>
       <pubDate>Fri, 07 Oct 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/flavored.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/flavored.html</guid>
     </item>
 
     <item>
       <title>Chicago</title>
-      <link>https://nomagicpill.com/experiences/chicago.html</link>
+      <link>https://nomagicpill.github.io/experiences/chicago.html</link>
       <description>Weekend trip to the Windy City</description>
       <pubDate>Fri, 07 Oct 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/chicago.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/chicago.html</guid>
     </item>
 
     <item>
       <title>Post-Training Eating</title>
-      <link>https://nomagicpill.com/training/trainingnotes.html#post_eating</link>
+      <link>https://nomagicpill.github.io/training/trainingnotes.html#post_eating</link>
       <description>Notes on post-training nutrition</description>
       <pubDate>Thu, 29 Sep 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/trainingnotes.html#post_eating</guid>
+      <guid>https://nomagicpill.github.io/training/trainingnotes.html#post_eating</guid>
     </item>
 
     <item>
       <title>Beginner's Blindness</title>
-      <link>https://nomagicpill.com/thoughts/blindness.html</link>
+      <link>https://nomagicpill.github.io/thoughts/blindness.html</link>
       <description>Resolution and appreciation are lost when limits are reached</description>
       <pubDate>Wed, 21 Sep 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/blindness.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/blindness.html</guid>
     </item>
 
     <item>
       <title>Fat Oxidation notes</title>
-      <link>https://nomagicpill.com/training/trainingnotes.html#fat_oxidation</link>
+      <link>https://nomagicpill.github.io/training/trainingnotes.html#fat_oxidation</link>
       <description>Notes on fat oxidation during exercise</description>
       <pubDate>Sun, 18 Sep 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/trainingnotes.html#fat_oxidation</guid>
+      <guid>https://nomagicpill.github.io/training/trainingnotes.html#fat_oxidation</guid>
     </item>
 
     <item>
       <title>Deprivation for Satisfaction</title>
-      <link>https://nomagicpill.com/thoughts/satisfaction.html</link>
+      <link>https://nomagicpill.github.io/thoughts/satisfaction.html</link>
       <description>Depriving myself of various wants/needs to increase satisfaction</description>
       <pubDate>Sun, 18 Sep 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/satisfaction.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/satisfaction.html</guid>
     </item>
 
     <item>
       <title>Nobody Cares</title>
-      <link>https://nomagicpill.com/thoughts/nobody.html</link>
+      <link>https://nomagicpill.github.io/thoughts/nobody.html</link>
       <description>Do things for yourself, not others</description>
       <pubDate>Fri, 09 Sep 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/nobody.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/nobody.html</guid>
     </item>
 
     <item>
       <title>Discipline II: By Force</title>
-      <link>https://nomagicpill.com/thoughts/discipline2.html</link>
+      <link>https://nomagicpill.github.io/thoughts/discipline2.html</link>
       <description>How to do things that aren't fun or desirable</description>
       <pubDate>Tue, 06 Sep 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/discipline2.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/discipline2.html</guid>
     </item>
 
     <item>
       <title>Productive Idling</title>
-      <link>https://nomagicpill.com/thoughts/idle.html</link>
+      <link>https://nomagicpill.github.io/thoughts/idle.html</link>
       <description>Always have something productive to do during idle times</description>
       <pubDate>Mon, 05 Sep 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/idle.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/idle.html</guid>
     </item>
 
     <item>
       <title>Intelligence Is Knowledge Is Experience</title>
-      <link>https://nomagicpill.com/thoughts/experience.html</link>
+      <link>https://nomagicpill.github.io/thoughts/experience.html</link>
       <description>Experience gives the illusion of intelligence</description>
       <pubDate>Wed, 31 Aug 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/experience.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/experience.html</guid>
     </item>
 
     <item>
       <title>Death III: Stories</title>
-      <link>https://nomagicpill.com/thoughts/death3.html</link>
+      <link>https://nomagicpill.github.io/thoughts/death3.html</link>
       <description>Stories of me and my father</description>
       <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/death3.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/death3.html</guid>
     </item>
 
     <item>
       <title>Stop Rewarding Beginner Success</title>
-      <link>https://nomagicpill.com/training/beginner.html</link>
+      <link>https://nomagicpill.github.io/training/beginner.html</link>
       <description>Coaches are mistakenly rewarded for easy achievements</description>
       <pubDate>Wed, 24 Aug 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/beginner.html</guid>
+      <guid>https://nomagicpill.github.io/training/beginner.html</guid>
     </item>
 
     <item>
       <title>Bucharest</title>
-      <link>https://nomagicpill.com/experiences/bucharest.html</link>
+      <link>https://nomagicpill.github.io/experiences/bucharest.html</link>
       <description>Exploring and eating like a king in the Paris of the East</description>
       <pubDate>Tue, 23 Aug 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/bucharest.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/bucharest.html</guid>
     </item>
 
     <item>
       <title>Project Euler Solutions</title>
-      <link>https://nomagicpill.com/knowledge/euler.html</link>
+      <link>https://nomagicpill.github.io/knowledge/euler.html</link>
       <description>Notes on and solutions to Project Euler and LeetCode problems</description>
       <pubDate>Sat, 20 Aug 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/euler.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/euler.html</guid>
     </item>
 
     <item>
       <title>Decision Chart Considerations</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#decision_chart</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#decision_chart</link>
       <description>Notes on decision-making frameworks</description>
       <pubDate>Sat, 30 Jul 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#decision_chart</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#decision_chart</guid>
     </item>
 
     <item>
       <title>Winning the Lottery</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#lottery</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#lottery</link>
       <description>Notes on lottery strategies and considerations</description>
       <pubDate>Thu, 28 Jul 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#lottery</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#lottery</guid>
     </item>
 
     <item>
       <title>Ethernet</title>
-      <link>https://nomagicpill.com/knowledge/home.html#ethernet</link>
+      <link>https://nomagicpill.github.io/knowledge/home.html#ethernet</link>
       <description>Home networking setup and considerations</description>
       <pubDate>Sat, 16 Jul 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/home.html#ethernet</guid>
+      <guid>https://nomagicpill.github.io/knowledge/home.html#ethernet</guid>
     </item>
 
     <item>
       <title>Working Alone</title>
-      <link>https://nomagicpill.com/knowledge/systems.html#alone</link>
+      <link>https://nomagicpill.github.io/knowledge/systems.html#alone</link>
       <description>Systems for productive solo work</description>
       <pubDate>Fri, 15 Jul 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/systems.html#alone</guid>
+      <guid>https://nomagicpill.github.io/knowledge/systems.html#alone</guid>
     </item>
 
     <item>
       <title>Limiting Distracting Websites</title>
-      <link>https://nomagicpill.com/research/self.html#websites</link>
+      <link>https://nomagicpill.github.io/research/self.html#websites</link>
       <description>Methods for reducing online distractions</description>
       <pubDate>Sun, 10 Jul 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/self.html#websites</guid>
+      <guid>https://nomagicpill.github.io/research/self.html#websites</guid>
     </item>
 
     <item>
       <title>Design of Experiments</title>
-      <link>https://nomagicpill.com/knowledge/notes2.html#science_doe</link>
+      <link>https://nomagicpill.github.io/knowledge/notes2.html#science_doe</link>
       <description>Notes on experimental design principles</description>
       <pubDate>Sun, 10 Jul 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes2.html#science_doe</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes2.html#science_doe</guid>
     </item>
 
     <item>
       <title>Cold Weather Clothing</title>
-      <link>https://nomagicpill.com/training/trainingnotes.html#cold_weather_clothing</link>
+      <link>https://nomagicpill.github.io/training/trainingnotes.html#cold_weather_clothing</link>
       <description>Notes on appropriate clothing for cold weather training</description>
       <pubDate>Fri, 24 Jun 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/trainingnotes.html#cold_weather_clothing</guid>
+      <guid>https://nomagicpill.github.io/training/trainingnotes.html#cold_weather_clothing</guid>
     </item>
 
     <item>
       <title>Agency</title>
-      <link>https://nomagicpill.com/thoughts/agency.html</link>
+      <link>https://nomagicpill.github.io/thoughts/agency.html</link>
       <description>Developing agency and the ability to achieve goals</description>
       <pubDate>Wed, 22 Jun 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/agency.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/agency.html</guid>
     </item>
 
     <item>
       <title>Modern Life is War</title>
-      <link>https://nomagicpill.com/thoughts/modern.html</link>
+      <link>https://nomagicpill.github.io/thoughts/modern.html</link>
       <description>Ways of life are being attacked and resistance is necessary</description>
       <pubDate>Sun, 19 Jun 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/modern.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/modern.html</guid>
     </item>
 
     <item>
       <title>Destruction IV</title>
-      <link>https://nomagicpill.com/thoughts/destruction4.html</link>
+      <link>https://nomagicpill.github.io/thoughts/destruction4.html</link>
       <description>The final piece of forest</description>
       <pubDate>Sun, 12 Jun 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/destruction4.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/destruction4.html</guid>
     </item>
 
     <item>
       <title>Now</title>
-      <link>https://nomagicpill.com/about/now.html</link>
+      <link>https://nomagicpill.github.io/about/now.html</link>
       <description>What I'm currently doing and interested in</description>
       <pubDate>Sun, 12 Jun 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/about/now.html</guid>
+      <guid>https://nomagicpill.github.io/about/now.html</guid>
     </item>
 
     <item>
       <title>24 Hours in the Canyon - 04-05 June 2022</title>
-      <link>https://nomagicpill.com/training/races.html#24_hours_canyon_2022</link>
+      <link>https://nomagicpill.github.io/training/races.html#24_hours_canyon_2022</link>
       <description>Race report from 24 Hours in the Canyon</description>
       <pubDate>Sat, 11 Jun 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/races.html#24_hours_canyon_2022</guid>
+      <guid>https://nomagicpill.github.io/training/races.html#24_hours_canyon_2022</guid>
     </item>
 
     <item>
       <title>Priorities</title>
-      <link>https://nomagicpill.com/thoughts/priorities.html</link>
+      <link>https://nomagicpill.github.io/thoughts/priorities.html</link>
       <description>A hard truth, a feeling of freedom, and a lamentation</description>
       <pubDate>Sat, 11 Jun 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/priorities.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/priorities.html</guid>
     </item>
 
     <item>
       <title>Where to Live for Happiness</title>
-      <link>https://nomagicpill.com/research/living.html</link>
+      <link>https://nomagicpill.github.io/research/living.html</link>
       <description>Literature and personal considerations related to housing variables</description>
       <pubDate>Mon, 06 Jun 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/living.html</guid>
+      <guid>https://nomagicpill.github.io/research/living.html</guid>
     </item>
 
     <item>
       <title>Indoor Bike Trainer</title>
-      <link>https://nomagicpill.com/knowledge/improvements.html#indoor_trainer</link>
+      <link>https://nomagicpill.github.io/knowledge/improvements.html#indoor_trainer</link>
       <description>Notes on indoor cycling training setup</description>
       <pubDate>Tue, 31 May 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/improvements.html#indoor_trainer</guid>
+      <guid>https://nomagicpill.github.io/knowledge/improvements.html#indoor_trainer</guid>
     </item>
 
     <item>
       <title>(Y/N)IMBY</title>
-      <link>https://nomagicpill.com/knowledge/notes2.html#economics_imby</link>
+      <link>https://nomagicpill.github.io/knowledge/notes2.html#economics_imby</link>
       <description>Notes on NIMBY/YIMBY housing policies</description>
       <pubDate>Mon, 16 May 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes2.html#economics_imby</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes2.html#economics_imby</guid>
     </item>
 
     <item>
       <title>Ido Portal Notes</title>
-      <link>https://nomagicpill.com/training/trainingnotes.html#ido_portal</link>
+      <link>https://nomagicpill.github.io/training/trainingnotes.html#ido_portal</link>
       <description>Notes on Ido Portal's movement methodology</description>
       <pubDate>Mon, 02 May 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/trainingnotes.html#ido_portal</guid>
+      <guid>https://nomagicpill.github.io/training/trainingnotes.html#ido_portal</guid>
     </item>
 
     <item>
       <title>Restaurant Reviews</title>
-      <link>https://nomagicpill.com/knowledge/restaurants.html</link>
+      <link>https://nomagicpill.github.io/knowledge/restaurants.html</link>
       <description>Mostly around the Dallas area</description>
       <pubDate>Wed, 27 Apr 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/restaurants.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/restaurants.html</guid>
     </item>
 
     <item>
       <title>Electric Skillet</title>
-      <link>https://nomagicpill.com/knowledge/improvements.html#electric_skillet</link>
+      <link>https://nomagicpill.github.io/knowledge/improvements.html#electric_skillet</link>
       <description>Life improvement: Electric skillet</description>
       <pubDate>Wed, 30 Mar 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/improvements.html#electric_skillet</guid>
+      <guid>https://nomagicpill.github.io/knowledge/improvements.html#electric_skillet</guid>
     </item>
 
     <item>
       <title>Flip-Flops</title>
-      <link>https://nomagicpill.com/knowledge/improvements.html#flip_flops</link>
+      <link>https://nomagicpill.github.io/knowledge/improvements.html#flip_flops</link>
       <description>Life improvement: Flip-flops</description>
       <pubDate>Tue, 29 Mar 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/improvements.html#flip_flops</guid>
+      <guid>https://nomagicpill.github.io/knowledge/improvements.html#flip_flops</guid>
     </item>
 
     <item>
       <title>Moderation is My Enemy and I Will Wage War on It Wherever I Go With Whatever I Have</title>
-      <link>https://nomagicpill.com/thoughts/moderation.html</link>
+      <link>https://nomagicpill.github.io/thoughts/moderation.html</link>
       <description>Against moderation in all things</description>
       <pubDate>Thu, 24 Mar 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/moderation.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/moderation.html</guid>
     </item>
 
     <item>
       <title>[Blank]-Free Foods</title>
-      <link>https://nomagicpill.com/research/freefoods.html</link>
+      <link>https://nomagicpill.github.io/research/freefoods.html</link>
       <description>Healthy or not?</description>
       <pubDate>Tue, 22 Mar 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/freefoods.html</guid>
+      <guid>https://nomagicpill.github.io/research/freefoods.html</guid>
     </item>
 
     <item>
       <title>Pacing II: Acceleration</title>
-      <link>https://nomagicpill.com/thoughts/pacing2.html</link>
+      <link>https://nomagicpill.github.io/thoughts/pacing2.html</link>
       <description>Or lack thereof, on machines and in life</description>
       <pubDate>Tue, 22 Mar 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/pacing2.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/pacing2.html</guid>
     </item>
 
     <item>
       <title>Mindfulness in Plain English notes</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#mindfulness_plain_english</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#mindfulness_plain_english</link>
       <description>Notes from Mindfulness in Plain English</description>
       <pubDate>Sun, 06 Mar 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#mindfulness_plain_english</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#mindfulness_plain_english</guid>
     </item>
 
     <item>
       <title>St. Thomas</title>
-      <link>https://nomagicpill.com/experiences/stthomas.html</link>
+      <link>https://nomagicpill.github.io/experiences/stthomas.html</link>
       <description>Beach chillin', water explorin', and drink drinkin' in the USVI</description>
       <pubDate>Tue, 15 Feb 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/stthomas.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/stthomas.html</guid>
     </item>
 
     <item>
       <title>Slowing Time</title>
-      <link>https://nomagicpill.com/research/slow.html</link>
+      <link>https://nomagicpill.github.io/research/slow.html</link>
       <description>Notes on and suggestions for making time feel slower</description>
       <pubDate>Sat, 05 Feb 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/slow.html</guid>
+      <guid>https://nomagicpill.github.io/research/slow.html</guid>
     </item>
 
     <item>
       <title>25 Anti-Mimetic Tactics for Living a Counter-Cultural Life</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#mimetic_tactics</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#mimetic_tactics</link>
       <description>Notes on anti-mimetic living</description>
       <pubDate>Mon, 31 Jan 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#mimetic_tactics</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#mimetic_tactics</guid>
     </item>
 
     <item>
       <title>Is LTC Insurance Worth It?</title>
-      <link>https://nomagicpill.com/research/ltc.html</link>
+      <link>https://nomagicpill.github.io/research/ltc.html</link>
       <description>Insurance, lawyer fees, incident probabilities</description>
       <pubDate>Thu, 27 Jan 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/ltc.html</guid>
+      <guid>https://nomagicpill.github.io/research/ltc.html</guid>
     </item>
 
     <item>
       <title>Food: Science and Recipes</title>
-      <link>https://nomagicpill.com/knowledge/food.html</link>
+      <link>https://nomagicpill.github.io/knowledge/food.html</link>
       <description>Information on the science of food and recipes</description>
       <pubDate>Tue, 25 Jan 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/food.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/food.html</guid>
     </item>
 
     <item>
       <title>Safe Driving Exercises</title>
-      <link>https://nomagicpill.com/thoughts/safe.html#exercises</link>
+      <link>https://nomagicpill.github.io/thoughts/safe.html#exercises</link>
       <description>Exercises for improving driving safety</description>
       <pubDate>Thu, 20 Jan 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/safe.html#exercises</guid>
+      <guid>https://nomagicpill.github.io/thoughts/safe.html#exercises</guid>
     </item>
 
     <item>
       <title>Everesting I: Base Camp</title>
-      <link>https://nomagicpill.com/training/everesting.html</link>
+      <link>https://nomagicpill.github.io/training/everesting.html</link>
       <description>Climbing 15,000 ft in a single ride on a single hill</description>
       <pubDate>Tue, 18 Jan 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/everesting.html</guid>
+      <guid>https://nomagicpill.github.io/training/everesting.html</guid>
     </item>
 
     <item>
       <title>Santa Fe</title>
-      <link>https://nomagicpill.com/experiences/santafe.html</link>
+      <link>https://nomagicpill.github.io/experiences/santafe.html</link>
       <description>Shredding the slopes of the historic city</description>
       <pubDate>Sat, 15 Jan 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/santafe.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/santafe.html</guid>
     </item>
 
     <item>
       <title>Destruction III</title>
-      <link>https://nomagicpill.com/thoughts/destruction3.html</link>
+      <link>https://nomagicpill.github.io/thoughts/destruction3.html</link>
       <description>Gone, but not forgotten</description>
       <pubDate>Tue, 04 Jan 2022 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/destruction3.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/destruction3.html</guid>
     </item>
 
     <item>
       <title>Update on Xbox as a Life Improvement</title>
-      <link>https://nomagicpill.com/knowledge/improvements.html#xbox</link>
+      <link>https://nomagicpill.github.io/knowledge/improvements.html#xbox</link>
       <description>Life improvement: Xbox gaming system</description>
       <pubDate>Mon, 27 Dec 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/improvements.html#xbox</guid>
+      <guid>https://nomagicpill.github.io/knowledge/improvements.html#xbox</guid>
     </item>
 
     <item>
       <title>Merit-Based Barriers to Entry</title>
-      <link>https://nomagicpill.com/thoughts/barrier.html</link>
+      <link>https://nomagicpill.github.io/thoughts/barrier.html</link>
       <description>Your skill level must be this high to ride</description>
       <pubDate>Mon, 27 Dec 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/barrier.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/barrier.html</guid>
     </item>
 
     <item>
       <title>Competition</title>
-      <link>https://nomagicpill.com/thoughts/competition.html</link>
+      <link>https://nomagicpill.github.io/thoughts/competition.html</link>
       <description>Benefits, detriments, implementation</description>
       <pubDate>Fri, 24 Dec 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/competition.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/competition.html</guid>
     </item>
 
     <item>
       <title>Death II: One Year</title>
-      <link>https://nomagicpill.com/thoughts/death2.html</link>
+      <link>https://nomagicpill.github.io/thoughts/death2.html</link>
       <description>Reflections one year after my father's death</description>
       <pubDate>Fri, 10 Dec 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/death2.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/death2.html</guid>
     </item>
 
     <item>
       <title>Distractions</title>
-      <link>https://nomagicpill.com/thoughts/distractions.html</link>
+      <link>https://nomagicpill.github.io/thoughts/distractions.html</link>
       <description>Definitions, common examples, elimination, prevention</description>
       <pubDate>Wed, 08 Dec 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/distractions.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/distractions.html</guid>
     </item>
 
     <item>
       <title>Thankful</title>
-      <link>https://nomagicpill.com/thoughts/thankful.html</link>
+      <link>https://nomagicpill.github.io/thoughts/thankful.html</link>
       <description>Running list of reasons I have to be thankful</description>
       <pubDate>Wed, 24 Nov 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/thankful.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/thankful.html</guid>
     </item>
 
     <item>
       <title>Home Ownership</title>
-      <link>https://nomagicpill.com/knowledge/home.html</link>
+      <link>https://nomagicpill.github.io/knowledge/home.html</link>
       <description>Considerations, projects, information, suggestions</description>
       <pubDate>Thu, 04 Nov 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/home.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/home.html</guid>
     </item>
 
     <item>
       <title>6pm in the Subfab</title>
-      <link>https://nomagicpill.com/thoughts/subfab.html</link>
+      <link>https://nomagicpill.github.io/thoughts/subfab.html</link>
       <description>Working long hours and what it means for some</description>
       <pubDate>Sun, 24 Oct 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/subfab.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/subfab.html</guid>
     </item>
 
     <item>
       <title>Life Philosophies</title>
-      <link>https://nomagicpill.com/thoughts/philosophies.html</link>
+      <link>https://nomagicpill.github.io/thoughts/philosophies.html</link>
       <description>Running list of life philosophies I abide by</description>
       <pubDate>Thu, 14 Oct 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/philosophies.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/philosophies.html</guid>
     </item>
 
     <item>
       <title>Pacing I: Deceleration</title>
-      <link>https://nomagicpill.com/thoughts/pacing.html</link>
+      <link>https://nomagicpill.github.io/thoughts/pacing.html</link>
       <description>Or lack thereof, on bikes and in life</description>
       <pubDate>Sun, 26 Sep 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/pacing.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/pacing.html</guid>
     </item>
 
     <item>
       <title>PID Controllers</title>
-      <link>https://nomagicpill.com/knowledge/notes2.html#technology_pid_controllers</link>
+      <link>https://nomagicpill.github.io/knowledge/notes2.html#technology_pid_controllers</link>
       <description>Notes on PID controllers</description>
       <pubDate>Thu, 23 Sep 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes2.html#technology_pid_controllers</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes2.html#technology_pid_controllers</guid>
     </item>
 
     <item>
       <title>Check Valves</title>
-      <link>https://nomagicpill.com/knowledge/notes2.html#technology_check_valves</link>
+      <link>https://nomagicpill.github.io/knowledge/notes2.html#technology_check_valves</link>
       <description>Notes on check valves</description>
       <pubDate>Tue, 21 Sep 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes2.html#technology_check_valves</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes2.html#technology_check_valves</guid>
     </item>
 
     <item>
       <title>Mass Flow Controllers</title>
-      <link>https://nomagicpill.com/knowledge/notes2.html#technology_mass_flow_controllers</link>
+      <link>https://nomagicpill.github.io/knowledge/notes2.html#technology_mass_flow_controllers</link>
       <description>Notes on mass flow controllers</description>
       <pubDate>Sun, 19 Sep 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes2.html#technology_mass_flow_controllers</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes2.html#technology_mass_flow_controllers</guid>
     </item>
 
     <item>
       <title>Encoders</title>
-      <link>https://nomagicpill.com/knowledge/notes4.html#components_encoders</link>
+      <link>https://nomagicpill.github.io/knowledge/notes4.html#components_encoders</link>
       <description>Notes on encoders</description>
       <pubDate>Sun, 05 Sep 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes4.html#components_encoders</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes4.html#components_encoders</guid>
     </item>
 
     <item>
       <title>No Such Thing as Being Big-Boned</title>
-      <link>https://nomagicpill.com/training/misconceptions.html#big_bones</link>
+      <link>https://nomagicpill.github.io/training/misconceptions.html#big_bones</link>
       <description>Debunking the big-boned myth</description>
       <pubDate>Sat, 04 Sep 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/misconceptions.html#big_bones</guid>
+      <guid>https://nomagicpill.github.io/training/misconceptions.html#big_bones</guid>
     </item>
 
     <item>
       <title>Poliquin Principles notes</title>
-      <link>https://nomagicpill.com/training/trainingnotes.html#poliquin_principles</link>
+      <link>https://nomagicpill.github.io/training/trainingnotes.html#poliquin_principles</link>
       <description>Notes on Poliquin training principles</description>
       <pubDate>Sat, 04 Sep 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/trainingnotes.html#poliquin_principles</guid>
+      <guid>https://nomagicpill.github.io/training/trainingnotes.html#poliquin_principles</guid>
     </item>
 
     <item>
       <title>Commitment Issues</title>
-      <link>https://nomagicpill.com/thoughts/commitment.html</link>
+      <link>https://nomagicpill.github.io/thoughts/commitment.html</link>
       <description>The longer a commitment goes unfulfilled, the less likely it is to become fulfilled</description>
       <pubDate>Sun, 22 Aug 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/commitment.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/commitment.html</guid>
     </item>
 
     <item>
       <title>Training Notes</title>
-      <link>https://nomagicpill.com/training/trainingnotes.html</link>
+      <link>https://nomagicpill.github.io/training/trainingnotes.html</link>
       <description>Notes on training topics</description>
       <pubDate>Sat, 21 Aug 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/trainingnotes.html</guid>
+      <guid>https://nomagicpill.github.io/training/trainingnotes.html</guid>
     </item>
 
     <item>
       <title>For LaTeX</title>
-      <link>https://nomagicpill.com/thoughts/latex.html</link>
+      <link>https://nomagicpill.github.io/thoughts/latex.html</link>
       <description>Pros and cons of using LaTeX vs. Microsoft Word, ideas on how to increase its prevalence</description>
       <pubDate>Sat, 21 Aug 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/latex.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/latex.html</guid>
     </item>
 
     <item>
       <title>Slow Cooker</title>
-      <link>https://nomagicpill.com/knowledge/improvements.html#slow_cooker</link>
+      <link>https://nomagicpill.github.io/knowledge/improvements.html#slow_cooker</link>
       <description>Life improvement: Slow cooker</description>
       <pubDate>Mon, 16 Aug 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/improvements.html#slow_cooker</guid>
+      <guid>https://nomagicpill.github.io/knowledge/improvements.html#slow_cooker</guid>
     </item>
 
     <item>
       <title>Drogo's Follies</title>
-      <link>https://nomagicpill.com/thoughts/drogo.html</link>
+      <link>https://nomagicpill.github.io/thoughts/drogo.html</link>
       <description>Giovanni Drogo's mistakes, lessons learned, and suggestions on prevention</description>
       <pubDate>Sun, 15 Aug 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/drogo.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/drogo.html</guid>
     </item>
 
     <item>
       <title>Creating and Developing</title>
-      <link>https://nomagicpill.com/thoughts/creating.html</link>
+      <link>https://nomagicpill.github.io/thoughts/creating.html</link>
       <description>Fulfillment, balance, suggestions and considerations</description>
       <pubDate>Sun, 08 Aug 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/creating.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/creating.html</guid>
     </item>
 
     <item>
       <title>Discipline I: Momentum</title>
-      <link>https://nomagicpill.com/thoughts/discipline.html</link>
+      <link>https://nomagicpill.github.io/thoughts/discipline.html</link>
       <description>Using small tasks to accelerate discipline</description>
       <pubDate>Sun, 01 Aug 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/discipline.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/discipline.html</guid>
     </item>
 
     <item>
       <title>Against SEO</title>
-      <link>https://nomagicpill.com/thoughts/seo.html</link>
+      <link>https://nomagicpill.github.io/thoughts/seo.html</link>
       <description>SEO isn't necessary if the content is good</description>
       <pubDate>Sun, 01 Aug 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/seo.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/seo.html</guid>
     </item>
 
     <item>
       <title>Destruction II</title>
-      <link>https://nomagicpill.com/thoughts/destruction2.html</link>
+      <link>https://nomagicpill.github.io/thoughts/destruction2.html</link>
       <description>Must progress and destruction go hand-in-hand?</description>
       <pubDate>Fri, 30 Jul 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/destruction2.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/destruction2.html</guid>
     </item>
 
     <item>
       <title>Safer (Read: Better) Driving</title>
-      <link>https://nomagicpill.com/thoughts/safe.html</link>
+      <link>https://nomagicpill.github.io/thoughts/safe.html</link>
       <description>Rules, data, biases, behaviors</description>
       <pubDate>Fri, 30 Jul 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/safe.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/safe.html</guid>
     </item>
 
     <item>
       <title>Notes IV</title>
-      <link>https://nomagicpill.com/knowledge/notes4.html</link>
+      <link>https://nomagicpill.github.io/knowledge/notes4.html</link>
       <description>Electronics</description>
       <pubDate>Thu, 22 Jul 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes4.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes4.html</guid>
     </item>
 
     <item>
       <title>Floating in Nothing</title>
-      <link>https://nomagicpill.com/experiences/floating.html</link>
+      <link>https://nomagicpill.github.io/experiences/floating.html</link>
       <description>Experience in a sensory deprivation tank</description>
       <pubDate>Thu, 22 Jul 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/floating.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/floating.html</guid>
     </item>
 
     <item>
       <title>Scout Mindset notes</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#scout_mindset</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#scout_mindset</link>
       <description>Notes from Scout Mindset</description>
       <pubDate>Thu, 22 Jul 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#scout_mindset</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#scout_mindset</guid>
     </item>
 
     <item>
       <title>Life in a Bubble</title>
-      <link>https://nomagicpill.com/thoughts/bubble.html</link>
+      <link>https://nomagicpill.github.io/thoughts/bubble.html</link>
       <description>Experiences living in my own societal bubble</description>
       <pubDate>Tue, 20 Jul 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/bubble.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/bubble.html</guid>
     </item>
 
     <item>
       <title>Problem Solving</title>
-      <link>https://nomagicpill.com/knowledge/problemsolving.html</link>
+      <link>https://nomagicpill.github.io/knowledge/problemsolving.html</link>
       <description>List of problem-solving techniques</description>
       <pubDate>Sun, 18 Jul 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/problemsolving.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/problemsolving.html</guid>
     </item>
 
     <item>
       <title>Vehicle Preparedness</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#vehicle_preparedness</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#vehicle_preparedness</link>
       <description>Notes on vehicle preparedness</description>
       <pubDate>Sat, 17 Jul 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#vehicle_preparedness</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#vehicle_preparedness</guid>
     </item>
 
     <item>
       <title>Prepping</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#prepping</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#prepping</link>
       <description>Notes on prepping and preparedness</description>
       <pubDate>Sun, 11 Jul 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#prepping</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#prepping</guid>
     </item>
 
     <item>
       <title>Staying Awake</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#staying_awake</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#staying_awake</link>
       <description>Notes on staying awake</description>
       <pubDate>Mon, 05 Jul 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#staying_awake</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#staying_awake</guid>
     </item>
 
     <item>
       <title>Becoming Famous for Others</title>
-      <link>https://nomagicpill.com/thoughts/famous.html</link>
+      <link>https://nomagicpill.github.io/thoughts/famous.html</link>
       <description>Using influence to support causes</description>
       <pubDate>Mon, 05 Jul 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/famous.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/famous.html</guid>
     </item>
 
     <item>
       <title>(Un)known Finishes</title>
-      <link>https://nomagicpill.com/training/unknown.html</link>
+      <link>https://nomagicpill.github.io/training/unknown.html</link>
       <description>Training with an unknown, but definite, finish</description>
       <pubDate>Sun, 04 Jul 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/unknown.html</guid>
+      <guid>https://nomagicpill.github.io/training/unknown.html</guid>
     </item>
 
     <item>
       <title>Chewing</title>
-      <link>https://nomagicpill.com/research/self.html#chewing</link>
+      <link>https://nomagicpill.github.io/research/self.html#chewing</link>
       <description>Research on chewing habits and effects</description>
       <pubDate>Thu, 01 Jul 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/self.html#chewing</guid>
+      <guid>https://nomagicpill.github.io/research/self.html#chewing</guid>
     </item>
 
     <item>
       <title>Notes II</title>
-      <link>https://nomagicpill.com/knowledge/notes2.html</link>
+      <link>https://nomagicpill.github.io/knowledge/notes2.html</link>
       <description>Economics, medicine, (geo)politics, technology, science</description>
       <pubDate>Tue, 29 Jun 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes2.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes2.html</guid>
     </item>
 
     <item>
       <title>Naming Conventions</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#naming_conventions</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#naming_conventions</link>
       <description>Notes on naming conventions</description>
       <pubDate>Tue, 29 Jun 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#naming_conventions</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#naming_conventions</guid>
     </item>
 
     <item>
       <title>Tour de Boerne - 26 June 2021</title>
-      <link>https://nomagicpill.com/training/races.html#tour_de_boerne_2021</link>
+      <link>https://nomagicpill.github.io/training/races.html#tour_de_boerne_2021</link>
       <description>Race report from Tour de Boerne</description>
       <pubDate>Sun, 27 Jun 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/races.html#tour_de_boerne_2021</guid>
+      <guid>https://nomagicpill.github.io/training/races.html#tour_de_boerne_2021</guid>
     </item>
 
     <item>
       <title>Non-Steroidal Anti-Inflammatory Drugs (NSAIDs)</title>
-      <link>https://nomagicpill.com/knowledge/notes2.html#nsaid</link>
+      <link>https://nomagicpill.github.io/knowledge/notes2.html#nsaid</link>
       <description>Notes on NSAIDs</description>
       <pubDate>Mon, 21 Jun 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes2.html#nsaid</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes2.html#nsaid</guid>
     </item>
 
     <item>
       <title>Mount Shasta</title>
-      <link>https://nomagicpill.com/experiences/shasta.html</link>
+      <link>https://nomagicpill.github.io/experiences/shasta.html</link>
       <description>Attempting to climb the Cascades' second highest peak</description>
       <pubDate>Sun, 20 Jun 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/shasta.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/shasta.html</guid>
     </item>
 
     <item>
       <title>Hunger Suppression</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#hunger_suppression</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#hunger_suppression</link>
       <description>Notes on hunger suppression techniques</description>
       <pubDate>Sun, 20 Jun 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#hunger_suppression</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#hunger_suppression</guid>
     </item>
 
     <item>
       <title>Using Movies to Teach</title>
-      <link>https://nomagicpill.com/thoughts/movies.html</link>
+      <link>https://nomagicpill.github.io/thoughts/movies.html</link>
       <description>Low-cost integration of valuable lessons into movies</description>
       <pubDate>Mon, 07 Jun 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/movies.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/movies.html</guid>
     </item>
 
     <item>
       <title>Mind-Numbing Training</title>
-      <link>https://nomagicpill.com/training/numb.html</link>
+      <link>https://nomagicpill.github.io/training/numb.html</link>
       <description>Benefits and detriments of training until the mind is numb</description>
       <pubDate>Sun, 06 Jun 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/numb.html</guid>
+      <guid>https://nomagicpill.github.io/training/numb.html</guid>
     </item>
 
     <item>
       <title>Ergonomic Assessment</title>
-      <link>https://nomagicpill.com/knowledge/improvements.html#ergonomic_assessment</link>
+      <link>https://nomagicpill.github.io/knowledge/improvements.html#ergonomic_assessment</link>
       <description>Life improvement: Ergonomic assessment</description>
       <pubDate>Tue, 01 Jun 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/improvements.html#ergonomic_assessment</guid>
+      <guid>https://nomagicpill.github.io/knowledge/improvements.html#ergonomic_assessment</guid>
     </item>
 
     <item>
       <title>Everyday Safety</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#everyday_safety</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#everyday_safety</link>
       <description>Notes on everyday safety practices</description>
       <pubDate>Sat, 29 May 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#everyday_safety</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#everyday_safety</guid>
     </item>
 
     <item>
       <title>Philadelphia</title>
-      <link>https://nomagicpill.com/experiences/philadelphia.html</link>
+      <link>https://nomagicpill.github.io/experiences/philadelphia.html</link>
       <description>Exploring the City of Brotherly Love, cheesesteaks, and early American history</description>
       <pubDate>Fri, 28 May 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/philadelphia.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/philadelphia.html</guid>
     </item>
 
     <item>
       <title>1:1 Questions</title>
-      <link>https://nomagicpill.com/thoughts/oneone.html#questions</link>
+      <link>https://nomagicpill.github.io/thoughts/oneone.html#questions</link>
       <description>Questions for one-on-one meetings</description>
       <pubDate>Mon, 24 May 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/oneone.html#questions</guid>
+      <guid>https://nomagicpill.github.io/thoughts/oneone.html#questions</guid>
     </item>
 
     <item>
       <title>Race Reports</title>
-      <link>https://nomagicpill.com/training/races.html</link>
+      <link>https://nomagicpill.github.io/training/races.html</link>
       <description>List of race reports</description>
       <pubDate>Fri, 07 May 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/races.html</guid>
+      <guid>https://nomagicpill.github.io/training/races.html</guid>
     </item>
 
     <item>
       <title>First Friday Crit - 07 May 2021</title>
-      <link>https://nomagicpill.com/training/races.html#first_friday_crit_may_2021</link>
+      <link>https://nomagicpill.github.io/training/races.html#first_friday_crit_may_2021</link>
       <description>Race report from First Friday Crit</description>
       <pubDate>Fri, 07 May 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/races.html#first_friday_crit_may_2021</guid>
+      <guid>https://nomagicpill.github.io/training/races.html#first_friday_crit_may_2021</guid>
     </item>
 
     <item>
       <title>Boredom I: Consistency</title>
-      <link>https://nomagicpill.com/thoughts/boredom.html</link>
+      <link>https://nomagicpill.github.io/thoughts/boredom.html</link>
       <description>As an indicator of progress and being on the right track</description>
       <pubDate>Thu, 06 May 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/boredom.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/boredom.html</guid>
     </item>
 
     <item>
       <title>Gear</title>
-      <link>https://nomagicpill.com/training/gear.html</link>
+      <link>https://nomagicpill.github.io/training/gear.html</link>
       <description>Why gear usage should be as barebones as possible</description>
       <pubDate>Sun, 02 May 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/gear.html</guid>
+      <guid>https://nomagicpill.github.io/training/gear.html</guid>
     </item>
 
     <item>
       <title>Mount Hood</title>
-      <link>https://nomagicpill.com/experiences/hood.html</link>
+      <link>https://nomagicpill.github.io/experiences/hood.html</link>
       <description>Attempting to climb Oregon's highest peak</description>
       <pubDate>Mon, 26 Apr 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/hood.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/hood.html</guid>
     </item>
 
     <item>
       <title>Friends of the Site</title>
-      <link>https://nomagicpill.com/about/about.html#friends</link>
+      <link>https://nomagicpill.github.io/about/about.html#friends</link>
       <description>Links to friends' websites</description>
       <pubDate>Mon, 05 Apr 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/about/about.html#friends</guid>
+      <guid>https://nomagicpill.github.io/about/about.html#friends</guid>
     </item>
 
     <item>
       <title>COVID-19</title>
-      <link>https://nomagicpill.com/thoughts/covid.html</link>
+      <link>https://nomagicpill.github.io/thoughts/covid.html</link>
       <description>Experiences and reflections on the infamous pandemic</description>
       <pubDate>Sat, 20 Mar 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/covid.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/covid.html</guid>
     </item>
 
     <item>
       <title>Sleep Suggestions</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#sleep_suggestions</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#sleep_suggestions</link>
       <description>Notes on improving sleep quality</description>
       <pubDate>Thu, 18 Mar 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#sleep_suggestions</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#sleep_suggestions</guid>
     </item>
 
     <item>
       <title>Fingertip Strength</title>
-      <link>https://nomagicpill.com/training/journal.html#fingertip_strength</link>
+      <link>https://nomagicpill.github.io/training/journal.html#fingertip_strength</link>
       <description>Training log for fingertip strength</description>
       <pubDate>Sun, 14 Mar 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/journal.html#fingertip_strength</guid>
+      <guid>https://nomagicpill.github.io/training/journal.html#fingertip_strength</guid>
     </item>
 
     <item>
       <title>Trivial Inconveniences</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#trivial_inconveniences</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#trivial_inconveniences</link>
       <description>Notes on trivial inconveniences</description>
       <pubDate>Sat, 13 Mar 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#trivial_inconveniences</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#trivial_inconveniences</guid>
     </item>
 
     <item>
       <title>Pomodoro Technique</title>
-      <link>https://nomagicpill.com/knowledge/systems.html#pomodoro_technique</link>
+      <link>https://nomagicpill.github.io/knowledge/systems.html#pomodoro_technique</link>
       <description>Notes on the Pomodoro Technique</description>
       <pubDate>Fri, 05 Mar 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/systems.html#pomodoro_technique</guid>
+      <guid>https://nomagicpill.github.io/knowledge/systems.html#pomodoro_technique</guid>
     </item>
 
     <item>
       <title>Life Advice</title>
-      <link>https://nomagicpill.com/knowledge/advice.html</link>
+      <link>https://nomagicpill.github.io/knowledge/advice.html</link>
       <description>On health, finance, productivity, career, thinking, environment, and others</description>
       <pubDate>Mon, 01 Mar 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/advice.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/advice.html</guid>
     </item>
 
     <item>
       <title>Problems with Livestreaming</title>
-      <link>https://nomagicpill.com/thoughts/stream.html</link>
+      <link>https://nomagicpill.github.io/thoughts/stream.html</link>
       <description>Personal issues I have with livestreaming and its culture</description>
       <pubDate>Sat, 27 Feb 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/stream.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/stream.html</guid>
     </item>
 
     <item>
       <title>Learned Blankness notes</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#learned_blankness</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#learned_blankness</link>
       <description>Notes on learned blankness</description>
       <pubDate>Mon, 22 Feb 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#learned_blankness</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#learned_blankness</guid>
     </item>
 
     <item>
       <title>Barefoot Running Progression</title>
-      <link>https://nomagicpill.com/training/journal.html#barefoot_running_progression</link>
+      <link>https://nomagicpill.github.io/training/journal.html#barefoot_running_progression</link>
       <description>Training log for barefoot running</description>
       <pubDate>Mon, 22 Feb 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/journal.html#barefoot_running_progression</guid>
+      <guid>https://nomagicpill.github.io/training/journal.html#barefoot_running_progression</guid>
     </item>
 
     <item>
       <title>Useful Alfred Workflows/Web Searches</title>
-      <link>https://nomagicpill.com/knowledge/productivity.html#useful_alfred_workflows_web_searches</link>
+      <link>https://nomagicpill.github.io/knowledge/productivity.html#useful_alfred_workflows_web_searches</link>
       <description>Productivity improvements using Alfred</description>
       <pubDate>Mon, 22 Feb 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/productivity.html#useful_alfred_workflows_web_searches</guid>
+      <guid>https://nomagicpill.github.io/knowledge/productivity.html#useful_alfred_workflows_web_searches</guid>
     </item>
 
     <item>
       <title>Bike Fixes notes</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#bike_fixes</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#bike_fixes</link>
       <description>Notes on bicycle maintenance and repair</description>
       <pubDate>Sun, 21 Feb 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#bike_fixes</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#bike_fixes</guid>
     </item>
 
     <item>
       <title>Ways to Get Time Back</title>
-      <link>https://nomagicpill.com/thoughts/time.html#time_back</link>
+      <link>https://nomagicpill.github.io/thoughts/time.html#time_back</link>
       <description>Methods for reclaiming time</description>
       <pubDate>Sat, 20 Feb 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/time.html#time_back</guid>
+      <guid>https://nomagicpill.github.io/thoughts/time.html#time_back</guid>
     </item>
 
     <item>
       <title>(r/)SSC on Parenting</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#parenting</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#parenting</link>
       <description>Notes on parenting from SSC/reddit</description>
       <pubDate>Sat, 20 Feb 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#parenting</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#parenting</guid>
     </item>
 
     <item>
       <title>(Un)acceptable Experiments</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#unacceptable_experiments</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#unacceptable_experiments</link>
       <description>Notes on experimental ethics</description>
       <pubDate>Wed, 17 Feb 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#unacceptable_experiments</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#unacceptable_experiments</guid>
     </item>
 
     <item>
       <title>What Money Cannot Buy notes</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#what_money_cannot_buy</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#what_money_cannot_buy</link>
       <description>Notes on What Money Cannot Buy</description>
       <pubDate>Tue, 16 Feb 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#what_money_cannot_buy</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#what_money_cannot_buy</guid>
     </item>
 
     <item>
       <title>Snowstorm Lessons</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#snowstorm_lessons</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#snowstorm_lessons</link>
       <description>Notes on dealing with snowstorms</description>
       <pubDate>Tue, 16 Feb 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#snowstorm_lessons</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#snowstorm_lessons</guid>
     </item>
 
     <item>
       <title>Heat</title>
-      <link>https://nomagicpill.com/research/heat.html</link>
+      <link>https://nomagicpill.github.io/research/heat.html</link>
       <description>Chemistry of spice, developing a tolerance to progressively hotter sauces</description>
       <pubDate>Sat, 13 Feb 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/heat.html</guid>
+      <guid>https://nomagicpill.github.io/research/heat.html</guid>
     </item>
 
     <item>
       <title>Waking Up at the Same Time Every Day</title>
-      <link>https://nomagicpill.com/research/self.html#waking_up_same_time</link>
+      <link>https://nomagicpill.github.io/research/self.html#waking_up_same_time</link>
       <description>Research on consistent wake times</description>
       <pubDate>Sat, 13 Feb 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/self.html#waking_up_same_time</guid>
+      <guid>https://nomagicpill.github.io/research/self.html#waking_up_same_time</guid>
     </item>
 
     <item>
       <title>Checking Dunbar</title>
-      <link>https://nomagicpill.com/thoughts/dunbar.html</link>
+      <link>https://nomagicpill.github.io/thoughts/dunbar.html</link>
       <description>Finding Dunbar's number, variations, increases</description>
       <pubDate>Wed, 03 Feb 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/dunbar.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/dunbar.html</guid>
     </item>
 
     <item>
       <title>Cutting Sugar</title>
-      <link>https://nomagicpill.com/training/sugar.html</link>
+      <link>https://nomagicpill.github.io/training/sugar.html</link>
       <description>Psychology and elimination of sugar, lessons learned, recommendations</description>
       <pubDate>Sat, 30 Jan 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/sugar.html</guid>
+      <guid>https://nomagicpill.github.io/training/sugar.html</guid>
     </item>
 
     <item>
       <title>Getting Out of Bed Faster results</title>
-      <link>https://nomagicpill.com/research/self.html#out_bed_faster</link>
+      <link>https://nomagicpill.github.io/research/self.html#out_bed_faster</link>
       <description>Research on waking up faster</description>
       <pubDate>Sat, 30 Jan 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/self.html#out_bed_faster</guid>
+      <guid>https://nomagicpill.github.io/research/self.html#out_bed_faster</guid>
     </item>
 
     <item>
       <title>Trigger-Action Plans</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#trigger_action_plans</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#trigger_action_plans</link>
       <description>Notes on trigger-action plans</description>
       <pubDate>Sat, 23 Jan 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#trigger_action_plans</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#trigger_action_plans</guid>
     </item>
 
     <item>
       <title>Industry Cheats</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#cheats</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#cheats</link>
       <description>What are some lesser known "cheats" that are rampant in particular industries?</description>
       <pubDate>Sat, 23 Jan 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#cheats</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#cheats</guid>
     </item>
 
     <item>
       <title>Mentorship</title>
-      <link>https://nomagicpill.com/thoughts/mentorship.html</link>
+      <link>https://nomagicpill.github.io/thoughts/mentorship.html</link>
       <description>Suggestions on being a good mentor in a work setting</description>
       <pubDate>Sun, 17 Jan 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/mentorship.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/mentorship.html</guid>
     </item>
 
     <item>
       <title>Heuristics</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#heuristics</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#heuristics</link>
       <description>Notes on heuristics</description>
       <pubDate>Sat, 16 Jan 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#heuristics</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#heuristics</guid>
     </item>
 
     <item>
       <title>A Long Drag</title>
-      <link>https://nomagicpill.com/experiences/bataan.html</link>
+      <link>https://nomagicpill.github.io/experiences/bataan.html</link>
       <description>Running, walking, and finally crawling the 2018 Bataan Memorial Death March</description>
       <pubDate>Mon, 11 Jan 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/experiences/bataan.html</guid>
+      <guid>https://nomagicpill.github.io/experiences/bataan.html</guid>
     </item>
 
     <item>
       <title>Lucid Dreaming</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#lucid_dreaming</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#lucid_dreaming</link>
       <description>Notes on lucid dreaming</description>
       <pubDate>Sat, 09 Jan 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#lucid_dreaming</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#lucid_dreaming</guid>
     </item>
 
     <item>
       <title>Alternating Days</title>
-      <link>https://nomagicpill.com/knowledge/srs.html#alternating_days</link>
+      <link>https://nomagicpill.github.io/knowledge/srs.html#alternating_days</link>
       <description>Notes on alternating day schedules</description>
       <pubDate>Sat, 09 Jan 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/srs.html#alternating_days</guid>
+      <guid>https://nomagicpill.github.io/knowledge/srs.html#alternating_days</guid>
     </item>
 
     <item>
       <title>Back Mechanic</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#back_mechanic</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#back_mechanic</link>
       <description>Notes from Back Mechanic</description>
       <pubDate>Thu, 07 Jan 2021 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#back_mechanic</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#back_mechanic</guid>
     </item>
 
     <item>
       <title>Strange-Face Illusion</title>
-      <link>https://nomagicpill.com/research/face.html</link>
+      <link>https://nomagicpill.github.io/research/face.html</link>
       <description>Replicating Caputo's work</description>
       <pubDate>Tue, 29 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/face.html</guid>
+      <guid>https://nomagicpill.github.io/research/face.html</guid>
     </item>
 
     <item>
       <title>Destruction I</title>
-      <link>https://nomagicpill.com/thoughts/destruction.html</link>
+      <link>https://nomagicpill.github.io/thoughts/destruction.html</link>
       <description>My refuge and its "progress"</description>
       <pubDate>Tue, 29 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/destruction.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/destruction.html</guid>
     </item>
 
     <item>
       <title>Storage</title>
-      <link>https://nomagicpill.com/knowledge/productivity.html#storage</link>
+      <link>https://nomagicpill.github.io/knowledge/productivity.html#storage</link>
       <description>Notes on storage solutions</description>
       <pubDate>Sat, 26 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/productivity.html#storage</guid>
+      <guid>https://nomagicpill.github.io/knowledge/productivity.html#storage</guid>
     </item>
 
     <item>
       <title>Number of Triangles</title>
-      <link>https://nomagicpill.com/knowledge/puzzles.html#num_triangles</link>
+      <link>https://nomagicpill.github.io/knowledge/puzzles.html#num_triangles</link>
       <description>Puzzle: Counting triangles</description>
       <pubDate>Sat, 26 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/puzzles.html#num_triangles</guid>
+      <guid>https://nomagicpill.github.io/knowledge/puzzles.html#num_triangles</guid>
     </item>
 
     <item>
       <title>Browser Extensions</title>
-      <link>https://nomagicpill.com/knowledge/improvements.html#browser_extensions</link>
+      <link>https://nomagicpill.github.io/knowledge/improvements.html#browser_extensions</link>
       <description>Life improvement: Browser extensions</description>
       <pubDate>Fri, 25 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/improvements.html#browser_extensions</guid>
+      <guid>https://nomagicpill.github.io/knowledge/improvements.html#browser_extensions</guid>
     </item>
 
     <item>
       <title>Cheating</title>
-      <link>https://nomagicpill.com/thoughts/cheating.html</link>
+      <link>https://nomagicpill.github.io/thoughts/cheating.html</link>
       <description>Why cheating occurs and prevention methods</description>
       <pubDate>Thu, 24 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/cheating.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/cheating.html</guid>
     </item>
 
     <item>
       <title>Appreciation</title>
-      <link>https://nomagicpill.com/thoughts/death.html#appreciation</link>
+      <link>https://nomagicpill.github.io/thoughts/death.html#appreciation</link>
       <description>Thoughts on appreciation after loss</description>
       <pubDate>Mon, 21 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/death.html#appreciation</guid>
+      <guid>https://nomagicpill.github.io/thoughts/death.html#appreciation</guid>
     </item>
 
     <item>
       <title>Problems with Modern-Day Science</title>
-      <link>https://nomagicpill.com/research/problems.html</link>
+      <link>https://nomagicpill.github.io/research/problems.html</link>
       <description>Predators, perishing, peer review, reproducibility</description>
       <pubDate>Sun, 20 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/problems.html</guid>
+      <guid>https://nomagicpill.github.io/research/problems.html</guid>
     </item>
 
     <item>
       <title>Owning vs. Ridesharing</title>
-      <link>https://nomagicpill.com/research/rideshare.html#owning_ridesharing</link>
+      <link>https://nomagicpill.github.io/research/rideshare.html#owning_ridesharing</link>
       <description>Cost comparison of vehicle ownership vs ridesharing</description>
       <pubDate>Fri, 18 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/rideshare.html#owning_ridesharing</guid>
+      <guid>https://nomagicpill.github.io/research/rideshare.html#owning_ridesharing</guid>
     </item>
 
     <item>
       <title>Rules of Thought notes</title>
-      <link>https://nomagicpill.com/knowledge/notes.html#rules_of_thought</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html#rules_of_thought</link>
       <description>Notes on rules of thought</description>
       <pubDate>Tue, 15 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html#rules_of_thought</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html#rules_of_thought</guid>
     </item>
 
     <item>
       <title>Alone vs. Team</title>
-      <link>https://nomagicpill.com/training/alone.html</link>
+      <link>https://nomagicpill.github.io/training/alone.html</link>
       <description>Benefits and detriments of solitary and team-based training</description>
       <pubDate>Mon, 14 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/alone.html</guid>
+      <guid>https://nomagicpill.github.io/training/alone.html</guid>
     </item>
 
     <item>
       <title>Misconceptions</title>
-      <link>https://nomagicpill.com/training/misconceptions.html</link>
+      <link>https://nomagicpill.github.io/training/misconceptions.html</link>
       <description>Common exercise misconceptions explained and debunked</description>
       <pubDate>Sun, 06 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/misconceptions.html</guid>
+      <guid>https://nomagicpill.github.io/training/misconceptions.html</guid>
     </item>
 
     <item>
       <title>Puzzles</title>
-      <link>https://nomagicpill.com/knowledge/puzzles.html</link>
+      <link>https://nomagicpill.github.io/knowledge/puzzles.html</link>
       <description>Fun puzzles and brain teasers</description>
       <pubDate>Sun, 06 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/puzzles.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/puzzles.html</guid>
     </item>
 
     <item>
       <title>Making Work More Enjoyable</title>
-      <link>https://nomagicpill.com/thoughts/work.html</link>
+      <link>https://nomagicpill.github.io/thoughts/work.html</link>
       <description>Philosophy of work and how to make it more fun</description>
       <pubDate>Sun, 06 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/work.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/work.html</guid>
     </item>
 
     <item>
       <title>Hobbies</title>
-      <link>https://nomagicpill.com/thoughts/workplace.html#hobbies</link>
+      <link>https://nomagicpill.github.io/thoughts/workplace.html#hobbies</link>
       <description>Notes on workplace hobbies</description>
       <pubDate>Tue, 01 Dec 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/workplace.html#hobbies</guid>
+      <guid>https://nomagicpill.github.io/thoughts/workplace.html#hobbies</guid>
     </item>
 
     <item>
       <title>Driving</title>
-      <link>https://nomagicpill.com/thoughts/driving.html</link>
+      <link>https://nomagicpill.github.io/thoughts/driving.html</link>
       <description>Making driving enjoyable</description>
       <pubDate>Wed, 18 Nov 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/driving.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/driving.html</guid>
     </item>
 
     <item>
       <title>Regret</title>
-      <link>https://nomagicpill.com/thoughts/regret.html</link>
+      <link>https://nomagicpill.github.io/thoughts/regret.html</link>
       <description>My ongoing relationship with regret and how to reduce its future impact</description>
       <pubDate>Mon, 09 Nov 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/regret.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/regret.html</guid>
     </item>
 
     <item>
       <title>Home Gym</title>
-      <link>https://nomagicpill.com/training/gym.html</link>
+      <link>https://nomagicpill.github.io/training/gym.html</link>
       <description>Advantages, equipment, purchasing suggestions, setup</description>
       <pubDate>Wed, 21 Oct 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/gym.html</guid>
+      <guid>https://nomagicpill.github.io/training/gym.html</guid>
     </item>
 
     <item>
       <title>Year Review</title>
-      <link>https://nomagicpill.com/knowledge/review.html</link>
+      <link>https://nomagicpill.github.io/knowledge/review.html</link>
       <description>Year/Quarter/Week/Day Review</description>
       <pubDate>Sun, 18 Oct 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/review.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/review.html</guid>
     </item>
 
     <item>
       <title>Death I: Loss</title>
-      <link>https://nomagicpill.com/thoughts/death.html</link>
+      <link>https://nomagicpill.github.io/thoughts/death.html</link>
       <description>Experiences and lessons after my father's sudden and unexpected death</description>
       <pubDate>Thu, 08 Oct 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/death.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/death.html</guid>
     </item>
 
     <item>
       <title>Stealing Political Signs</title>
-      <link>https://nomagicpill.com/research/signs.html</link>
+      <link>https://nomagicpill.github.io/research/signs.html</link>
       <description>Does it help or hurt the thief's cause?</description>
       <pubDate>Tue, 29 Sep 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/signs.html</guid>
+      <guid>https://nomagicpill.github.io/research/signs.html</guid>
     </item>
 
     <item>
       <title>Financial Independence / Retire Early (FIRE): An Analysis</title>
-      <link>https://nomagicpill.com/research/fire.html</link>
+      <link>https://nomagicpill.github.io/research/fire.html</link>
       <description>Motivation, types, methods, investments, lifestyles</description>
       <pubDate>Mon, 28 Sep 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/fire.html</guid>
+      <guid>https://nomagicpill.github.io/research/fire.html</guid>
     </item>
 
     <item>
       <title>One-on-Ones</title>
-      <link>https://nomagicpill.com/thoughts/oneone.html</link>
+      <link>https://nomagicpill.github.io/thoughts/oneone.html</link>
       <description>Experiences and suggestions on conducting 1:1 meetings with a partner</description>
       <pubDate>Wed, 16 Sep 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/oneone.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/oneone.html</guid>
     </item>
 
     <item>
       <title>Empty</title>
-      <link>https://nomagicpill.com/thoughts/empty.html</link>
+      <link>https://nomagicpill.github.io/thoughts/empty.html</link>
       <description>Empty words and the cost of betterment</description>
       <pubDate>Tue, 01 Sep 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/empty.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/empty.html</guid>
     </item>
 
     <item>
       <title>Life Improvements</title>
-      <link>https://nomagicpill.com/knowledge/improvements.html</link>
+      <link>https://nomagicpill.github.io/knowledge/improvements.html</link>
       <description>Items and practices that have improved my life</description>
       <pubDate>Thu, 27 Aug 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/improvements.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/improvements.html</guid>
     </item>
 
     <item>
       <title>Notes I</title>
-      <link>https://nomagicpill.com/knowledge/notes.html</link>
+      <link>https://nomagicpill.github.io/knowledge/notes.html</link>
       <description>Papers, posts, ideas, information</description>
       <pubDate>Sun, 02 Aug 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/notes.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/notes.html</guid>
     </item>
 
     <item>
       <title>Productivity: Technology and Practices</title>
-      <link>https://nomagicpill.com/knowledge/productivity.html</link>
+      <link>https://nomagicpill.github.io/knowledge/productivity.html</link>
       <description>Personal systems and practices for improving productivity</description>
       <pubDate>Thu, 30 Jul 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/productivity.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/productivity.html</guid>
     </item>
 
     <item>
       <title>Quotes</title>
-      <link>https://nomagicpill.com/knowledge/quotes.html</link>
+      <link>https://nomagicpill.github.io/knowledge/quotes.html</link>
       <description>Quotes I like and/or abide by</description>
       <pubDate>Tue, 21 Jul 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/quotes.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/quotes.html</guid>
     </item>
 
     <item>
       <title>One-Arm Elbow Lever Tutorial</title>
-      <link>https://nomagicpill.com/training/oael.html</link>
+      <link>https://nomagicpill.github.io/training/oael.html</link>
       <description>Technique, progressions, combinations, training plan</description>
       <pubDate>Mon, 20 Jul 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/oael.html</guid>
+      <guid>https://nomagicpill.github.io/training/oael.html</guid>
     </item>
 
     <item>
       <title>Training Links and Knowledge</title>
-      <link>https://nomagicpill.com/training/traininglinks.html</link>
+      <link>https://nomagicpill.github.io/training/traininglinks.html</link>
       <description>Media related to training</description>
       <pubDate>Tue, 14 Jul 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/traininglinks.html</guid>
+      <guid>https://nomagicpill.github.io/training/traininglinks.html</guid>
     </item>
 
     <item>
       <title>Spaced Repetition Systems</title>
-      <link>https://nomagicpill.com/knowledge/srs.html</link>
+      <link>https://nomagicpill.github.io/knowledge/srs.html</link>
       <description>Brief overview, information examples and suggestions, memorization practice</description>
       <pubDate>Wed, 08 Jul 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/knowledge/srs.html</guid>
+      <guid>https://nomagicpill.github.io/knowledge/srs.html</guid>
     </item>
 
     <item>
       <title>Wrist and Ankle Strength</title>
-      <link>https://nomagicpill.com/training/wristankle.html</link>
+      <link>https://nomagicpill.github.io/training/wristankle.html</link>
       <description>For handbalancing, trail running/walking, and tricking</description>
       <pubDate>Thu, 02 Jul 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/wristankle.html</guid>
+      <guid>https://nomagicpill.github.io/training/wristankle.html</guid>
     </item>
 
     <item>
       <title>Ion Implantation</title>
-      <link>https://nomagicpill.com/research/implant.html</link>
+      <link>https://nomagicpill.github.io/research/implant.html</link>
       <description>Theory, equipment, process, doping alternatives</description>
       <pubDate>Fri, 26 Jun 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/implant.html</guid>
+      <guid>https://nomagicpill.github.io/research/implant.html</guid>
     </item>
 
     <item>
       <title>Links</title>
-      <link>https://nomagicpill.com/knowledge/links.html</link>
+      <link>https://nomagicpill.github.io/knowledge/links.html</link>
       <description>Links I've read</description>
       <pubDate>Wed, 24 Jun 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/links.html</guid>
+      <guid>https://nomagicpill.github.io/training/links.html</guid>
     </item>
 
     <item>
       <title>Cost of Ridesharing</title>
-      <link>https://nomagicpill.com/research/ridesharing.html</link>
+      <link>https://nomagicpill.github.io/research/ridesharing.html</link>
       <description>Is it financially-advisable to drive for a ridesharing company?</description>
       <pubDate>Sun, 31 May 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/rideshare.html</guid>
+      <guid>https://nomagicpill.github.io/research/rideshare.html</guid>
     </item>
 
     <item>
       <title>Time Optimization</title>
-      <link>https://nomagicpill.com/thoughts/time.html</link>
+      <link>https://nomagicpill.github.io/thoughts/time.html</link>
       <description>Practical ideas for improving use of time</description>
       <pubDate>Thu, 28 May 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/thoughts/time.html</guid>
+      <guid>https://nomagicpill.github.io/thoughts/time.html</guid>
     </item>
 
     <item>
       <title>Apnea (Breath Holding)</title>
-      <link>https://nomagicpill.com/training/apnea.html</link>
+      <link>https://nomagicpill.github.io/training/apnea.html</link>
       <description>History, science, training, personal experiments</description>
       <pubDate>Wed, 20 May 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/training/apnea.html</guid>
+      <guid>https://nomagicpill.github.io/training/apnea.html</guid>
     </item>
 
     <item>
       <title>Vacuum</title>
-      <link>https://nomagicpill.com/research/vacuum.html</link>
+      <link>https://nomagicpill.github.io/research/vacuum.html</link>
       <description>Concepts, technologies, pumps, system design</description>
       <pubDate>Sat, 16 May 2020 00:00:00 GMT</pubDate>
-      <guid>https://nomagicpill.com/research/vacuum.html</guid>
+      <guid>https://nomagicpill.github.io/research/vacuum.html</guid>
     </item>
 
   </channel>
