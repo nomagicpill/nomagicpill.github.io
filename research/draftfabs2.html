@@ -37,35 +37,6 @@
 <p></p>
 
 
-
-
-- automate everything!!!!
-- MES (the brain of the fab)
-  - include AMAT videos
-- reference tool selection section in fabs1
-- where to place tools
-
-- manufacturing:
-  - equations
-  - photo tools are constraint
-    - most important tool in the fab!!
-    - https://ieomsociety.org/ieom2011/pdfs/IEOM002.pdf
-  - MES
-  - smart manufacturing
-  - delivery systems
-  - https://en.wikipedia.org/wiki/Scheduling_(production_processes)
-  - job shop scheduling
-  - batching
-
-- layout:
-  - are tools layed out in a specific fashion?
-  - photo tools central to fab?
-    - https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=2703&context=all_theses
-  - metal vs non-metal locations
-  - https://www.sciencedirect.com/science/article/abs/pii/S0360835216300390
-  - if you put all types in one location and location goes down, all types go down
-
-- https://www.inficon.com/media/11486/download/FabTime-Cycle-Time-Tutorial-And-Queueing-Formulas.pdf?v=1&inline=true&language=en
 - https://semiengineering.com/battling-fab-cycle-times/
 https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-part-1/
 
@@ -122,7 +93,13 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
     <a href="#mes">The Brains of the Fab: Manufacturing Execution System</a>
   </li>
   <li>
+    <a href="#math">Math of Manufacturing</a>
+  </li>
+  <li>
     <a href="#priority">Priority Lots</a>
+  </li>
+  <li>
+    <a href="#metrics">Metrics</a>
   </li>
   <li>
     <a href="#see_also">See Also</a>
@@ -150,7 +127,7 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 </p>
 
 <p>
-  Sections or sentenced with an asterisk (*) I am less knowledgable about the information in this post than in <a href="fabs.html">Fabs I</a>. I only have firsthand experience in a few fabs, but do have secondhand experience through colleauges and friends working at more advanced fabs.
+  Sections or sentenced with an asterisk (*) I am less knowledgable about the information in this post than in <a href="fabs.html">Fabs I</a>. I only have firsthand experience in a few (older) fabs, but do have some secondhand experience through colleauges and friends working at more advanced fabs.
 </p>
 
 <hr>
@@ -233,6 +210,10 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
   <li>
     <a href="https://en.wikipedia.org/wiki/Lot_number">Lot</a>: A set of 25 wafers that all follow the exact same steps (unless some are getting experimented on). These all have a specific number for tracking purposes.
   </li>
+  <img src="media/fabs2/lotinfoup.jpeg" style="width:400px">
+  <figcaption>
+    A 25-wafer lot inside a FOUP
+  </figcaption>
 </ul>
 
 [FINISH]
@@ -247,8 +228,13 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 <h2 id="planning">Filling the Fab Full of FOUPs*</h2>
 
 <p>
-  Planning groups work across a company's fabs to ensure the best loadings based on current demand, forecasted demand, and each fab's capabilities. Shift in the market? Adjust the numbers! Change in another factory's capabilities? Adjust the numbers?
+  Planning groups work across a company's fabs to ensure the best loadings based on current demand, forecasted demand, and each fab's capabilities. Shift in the market? Adjust the numbers! Change in another factory's capabilities? Adjust the numbers! Wind direction change? Adjust the numbers!
 </p>
+
+<img src="media/fabs2/planning.png" style="width:300px">
+<figcaption>
+  Your local fab may or may not have one of these on top
+</figcaption>
 
 <p>
   Planning groups work with each fab's industrial engineers to make sure the numbers they're looking for can run, bringing us to...
@@ -279,20 +265,6 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
   Those numbers can then be normalized to determine the possible product mixes that can run, i.e, how much of product1, ..., productN can be run at any given time without interfering (too much) with the other products. We want everything to move smoothly!
 </p>
 
-<button type="button" class="collapsible">Thank God For Excel Because It Gets Complicated Quickly</button>
-
-<div class="content">
-
-<p>
-  [FINISH]
-</p>
-
-</div>
-
-<p></p>
-
-<hr>
-
 <h2 id="starting">Starting Fresh Wafers</h2>
 
 <p>
@@ -302,6 +274,11 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 <p>
   They then go out into the fab, get processed according to their flow, and get shipped out for testing (that's outside the scope of this post).
 </p>
+
+<img src="media/fabs2/waferbirth.png" style="width:400px">
+<figcaption>
+  "Mom, where do wafers come from?"
+</figcaption>
 
 <p>
   It's at this point that the MES takes over.
@@ -333,7 +310,18 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
   </li>
 </ul>
 
-[FINISH]
+<img src="media/fabs2/mes.jpg" style="width:400px">
+<figcaption>
+  An example MES (it's a joke because no fab will share an image of what their MES looks like)
+</figcaption>
+
+<p>
+  It's difficult to overstate the level of automation and complexity of modern-day fab MESs. It keeps track of an insane amount of granular data—from individual wafer IDs to the process for each to certain signals collected during the processing. It manages everything almost flawlessly with the occasional help from people when something unrelated caused an issue.
+</p>
+
+<p>
+  (Side note: I think a fun experiment to test a fab's automation abilities would be removing all humans and seeing how long it would take for the fab to come to a complete standstill.)
+</p>
 
 <h3 id="rtd">Real-Time Dispatch (RTD)</h3>
 
@@ -456,7 +444,26 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
   <li>
     <a href="media/fabs2/Short-Term%20Scheduling%20Model%20of%20Cluster%20Tool%20in%20Wafer%20Fabrication.pdf">Short-Term Scheduling Model of Cluster Tool in Wafer Fabrication</a>
   </li>
+  <li>
+    <a href="media/fabs2/Bottleneck%20Management%20Strategies%20in%20Semiconductor%20Wafer%20Fabrication%20Facilities.pdf">Bottleneck Management Strategies in Semiconductor Wafer Fabrication Facilities</a>
+  </li>
 </ul>
+
+<hr>
+
+<h2 id="math">Manufacturing Math</h2>
+
+<p>
+  (This section doesn't go deep because a) I'm not super familar, and b) I'm not interested (enough) in becoming super familiar.)
+</p>
+
+<p>
+  With that being said, go read Chance and Robinson's <a href="media/fabs2/FabTime%20Cycle%20Time%20Tutorial%20And%20Queueing%20Formulas.pdf">FabTime Wafer Fab Cycle Time Tutorial and Queueing Formula Examples</a>. This is one of the better, more accessible texts I've read on some of the math behind manufacturing chips (although it's transferrable to most, if not all, manufacturing processes).
+</p>
+
+<p>
+  SemiEngineering also discusses some of the math and strategies in their <a href="https://semiengineering.com/battling-fab-cycle-times/">Battling Fab Cycles Times</a>.
+</p>
 
 <hr>
 
@@ -491,8 +498,20 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 </p>
 
 <p>
-  They also aren't handed out lightly because if every lot is a priority then no lot is a priority. They also slow down other material from processing.
+  Priority designations aren't handed out lightly because if every lot is a priority then no lot is a priority. They also slow down other material from processing.
 </p>
+
+<hr>
+
+<h2 id="metrics">Metrics</h2>
+
+<p>
+  Various metrics are used to quantify a fab's performance.
+</p>
+
+
+
+
 
 <hr>
 
