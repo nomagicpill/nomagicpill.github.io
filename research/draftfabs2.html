@@ -37,8 +37,7 @@
 <p></p>
 
 
-- https://semiengineering.com/battling-fab-cycle-times/
-https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-part-1/
+- day in the fab life
 
 
 - staging FOUPs 
@@ -53,7 +52,7 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 
 <hr>
 
-<h2 id="series">Fab Series</h2>
+<h2 id="series">Semiconductor Fab Series</h2>
 
 <p>
   <a href="fabs.html">Semiconductor Fabs I: The Equipment</a>
@@ -99,9 +98,6 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
     <a href="#priority">Priority Lots</a>
   </li>
   <li>
-    <a href="#metrics">Metrics</a>
-  </li>
-  <li>
     <a href="#see_also">See Also</a>
   </li>
 </ul>
@@ -127,7 +123,7 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 </p>
 
 <p>
-  Sections or sentenced with an asterisk (*) I am less knowledgable about the information in this post than in <a href="fabs.html">Fabs I</a>. I only have firsthand experience in a few (older) fabs, but do have some secondhand experience through colleauges and friends working at more advanced fabs.
+  Sections or sentenced with an asterisk (*) I am less knowledgable about the information in this post than in <a href="fabs.html">Fabs I</a>. I only have firsthand experience in a few (older) fabs, but do have some secondhand experience through colleagues and friends working at more advanced fabs.
 </p>
 
 <hr>
@@ -143,7 +139,7 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 <h2 id="overview">What Do Fabs Want? Chips! When Do They Want Them? Now!</h2>
 
 <p>
-  And that isn't an exaggeration. Like most manufacturing operations, fabs want to pump out as many wafers as possible in as little time as possible for as little cost as possible with as many defects as possible. Sound familiar?
+  And that isn't an exaggeration. Like most manufacturing operations, fabs want to pump out as many wafers as possible in as little time as possible for as little cost as possible with as few defects as possible. Sound familiar?
 </p>
 
 <img src="media/fabs2/choosetwo.png" style="width:300px">
@@ -156,11 +152,11 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 </p>
 
 <p>
-  First and foremost, market conditions. If the market is desperate for chips, fabs are willing to spend more to satisfy the customer demand. If a downturn is happening, the money belt gets tightened and fabs are more focused on going slow to make sure everything they output is of acceptable quality.
+  First and foremost, market conditions. If the market is desperate for chips, fabs are willing to spend more money to satisfy the customer demand. If a downturn is happening, the money belt gets tightened and fabs are more focused on going slow to make sure everything they output is of acceptable quality and can be sold for money.
 </p>
 
 <p>
-  Second, leadership. A fab's <a href="../thoughts/culture.html">culture comes from the top</a>. Is the fab leadership more risk averse to the point of wanting to slow things down to make sure the final product is high quality and cheap? Or are they willing to risk it for the biscuit (read: a fat bonus) and go into warp speed (read: turn off some quality checks)?
+  Second, leadership. A fab's <a href="../thoughts/culture.html">culture comes from the top</a>. Is the fab leadership more risk averse to the point of wanting to slow things down to make sure the final product is high quality and cheap? Or are they willing to risk it for the biscuit (read: a fat bonus) and go into warp speed (read: turn off some quality checks) to get more chips out the door faster?
 </p>
 
 <p>
@@ -177,7 +173,7 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 </p>
 
 <p>
-  Because I'm only familiar with one or two fab's operations styles, I'll pull what I can from the literature and the rest out of my as...breadth of semiconductor knowledge. There may also be some "this would be super nice to have moments" in there.
+  Because I'm only familiar with one or two fab's operations styles, I'll pull what I can from the literature and the rest out of my as...repertoire of semiconductor knowledge. There may also be some "this would be super nice to have moments" in there.
 </p>
 
 <hr>
@@ -214,14 +210,33 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
   <figcaption>
     A 25-wafer lot inside a FOUP
   </figcaption>
+  <li>
+    Qual: A test wafer (or wafers) that verify a tool is operating correctly. For example, a deposition tool qual's process flow may look something like:
+    <ol>
+      <li>
+        Measure pre thickness (so we know how much thickness was added)
+      </li>
+      <li>
+        Measure pre particles (so we know what particles were already there)
+      </li>
+      <li>
+        Process step on tool with target conditions
+      </li>
+      <li>
+        Measure post particles (to see how many new particles there are)
+      </li>
+      <li>
+        Measure post thickness (to see if the target thickness was reached)
+      </li>
+    </ol>
+  </li>
+  <li>
+    <a href="https://en.wikipedia.org/wiki/Overall_equipment_effectiveness">Overall equipment effectiveness (OEE)</a>
+  </li>
+  <li>
+    FOUP: An acronym for front opening unified pod, these are the carriers that lots travel around in from tool to tool.
+  </li>
 </ul>
-
-[FINISH]
-
-
-
-
-
 
 <hr>
 
@@ -265,6 +280,8 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
   Those numbers can then be normalized to determine the possible product mixes that can run, i.e, how much of product1, ..., productN can be run at any given time without interfering (too much) with the other products. We want everything to move smoothly!
 </p>
 
+<hr>
+
 <h2 id="starting">Starting Fresh Wafers</h2>
 
 <p>
@@ -289,7 +306,7 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 <h2 id="mes">The Brains of the Fab: Manufacturing Execution System</h2>
 
 <p>
-  As the heading implies, the <a href="https://en.wikipedia.org/wiki/Manufacturing_execution_system">manufacturing execution system</a> (MES) is the brains, helping to coordinate and keep track of every single lot that's currently active and its history. Everything you need to know—past steps, future steps, current steps, etc—is in one central location. It's from the MES that you can do a gagillion different things:
+  As the heading implies, the <a href="https://en.wikipedia.org/wiki/Manufacturing_execution_system">manufacturing execution system</a> (MES) is the brains of the fab, helping to coordinate, process, and keep track of every single lot that's currently active and its history. Everything you need to know—past steps, future steps, current steps, etc—is in one central location. It's from the MES that you can do many different things:
 </p>
 
 <ul>
@@ -316,7 +333,7 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 </figcaption>
 
 <p>
-  It's difficult to overstate the level of automation and complexity of modern-day fab MESs. It keeps track of an insane amount of granular data—from individual wafer IDs to the process for each to certain signals collected during the processing. It manages everything almost flawlessly with the occasional help from people when something unrelated caused an issue.
+  It's difficult to overstate the level of automation and complexity of modern-day fab MESs. It keeps track of an insane amount of granular data—from individual wafer IDs to the process for each to certain signals collected during the processing. It manages everything almost flawlessly with the occasional help from people when something causes an issue.
 </p>
 
 <p>
@@ -347,10 +364,8 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 </blockquote>
 
 <p>
-  Pretty self-explanatory. There's a ton of math that goes into this on the backend to ensure optimal utilization.
+  Pretty self-explanatory. There's a ton of math that goes into this on the backend to ensure optimal utilization. More on that in <a href="#math">Math of Manufacturing</a>.
 </p>
-
-[FINISH]
 
 <h1 align="middle">
   <a href="media/fabs2/fabs2rtd.html">Click here to test your dispatch skills!</a>
@@ -449,6 +464,24 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
   </li>
 </ul>
 
+<h3 id="misc">Miscellaneous MES Features</h3>
+
+<p>
+  Here's a list of features that are or would be super helpful in a fab's MES:
+</p>
+
+<ul>
+  <li>
+    Staging lots near their next processing tool. Sometimes the tool a lot needs to go to is already in use, but why not kill the time by making sure the lot is super close when the tool is ready to accept it?
+  </li>
+  <li>
+    Automatically create and run quals for tools. Quals may run on an as-needed or periodic basis. If the MES can know that either is coming up, it can create the qual in advance so it's waiting when the tool is ready.
+  </li>
+  <li>
+    Prioritize certain tools by location. Let's say a qual finishes processing in sector1 and there are two measurement tools it can run on, one in sector1 and one in sector8. We want it to process in sector1 because we get results faster and it frees up the overhead transportation system.
+  </li>
+</ul>
+
 <hr>
 
 <h2 id="math">Manufacturing Math</h2>
@@ -500,18 +533,6 @@ https://appliedsmartfactory.com/semiconductor-blog/manufacturing-execution/mes-p
 <p>
   Priority designations aren't handed out lightly because if every lot is a priority then no lot is a priority. They also slow down other material from processing.
 </p>
-
-<hr>
-
-<h2 id="metrics">Metrics</h2>
-
-<p>
-  Various metrics are used to quantify a fab's performance.
-</p>
-
-
-
-
 
 <hr>
 
