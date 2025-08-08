@@ -1,0 +1,157 @@
+/* Compact layout with hover tooltips */
+
+body {
+    max-width: 900px; /* Wider to accommodate longer titles on single lines */
+}
+
+/* Keep h2 headers black */
+h2 {
+    color: #000;
+}
+
+/* Two-column layout for sections */
+.thoughts-columns, .research-columns, .knowledge-columns, .training-columns, .experiences-columns {
+    columns: 2;
+    column-gap: 4em; /* Wider gap for more breathing room */
+    column-rule: 1px solid #e5e5e5;
+    margin-bottom: 2em;
+}
+
+.subsection {
+    break-inside: avoid;
+    margin-bottom: 1.5em;
+    /* Remove background - keep white like rest of page */
+}
+
+.subsection h3 {
+    color: #000;
+    margin: 0 0 0.8em 0;
+    font-size: 1.1em;
+    border-bottom: 2px solid #e5e5e5;
+    padding-bottom: 0.3em;
+}
+
+/* Compact lists with just titles */
+.subsection ul {
+    margin: 0;
+    padding-left: 1.5em;
+}
+
+.subsection li {
+    margin-bottom: 0.3em; /* Tighter spacing */
+    line-height: 1.25; /* More compact */
+    position: relative; /* For tooltip positioning */
+    font-size: 0.95em; /* Slightly smaller text */
+}
+
+/* Remove default link styling - no underlines unless hovering */
+.subsection li a {
+    text-decoration: none;
+    border-bottom: none;
+}
+
+.subsection li a:hover {
+    border-bottom: 1px solid #2563eb;
+}
+
+/* Tooltip functionality */
+.subsection li a[data-description] {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Tooltip content */
+.subsection li a[data-description]::after {
+    content: attr(data-description);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background-color: #333;
+    color: white;
+    border-radius: 6px;
+    font-size: 0.85em;
+    line-height: 1.4;
+    white-space: nowrap; /* Force single line */
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease; /* Faster transition */
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    pointer-events: none; /* Prevent tooltip from being hoverable */
+}
+
+/* Show tooltip on hover */
+.subsection li a[data-description]:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Tooltip arrow */
+.subsection li a[data-description]::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 100%;
+    margin-top: 2px;
+    border: 6px solid transparent;
+    border-bottom-color: #333;
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease; /* Faster transition */
+    pointer-events: none; /* Prevent arrow from being hoverable */
+}
+
+.subsection li a[data-description]:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Prevent tooltips from being cut off at edges */
+.subsection li:nth-last-child(-n+3) a[data-description]::after {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.subsection li:nth-last-child(-n+3) a[data-description]::before {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 2px;
+    border-bottom-color: transparent;
+    border-top-color: #333;
+}
+
+/* About section - simple two-column since it's short */
+#about + ul {
+    columns: 2;
+    column-gap: 2em;
+    margin-bottom: 2em;
+}
+
+#about + ul li {
+    break-inside: avoid;
+    margin-bottom: 0.4em;
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+    .thoughts-columns, .research-columns, .knowledge-columns, .training-columns, .experiences-columns {
+        columns: 1;
+    }
+    
+    #about + ul {
+        columns: 1;
+    }
+    
+    /* Adjust tooltip positioning for mobile */
+    .subsection li a[data-description]::after {
+        left: -50px;
+    }
+}
