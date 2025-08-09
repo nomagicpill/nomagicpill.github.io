@@ -140,7 +140,7 @@ h2 {
     margin-bottom: 0.4em;
 }
 
-/* Responsive behavior */
+/* Responsive behavior 
 @media (max-width: 768px) {
     .thoughts-columns, .research-columns, .knowledge-columns, .training-columns, .experiences-columns {
         columns: 1;
@@ -150,8 +150,30 @@ h2 {
         columns: 1;
     }
     
+    /* Adjust tooltip positioning for mobile 
+    .subsection li a[data-description]::after {
+        left: -50px;
+    }
+}*/
+
+/* Re-enable pointer events on mobile for tooltips */
+@media (max-width: 768px) {
+    .subsection li a[data-description]::after,
+    .subsection li a[data-description]::before {
+        pointer-events: auto;
+    }
+    
+    /* Make tooltips appear on first tap (focus) */
+    .subsection li a[data-description]:focus::after,
+    .subsection li a[data-description]:focus::before {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
     /* Adjust tooltip positioning for mobile */
     .subsection li a[data-description]::after {
         left: -50px;
+        max-width: 250px;
     }
 }
