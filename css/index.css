@@ -40,28 +40,39 @@ h2 {
 .subsection li {
     margin-bottom: 0.3em; /* Tighter spacing */
     line-height: 1.25; /* More compact */
-    position: relative; /* For tooltip positioning */
     font-size: 0.95em; /* Slightly smaller text */
 }
 
+/* Add positioning for tooltips on desktop only */
+@media (min-width: 769px) {
+    .subsection li,
+    #best + p + ul li {
+        position: relative;
+    }
+}
+
 /* Remove default link styling - no underlines unless hovering */
-.subsection li a {
+.subsection li a,
+#best + p + ul li a {
     text-decoration: none;
     border-bottom: none;
 }
 
-.subsection li a:hover {
+.subsection li a:hover,
+#best + p + ul li a:hover {
     border-bottom: 1px solid #2563eb;
 }
 
-/* Tooltip functionality */
-.subsection li a[data-description] {
+/* Tooltip functionality for both subsections AND Best Of section */
+.subsection li a[data-description],
+#best + p + ul li a[data-description] {
     position: relative;
     cursor: pointer;
 }
 
-/* Tooltip content */
-.subsection li a[data-description]::after {
+/* Tooltip content for both subsections AND Best Of */
+.subsection li a[data-description]::after,
+#best + p + ul li a[data-description]::after {
     content: attr(data-description);
     position: absolute;
     left: 0;
@@ -83,15 +94,17 @@ h2 {
     pointer-events: none; /* Prevent tooltip from being hoverable */
 }
 
-/* Show tooltip on hover */
-.subsection li a[data-description]:hover::after {
+/* Show tooltip on hover for both subsections AND Best Of */
+.subsection li a[data-description]:hover::after,
+#best + p + ul li a[data-description]:hover::after {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
 
-/* Tooltip arrow */
-.subsection li a[data-description]::before {
+/* Tooltip arrow for both subsections AND Best Of */
+.subsection li a[data-description]::before,
+#best + p + ul li a[data-description]::before {
     content: '';
     position: absolute;
     left: 15px;
@@ -106,20 +119,23 @@ h2 {
     pointer-events: none; /* Prevent arrow from being hoverable */
 }
 
-.subsection li a[data-description]:hover::before {
+.subsection li a[data-description]:hover::before,
+#best + p + ul li a[data-description]:hover::before {
     opacity: 1;
     visibility: visible;
 }
 
-/* Prevent tooltips from being cut off at edges */
-.subsection li:nth-last-child(-n+3) a[data-description]::after {
+/* Prevent tooltips from being cut off at edges for both subsections AND Best Of */
+.subsection li:nth-last-child(-n+3) a[data-description]::after,
+#best + p + ul li:nth-last-child(-n+3) a[data-description]::after {
     top: auto;
     bottom: 100%;
     margin-top: 0;
     margin-bottom: 8px;
 }
 
-.subsection li:nth-last-child(-n+3) a[data-description]::before {
+.subsection li:nth-last-child(-n+3) a[data-description]::before,
+#best + p + ul li:nth-last-child(-n+3) a[data-description]::before {
     top: auto;
     bottom: 100%;
     margin-top: 0;
@@ -142,35 +158,127 @@ h2 {
 
 /* Responsive behavior */
 @media (max-width: 768px) {
+    /* Disable CSS columns on mobile - use simple block layout instead */
     .thoughts-columns, .research-columns, .knowledge-columns, .training-columns, .experiences-columns {
-        columns: 1;
+        columns: unset;
+        display: block;
     }
     
     #about + ul {
         columns: 1;
     }
     
+    /* Reset subsection styling for mobile */
+    .subsection {
+        margin-bottom: 2em;
+        break-inside: unset;
+        page-break-inside: unset;
+    }
+    
     /* Enable double-tap on mobile - re-enable pointer events for tooltips */
     .subsection li a[data-description]::after,
-    .subsection li a[data-description]::before {
+    .subsection li a[data-description]::before,
+    #best + p + ul li a[data-description]::after,
+    #best + p + ul li a[data-description]::before {
         pointer-events: auto;
     }
     
-    /* Show tooltip on focus (first tap) */
-    .subsection li a[data-description]:focus::after {
+    /* Show tooltip on focus (first tap) for both subsections AND Best Of */
+    .subsection li a[data-description]:focus::after,
+    #best + p + ul li a[data-description]:focus::after {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
     }
     
-    .subsection li a[data-description]:focus::before {
+    .subsection li a[data-description]:focus::before,
+    #best + p + ul li a[data-description]:focus::before {
         opacity: 1;
         visibility: visible;
     }
     
     /* Adjust tooltip positioning for mobile */
-    .subsection li a[data-description]::after {
-        left: -50px;
-        max-width: 250px;
+    .subsection li a[data-description]::after,
+    #best + p + ul li a[data-description]::after {
+        left: -20px;
+        max-width: 280px;
+        white-space: normal; /* Allow wrapping on mobile */
+        width: max-content;
+    }
+    
+    /* Ensure list items have stable positioning on mobile */
+    .subsection ul,
+    #best + p + ul {
+        padding-left: 1.2em; /* Reduce indentation slightly */
+    }
+    
+    .subsection li {
+        margin-bottom: 0.5em; /* Bit more spacing on mobile */
+    }
+    
+    #best + p + ul li {
+        margin-bottom: 0.8em; /* Keep generous spacing for Best Of */
+    }
+    
+    /* Reset any transforms that might affect layout */
+    .subsection li a[data-description],
+    #best + p + ul li a[data-description] {
+        transform: none;
     }
 }
+
+/* Remove default bullets
+.subsection ul,
+#best + p + ul {
+    list-style: none;
+}
+*/
+
+/* Add space for custom bullets
+.subsection li,
+#best + p + ul li {
+    padding-left: 1.4em;
+}
+*/
+
+/*
+.subsection li::before,
+.thoughts-columns li::before,
+#best + p + ul li::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border: 2px solid #dc2626;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 0.4em;
+    background: linear-gradient(135deg, transparent 45%, #dc2626 45%, #dc2626 55%, transparent 55%);
+}
+
+.research-columns li::before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 8px solid #7c3aed;
+    position: absolute;
+    left: 2px;
+    top: 0.4em;
+    transform: rotate(45deg);
+}
+
+.knowledge-columns li::before,
+.training-columns li::before,
+.experiences-columns li::before {
+    content: "";
+    width: 12px;
+    height: 6px;
+    background-color: #2563eb;
+    border-radius: 10px;
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+}
+*/
