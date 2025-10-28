@@ -25,6 +25,9 @@
     <a href="#checklist">Checklist</a>
   </li>
   <li>
+    <a href="#2025_cts">2025 Central Texas Showdown</a>
+  </li>
+  <li>
     <a href="#2025_qhu">2025 Quanah Hill Uprising</a>
   </li>
   <li>
@@ -75,6 +78,10 @@
 
 <h2 id="checklist">Checklist</h2>
 
+<button type="button" class="collapsible">Pre-Race Checklist</button>
+
+<div class="content">
+
 <h3>Gear</h3>
 
 <p>
@@ -97,6 +104,7 @@
   <label><input type="checkbox" name="checkbox" value="value">Head light (if needed)</label><br>
   <label><input type="checkbox" name="checkbox" value="value">Tail light (if needed)</label><br>
   <label><input type="checkbox" name="checkbox" value="value">Bike computer</label><br>
+  <label><input type="checkbox" name="checkbox" value="value">Route downloaded to computer</label><br>
   <label><input type="checkbox" name="checkbox" value="value">Heart rate monitor</label><br>
   <label><input type="checkbox" name="checkbox" value="value">Wireless headphones</label><br>
   <label><input type="checkbox" name="checkbox" value="value">Table</label><br>
@@ -159,6 +167,65 @@
   <label><input type="checkbox" name="checkbox" value="value">Cleat tightness</label><br>
   <label><input type="checkbox" name="checkbox" value="value"></label><br>
 </p>
+
+</div>
+
+<p></p>
+
+<hr>
+
+<h2 id="2025_cts">2025 Central Texas Showdown</h2>
+
+<ul>
+  <li>
+    Info: 24 October 2025
+  </li>
+  <li>
+    Route: Slowdown; 300 miles with 14,000 feet of elevation gain
+  </li>
+  <li>
+    Bike: Canyon World Cup CF 6
+  </li>
+  <li>
+    Place: DNF
+  </li>
+</ul>
+
+<p>
+  DNFed for a variety of reasons, the biggest being my mind not being ready. My previous efforts—Everesting, 24-hour mountain bike races, etc—have required a certain mental preparation where I a) come to terms with the pain and suffering I'm about to endure, and b) welcome it with open arms because this is what I signed up for, what I wanted, what I sought out. I did not do this this time around. My mind had been steadily broken down over the previous three weeks because of work, where I was pulling around 70 hours a week and under major stress and had a small fear of losing my job. Training had suffered as a result: I hadn't had a proper workout in a few weeks and all of my rides were just easy. I suspect my peak had been reached two-ish weeks before the race and I was well on the right side of the curve. The impending weather also didn't help my mindset. Forecasts showed a 90% chance of thunderstorms from 8:00pm to 5:00am, which everybody knows as spooky hours, where both energy and motivation are at all-race lows and you need all the help you can get. Looking ahead to riding through heavy rain in the pitch black and 60 °F temperatures (which would probably cause major shivers) was not something I was excited for, much less prepared for.
+</p>
+
+<p>
+  My elbow continued to not be 100% leading up to the race, and I evidently overexerted it the two days preceding the race as it was a bit sore and stiff the night before. I started feeling it around mile 40 despite trying to spend a decent amount of time in the aero bar position and riding a full suspension mountain bike, which was strategically chosen for its ability to soak up hits for the sake of my elbow.
+</p>
+
+<p>
+  My bike setup was not optimal, specifically my saddle bag. It can't be that dumb to test your new setup the day of the race, right? Wrong. I thought the bag would be rigid enough. Wrong again! Backing two inner tubes at the end of the bag (away from the seatpost) caused it to sag enough that it would hit my rear tire when my rear suspension sagged at all. I fixed it, but even with just clothes in there it would occasionally hit. Now I had to worry about tearing a hole in my tire for the remaining 20 hours. Frame bag was pretty helpful and I could fit a decent amount of stuff in there. The total bike weight of X pounds.
+</p>
+
+<p>
+  I made it 60 miles before calling it quits. The 60 miles were actually pretty easy and my legs and lungs would've been good for another 60 without too much problem. It is, however, incredibly intimidating and daunting to look down and see 60 miles only to realize that's a mere 20% of the course and there's still 240 miles to go. I'd be lying if that didn't play a role in my decision to quit. There was also a north-pointing headwind of 15 mph (gusts of 20-25 mph) while we were going—you guessed it—straight south. The wind combined with the no-drafting-allowed rule made for some slow riding in high exposure areas.
+</p>
+
+<p>
+  My lackluster performance has called into question my desire to be a competitive ultraendurance cyclist. The training requirements to truly compete are more than I'm willing to give. The ride itself was honestly pretty boring. I met some nice people who I'll probably never see again. Why do I do this? A part of me loves the challenge, the reward waiting at the end when you finish and triumph in the face of the devil on your shoulder who was telling you to stop during hard training and the race itself. Another part of me does it for the status, the respect I get from others when they hear I won a 24-hour mountain bike race and signed up for a 300-mile race. The former is strong and difficult to replicate elsewhere; the latter is fleeting and almost certainly in my head, a psychological fallacy where I think people think of me way more than they actually do. It's also (probably) unhealthy. I, nor others, should seek validation from others for doing things they want to do, and yet we still do it. Social approval is pretty powerful stuff.
+</p>
+
+<p>
+  Things to fix for next race:
+</p>
+
+<ol>
+  <li>
+    Experiment with setup after researching where the best place to put stuff is. I tried to keep heavier items in the frame bag, which I think is right, but I may be missing some other tips and tricks.
+  </li>
+  <li>
+    Figure out how to get my custom Garmin activity profile to turn on when I select a route. I'm guessing I just need to choose it before I start the course. The profile I made had eating and drinking reminders.
+  </li>
+  <li>
+    Create a pre-race ritual where I accept the suffering I am about to endure.
+  </li>
+</ol>
 
 <hr>
 
@@ -1073,6 +1140,23 @@
 <hr>
 
 <h2 id="see_also">See Also</h2>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
 
 </body>
 </html>
