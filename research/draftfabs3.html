@@ -51,7 +51,16 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
 
 <ul>
   <li>
-
+    <a href="#preface">Preface</a>
+  </li>
+  <li>
+    <a href="#context">Context</a>
+  </li>
+  <li>
+    <a href="#why">Why All the Data?</a>
+  </li>
+  <li>
+    <a href="#what">What is the Data?</a>
   </li>
   <li>
     <a href="#see_also">See Also</a>
@@ -60,7 +69,114 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
 
 <hr>
 
-<h2 id=""></h2>
+<h2 id="preface">Preface</h2>
+
+<p>
+  I tried to include as many links as possible to allow the reader to go down rabbit holes as they see fit.
+</p>
+
+<p>
+  I don't work in an advanced fab, so I rely on my ideas, conjecture, and the literature for a more accurate representation of it.
+</p>
+
+<hr>
+
+<h2 id="context">Context</h2>
+
+
+
+
+
+<hr>
+
+<h2 id="why">Why All the Data?</h2>
+
+<p>
+  Fabs are incredibly hungry for data. Insatiably hungry. Data helps to connect patterns, solve problems, troubleshoot issues, and understand data.
+</p>
+
+
+
+
+
+
+<hr>
+
+<h2 id="what">What is the Data?</h2>
+
+<p>
+  How much data could one fab possibly need? And what could they possibly be measuring that requires gigabytes, even terabytes of data?
+</p>
+
+<p>
+  Let's find out! Here's a "short" list of some potential SVIDs someone can track:
+</p>
+
+<ul>
+  <li>
+    Temperature
+  </li>
+  <li>
+    Pressure
+  </li>
+  <li>
+    Angle
+  </li>
+  <li>
+    Distance
+  </li>
+  <li>
+    Position
+  </li>
+  <li>
+    Voltage
+  </li>
+  <li>
+    Current
+  </li>
+  <li>
+    Resistance
+  </li>
+  <li>
+    Power
+  </li>
+  <li>
+    Quantity
+  </li>
+  <li>
+    Status
+  </li>
+</ul>
+
+<p>
+  Now those are just single characteristics that don't add up to much on their own. But what happens when we take measurements across multiple components across multiple tools across the entire fab? A nice Fermi approximation is in store!
+</p>
+
+<p>
+  Let's assume the following for the NMP fab:
+</p>
+
+<ul>
+  <li>
+    1000 tools
+  </li>
+  <li>
+    400 signals per tool
+  </li>
+  <li>
+    500 kB data per signal per hour (empirical data; this includes the context needed to interpret the data)
+  </li>
+</ul>
+
+<p>
+  The math is then pretty easy:
+</p>
+
+<p align="middle">
+  total = 500 tools &times; 400 signals/tool &times; 500 kB/signal/hour = 100 GB per hour &approx; 1000 TB per year of data
+</p>
+
+
 
 
 <hr>
