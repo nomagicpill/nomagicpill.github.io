@@ -77,6 +77,10 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
 </p>
 
 <p>
+  I now include analogies [FINISH]
+</p>
+
+<p>
   I don't work in an advanced fab, so I rely on my ideas, conjecture, and the literature for a more accurate representation of it.
 </p>
 
@@ -93,7 +97,7 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
 <h2 id="why">Why All the Data?</h2>
 
 <p>
-  Fabs are incredibly hungry for data. Insatiably hungry. Data helps to connect patterns, solve problems, troubleshoot issues, and understand data.
+  Fabs are incredibly hungry for data. Insatiably hungry. Data helps to connect patterns, solve problems, troubleshoot issues, and just plan understand.
 </p>
 
 
@@ -106,11 +110,11 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
 <h2 id="what">What is the Data?</h2>
 
 <p>
-  How much data could one fab possibly need? And what could they possibly be measuring that requires gigabytes, even terabytes of data?
+  How much data could one fab possibly need? And what could they possibly be measuring that requires terabytes of data?
 </p>
 
 <p>
-  Let's find out! Here's a "short" list of some potential SVIDs someone can track:
+  Let's find out! Here's a "short" list of potential signals fabs can keep track of, binned out into individual tool components. For example, engineers may want to keep track of the temperature, pressure, and power of component1.
 </p>
 
 <ul>
@@ -159,13 +163,13 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
 
 <ul>
   <li>
-    1000 tools
+    <a href="https://newsroom.intel.com/tech101/how-a-semiconductor-factory-works#:~:text=typical%20fab%20includes%201%2C200%20multimillion%2Ddollar%20tools">1000 tools</a>
   </li>
   <li>
-    400 signals per tool
+    500 signals per tool
   </li>
   <li>
-    500 kB data per signal per hour (empirical data; this includes the context needed to interpret the data)
+    500 kB data per signal per hour (empirical data at a collection frequency of 1 Hz; this includes the context needed to interpret the data)
   </li>
 </ul>
 
@@ -174,8 +178,21 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
 </p>
 
 <p align="middle">
-  total = 500 tools &times; 400 signals/tool &times; 500 kB/signal/hour = 100 GB per hour &approx; 1000 TB per year of data
+  total = 1000 tools &times; 500 signals/tool &times; 500 kB/signal/hour = 250 GB per hour &approx; 2000 TB per year of data
 </p>
+
+<p>
+  But wait! Those are just raw signals that the tool is reporting to the fab data monster. There are still plenty more sources of data:
+</p>
+
+<ul>
+  <li>
+    Derived values of data: mean, median, standard deviation, etc
+  </li>
+  <li>
+    
+  </li>
+</ul>
 
 <p>
   [FINISH CLAUDES ESTIMATION HERE]
