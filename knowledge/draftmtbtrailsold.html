@@ -7,54 +7,6 @@
   <link rel="alternate" type="application/atom+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
   <link rel="stylesheet" type="text/css" href="../css/main.css">
   <link rel="icon" href="../media/favicon.png">
-  <style>
-      .slideshow {
-          position: relative;
-          width: 100%;
-          max-width: 770px;
-          margin: 20px auto;
-      }
-
-      .slideshow img {
-          width: 100%;
-          display: none;
-      }
-
-      .slideshow img.active {
-          display: block;
-      }
-
-      .slideshow-arrow {
-          position: absolute;
-          top: 150px; /* Fixed position from top of slideshow container */
-          background-color: rgba(0, 0, 0, 0.3);
-          color: white;
-          border: none;
-          font-size: 2em;
-          padding: 10px 15px;
-          cursor: pointer;
-          user-select: none;
-          transition: background-color 0.2s;
-      }
-
-      .slideshow-arrow:hover {
-          background-color: rgba(0, 0, 0, 0.5);
-      }
-
-      .slideshow-arrow.left {
-          left: 10px;
-      }
-
-      .slideshow-arrow.right {
-          right: 10px;
-      }
-
-      .slideshow-loading {
-          text-align: center;
-          padding: 40px;
-          color: #666;
-      }
-  </style>
 </head>
 
 <body>
@@ -163,7 +115,6 @@
   GMG stands for Gabe Szczurek, Mike (MacGregor), and Gerry, the three guys who built the trail. 
 </p>
 
-<div class="slideshow" data-folder="gmg"></div>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/FE5xw4gyTJc?si=HlsyiJZoLcg-kKz9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -213,10 +164,8 @@
 </ul>
 
 <p>
-  The Trail: <a href="https://thetrail.net/trailHTML/staticHTML/mtFromme/flyingCircus.html">The Flying Circus</a>
+  <a href="https://thetrail.net/trailHTML/staticHTML/mtFromme/flyingCircus.html">The Flying Circus</a>
 </p>
-
-<div class="slideshow" data-folder="flyingcircus"></div>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/DqhTgTXsaho?si=ocKcP2TQ0WDrQYZS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -248,7 +197,7 @@
   </li>
 </ul>
 
-<div class="slideshow" data-folder="mrskinny"></div>
+
 
 <hr>
 
@@ -269,8 +218,6 @@
     Notes: As far as I can tell, the Wheel wasn't built specifically for NWD—it appears Sam built it before the film. That being said, there's almost literally nothing on the internet that I can find on it. Pictures are sparse, there's one video, and only rumors of its location. I even reached out the Sam's sister, but never heard back.
   </li>
 </ul>
-
-<div class="slideshow" data-folder="disconstructedwheel"></div>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XBD1nuN4JCs?si=IKZG7bnc09ZhH6yD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -308,10 +255,10 @@
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/iUeZMGrLAhY?si=cx-sWCVwgwzj-uAj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+
 <hr>
 
 <h2 id="see_also">See Also</h2>
-
 
 
 <script>
@@ -329,103 +276,6 @@ for (i = 0; i < coll.length; i++) {
     }
   });
 }
-</script>
-
-<script>
-    class Slideshow {
-        constructor(container) {
-            this.container = container;
-            this.folder = container.dataset.folder;
-            this.currentIndex = 0;
-            this.images = [];
-            this.init();
-        }
-
-        async init() {
-            // Show loading message
-            this.container.innerHTML = '<div class="slideshow-loading">Loading images...</div>';
-
-            // Detect how many images exist
-            await this.detectImages();
-
-            if (this.images.length === 0) {
-                this.container.innerHTML = '<div class="slideshow-loading">No images found</div>';
-                return;
-            }
-
-            // Build the slideshow
-            this.render();
-        }
-
-        async detectImages() {
-            let index = 1;
-            while (true) {
-                const path = `media/mtbtrails/${this.folder}/${this.folder}${index}.jpg`;
-                const exists = await this.imageExists(path);
-                if (!exists) break;
-                this.images.push(path);
-                index++;
-            }
-        }
-
-        imageExists(url) {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.onload = () => resolve(true);
-                img.onerror = () => resolve(false);
-                img.src = url;
-            });
-        }
-
-        render() {
-            // Clear container
-            this.container.innerHTML = '';
-
-            // Add all images
-            this.images.forEach((src, index) => {
-                const img = document.createElement('img');
-                img.src = src;
-                img.alt = `Image ${index + 1}`;
-                if (index === 0) img.classList.add('active');
-                this.container.appendChild(img);
-            });
-
-            // Add navigation arrows
-            const leftArrow = document.createElement('button');
-            leftArrow.classList.add('slideshow-arrow', 'left');
-            leftArrow.innerHTML = '‹';
-            leftArrow.addEventListener('click', () => this.prev());
-
-            const rightArrow = document.createElement('button');
-            rightArrow.classList.add('slideshow-arrow', 'right');
-            rightArrow.innerHTML = '›';
-            rightArrow.addEventListener('click', () => this.next());
-
-            this.container.appendChild(leftArrow);
-            this.container.appendChild(rightArrow);
-        }
-
-        next() {
-            const images = this.container.querySelectorAll('img');
-            images[this.currentIndex].classList.remove('active');
-            this.currentIndex = (this.currentIndex + 1) % this.images.length;
-            images[this.currentIndex].classList.add('active');
-        }
-
-        prev() {
-            const images = this.container.querySelectorAll('img');
-            images[this.currentIndex].classList.remove('active');
-            this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
-            images[this.currentIndex].classList.add('active');
-        }
-    }
-
-    // Initialize all slideshows when page loads
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.slideshow').forEach(container => {
-            new Slideshow(container);
-        });
-    });
 </script>
 
 </body>
