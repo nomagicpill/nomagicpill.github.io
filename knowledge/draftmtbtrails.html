@@ -65,7 +65,11 @@
 <h2 id="background">Background</h2>
 
 <p>
-  In 6th grade I discovered the North Shore, Vancouver's insane mountain biking area comprising Mt. Fromme, Mt. Seymour, and Cypress Mountain. For whatever reason Fromme was what intrigued me the most
+  In 6th grade I discovered the North Shore, Vancouver's insane mountain biking area comprising Mt. Fromme, Mt. Seymour, and Cypress Mountain. For whatever reason, Fromme was what intrigued me the most and what has stuck with me to this day.
+</p>
+
+<p>
+  There are few resources out there that compile all the materials on a single trail in a single place. Some of it's on Pinkbike, some on YouTube, some on Facebook, some in people's garages on hard drives gathering dust. This is my attempt to gather as many materials as possible
 </p>
 
 <hr>
@@ -170,7 +174,22 @@ rideunited (Apr 29, 2010 at 6:42)
 <h2 id="see_also">See Also</h2>
 
 
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
 
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
 
 </body>
 </html>
