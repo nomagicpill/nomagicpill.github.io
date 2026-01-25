@@ -50,7 +50,7 @@
 <h2 id="manufacturing">Manufacturing Quality Events</h2>
 
 <p>
-  Manufacturing companies are all about churning out as much product as possible as fast as possible for as cheap as possible. Obviously some of these goals are at odds with each other, leading to the infamous triangle that factory managers refuse to believe in:
+  Manufacturing companies are all about churning out as much product as possible as fast as possible for as cheap as possible. Obviously some of these goals are at odds with each other, leading to the infamous triangle that managers refuse to overtly believe in:
 </p>
 
 <img src="media/lifequalityevents/triangle.png" style="width:300px">
@@ -98,13 +98,13 @@
     Non-detection technical root cause (NDTRC): Why wasn't the problem detected immediately? Fixing this will allow improved detection for next time.
   </li>
   <li>
-    Non-conformance systemic root cause (NDSRC): Why was the problem "allowed" to not be detected? Fixing this will ensure future problems are detected.
+    Non-detection systemic root cause (NDSRC): Why was the problem "allowed" to not be detected? Fixing this will ensure future problems are detected.
   </li>
 </ul>
 
-<li>
+<p>
   In sum, the technical root causes are why the problem happened and the systemic root causes are what allowed the problem to happen. Once all of the root causes are identified, actions can be taken to fix each.
-</li>
+</p>
 
 <p>
   For example, here's the RCA for when semiconductor chips are thrown away because they had too many particles on them:
@@ -128,7 +128,7 @@
     </ul>
   </li>
   <li>
-    NDTRC: There is no way to detect the part reaching EOL
+    NDTRC: There is no existing way to detect the part reaching EOL
     <ul>
       <li>
         Action: Set up a monitoring system to detect when it reaches or is close to reaching EOL, just in case it's sooner than the replacement schedule
@@ -145,19 +145,40 @@
 <h2 id="life">Analzying the Root Causes of Your Life's Problems</h2>
 
 <p>
-  RCA is a wonderful system in that it allows mistakes to be learned from and gaps fixed, shoring up the dam separating (potential) horrible problems and a smooth, problem-free life. It forces one to consider everything, to go down each path and ask why this or that happened, how they let it happen, and what they have to do to make sure it never happens again.
+  RCA is a wonderful system in that it allows mistakes to be learned from and gaps fixed, shoring up the dam separating problems and a smooth, problem-free life. It forces one to consider everything, to go down each path and ask why this or that happened, how they let it happen, and what they have to do to make sure it never happens again.
 </p>
 
 <p>
-  This is why I propose it being used in someone's everyday life to address things when they have quality(-of-life) events. When something goes wrong, don't just accept it or move on—learn from it! Understand it! Ask questions about it! Fix it!
+  But let's be real, nobody wants to go through the dreaded RCA rigmarole every time something bad happens.
 </p>
 
 <p>
-  Here are a few simple examples to show how helpful RCA can be across multiple domains of life. They're not in the (NC/ND)(TRC/SRC) format, but the point still gets across.
+  This is why I propose that an abbreviated RCA should be used in someone's everyday life to address things when they have quality(-of-life) events. When something goes wrong, don't just accept it or move on—learn from it! Understand it! Ask questions about it! Fix it!
+</p>
+
+<p>
+  The questions are almost identical to the NXXRC questions from above:
+</p>
+
+<ol>
+  <li>
+    Has the problem been fixed? This is the immediate patch to the problem that prevents more damage from happening.
+  </li>
+  <li>
+    How will future problems identical to this be prevented? This is the long-term patch that will prevent similar problems from occurring in the future.
+  </li>
+  <li>
+    What can be done to detect the problem sooner? This helps to highlight and eliminate detection gaps.
+  </li>
+</ol>
+
+<p>
+  Here are a few simple examples to show how helpful LRCA can be across multiple domains of life. They're not in the (NC/ND)(TRC/SRC) format, but the point still gets across.
 </p>
 
 Derek
 Erik
+
 
 
 <button type="button" class="collapsible">Example I: Missed Flight</button>
@@ -165,43 +186,57 @@ Erik
 <div class="content">
 
 <p>
-  Andrew missed his flight for a variety of reasons (the ">" represent the "why?"s drilling down to root cause):
+  Andrew missed his flight because:
 </p>
 
 <ul>
   <li>
-    Traffic was way worse than normal > there was an accident
+    Traffic was worse than normal
   </li>
   <li>
-    The security checkpoint line was longer than normal > more people were flying than normal at this time > it was Friday afternoon
+    The security checkpoint was longer than normal
   </li>
   <li>
-    The rideshare took longer to find a driver and arrive than normal > it was Friday afternoon
-  </li>
-  <li>
-    Andrew lost track of time and called the rideshare too late > he was focusing on work
+    He lost track of time before leaving for the airport
   </li>
 </ul>
 
 <p>
-  In the end, this issue can traced down to Andrew arriving at the airport too late. If he had gotten there early enough, the bad traffic and long lines wouldn't have mattered.
+  Now to answer the questions:
 </p>
 
-<p>
-  The actions Andrew should take from this are:
-</p>
-
-<ul>
+<ol>
   <li>
-    Schedule a rideshare in advance, preferably at the time of flight booking. If that's too early, set a reminder at the time of booking to do so as soon as the window opens up. 
+    Has the problem been fixed?
+    <ul>
+      <li>
+        Yes. Andrew has rebooked his flight.
+      </li>
+    </ul>
   </li>
   <li>
-    Establish a personal rule to arrive at the airport at least two hours in advance of the flight departure time.
+    How will future problems identical to this be prevented?
+    <ul>
+      <li>
+        Schedule a rideshare in advance, preferably at the time of flight booking. If that's too early, set a reminder at the time of booking to do so as soon as the window opens up.
+      </li>
+      <li>
+        Establish a personal rule to arrive at the airport at least two hours in advance of the flight departure time. This creates a cushion in case of extra long times during the drive or security.
+      </li>
+      <li>
+        Purchase a TSA PreCheck membership to get through security faster
+      </li>
+    </ul>
   </li>
   <li>
-    Optional: Purchase a TSA Precheck membership so the security line goes faster
+    What can be done to detect the problem sooner?
+    <ul>
+      <li>
+        Set up automatic reminders to check traffic and TSA wait times X hours before the flight
+      </li>
+    </ul>
   </li>
-</ul>
+</ol>
 
 </div>
 
@@ -212,14 +247,53 @@ Erik
 <div class="content">
 
 <p>
-  Celia didn't get promoted at work for a variety of reasons:
+  Celia didn't get promoted at work because:
 </p>
 
 <ul>
   <li>
-    
+    She didn't get regular feedback from her boss about her performance
+  </li>
+  <li>
+    She didn't work high-profile projects
+  </li>
+  <li>
+    She was disagreeable with other members of the group
   </li>
 </ul>
+
+<ol>
+  <li>
+    Has the problem been fixed?
+    <ul>
+      <li>
+        There's not an immediate problem to fix. Celia will have to wait until the next promotion cycle, but can and should start on other actions in the meantime.
+      </li>
+    </ul>
+  </li>
+  <li>
+    How will future problems identical to this be prevented?
+    <ul>
+      <li>
+        Set up regular performance reviews and hold both parties accountable for attending
+      </li>
+      <li>
+        Push to work on high-profile projects. This means actively seeking them out, proposing them herself, and asking to get put on already-existing teams.
+      </li>
+      <li>
+        Be more friendly with everyone in the office
+      </li>
+    </ul>
+  </li>
+  <li>
+    What can be done to detect the problem sooner?
+    <ul>
+      <li>
+        Set up regular performance reviews and hold both parties accountable for attending
+      </li>
+    </ul>
+  </li>
+</ol>
 
 </div>
 
@@ -230,8 +304,14 @@ Erik
 <div class="content">
 
 <p>
-  Derek went to the 
+  Derek had a surprise heart attack because:
 </p>
+
+<ul>
+  <li>
+    His diet is poor, leading to high LDL cholesterol 
+  </li>
+</ul>
 
 <ul>
   <li>
