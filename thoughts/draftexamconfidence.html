@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Exam Questions Need Confidence Scores - No Magic Pill</title>
+  <link rel="alternate" type="application/rss+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
+  <link rel="alternate" type="application/atom+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="icon" href="../media/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+<body>
+
+<h3 id="home"><a href="../index.html">Home</a></h3>
+
+<!--
+
+<img src="media//.">
+<figcaption>
+
+</figcaption>
+
+
+-->
+
+<h1 id="examconfidence">Exam Questions Need Confidence Scores</h1>
+
+<p>
+  Guessing correctly doesn't indicate knowledge.
+</p>
+
+<hr>
+
+<h2 id="contents">Contents</h2>
+
+<ul>
+  <li>
+    <a href="#guessing">The Problems With Guessing</a>
+  </li>
+  <li>
+    <a href="#brier">Brier Scores for Exams</a>
+  </li>
+  <li>
+    <a href="#system">xx</a>
+  </li>
+  <li>
+    <a href="#practicaliy">Practicality</a>
+  </li>
+  <li>
+    <a href="#see_also">See Also</a>
+  </li>
+</ul>
+
+<hr>
+
+<h2 id="guessing">The Problems With Guessing</h2>
+
+<p>
+  Both multiple-choice (MCE) and free-response exams (FRE) don't necessarily show how confident the student is in their answers—they just show the final answer or the thought process, respectively. But that means the student can just guess and get it right, even if they don't know for sure that the answer or thought process is correct!
+</p>
+
+<p>
+  Take MCEs. For a four-choice question, the student could improve their odds of guessing from 25% to 33-50% chance just by eliminating one or two answer choices. While this demonstrates some knowledge about what the answer <i>isn't</i>, isn't necessarily proof that they know what it is, even if they choose correctly.
+</p>
+
+<p>
+  Or FREs. A student may have some idea of what the question is asking, but could take a guess at which formula/process to apply and still get it correct. (This is much less likely than on a MCE, but still possible based on personal experience.)
+</p>
+
+<p>
+  What would happen if students had to note down how confidence they are that they have the correct answer?
+</p>
+
+<hr>
+
+<h2 id="brier">Brier Scores for Exams</h2>
+
+<p>
+  Introducing <a href="https://en.wikipedia.org/wiki/Brier_score">Brier scores</a> (BS). The formula for a BS (as related to exams) is:
+</p>
+
+\[BS = \frac{1}{N} \sum_{t=1}^{N} \left(f_{t} - o_{t}\right)^{2}\]
+
+<p>
+  where:
+</p>
+
+<ul>
+  <li>
+    N is the number of questions on the exam
+  </li>
+  <li>
+    t is the question number
+  </li>
+  <li>
+    f<sub>t</sub> is the student's prediction that they got question t correct, ranging from 0 (I definitely got it wrong) to 1 (I definitely got it right)
+  </li>
+  <li>
+    o<sub>t</sub> is the result of their answer; values are either 0 (incorrect) or 1 (correct)
+  </li>
+</ul>
+
+<p>
+  A perfect Brier score is 0, indicating that all predictions were correct, since 1-1 = 0 (I think I got it right and I did get it right) and 0-0 = 0 (I think I got it wrong and I did get it wrong). One issue here, if the Brier score was all that mattered, is that exams could be easily gamed by just intentionally getting the wrong answer, which is generally easier to do than getting the right answer.
+</p>
+
+<p>
+  The question becomes how are correct, confident answers rewarded?
+</p>
+
+<hr>
+
+<h2 id="system"></h2>
+
+<p>
+  First, predictions must be greater than 0.5 (50%) because the goal is to get the answer correct. If the student is less than 50% confident they can get the answer right, then they should change their answer to be more confident or be penalized accordingly. This will make each question have two sections of answers: section A, for the actual answer choices, and section B, for the student's confidence level in their answer choice (60%, 70%, 80%, 90%, or 100%).
+</p>
+
+<p>
+  <a href="https://en.wikipedia.org/wiki/Scantron_Corporation">Scantron forms</a> or tests can be modified to have two sets of answers per question for each section (A, B) to calculate the BS for that question. The total BS is then calculated to give the student their score with the lowest score being the best (alternatively, the BS can be inverted and the highest score wins).
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<hr>
+
+<h2 id="see_also">See Also</h2>
+
+
+
+</body>
+</html>
