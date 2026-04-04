@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semiconductor Fabs III: The Data - No Magic Pill</title>
+  <title>Semiconductor Fabs III: The Data and Automation - No Magic Pill</title>
   <link rel="alternate" type="application/rss+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
   <link rel="alternate" type="application/atom+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
   <link rel="stylesheet" type="text/css" href="../css/main.css">
   <link rel="icon" href="../media/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -20,19 +20,22 @@
 
 </figcaption>
 
-https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
+- https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
+- https://www.synopsys.com/blogs/chip-design/advanced-semiconductor-manufacturing-fab-da.html
+
+- make funnier
 
 -->
 
-<h1 id="fabs3">Semiconductor Fabs III: The Data</h1>
+<h1 id="fabs3">Semiconductor Fabs III: The Data and Automation</h1>
 
 <p>
-  In-depth look at semiconductor fab data collection and analysis.
+  In-depth look at semiconductor fab data and automation.
 </p>
 
 <hr>
 
-<h2 id="series">Fab Series</h2>
+<h2 id="series">Semiconductor Fab Series</h2>
 
 <p>
   <a href="fabs.html">Semiconductor Fabs I: The Equipment</a>
@@ -43,7 +46,7 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
 </p>
 
 <p>
-  <a href="fabs3.html">Semiconductor Fabs III: The Data</a>
+  <a href="fabs3.html">Semiconductor Fabs III: The Data and Automation</a>
 </p>
 
 <hr>
@@ -64,6 +67,9 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
     <a href="#what">What is the Data?</a>
   </li>
   <li>
+    <a href="#automation">Automation (of Everything)</a>
+  </li>
+  <li>
     <a href="#see_also">See Also</a>
   </li>
 </ul>
@@ -77,11 +83,15 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
 </p>
 
 <p>
-  I now include analogies [FINISH]
+  I try to include analogies in case the explanation is poor or the topic esoteric.
 </p>
 
 <p>
-  I don't work in an advanced fab, so I rely on my ideas, conjecture, and the literature for a more accurate representation of it.
+  I don't work in an advanced fab, but have some glimpses into them, so I rely on my ideas, conjecture, and the literature for a more accurate representation of what state-of-the-art fabs look like (although I'm sure there are features I could never dream of).
+</p>
+
+<p>
+  I first go over what the data side of things, since a lot of that is fundamental to how the automation operates.
 </p>
 
 <hr>
@@ -97,24 +107,27 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
 <h2 id="why">Why All the Data?</h2>
 
 <p>
-  Fabs are incredibly hungry for data. Insatiably hungry. Data helps to connect patterns, solve problems, troubleshoot issues, and just plan understand.
+  Fabs are incredibly hungry for data. Insatiably hungry. Data helps to connect patterns, solve problems, troubleshoot issues, and just plain understand what the heck is going on at the atomic level where the transistors and interconnects are made. 
 </p>
 
+<img src="media/fabs3/datamonster.png">
 
-
-
-
+<p>
+  More data is almost always a good thing because it allows you to fit your conclusion to the data. Just kidding. But not really. If an engineer has no freaking clue what's causing a problem, blindly scouring the data may help uncover some anomaly that can clue them in on root cause. That said, false positives and false negatives are legitimate concerns that have to be considered. False positives may result in troubleshooting efforts in the wrong area and wasted time, money, and effort. False negatives may result in the ultimate root cause being overlooked and wasted time, money, and effort pursuing the wrong area.
+</p>
 
 <hr>
 
 <h2 id="what">What is the Data?</h2>
 
 <p>
-  How much data could one fab possibly need? And what could they possibly be measuring that requires terabytes of data?
+  How much data could one fab possibly need? And what could they possibly be measuring that requires petabytes (1000 TB, or 1,000,000 GB) of data?
 </p>
 
+<h3 id="signals">Tool Signals</h3>
+
 <p>
-  Let's find out! Here's a "short" list of potential signals fabs can keep track of, binned out into individual tool components. For example, engineers may want to keep track of the temperature, pressure, and power of component1.
+  Here's a "short" list of potential signals fabs can keep track of. For example, engineers may want to keep track of the temperature, pressure, and power of component1, while voltage, current, and resistance are relevant to component2.
 </p>
 
 <ul>
@@ -154,7 +167,7 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
 </ul>
 
 <p>
-  Now those are just single characteristics that don't add up to much on their own. But what happens when we take measurements across multiple components across multiple tools across the entire fab? A nice Fermi approximation is in store!
+  Now those are just single characteristics that don't add up to much space on their own. But what happens when we take measurements across multiple components across multiple tools across the entire fab? A nice Fermi approximation is in store!
 </p>
 
 <p>
@@ -166,10 +179,10 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
     <a href="https://newsroom.intel.com/tech101/how-a-semiconductor-factory-works#:~:text=typical%20fab%20includes%201%2C200%20multimillion%2Ddollar%20tools">1000 tools</a>
   </li>
   <li>
-    500 signals per tool
+    250 signals per tool
   </li>
   <li>
-    500 kB data per signal per hour (empirical data at a collection frequency of 1 Hz; this includes the context needed to interpret the data)
+    500 kB data per signal per hour (empirical data at a collection frequency of 1 data point per second; this includes the context needed to interpret the data (note that 1 Hz frequency is fairly slow and new )
   </li>
 </ul>
 
@@ -178,25 +191,173 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
 </p>
 
 <p align="middle">
-  total = 1000 tools &times; 500 signals/tool &times; 500 kB/signal/hour = 250 GB per hour &approx; 2000 TB per year of data
+  total = 1000 tools &times; 250 signals/tool &times; 500 kB/signal/hour = 125 GB per hour &approx; 1000 TB per year of data
 </p>
 
 <p>
-  But wait! Those are just raw signals that the tool is reporting to the fab data monster. There are still plenty more sources of data:
+  But wait! Those are just raw signals that the tool is reporting to the fab data monster. Statistics can be performed to get some extra info for each signal: mean, median, standard deviation, minimum, maximum, etc. Just those alone results in five times more data per signal than before (assuming you are constantly updating across the same time period, but generally a time period is defined and a single data point calculated for said period).
+</p>
+
+<h3 id="testresults">Test Results</h3>
+
+<h4>In-line Measurements</h4>
+
+<p>
+  Wafers regularly get measured—either randomly, as determined by some algorithm, or intentionally due to the criticality of the process it just went through—throughout the line to ensure quality control at all processes. The measurements may be thickness after some film was deposited or etched, <a href="https://www.hitachi-hightech.com/global/en/knowledge/semiconductor/room/manufacturing/cd-sem.html">critical dimensions</a>, number of particles on the wafer, or more specific measurements that are left up to the reader to determine.
+</p>
+
+<p>
+  These results are generally boring and not looked at because, well, they rarely fail, at least in more mature fabs where the technologies' manufacturing processes have been optimized for years. Regardless, they are required for various reasons and must sit for some time. 
+</p>
+
+<h4>Electrical Measurements</h4>
+
+<p>
+  Some fabs will test their wafers in-house towards the end of the line to shorten the feedback loop if an issue is identified; it would be weeks if they chose to wait until the wafer got what is called its "final test" results. These tests measure the performance of a ton of different parameters on the die, such as [FINISH; LOOK AT TEST RESULTS].
+</p>
+
+<p>
+  In most cases, the electrical test results are the fab's gold standard for the quality of the wafer: if it's passing and within the historical distribution of that parameter for similar devices, great! If it's not, then something appears to have changed either within the line or with that specific lot. If the next lot of wafers that gets tested has similar out-of-the-distribution results... get investigating!
+</p>
+
+<p>
+  A few notes here for the more technically curious:
 </p>
 
 <ul>
   <li>
-    Derived values of data: mean, median, standard deviation, etc
+    Matching electrical data is pretty much how all changes get approved. Say I want to make change X to process Y. I will propose the change, get approved to run some experimental wafers, run them, review the test results, and if they're good, request approval to fully implement change X for every wafer that runs through process Y.
   </li>
   <li>
-    
+    Some parameters are strongly related to certain processes within the line, which helps to narrow down what went wrong instead of having to spot check every tool. For example, if the <a href="https://en.wikipedia.org/wiki/Threshold_voltage">threshold voltage</a> is all out of whack, that points to a problem at the <a href="https://en.wikipedia.org/wiki/Gate_oxide">gate oxide</a>, which is a particular machine or two in the fab. The engineers reviewing the test results can then notify the gate oxide engineers and have them look into it by digging through the tool signals or maintenance history.
   </li>
 </ul>
 
+<h3 id="history">Histories</h3>
+
 <p>
-  [FINISH CLAUDES ESTIMATION HERE]
+  History allows engineers to look back and see what happened on a certain date or to a certain lot. Tool signals are a form of history (what was component X doing at Y time?)), but other histories are also important.
 </p>
+
+<h4>Maintenance</h4>
+
+<p>
+  Fabs want a way to easily document events in a machine's life, whether automated or input by a person. These leave digital bread crumbs of-sorts that allow engineers to look back and see what happened, why it happened, etc.
+</p>
+
+<p>
+  Here are some examples of helpful automated comments:
+</p>
+
+<blockquote>
+  SPC chart X failed with value of Y1 and Y2. Limit is X. Last Z points have been in control.
+</blockquote>
+
+<blockquote>
+  Machine alarm X with description "Y" occurred. It has happened Z times over the past 30 days. Review recommended solutions here: [link].
+</blockquote>
+
+<p>
+  And here are some examples of helpful typed-by-a-person comments:
+</p>
+
+<blockquote>
+  Removed parts A1/2/3, B, and C to better diagnose lift issue. Found that part A1 is sticking at its end range of motion, which corresponds to the side of the lift that's having the problem. Parts A2/3, B, and C are all good and have no obvious issues. Regardless, replaced all three part As since we have everything open. Original B and C will go back in. The new part A1/2/3 serial numbers are 123, 456, and 789, respectively. Next steps are to [list of next steps]. 
+</blockquote>
+
+<blockquote>
+  Machine alarmed for X. Found that part D was completely powered off. Verified that all relevant circuit breakers were on and there is no power discontinuity up to the part, so appears that D has failed. Wafer 13 was 10 seconds into step E of recipe F when the failure happened. All wafers placed back into the FOUP. Replaced part D and verified it has power and functions normally. Machine was vented to atmosphere and opened.
+</blockquote>
+
+<p>
+  This is all data! It may not be numbers, but it paints a clear picture of the what happened on a machine during a certain time period.
+</p>
+
+<h4>Lot Processing</h4>
+
+<p>
+  Lots will get data and information automatically "attached" to them throughout their lifecycle. Examples include what machine the lot processed on for a certain process, what time it started and stopped, were there any abnormalities while processing, what associated data (as in in-line measurement results) is there. The list goes on. Like the in-line measurements, this data is really only looked at when there's an issue.
+</p>
+
+<hr>
+
+<h2 id="automation">Automation (of Everything)</h2>
+
+<p>
+  Automation is a beautiful thing. It helped get us cheap and abundant everything, including semiconductors.
+</p>
+
+<h3 id="lifecycle">The Wafer Life Cycle Without Humans</h3>
+
+<p>
+  The life cycle of a wafer—from its start as just a bare silicon wafer to its end when it's full of chips—can be looked at to get a better understand of what fab automation is and isn't. I've provided significant detail both for nerd-sniping and to get a good picture of how many decisions are actually automated in the fab on a second-by-second basis. While reading, think about how time-consuming and error-filled a fab would be if humans had to make all the decisions and perform all the calculations.
+</p>
+
+<p>
+  Here's the basic pseudocode for how a lot runs through the line, along with some non-ideal situations arising throughout to show what automation can and can't do:
+</p>
+
+<ol>
+  <li>
+    Go! (But no collecting $200—the fab needs that money!) The 25-wafer lot is assigned a lot number (call it 123) and device (call it ABC). The manufacturing execution system (MES) knows every single process that 123 has to go to and can plan accordingly.
+  </li>
+  <li>
+    123 reaches its first process: thermal oxidation in a vertical furnace. 123 is ready to run and there's an available furnace, so the MES dispatches 123 to the furnace, which initiates automated pre-flight checks that makes sure everything is copacetic:
+    <ol>
+      <li>
+        Is the machine actually available to accept this job request? The MES will query the equipment management system and tool itself to verify it can accept the proposed job.
+      </li>
+      <li>
+        Are all of the necessary SPC charts in control? Common SPC charts are:
+        <ul>
+          <li>
+            Thickness: The qual is targeted to and representative of the process that the job will run, e.g., if the job's process grows 10 nm of oxide, then the qual will also grow 10 nm or can be easily and reliably extrapolated from a different thickness.
+          </li>
+          <li>
+            Particles: The qual ensures no particles are being generated by the machine.
+          </li>
+          <li>
+            Contamination: The qual ensures there's no metallic contamination coming from the tool, often in the form of particles.
+          </li>
+        </ul>
+      </li>
+      <li>
+        Is the lot allowed to run on this machine? Some fabs will automatically qualify like machines if everything matches, while others require individual machines to be qualified for each process. The former is much faster, but risker; the latter slower, but safer.
+      </li>
+      <li>
+        Checks current tool settings against a pre-defined list. Do all of the settings match? Incorrect settings can cause misprocessing or failure to interdict on a process that's going poorly.
+        <ul>
+          <li>
+            Analogy: Assume a vehicle has customizable air-fuel ratio alarm settings, where 14:1 air:fuel is the ideal, 13:1 is the lower limit, and 15:1 is the upper limit. If it goes above or below the upper or lower limit, the car alarms and notifies the driver. Before driving, it would be wise to ensure these limits haven't been temporarily adjusted by a pesky, speed-happy teenager who forgot to change it back in their excitement of going fast. If either limit were changed to something much larger, the next drive could be in the harmful-for-engine range without the driver knowing.
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+  <li>
+    The lot goes on hold after the furnace because the post-thickness measurement was too large. Savvy automation systems would automatically remeasure the lot to ensure the measurement was legit (2 hours of the lot not moving), while stone-age automation would require a person to manually remeasure themselves (4 hours of the lot not moving, plus valuable manpower). The measurement turns out to be bogus and the lot continues on.
+  </li>
+  <li>
+    The lot continues on and reaches a certain process (call it process 27) in the flow that requires feedforward information. The general flow goes like this:
+    <ol>
+      <li>
+        Data from process 26 for lot 123 is "sent" to process 27. Process 27 knows how to adjust itself based on the process 26 data. Adjustments can include a variety of parameters, such as time, power, pressure, etc.
+      </li>
+      <li>
+        A handful of wafers from 123 (call them 123-1, 123-2, and 123-3) are sent ahead of the rest of its brothers and sisters in case a sacrifice to the fab gods is in order, i.e., they will be the test wafers for the rest of the lot to ensure everything is fine. 123-1/2/3 all complete process 27 with the process 26 data and measure, resulting in process 27 data for wafers 123-1/2/3.
+      </li>
+      <li>
+        Wafers 123-4 to 123-25 are then sent on to process 27 with combined data from both process 26 and 123-1/2/3.
+      </li>
+    </ol>
+    The granularity of customizing this flow is practically infinite (again, depending on the sophistication of the fab automation). Custom adjustment values can be set based on machine (from both process 26 and process 27), device, measurement tool, etc. Full moon? Adjust accordingly! Bad vibes in the air? Adjust accordingly!
+    <p></p>
+    <img src="media/fabs3/testwafers.png">
+    <figcaption>
+      Pour a bottle of sulfuric acid out for the real ones
+    </figcaption>
+  </li>
+</ol>
 
 
 <hr>
