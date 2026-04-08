@@ -13,20 +13,6 @@
 
 <h3 id="home"><a href="../index.html">Home</a></h3>
 
-<!--
-
-<img src="media/fabs3/.">
-<figcaption>
-
-</figcaption>
-
-- https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/
-- https://www.synopsys.com/blogs/chip-design/advanced-semiconductor-manufacturing-fab-da.html
-
-- make funnier
-
--->
-
 <h1 id="fabs3">Semiconductor Fabs III: The Data and Automation</h1>
 
 <p>
@@ -58,9 +44,6 @@
     <a href="#preface">Preface</a>
   </li>
   <li>
-    <a href="#context">Context</a>
-  </li>
-  <li>
     <a href="#why">Why All the Data?</a>
   </li>
   <li>
@@ -68,6 +51,9 @@
   </li>
   <li>
     <a href="#automation">Automation (of Everything)</a>
+  </li>
+  <li>
+    <a href="#praise">Praise Be to the Automation Engineers</a>
   </li>
   <li>
     <a href="#see_also">See Also</a>
@@ -123,7 +109,7 @@
 <h3 id="signals">Tool Signals</h3>
 
 <p>
-  Here's a "short" list of potential signals fabs can keep track of. For example, engineers may want to keep track of the temperature, pressure, and power of component1, while voltage, current, and resistance are relevant to component2.
+  Here's a "short" list of potential equipment signals fabs can keep track of. For example, engineers may want to keep track of the temperature, pressure, and power of component1, while voltage, current, and resistance are relevant to component2.
 </p>
 
 <ul>
@@ -163,8 +149,13 @@
 </ul>
 
 <p>
-  Now those are just single characteristics that don't add up to much space on their own. But what happens when we take measurements across multiple components across multiple tools across the entire fab? A nice Fermi approximation is in store!
+  Now those are just single characteristics that don't add up to much storage space on their own. But what happens when we take measurements across multiple components across multiple tools across the entire fab?
 </p>
+
+<img src="media/fabs3/toolsignals.png">
+<figcaption>
+  Nano Banana 2's go at labeling a bunch of signals on a plasma etch chamber—not bad!
+</figcaption>
 
 <p>
   Let's assume the following for the NMP fab:
@@ -194,6 +185,10 @@
   But wait! Those are just raw signals that the tool is reporting to the fab data monster. Statistics can be performed to get some extra info for each signal: mean, median, standard deviation, minimum, maximum, etc. Just those alone results in five times more data per signal than before (assuming you are constantly updating across the same time period, but generally a time period is defined and a single data point calculated for said period).
 </p>
 
+<p>
+  That's a lot of data that is just passively created and recorded, some of which will be looked at, a lot of which won't be. Regardless, it's nice to have in case you need it.
+</p>
+
 <h3 id="testresults">Test Results</h3>
 
 <h4>In-line Measurements</h4>
@@ -203,18 +198,23 @@
 </p>
 
 <p>
-  These results are generally boring and not looked at because, well, they rarely fail, at least in more mature fabs where the technologies' manufacturing processes have been optimized for years. Regardless, they are required for various reasons and must sit in storage for some time. 
+  These results are generally boring and not looked at because, well, they rarely fail, at least in more mature fabs where the technologies' manufacturing processes have been optimized for years. Regardless, the tests are required for various reasons and results must sit in storage for some time. 
 </p>
 
 <h4>Electrical Measurements</h4>
 
 <p>
-  Some fabs will test their wafers in-house towards the end of the line to shorten the feedback loop if an issue is identified; it would be weeks if they chose to wait until the wafer got what is called its "final test" results. These tests measure the performance of many parameters on the chip.
+  Some fabs (all fabs? Not exactly sure here.) will test their wafers in-house towards the end of the line to shorten the feedback loop if an issue is identified or get test results quickly so they can make changes permanent; it would be weeks if they chose to wait until the wafer got what is called its "final test" results, which measure the chip's performance at its intended purpose.
 </p>
 
 <p>
   In most, but preferably all, cases, the electrical test results are the fab's gold standard for the quality of the wafer: if it's passing and within the historical distribution of that parameter for similar devices, great! If it's not, then something appears to have changed either within the line or with that specific lot. If the next lot of wafers that gets tested has similar out-of-the-distribution results... get investigating!
 </p>
+
+<img src="media/fabs3/measurements.png">
+<figcaption>
+  Nano Banana 2's go at describing some measurements—also not bad!
+</figcaption>
 
 <p>
   A few not-related-to-the-main-topic notes here for the more technically curious:
@@ -222,7 +222,7 @@
 
 <ul>
   <li>
-    Matching electrical data is pretty much how all changes ultimately get approved. Say I want to make change X to process Y. I will propose the change, get approved to run some experimental wafers, run them, review the test results, and if they're good, request approval to fully implement change X for every wafer that runs through process Y.
+    Matching electrical data is pretty much how all changes ultimately get approved. Say I want to make change X to process Y. I will propose the change, get approved to run some experimental wafers, run them, review the test results, and if they're good, request approval to fully implement change X for every wafer that runs through process Y. Changes may included small tweaks to processes or entire process flow changes.
   </li>
   <li>
     Some parameters are strongly related to certain processes within the line, which helps to narrow down what went wrong instead of having to spot check every tool. For example, if the <a href="https://en.wikipedia.org/wiki/Threshold_voltage">threshold voltage</a> is all out of whack, that points to a problem in the <a href="https://en.wikipedia.org/wiki/Gate_oxide">gate oxide</a> area, which is a particular machine or two in the fab. The engineers reviewing the test results can then notify the gate oxide engineers and have them look into it by digging through the tool signals or maintenance history.
@@ -232,13 +232,13 @@
 <h3 id="history">Histories</h3>
 
 <p>
-  History allows engineers to look back and see what happened on a certain date or to a certain lot. Tool signals are a form of history (what was component X doing at Y time?), but other histories are also important.
+  Histories allow engineers to look back and see what happened on a certain date or to a certain lot. Tool signals are a form of history (what was component X doing at Y time?), but other histories are also important.
 </p>
 
 <h4>Maintenance</h4>
 
 <p>
-  Fabs want a way to easily document events in a machine's life, whether automated or input by a person. These leave digital bread crumbs of-sorts that allow engineers to look back and see what happened, why it happened, etc.
+  Fabs want a way to easily document events in a machine's life, whether automated or input by a person. These leave digital bread crumbs of-sorts that can be checked to see what happened, why it happened, etc.
 </p>
 
 <p>
@@ -246,11 +246,11 @@
 </p>
 
 <blockquote>
-  SPC chart X failed with value of Y1 and Y2. Limit is X. Last Z points have been in control.
+  SPC chart X failed with value of Y1 and Y2. Limit is X. Last Z points have been in control. [This is an event that I can anchor to and look around at: what maintenance, if any, was done before the chart fail? What was the response to the chart fail? Was something repaired or replaced?]
 </blockquote>
 
 <blockquote>
-  Machine alarm X with description "Y" occurred. It has happened Z times over the past 30 days. Review recommended troubleshooting and solutions here: [link].
+  Machine alarm X with description "Y" occurred. It has happened Z times over the past 30 days. Review recommended troubleshooting and solutions here: [link]. [This is an event that I can anchor to just like the last one, plus I get to see how bad the issue has gotten.]
 </blockquote>
 
 <p>
@@ -258,11 +258,11 @@
 </p>
 
 <blockquote>
-  Removed parts A1/2/3, B, and C to better diagnose lift issue. Found that part A1 is sticking at its end range of motion, which corresponds to the side of the lift that's having the problem. Parts A2, A3, B, and C are all good and have no obvious issues when testing. Regardless, replaced all three part As since everything is open. Original B and C will go back in. The new A1/2/3 serial numbers are 123, 456, and 789, respectively. Next steps are [list of next steps]. 
+  Removed parts A1/2/3, B, and C to better diagnose lift issue. Found that part A1 is sticking at its end range of motion, which corresponds to the side of the lift that's having the problem. Parts A2, A3, B, and C are all good and have no obvious issues when testing. Regardless, replaced all three part As since everything is open. Original B and C will go back in. The new A1/2/3 serial numbers are 123, 456, and 789, respectively. Next steps are [list of next steps]. [This tells me exactly what the issue was and what was replaced, so future me can just reference back.]
 </blockquote>
 
 <blockquote>
-  Machine alarmed for X. Found that part D was completely powered off. Verified that all relevant circuit breakers were on and there is no power discontinuity up to the part, so appears that D has failed. Wafer 13 was 10 seconds into step E of recipe F when the failure happened. All wafers placed back into the FOUP. Replaced part D and verified it has power and functions normally. Machine was vented to atmosphere and opened for replacement. No other issues noted on machine.
+  Machine alarmed for X. Found that part D was completely powered off. Verified that all relevant circuit breakers were on and there is no power discontinuity up to the part, so appears that D has failed. Wafer 13 was 10 seconds into step E of recipe F when the failure happened. All wafers placed back into the FOUP. Replaced part D and verified it has power and functions normally. Machine was vented to atmosphere and opened for replacement. No other issues noted on machine. [Same as the above.]
 </blockquote>
 
 <p>
@@ -272,7 +272,7 @@
 <h4>Lot Processing</h4>
 
 <p>
-  Lots will get data and information automatically "attached" to them throughout their lifecycle. Examples include what machine the lot processed on for a certain process, what time it started and stopped, were there any abnormalities while processing, what associated data (as in in-line measurement results) is there. The list goes on. Like the in-line measurements, this data is really only looked at when there's an issue.
+  Lots will get data and information automatically "attached" to them throughout their life. Examples include what machine the lot processed on for a certain process, what time it started and stopped, were there any abnormalities while processing, what associated data (as in in-line measurement results) is there. The list goes on. Like the in-line measurements, this data is really only looked at when there's an issue.
 </p>
 
 <hr>
@@ -299,10 +299,10 @@
 
 <ol>
   <li>
-    Go! (But no collecting $200—the fab needs that money!) The 25-wafer lot is assigned a lot number (call it 123) and device (call it ABC). The manufacturing execution system (MES) knows every single process that 123 has to go to and can plan accordingly.
+    Go! (But no collecting $200—the fab needs that money!) The 25-wafer lot is assigned a lot number—call it 123—and device—call it ABC. The manufacturing execution system (MES) knows every single process that 123 has to go to and what it needs to do at each.
   </li>
   <li>
-    123 reaches its first process: thermal oxidation in a vertical furnace. 123 is ready to run and there's an available furnace, so the MES dispatches 123 to the furnace, which initiates automated pre-flight checks that makes sure everything is copacetic:
+    Lot 123 reaches its first process: thermal oxidation in a vertical furnace. 123 is ready to run and there's an available furnace, so the MES dispatches 123 to the furnace, which initiates automated pre-flight checks that makes sure everything is copacetic:
     <ol>
       <li>
         Is the machine actually available to accept this job request? The MES will query the equipment management system and tool itself to verify it can accept the proposed job.
@@ -335,22 +335,25 @@
     </ol>
   </li>
   <li>
-    123 gets put on hold after the furnace because the post-thickness measurement was too high. Savvy automation systems would automatically remeasure the lot to ensure the measurement was legit (2 hours of the lot not moving, no manpower), while stone-age automation would require a person to manually remeasure themselves (4 hours of the lot not moving, plus valuable manpower). The measurement turns out to be bogus and the lot continues on.
+    123 makes it to the furnace and runs the correct recipe that automation told it to run. There is no need to make sure that recipe A1B2C3D4E5 is selected vs. recipe AIB2C3D4E5 (see what the difference is?) because automation commands the correct one to be chosen.
   </li>
   <li>
-    123 continues on and reaches a certain process (call it process 27) in the flow that requires feedforward information. The general feedforward flow goes like this:
+    123 gets put on hold after the furnace because the post-thickness measurement was too high. Savvy automation systems would automatically remeasure the lot to ensure the measurement was legit (2 hours of the lot not moving, no manpower required), while stone-age automation would require a person to manually remeasure themselves (4 hours of the lot not moving, plus valuable manpower required). The measurement turns out to be bogus and the lot continues on.
+  </li>
+  <li>
+    123 continues on and reaches a certain process (call it process 27) in the flow that requires feedforward data. The general feedforward flow goes like this:
     <ol>
       <li>
-        Data from process 26 for lot 123 is "sent" to process 27. Process 27 knows how to adjust itself based on the process 26 data. Adjustments can include a variety of parameters, such as time, power, pressure, etc.
+        Data from process 26 for lot 123 is "sent" to process 27. Process 27 knows how to adjust itself based on the process 26 data. Adjustments can include a variety of parameters depending on the process, such as time, power, pressure, etc.
       </li>
       <li>
         A handful of wafers from 123 (call them 123-1, 123-2, and 123-3) are sent ahead of the rest of its brothers and sisters in case a sacrifice to the fab gods is in order, i.e., they will be the test wafers for the rest of the lot to ensure everything is fine. 123-1/2/3 all complete process 27 with the process 26 data and measure to check the results, resulting in process 27 data for wafers 123-1/2/3.
       </li>
       <li>
-        Wafers 123-4 to 123-25 are then sent on to process 27 with combined data from both process 26 (for the entirety of 123) and process 27 (wafers 123-1/2/3 only).
+        Wafers 123-4 to 123-25 are then sent on to process 27 with combined data from both process 26 (for the entirety of lot 123) and process 27 (wafers 123-1/2/3 only).
       </li>
     </ol>
-    The granularity of customizing this flow is practically infinite (depending on the sophistication of the fab automation, of course). Custom adjustment values can be set based on machine (from both process 26 and process 27), device, measurement tool, etc. Full moon? Adjust accordingly! Good or bad vibes in the air? Adjust accordingly!
+    Pretty simple, right? Right?! The granularity of customizing this flow is practically infinite (depending on the sophistication of the fab automation, of course). Custom adjustment values can be set based on machine (from both process 26 and process 27), device, measurement tool, etc. Full moon? Adjust accordingly! Good or bad vibes in the air? Adjust accordingly!
     <p></p>
     <img src="media/fabs3/testwafers.png">
     <figcaption>
@@ -362,10 +365,10 @@
     123 makes it to process 53, where an engineer has defined an experiment that will test a few different conditions. Individual wafers will be separated into distinct lots, process, then recombine into a big lot. The general process goes like this:
     <ol>
       <li>
-        Wafers are separated into "sublots", e.g., wafers 123-1/2/3 becomes lot 123-A, wafers 123-4/5/6 becomes lot 123-B, etc.
+        Wafers are separated into "sublots", e.g., wafers 123-1/2/3 become lot 123-A, wafers 123-4/5/6 become lot 123-B, etc.
       </li>
       <li>
-        Lot 123-A goes through process 53 with any experimental conditions that the engineer defined. Repeat for the remaining lots.
+        Lot 123-A goes through process 53 with any experimental conditions that the engineer defined. Repeat for the remaining lots. There is almost always a baseline lot to compare to.
       </li>
     </ol>
     123-A/B/.../Z continue on until they reach the recombine point, which could be the next process or multiple processes down the line. Now imagine if the split occurred at a feedforward process and how complicated that would be!
@@ -384,7 +387,7 @@
     Assign a lot number and device. Was everything entered correctly?
   </li>
   <li>
-    Verify that the machine can accept the job. Are all the settings—the tens of thousands that exist—correct? Are all of the SPC charts in control? Is the machine qualified?
+    Verify that the machine can accept the job. Are all the settings—the tens of thousands that exist—correct? Are all of the SPC charts in control? Is the machine qualified? Was the correct recipe selected?
   </li>
   <li>
     Review the thickness measurement fail. Is it real or fake? Does it need to be remeasured? Do you need to tag the lot for later inspection or testing?
@@ -440,9 +443,25 @@
 
 <hr>
 
+<h2 id="praise">Praise Be to the Automation Engineers</h2>
+
+<p>
+  Automation here is similar to automation elsewhere: it makes people's lives and the manufacturing process safer and more efficient. And it's freaking awesome. I can sit at my desk and do a good chunk of my job without moving because some automation guru coded up a wonderful script that helps me out.
+</p>
+
+<p>
+  And while the fab requires everyone to operate smoothly, the automation engineers are the heroes working in the background that nobody really thinks about. Here's to them.
+</p>
+
+<hr>
+
 <h2 id="see_also">See Also</h2>
 
-
+<ul>
+  <li>
+    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7582566/">Equipment Anomaly Detection for Semiconductor Manufacturing by Exploiting Unsupervised Learning from Sensory Data</a>
+  </li>
+</ul>
 
 </body>
 </html>
