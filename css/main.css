@@ -261,3 +261,12 @@ html {
   color: #c00;
   border-color: #c00;
 }
+
+/*
+a[href^="http"]:not([href*="yourdomain.com"])::after {
+  content: " ↗";
+  font-size: 0.75em;
+  vertical-align: super;
+  opacity: 0.6;
+}
+*/
