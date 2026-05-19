@@ -18,20 +18,10 @@
 
 <h3 id="home"><a href="../index.html">Home</a></h3>
 
-<!--
-
-<img src="media//.">
-<figcaption>
-
-</figcaption>
-
-
--->
-
 <h1 id="examconfidence">Exam Questions Need Confidence Scores</h1>
 
 <p>
-  Guessing correctly doesn't indicate knowledge.
+  Guessing correctly doesn't necessarily indicate knowledge.
 </p>
 
 <hr>
@@ -40,16 +30,19 @@
 
 <ul>
   <li>
-    <a href="#guessing">The Problems With Guessing</a>
+    <a href="#guessing">The Problem With Guessing</a>
   </li>
   <li>
     <a href="#brier">Brier Scores for Exams</a>
   </li>
   <li>
-    <a href="#system">xx</a>
+    <a href="#implementation">Implementation</a>
   </li>
   <li>
-    <a href="#practicaliy">Practicality</a>
+    <a href="#benefits">Benefits</a>
+  </li>
+  <li>
+    <a href="#literature">Literature</a>
   </li>
   <li>
     <a href="#see_also">See Also</a>
@@ -58,7 +51,7 @@
 
 <hr>
 
-<h2 id="guessing">The Problems With Guessing</h2>
+<h2 id="guessing">The Problem With Guessing</h2>
 
 <p>
   Both multiple-choice (MCE) and free-response exams (FRE) don't necessarily show how confident the student is in their answers—they just show the final answer or the thought process, respectively. But that means the student can just guess and get it right, even if they don't know for sure that the answer or thought process is correct!
@@ -73,7 +66,7 @@
 </p>
 
 <p>
-  What would happen if students had to note down how confidence they are that they have the correct answer?
+  This is unfair for the students who truly know the answer, but get scored the same as the guesser. What would happen if students had to note down how confidence they are that they have the correct answer?
 </p>
 
 <hr>
@@ -84,7 +77,7 @@
   Introducing <a href="https://en.wikipedia.org/wiki/Brier_score">Brier scores</a> (BS). The formula for a BS (as related to exams) is:
 </p>
 
-\[BS = \frac{1}{N} \sum_{t=1}^{N} \left(f_{t} - o_{t}\right)^{2}\]
+\[BS = \frac{1}{N} \sum_{t=1}^{N} \left(p_{t} - o_{t}\right)^{2}\]
 
 <p>
   where:
@@ -98,7 +91,7 @@
     t is the question number
   </li>
   <li>
-    f<sub>t</sub> is the student's prediction that they got question t correct, ranging from 0 (I definitely got it wrong) to 1 (I definitely got it right)
+    p<sub>t</sub> is the student's prediction that they got question t correct, ranging from 0 ("I definitely got it wrong") to 1 ("I definitely got it right")
   </li>
   <li>
     o<sub>t</sub> is the result of their answer; values are either 0 (incorrect) or 1 (correct)
@@ -106,7 +99,7 @@
 </ul>
 
 <p>
-  A perfect Brier score is 0, indicating that all predictions were correct, since 1-1 = 0 (I think I got it right and I did get it right) and 0-0 = 0 (I think I got it wrong and I did get it wrong). One issue here, if the Brier score was all that mattered, is that exams could be easily gamed by just intentionally getting the wrong answer, which is generally easier to do than getting the right answer.
+  A perfect Brier score is 0, indicating that all predictions were correct, since 1-1 = 0 ("I think I got it right and I did get it right") and 0-0 = 0 ("I think I got it wrong and I did get it wrong"). One issue here is that if the Brier score was all that mattered, is that exams could be easily gamed by just intentionally getting the wrong answer and being confident about it, which is generally easier to do than getting the right answer.
 </p>
 
 <p>
@@ -115,26 +108,41 @@
 
 <hr>
 
-<h2 id="system"></h2>
+<h2 id="implementation">Implementation</h2>
 
 <p>
-  First, predictions must be greater than 0.5 (50%) because the goal is to get the answer correct. If the student is less than 50% confident they can get the answer right, then they should change their answer to be more confident or be penalized accordingly. This will make each question have two sections of answers: section A, for the actual answer choices, and section B, for the student's confidence level in their answer choice (60%, 70%, 80%, 90%, or 100%).
+  Predictions must be greater than 0.5 (50%) because the goal is to get the answer correct. If the student is less than 50% confident they can get the answer right, then they should change their answer to be more confident or be penalized accordingly. This will make each question have two sections of answers: section A, for the actual answer choices, and section B, for the student's confidence level in the respective answer choice (50%, 60%, 70%, 80%, 90%, or 100%).
 </p>
 
 <p>
-  <a href="https://en.wikipedia.org/wiki/Scantron_Corporation">Scantron forms</a> or tests can be modified to have two sets of answers per question for each section (A, B) to calculate the BS for that question. The total BS is then calculated to give the student their score with the lowest score being the best (alternatively, the BS can be inverted and the highest score wins).
+  <a href="https://en.wikipedia.org/wiki/Scantron_Corporation">Scantron forms</a> or tests can be modified to have two sets of answers per question to calculate the BS for that question. The total BS is then calculated to give the student their score with the lowest score being the best (alternatively, the BS can be inverted and the highest score wins).
 </p>
 
+<hr>
 
+<h2 id="benefits">Benefits</h2>
 
+<p>
+  Exams that sort people by skill should rarely have perfect scores because the signal gets lost, at least to some extent. One person getting a perfect LSAT or perfect SAT signals that person is incredibly intelligent; 1% of the test-taking population getting perfect scores indicate they're pretty smart and the test is too easy.
+</p>
 
+<p>
+  Adding confidence scores lets further sorting happen. If Ernest, Jameson, Douglas, Alistair, Tannatt, and Raymond all get question X correct, but their confidences are 50-60-70-80-90-100%, respectively, then their scores will be 0.25, 0.16, 0.09, 0.04, 0.01, and 0.00, indicating Raymond is top dog amongst his peers. This is done without needing to make the test more difficult, but simply by figuring out how correct each person really is.
+</p>
 
+<p>
+  Combine this with a more challenging test and the stars will really shine.
+</p>
 
+<hr>
 
+<h2 id="literature">Literature</h2>
 
+<p>
+  After writing all of the above, I found that literature already exists under the name "confidence-based marking". There truly is very little that's new left under the sun.
+</p>
 
-
-
+https://tmedwin.net/~ucgbarg/tea/innovass4.pdf
 
 <hr>
 
