@@ -5,6 +5,7 @@ body {
     margin: 10px auto;
     max-width: 1000px;
     padding: 0 10px;
+    font-family: Arial
   }
 
   table, th, td {
