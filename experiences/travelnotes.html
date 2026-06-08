@@ -39,6 +39,10 @@
 
 <h2 id="checklists">Checklists</h2>
 
+<p>
+  Boxes can be clicked once to mark it complete or clicked twice to mark it not applicable.
+</p>
+
 <button type="button" class="collapsible">Pre-Trip Checklist</button>
 
 <div class="content">
@@ -265,11 +269,67 @@
 
 <h2 id="see_also">See Also</h2>
 
+<style>
+  .tri-check {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 2px solid #555;
+    border-radius: 2px;
+    margin-right: 6px;
+    vertical-align: middle;
+    cursor: pointer;
+    position: relative;
+    background: white;
+    flex-shrink: 0;
+  }
+  .tri-check[data-state="checked"] {
+    background: #333;
+    border-color: #333;
+  }
+  .tri-check[data-state="checked"]::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: -1px;
+    width: 5px;
+    height: 9px;
+    border: 2px solid white;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+  }
+  .tri-check[data-state="na"] {
+    background: #ddd;
+    border-color: #bbb;
+  }
+  .tri-check[data-state="na"]::after {
+    content: '–';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    color: #999;
+    line-height: 1em;
+  }
+  label:has(.tri-check[data-state="na"]) {
+    color: #aaa;
+    text-decoration: line-through;
+  }
+  label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+</style>
+ 
 <script>
+// Collapsible sections
 var coll = document.getElementsByClassName("collapsible");
-var i;
-
-for (i = 0; i < coll.length; i++) {
+for (var i = 0; i < coll.length; i++) {
   coll[i].addEventListener("click", function() {
     this.classList.toggle("active");
     var content = this.nextElementSibling;
@@ -280,6 +340,20 @@ for (i = 0; i < coll.length; i++) {
     }
   });
 }
+ 
+// Replace all checkboxes with triple-state custom checkboxes
+document.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+  var box = document.createElement('span');
+  box.className = 'tri-check';
+  box.dataset.state = 'unchecked';
+  box.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var states = ['unchecked', 'checked', 'na'];
+    var current = states.indexOf(this.dataset.state);
+    this.dataset.state = states[(current + 1) % 3];
+  });
+  cb.parentNode.replaceChild(box, cb);
+});
 </script>
 
 </body>
