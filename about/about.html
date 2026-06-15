@@ -380,6 +380,75 @@
   <label><input type="checkbox" name="checkbox" value="value">Copy, format, and post to Substack, Twitter, LessWrong, Hacker News, r/slatestarcodex</label><br>
 </p>
 
+<button type="button" class="collapsible">List of Substack Posts</button>
+
+<div class="content">
+
+<ul>
+  <li>
+    <a href="../thoughts/beginner.html">Stop Rewarding Beginner Success</a> / <a href="https://nomagicpill.substack.com/p/stop-rewarding-beginner-success?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../experiences/lessonline2026.html">LessOnline 2026</a> / <a href="https://nomagicpill.substack.com/p/lessonline-2026?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../knowledge/endurance.html">Endurance: Shackleton's Incredible Journey review</a> / <a href="https://nomagicpill.substack.com/p/endurance-shackletons-incredible?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../thoughts/boring.html">Boring I: Consistency</a> / <a href="https://nomagicpill.substack.com/p/boring-i-consistency?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../thoughts/examconfidence.html">Confidence Scores for Exam Questions</a> / <a href="https://nomagicpill.substack.com/p/confidence-scores-for-exam-questions?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../research/fabs3.html">Semiconductor Fabs III: The Data and Automation</a> / <a href="https://nomagicpill.substack.com/p/semiconductor-fabs-iii-the-data-and?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../thoughts/setline.html">Set the Line Before It's Crossed</a> / <a href="https://nomagicpill.substack.com/p/set-the-line-before-its-crossed?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../thoughts/horror.html">House of Horror Movies</a> / <a href="https://nomagicpill.substack.com/p/house-of-horror-movies?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../thoughts/sellingout2.html">Selling Out II: The Golden Ages</a> / <a href="https://nomagicpill.substack.com/p/selling-out-ii-the-golden-ages?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../thoughts/experience.html">Intelligence Is Knowledge Is Experience</a> / <a href="https://nomagicpill.substack.com/p/intelligence-is-knowledge-is-experience?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../knowledge/mtbtrails.html">Legendary Mountain Bike Trails</a> / <a href="https://nomagicpill.substack.com/p/legendary-mountain-bike-trails?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../thoughts/competition.html">Competition</a> / <a href="https://nomagicpill.substack.com/p/competition?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../research/implant.html">Ion Implantation</a> / <a href="https://nomagicpill.substack.com/p/ion-implantation?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../experiences/taiwan.html">Taiwan</a> / <a href="https://nomagicpill.substack.com/p/taiwan-trip-report?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../research/fabs2.html">Semiconductor Fabs II: The Operation</a> / <a href="https://nomagicpill.substack.com/p/semiconductor-fabs-ii-the-operation?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../thoughts/reviews.html">Reviews I: Everyone's Responsibility</a> / <a href="https://nomagicpill.substack.com/p/reviews-i-everyones-responsibility?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../experiences/cheaptravel.html">Travel to Cheap Destinations</a> / <a href="https://nomagicpill.substack.com/p/travel-to-cheap-destinations?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../thoughts/seo.html">Against SEO</a> / <a href="https://nomagicpill.substack.com/p/against-seo?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../thoughts/trust.html">Community Trust Tests</a> / <a href="https://nomagicpill.substack.com/p/community-trust-tests?r=5f14d2">Substack</a>
+  </li>
+  <li>
+    <a href="../experiences/uganda.html">Uganda</a> / <a href="https://nomagicpill.substack.com/p/uganda-trip-report?r=5f14d2">Substack</a>
+  </li>
+</ul>
+
+</div>
+
 <hr>
 
 <h2 id="friends">Friends of the Site</h2>
@@ -402,6 +471,23 @@
 <hr>
 
 <h2 id="see_also">See Also</h2>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
 
 </body>
 </html>
