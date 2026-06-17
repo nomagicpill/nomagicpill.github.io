@@ -1,6 +1,11 @@
 <html>
     <title> vibe images <!-- change this to whatever you want! --> </title>
-    <!-- Add any text here if you so desire; the images won't be drawn over it. -->
+    <p>
+        <a href="https://guzey.com/vibes/">inspired by alexey guzey</a>, much like many other things on this website
+    </p>
+    <p>
+        <a href="https://gist.github.com/sophiawisdom/c1b16fcaca017d1aec2358c6fb619697">create your own here</a>
+    </p>
     <div id="container">
     </div>
     <script>
@@ -13,7 +18,7 @@ function shuffleArray(array) {
     return array;
 }
 
-fetch("image_widths_heights.json").then(f => {
+fetch("media/vibes/image_widths_heights.json").then(f => {
     if (f.status == 404) {
         alert("unable to find image_widths_heights.json -- you should run lister.py to create it.");
     }
