@@ -13,7 +13,7 @@ files = []
 for file in os.listdir("."):
     try:
         im = Image.open(file)
-        files.append([file, [im.width, im.height]])
+        files.append([f"media/vibes/{file}", [im.width, im.height]])
     except: # e.g. .DS_Store, calculater.py, file
         continue
 json.dump(files, open("image_widths_heights.json", 'w'))
