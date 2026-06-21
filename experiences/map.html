@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naltrexone - No Magic Pill</title>
+  
+</head>
+
+<body>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Travel Map - No Magic Pill</title>
+  <meta charset="utf-8">
+  <link rel="alternate" type="application/rss+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
+  <link rel="alternate" type="application/atom+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="icon" href="../media/favicon.png">
+  <style>
+    /* Self-contained styles so this page can be dropped in anywhere. */
+    body {
+      color: #000;
+      font-family: Arial, sans-serif;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 40px auto;
+      max-width: 900px;
+      padding: 0 10px;
+    }
+
+    h2 { color: #000; }
+
+    .travel-map-wrap { margin: 0 0 2.2em; }
+
+    .travel-map {
+      position: relative;
+      width: 100%;
+      background: #f1f5f9;            /* ocean */
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+    }
+
+    .travel-map-base {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      margin: 0;
+      border-radius: 8px;
+    }
+
+    /* faint leader lines from a nudged dot back to its true location */
+    .travel-leaders {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .travel-leaders line {
+      stroke: #93a3b5;
+      stroke-width: 1;
+      stroke-dasharray: 2 2;
+    }
+
+    .travel-dot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      box-sizing: border-box;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: #2563eb;
+      border: 2px solid #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+      padding: 0;
+      cursor: pointer;
+      z-index: 1;
+      transition: transform 0.12s ease, background-color 0.12s ease;
+    }
+
+    .travel-dot:hover,
+    .travel-dot:focus,
+    .travel-dot.active {
+      background: #1d4ed8;
+      transform: translate(-50%, -50%) scale(1.4);
+      z-index: 6;
+      outline: none;
+    }
+
+    .travel-dot.multi {
+      width: 18px;
+      height: 18px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45), 0 0 0 3px rgba(37, 99, 235, 0.22);
+    }
+
+    .travel-count {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    /* Floating popup card anchored to a dot */
+    .travel-popup {
+      position: absolute;
+      width: 210px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+      z-index: 20;
+      overflow: hidden;
+    }
+
+    .travel-popup-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px 6px;
+      font-weight: bold;
+      font-size: 0.95em;
+    }
+
+    .travel-popup-close {
+      background: none;
+      border: none;
+      font-size: 1.2em;
+      line-height: 1;
+      color: #999;
+      cursor: pointer;
+      padding: 0 2px;
+      flex: 0 0 auto;
+    }
+    .travel-popup-close:hover { color: #c00; }
+
+    .travel-trip {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      border-top: 1px solid #eee;
+    }
+    .travel-trip:hover { background: #f5f8ff; }
+
+    .travel-trip img {
+      display: block;
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      margin: 0;
+      border-radius: 0;
+      max-width: 100%;
+    }
+
+    .travel-trip-text {
+      padding: 7px 10px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .travel-trip-title {
+      color: #2563eb;
+      font-size: 0.9em;
+    }
+    .travel-trip:hover .travel-trip-title { text-decoration: underline; }
+
+    .travel-trip-year {
+      color: #999;
+      font-size: 0.8em;
+      flex: 0 0 auto;
+    }
+
+    /* little arrow */
+    .travel-popup-arrow {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border: 1px solid #ddd;
+      transform: rotate(45deg);
+      z-index: -1;
+    }
+
+    .travel-map-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 6px;
+      font-size: 0.8em;
+      color: #888;
+    }
+    .travel-hint { font-style: italic; }
+
+    @media (max-width: 768px) {
+      .travel-dot { width: 16px; height: 16px; }
+      .travel-dot.multi { width: 20px; height: 20px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<h3 id="home"><a href="../index.html">Home</a></h3>
+
+<h2 id="map">Travel Map</h2>
+
+<div class="travel-map-wrap">
+  <div class="travel-map" id="travel-map">
+    <img class="travel-map-base" src="../media/worldmap.svg" alt="World map of places I've visited" width="2000" height="840">
+    <svg class="travel-leaders" id="travel-leaders" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+  </div>
+  <div class="travel-map-meta">
+    <span id="travel-stats"></span>
+    <span class="travel-hint">Click a dot for trips · click again to close</span>
+  </div>
+</div>
+
+<!--
+  ============================  HOW TO ADD A TRIP  ============================
+  Edit the list below, OR run the helper script (it geocodes + finds an image):
+
+      python3 experiences/add_place.py --name "Tokyo" --year 2026
+
+  Format — one block per place, newest trip first:
+
+      Place Name | latitude, longitude
+      - Trip title | page.html | year | optional/image.jpg
+
+  • The place line is the map marker (its name shows in the popup header).
+  • Each "- " line is one experience post at that place.
+  • The image is optional; leave it off if the post has none.
+  ===========================================================================
+-->
+<script>
+(function () {
+  // ====================== PLACES:START (edit me / managed by add_place.py) ======================
+  var PLACES_DATA = `
+New York City | 40.71, -74.01
+- New York City IV | nyc4.html | 2026
+- New York City III | nyc3.html | 2025
+- New York City II | nyc2.html | 2023
+- New York City I | nyc.html | 2023 | media/nyc/sunset.JPG
+
+Berkeley, CA | 37.87, -122.27
+- LessOnline 2026 | lessonline2026.html | 2026 | media/lessonline2026/lessonline.png
+- LessOnline 2025 | lessonline2025.html | 2025 | media/lessonline2025/profile.png
+
+Puerto Rico | 18.47, -66.10
+- Puerto Rico | puertorico.html | 2026
+
+Taiwan | 25.03, 121.56
+- Taiwan | taiwan.html | 2025 | media/taiwan/park.JPG
+
+French Riviera | 43.70, 7.27
+- French Riviera | riviera.html | 2025 | media/riviera/bioshock.png
+
+Montreal | 45.50, -73.57
+- Montreal | montreal.html | 2025 | media/montreal/montmorency.jpg
+
+San Diego | 32.72, -117.16
+- San Diego | sandiego.html | 2025
+
+Uganda | 0.35, 32.58
+- Uganda | uganda.html | 2025 | media/uganda/lions.jpeg
+
+Orlando | 28.54, -81.38
+- Orlando | orlando.html | 2025
+
+Iceland | 64.15, -21.94
+- Iceland | iceland.html | 2024 | media/iceland/soupbeer.JPG
+
+Boston | 42.36, -71.06
+- Boston | boston.html | 2024 | media/boston/views.JPG
+
+Fredericksburg, TX | 30.27, -98.87
+- Fredericksburg | fredericksburg.html | 2024 | media/fredericksburg/ottos.JPG
+
+Tulum | 20.21, -87.46
+- Tulum | tulum.html | 2023 | media/tulum/chillin.JPG
+
+Germany | 51.16, 10.45
+- Germany | germany.html | 2023
+
+Europe | 47.00, 8.23
+- Europe (four countries) | europe.html | 2023 | media/europe/eiffeltower.JPG
+
+Salt Lake City | 40.76, -111.89
+- Salt Lake City | slc.html | 2023 | media/slc/sidemirror.jpeg
+
+Vancouver – Seattle | 47.90, -122.70
+- Vancouver–Seattle | vansea.html | 2023 | media/vansea/cousin.jpeg
+
+Mexico City | 19.43, -99.13
+- Mexico City | mexicocity.html | 2023 | media/mexicocity/backtoback.JPG
+
+Chicago | 41.88, -87.63
+- Chicago | chicago.html | 2022 | media/chicago/bean.JPG
+
+Bucharest | 44.43, 26.10
+- Bucharest | bucharest.html | 2022 | media/bucharest/lounge.JPG
+
+California | 38.40, -122.70
+- Rationality Retreat | retreat.html | 2022 | media/retreat/group.png
+
+St. Thomas, USVI | 18.34, -64.93
+- St. Thomas | stthomas.html | 2022 | media/stthomas/cloud_blanket.png
+
+Santa Fe | 35.69, -105.94
+- Santa Fe | santafe.html | 2022 | media/santafe/predrive.jpg
+
+Mount Shasta | 41.41, -122.19
+- Mount Shasta | shasta.html | 2021 | media/shasta/looming.png
+
+Philadelphia | 39.95, -75.17
+- Philadelphia | philadelphia.html | 2021 | media/philadelphia/city_hall.png
+
+Mount Hood | 45.37, -121.70
+- Mount Hood | hood.html | 2021 | media/hood/hood_group.jpeg
+
+Breckenridge, CO | 39.48, -106.04
+- Colorado | colorado.html | 2019 | media/colorado/pre_flight.jpeg
+
+White Sands, NM | 32.38, -106.48
+- Bataan Memorial March | bataan.html | 2018 | media/bataan/bataan_death_march.png
+`;
+  // ====================== PLACES:END ======================
+
+  // Equirectangular map: longitude -180..180, latitude 90..-90. The SVG is 2000x1000
+  // user units, shown through a 2000x840 viewBox (empty Antarctica trimmed off the
+  // bottom). A place is positioned purely from its lat/lon -- no library needed.
+  var FULL = 1000, CROP = 840;
+  function leftPct(lon) { return (lon + 180) / 360 * 100; }
+  function topPct(lat)  { return ((90 - lat) / 180 * FULL) / CROP * 100; }
+
+  // Parse the human-friendly block above into structured places.
+  function parsePlaces(text) {
+    var places = [], cur = null;
+    text.split("\n").forEach(function (line) {
+      var s = line.trim();
+      if (!s) return;
+      var parts = s.replace(/^- /, "").split("|").map(function (x) { return x.trim(); });
+      if (s.charAt(0) === "-") {                         // a trip line
+        if (!cur) return;
+        cur.trips.push({ t: parts[0], h: parts[1], y: parseInt(parts[2], 10), img: parts[3] || null });
+      } else {                                           // a place line
+        var c = (parts[1] || "").split(",");
+        cur = { name: parts[0], lat: parseFloat(c[0]), lon: parseFloat(c[1]), trips: [] };
+        places.push(cur);
+      }
+    });
+    return places;
+  }
+
+  var PLACES = parsePlaces(PLACES_DATA);
+  var map = document.getElementById("travel-map");
+  var leaders = document.getElementById("travel-leaders");
+  if (!map) return;
+
+  var popup = null, openNode = null, nodes = [];
+
+  // ---- build dots ----
+  var totalTrips = 0;
+  PLACES.forEach(function (place) {
+    totalTrips += place.trips.length;
+    var dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = "travel-dot" + (place.trips.length > 1 ? " multi" : "");
+    dot.setAttribute("aria-label", place.name + " — " + place.trips.length +
+      " trip" + (place.trips.length > 1 ? "s" : ""));
+    if (place.trips.length > 1) {
+      var c = document.createElement("span");
+      c.className = "travel-count";
+      c.textContent = place.trips.length;
+      dot.appendChild(c);
+    }
+    var node = { place: place, dot: dot, r: place.trips.length > 1 ? 9 : 7, x: 0, y: 0, bx: 0, by: 0 };
+    dot.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (openNode === node) closePopup();
+      else openPopup(node);
+    });
+    map.appendChild(dot);
+    nodes.push(node);
+  });
+
+  // ---- declutter: nudge overlapping dots apart so every one stays clickable ----
+  function layout() {
+    var cw = map.clientWidth, ch = map.clientHeight;
+    if (!cw || !ch) return;
+    nodes.forEach(function (n) {
+      n.bx = n.x = leftPct(n.place.lon) / 100 * cw;   // bx/by = true location
+      n.by = n.y = topPct(n.place.lat) / 100 * ch;
+    });
+    for (var it = 0; it < 80; it++) {
+      var moved = false;
+      for (var i = 0; i < nodes.length; i++) {
+        for (var j = i + 1; j < nodes.length; j++) {
+          var a = nodes[i], b = nodes[j];
+          var dx = b.x - a.x, dy = b.y - a.y;
+          var d = Math.sqrt(dx * dx + dy * dy);
+          var min = a.r + b.r + 4;
+          if (d < min) {
+            if (d < 0.01) { dx = Math.random() - 0.5; dy = Math.random() - 0.5; d = 1; }
+            var push = (min - d) / 2, ux = dx / d, uy = dy / d;
+            a.x -= ux * push; a.y -= uy * push;
+            b.x += ux * push; b.y += uy * push;
+            moved = true;
+          }
+        }
+      }
+      if (!moved) break;
+    }
+    leaders.innerHTML = "";
+    nodes.forEach(function (n) {
+      n.x = Math.max(n.r, Math.min(cw - n.r, n.x));
+      n.y = Math.max(n.r, Math.min(ch - n.r, n.y));
+      n.dot.style.left = n.x + "px";
+      n.dot.style.top = n.y + "px";
+      // draw a faint leader line if the dot was nudged noticeably from its true spot
+      if (Math.hypot(n.x - n.bx, n.y - n.by) > 6) {
+        var ln = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        ln.setAttribute("x1", (n.bx / cw * 100)); ln.setAttribute("y1", (n.by / ch * 100));
+        ln.setAttribute("x2", (n.x / cw * 100));  ln.setAttribute("y2", (n.y / ch * 100));
+        leaders.appendChild(ln);
+      }
+    });
+    if (openNode) positionPopup(openNode);
+  }
+
+  // ---- popup ----
+  function closePopup() {
+    if (popup) { popup.remove(); popup = null; }
+    if (openNode) { openNode.dot.classList.remove("active"); openNode = null; }
+  }
+
+  function buildPopup(place) {
+    var el = document.createElement("div");
+    el.className = "travel-popup";
+    var head = '<div class="travel-popup-head"><span>' + place.name +
+      '</span><button class="travel-popup-close" type="button" aria-label="Close">×</button></div>';
+    var rows = place.trips.map(function (v) {
+      var img = v.img ? '<img src="' + v.img + '" alt="" loading="lazy">' : '';
+      return '<a class="travel-trip" href="' + v.h + '">' + img +
+        '<div class="travel-trip-text"><span class="travel-trip-title">' + v.t +
+        '</span><span class="travel-trip-year">' + v.y + '</span></div></a>';
+    }).join("");
+    el.innerHTML = head + rows + '<div class="travel-popup-arrow"></div>';
+    return el;
+  }
+
+  function positionPopup(node) {
+    var cw = map.clientWidth, ch = map.clientHeight;
+    var dx = node.x, dy = node.y;
+    var pw = popup.offsetWidth, phh = popup.offsetHeight;
+    var gap = 14, pad = 6;
+    var left = Math.max(pad, Math.min(dx - pw / 2, cw - pw - pad));
+    var above = dy - phh - gap >= 0;
+    var top = above ? dy - phh - gap : dy + gap;
+    popup.style.left = left + "px";
+    popup.style.top = top + "px";
+    var arrow = popup.querySelector(".travel-popup-arrow");
+    var ax = Math.max(8, Math.min(dx - left - 6, pw - 20));
+    arrow.style.left = ax + "px";
+    if (above) {
+      arrow.style.bottom = "-7px"; arrow.style.top = "";
+      arrow.style.borderTop = "none"; arrow.style.borderLeft = "none";
+    } else {
+      arrow.style.top = "-7px"; arrow.style.bottom = "";
+      arrow.style.borderBottom = "none"; arrow.style.borderRight = "none";
+    }
+  }
+
+  function openPopup(node) {
+    closePopup();
+    popup = buildPopup(node.place);
+    map.appendChild(popup);
+    node.dot.classList.add("active");
+    openNode = node;
+    positionPopup(node);
+  }
+
+  document.addEventListener("click", function (e) {
+    if (popup && !popup.contains(e.target)) closePopup();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closePopup();
+  });
+
+  // layout once the map image has sized the container, and on resize
+  var img = map.querySelector(".travel-map-base");
+  if (img.complete) layout(); else img.addEventListener("load", layout);
+  window.addEventListener("load", layout);
+  window.addEventListener("resize", layout);
+
+  var stats = document.getElementById("travel-stats");
+  if (stats) stats.textContent = PLACES.length + " places · " + totalTrips + " trips";
+})();
+</script>
+
+</body>
+</html>
