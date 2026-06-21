@@ -17,6 +17,44 @@
   <title>Bike Rack Positions Cost-Benefit Analysis - No Magic Pill</title>
   <link rel="stylesheet" type="text/css" href="../css/main.css">
   <link rel="icon" href="../media/favicon.png">
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+      .calculator {
+          max-width: 600px;
+          margin: 20px auto;
+          padding: 20px;
+          font-family: Arial, sans-serif;
+      }
+      .input-group {
+          margin-bottom: 15px;
+      }
+      .input-group label {
+          display: block;
+          margin-bottom: 5px;
+      }
+      .input-group input {
+          width: 100%;
+          padding: 8px;
+          margin-bottom: 5px;
+      }
+      .hint {
+          font-size: 0.8em;
+          color: #666;
+      }
+      .results {
+          margin-top: 20px;
+          padding: 15px;
+          background-color: #f5f5f5;
+          border-radius: 5px;
+      }
+      .positive { color: green; }
+      .negative { color: red; }
+  </style>
 </head>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -37,21 +75,6 @@
 <hr>
 
 <h2 id="contents">Contents</h2>
-
-<ul>
-  <li>
-    <a href="#background">Background</a>
-  </li>
-  <li>
-    <a href="#calculations">Calculations</a>
-  </li>
-  <li>
-    <a href="#results">Results</a>
-  </li>
-  <li>
-    <a href="#see_also">See Also</a>
-  </li>
-</ul>
 
 <hr>
 
@@ -184,6 +207,258 @@
 
 <hr>
 
+<h2 id="calculator">Calculator</h2>
+
+<p>
+  Plug in your own vehicle, rack, and riding numbers below. The defaults are the post's example: a sedan above 60 mph with a 30 mpg baseline, $3.00/gal gas, and 14,000 miles per year. The roof rack burns more fuel but keeps the bikes out of harm's way in a rear-end collision; the hitch rack sips less fuel but carries the expected cost of a damaged bike. Fuel penalties are pulled from the tables above—swap in the row that matches your car and speed. If one rack costs more to buy than the other, enter both purchase prices to see when the cheaper-to-run option pays itself off.
+</p>
+
+<div id="calculator-root"></div>
+
+<script type="text/babel">
+    const BikeRackCalculator = () => {
+        // Vehicle and driving
+        const [baseMpg, setBaseMpg] = React.useState(30);
+        const [milesPerYear, setMilesPerYear] = React.useState(14000);
+        const [gasPrice, setGasPrice] = React.useState(3.00);
+
+        // Fuel penalties from the tables (sedan, above 60 mph, loaded)
+        const [roofPenalty, setRoofPenalty] = React.useState(28);
+        const [hitchPenalty, setHitchPenalty] = React.useState(25);
+
+        // Accident exposure (applies to the hitch rack only)
+        const [accidentOdds, setAccidentOdds] = React.useState(366);
+        const [bikeValue, setBikeValue] = React.useState(4000);
+        const [uninsuredPct, setUninsuredPct] = React.useState(12.6);
+
+        // Up-front rack purchase prices (optional)
+        const [roofPrice, setRoofPrice] = React.useState(0);
+        const [hitchPrice, setHitchPrice] = React.useState(0);
+
+        const [years, setYears] = React.useState(5);
+
+        const chartRef = React.useRef(null);
+        const [chart, setChart] = React.useState(null);
+
+        const annualFuel = (penalty) => {
+            const fe = baseMpg * (1 - penalty / 100);
+            return fe > 0 ? (milesPerYear / fe) * gasPrice : 0;
+        };
+
+        // Expected bike damage per year: odds of an accident times the
+        // share that goes unpaid by an uninsured driver.
+        const annualAccident = () => {
+            const chance = (milesPerYear / 1000) * (1 / accidentOdds);
+            return chance * bikeValue * (uninsuredPct / 100);
+        };
+
+        const annualRoof = () => annualFuel(roofPenalty);
+        const annualHitch = () => annualFuel(hitchPenalty) + annualAccident();
+
+        const roofAt = (y) => roofPrice + annualRoof() * y;
+        const hitchAt = (y) => hitchPrice + annualHitch() * y;
+
+        const calculate = () => {
+            const roof = roofAt(years);
+            const hitch = hitchAt(years);
+            return {
+                roof: Math.round(roof),
+                hitch: Math.round(hitch),
+                diff: Math.round(Math.abs(roof - hitch)),
+                cheaper: roof <= hitch ? 'Roof rack' : 'Hitch rack'
+            };
+        };
+
+        React.useEffect(() => {
+            if (chartRef.current) {
+                if (chart) {
+                    chart.destroy();
+                }
+
+                const span = Math.max(1, Math.round(years));
+                const labels = Array.from({length: span + 1}, (_, i) => i);
+                const data = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Roof Rack (cumulative cost)',
+                            data: labels.map(y => roofAt(y)),
+                            borderColor: '#ff8042',
+                            fill: false
+                        },
+                        {
+                            label: 'Hitch Rack (cumulative cost)',
+                            data: labels.map(y => hitchAt(y)),
+                            borderColor: '#2196f3',
+                            fill: false
+                        }
+                    ]
+                };
+
+                const ctx = chartRef.current.getContext('2d');
+                const newChart = new Chart(ctx, {
+                    type: 'line',
+                    data: data,
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: { display: true, text: 'Years' }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Cumulative Cost ($)' }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: $${Math.round(context.raw)}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                setChart(newChart);
+            }
+        }, [baseMpg, milesPerYear, gasPrice, roofPenalty, hitchPenalty, accidentOdds, bikeValue, uninsuredPct, roofPrice, hitchPrice, years]);
+
+        const values = calculate();
+
+        return (
+            <div className="calculator">
+
+                <div className="input-group">
+                    <label>Baseline fuel efficiency (mpg)</label>
+                    <input
+                        type="number"
+                        value={baseMpg}
+                        onChange={e => setBaseMpg(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="input-group">
+                    <label>Miles driven per year</label>
+                    <input
+                        type="number"
+                        value={milesPerYear}
+                        onChange={e => setMilesPerYear(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="input-group">
+                    <label>Gas price ($ per gallon)</label>
+                    <input
+                        type="number"
+                        value={gasPrice}
+                        onChange={e => setGasPrice(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="input-group">
+                    <label>Roof rack fuel penalty (%)</label>
+                    <input
+                        type="number"
+                        value={roofPenalty}
+                        onChange={e => setRoofPenalty(Number(e.target.value))}
+                    />
+                    <div className="hint">From the tables above, matched to your car and speed</div>
+                </div>
+
+                <div className="input-group">
+                    <label>Hitch rack fuel penalty (%)</label>
+                    <input
+                        type="number"
+                        value={hitchPenalty}
+                        onChange={e => setHitchPenalty(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="input-group">
+                    <label>Accident odds: 1 in N per 1,000 miles</label>
+                    <input
+                        type="number"
+                        value={accidentOdds}
+                        onChange={e => setAccidentOdds(Number(e.target.value))}
+                    />
+                    <div className="hint">Lower N means a higher chance of an accident</div>
+                </div>
+
+                <div className="input-group">
+                    <label>Bike value at risk ($)</label>
+                    <input
+                        type="number"
+                        value={bikeValue}
+                        onChange={e => setBikeValue(Number(e.target.value))}
+                    />
+                    <div className="hint">Total value of the bikes a rear-end collision could total</div>
+                </div>
+
+                <div className="input-group">
+                    <label>Uninsured motorists (%)</label>
+                    <input
+                        type="number"
+                        value={uninsuredPct}
+                        onChange={e => setUninsuredPct(Number(e.target.value))}
+                    />
+                    <div className="hint">Share of at-fault drivers who won't cover the damage</div>
+                </div>
+
+                <div className="input-group">
+                    <label>Roof rack purchase price ($)</label>
+                    <input
+                        type="number"
+                        value={roofPrice}
+                        onChange={e => setRoofPrice(Number(e.target.value))}
+                    />
+                    <div className="hint">Optional; leave at 0 to compare running costs only</div>
+                </div>
+
+                <div className="input-group">
+                    <label>Hitch rack purchase price ($)</label>
+                    <input
+                        type="number"
+                        value={hitchPrice}
+                        onChange={e => setHitchPrice(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="input-group">
+                    <label>Years to analyze</label>
+                    <input
+                        type="number"
+                        value={years}
+                        onChange={e => setYears(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="results">
+                    <h3>Roof Rack Total: <span className="negative">${values.roof.toLocaleString()}</span></h3>
+                    <h3>Hitch Rack Total: <span className="negative">${values.hitch.toLocaleString()}</span></h3>
+                    <h3>Cheaper option:
+                        <span className="positive"> {values.cheaper} by ${values.diff.toLocaleString()}</span>
+                    </h3>
+                    <div className="hint">Roof rack annual: ${Math.round(annualRoof()).toLocaleString()} fuel. Hitch rack annual: ${Math.round(annualFuel(hitchPenalty)).toLocaleString()} fuel + ${Math.round(annualAccident()).toLocaleString()} expected bike damage. Over {Math.max(1, Math.round(years))} year(s).</div>
+                </div>
+
+                <div style={{ marginTop: "20px", height: "400px" }}>
+                    <canvas ref={chartRef} height="350"></canvas>
+                </div>
+            </div>
+        );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('calculator-root'));
+    root.render(<BikeRackCalculator />);
+</script>
+
+<br>
+
+<hr>
+
 <h2 id="results">Results</h2>
 
 <p>
@@ -198,5 +473,6 @@
 
 
 <script src="../js/theme.js"></script>
+<script src="../js/toc.js"></script>
 </body>
 </html>

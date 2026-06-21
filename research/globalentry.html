@@ -17,6 +17,44 @@
   <title>Global Entry Cost-Benefit Analysis - No Magic Pill</title>
   <link rel="stylesheet" type="text/css" href="../css/main.css">
   <link rel="icon" href="../media/favicon.png">
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+      .calculator {
+          max-width: 600px;
+          margin: 20px auto;
+          padding: 20px;
+          font-family: Arial, sans-serif;
+      }
+      .input-group {
+          margin-bottom: 15px;
+      }
+      .input-group label {
+          display: block;
+          margin-bottom: 5px;
+      }
+      .input-group input {
+          width: 100%;
+          padding: 8px;
+          margin-bottom: 5px;
+      }
+      .hint {
+          font-size: 0.8em;
+          color: #666;
+      }
+      .results {
+          margin-top: 20px;
+          padding: 15px;
+          background-color: #f5f5f5;
+          border-radius: 5px;
+      }
+      .positive { color: green; }
+      .negative { color: red; }
+  </style>
 </head>
 
 <body>
@@ -32,27 +70,6 @@
 <hr>
 
 <h2 id="contents">Contents</h2>
-
-<ul>
-  <li>
-    <a href="#background">Background</a>
-  </li>
-  <li>
-    <a href="#costs">Costs</a>
-  </li>
-  <li>
-    <a href="#benefits">Benefits</a>
-  </li>
-  <li>
-    <a href="#other">Other</a>
-  </li>
-  <li>
-    <a href="#conclusion">Conclusion</a>
-  </li>
-  <li>
-    <a href="#see_also">See Also</a>
-  </li>
-</ul>
 
 <hr>
 
@@ -281,6 +298,239 @@
 
 <hr>
 
+<h2 id="calculator">Calculator</h2>
+
+<p>
+  Plug in your own numbers below. The defaults are the "average American" from the <a href="#comparison">Comparison</a> section: 2 flights per year, 1.5 of them international, time valued at $50/hr, over a single five-year term. The benefit grows every year you hold Global Entry, while the cost is mostly fixed up front—the one-time enrollment (time spent plus parking/gas/depreciation) and the $100 fee, which repeats each time the five-year term renews. Set the application fee to $0 if your credit card reimburses it.
+</p>
+
+<div id="calculator-root"></div>
+
+<script type="text/babel">
+    const GlobalEntryCalculator = () => {
+        // Time value and travel frequency
+        const [hourlyRate, setHourlyRate] = React.useState(50);
+        const [flightsPerYear, setFlightsPerYear] = React.useState(2);
+        const [intlFlightsPerYear, setIntlFlightsPerYear] = React.useState(1.5);
+        const [years, setYears] = React.useState(5);
+
+        // Time saved (tunable so you can use your own airport's numbers)
+        const [tsaSaved, setTsaSaved] = React.useState(8);
+        const [customsSaved, setCustomsSaved] = React.useState(16);
+
+        // Costs
+        const [appFee, setAppFee] = React.useState(100);
+        const [enrollHours, setEnrollHours] = React.useState(2.25);
+        const [enrollExpenses, setEnrollExpenses] = React.useState(45);
+
+        const chartRef = React.useRef(null);
+        const [chart, setChart] = React.useState(null);
+
+        // $100 fee per five-year term; ceil(years/5) terms, min one.
+        const termsPaid = (yrs) => Math.max(1, Math.ceil(yrs / 5));
+
+        // Cumulative benefit after a given number of years.
+        const benefitAt = (yrs) =>
+            (tsaSaved * flightsPerYear + customsSaved * intlFlightsPerYear) *
+            (hourlyRate / 60) *
+            yrs;
+
+        // Cumulative cost: one-time enrollment + fee per term.
+        const costAt = (yrs) =>
+            enrollHours * hourlyRate + enrollExpenses + appFee * termsPaid(yrs);
+
+        const calculate = () => {
+            const benefit = benefitAt(years);
+            const cost = costAt(years);
+            return {
+                benefit: Math.round(benefit),
+                cost: Math.round(cost),
+                net: Math.round(benefit - cost)
+            };
+        };
+
+        React.useEffect(() => {
+            if (chartRef.current) {
+                if (chart) {
+                    chart.destroy();
+                }
+
+                const span = Math.max(1, Math.round(years));
+                const labels = Array.from({length: span + 1}, (_, i) => i);
+                const data = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Cumulative Benefit',
+                            data: labels.map(y => benefitAt(y)),
+                            borderColor: '#82ca9d',
+                            fill: false
+                        },
+                        {
+                            label: 'Cumulative Cost',
+                            data: labels.map(y => costAt(y)),
+                            borderColor: '#ff8042',
+                            stepped: true,
+                            fill: false
+                        },
+                        {
+                            label: 'Net Value',
+                            data: labels.map(y => benefitAt(y) - costAt(y)),
+                            borderColor: '#2196f3',
+                            borderWidth: 2,
+                            fill: false
+                        }
+                    ]
+                };
+
+                const ctx = chartRef.current.getContext('2d');
+                const newChart = new Chart(ctx, {
+                    type: 'line',
+                    data: data,
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: { display: true, text: 'Years' }
+                            },
+                            y: {
+                                title: { display: true, text: 'Cumulative Value ($)' }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: $${Math.round(context.raw)}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                setChart(newChart);
+            }
+        }, [hourlyRate, flightsPerYear, intlFlightsPerYear, years, tsaSaved, customsSaved, appFee, enrollHours, enrollExpenses]);
+
+        const values = calculate();
+
+        return (
+            <div className="calculator">
+
+                <div className="input-group">
+                    <label>Value of your time ($ per hour)</label>
+                    <input
+                        type="number"
+                        value={hourlyRate}
+                        onChange={e => setHourlyRate(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="input-group">
+                    <label>Total flights per year</label>
+                    <input
+                        type="number"
+                        value={flightsPerYear}
+                        onChange={e => setFlightsPerYear(Number(e.target.value))}
+                    />
+                    <div className="hint">Every flight, domestic and international, saves time at the TSA checkpoint</div>
+                </div>
+
+                <div className="input-group">
+                    <label>International flights per year</label>
+                    <input
+                        type="number"
+                        value={intlFlightsPerYear}
+                        onChange={e => setIntlFlightsPerYear(Number(e.target.value))}
+                    />
+                    <div className="hint">A subset of total flights; these also save time at customs</div>
+                </div>
+
+                <div className="input-group">
+                    <label>Years to analyze</label>
+                    <input
+                        type="number"
+                        value={years}
+                        onChange={e => setYears(Number(e.target.value))}
+                    />
+                    <div className="hint">Global Entry is valid for five years per term</div>
+                </div>
+
+                <div className="input-group">
+                    <label>TSA time saved per flight (minutes)</label>
+                    <input
+                        type="number"
+                        value={tsaSaved}
+                        onChange={e => setTsaSaved(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="input-group">
+                    <label>Customs time saved per international flight (minutes)</label>
+                    <input
+                        type="number"
+                        value={customsSaved}
+                        onChange={e => setCustomsSaved(Number(e.target.value))}
+                    />
+                </div>
+
+                <div className="input-group">
+                    <label>Application fee per term ($)</label>
+                    <input
+                        type="number"
+                        value={appFee}
+                        onChange={e => setAppFee(Number(e.target.value))}
+                    />
+                    <div className="hint">Set to $0 if your credit card reimburses it</div>
+                </div>
+
+                <div className="input-group">
+                    <label>One-time enrollment time (hours)</label>
+                    <input
+                        type="number"
+                        value={enrollHours}
+                        onChange={e => setEnrollHours(Number(e.target.value))}
+                    />
+                    <div className="hint">Filling out the form plus driving to and sitting through the interview. Renewals are online, so this is paid only once.</div>
+                </div>
+
+                <div className="input-group">
+                    <label>One-time enrollment expenses ($)</label>
+                    <input
+                        type="number"
+                        value={enrollExpenses}
+                        onChange={e => setEnrollExpenses(Number(e.target.value))}
+                    />
+                    <div className="hint">Parking, gas, and depreciation for the interview trip</div>
+                </div>
+
+                <div className="results">
+                    <h3>Total Benefit: <span className="positive">+${values.benefit.toLocaleString()}</span></h3>
+                    <h3>Total Cost: <span className="negative">-${values.cost.toLocaleString()}</span></h3>
+                    <h3>Net Value:
+                        <span className={values.net >= 0 ? "positive" : "negative"}>
+                            ${values.net.toLocaleString()}
+                        </span>
+                    </h3>
+                    <div className="hint">Over {Math.max(1, Math.round(years))} year(s), paying the fee {termsPaid(years)} time(s)</div>
+                </div>
+
+                <div style={{ marginTop: "20px", height: "400px" }}>
+                    <canvas ref={chartRef} height="350"></canvas>
+                </div>
+            </div>
+        );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('calculator-root'));
+    root.render(<GlobalEntryCalculator />);
+</script>
+
+<br>
+
+<hr>
+
 <h2 id="conclusion">Conclusion</h2>
 
 <p>
@@ -314,5 +564,6 @@
 
 
 <script src="../js/theme.js"></script>
+<script src="../js/toc.js"></script>
 </body>
 </html>

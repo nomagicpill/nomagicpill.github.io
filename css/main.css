@@ -320,6 +320,18 @@ html {
   border-color: #c00;
 }
 
+/* Scroll progress bar (top of page, fills left to right) */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 0;
+  background-color: var(--link);
+  z-index: 1200;
+  transition: width 0.1s linear;
+}
+
 /* Dark-mode toggle button */
 #theme-toggle {
   position: fixed;

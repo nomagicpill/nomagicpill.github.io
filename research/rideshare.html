@@ -17,6 +17,44 @@
   <title>Cost of Rideshare Driving - No Magic Pill</title>
   <link rel="stylesheet" type="text/css" href="../css/main.css">
   <link rel="icon" href="../media/favicon.png">
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+      .calculator {
+          max-width: 600px;
+          margin: 20px auto;
+          padding: 20px;
+          font-family: Arial, sans-serif;
+      }
+      .input-group {
+          margin-bottom: 15px;
+      }
+      .input-group label {
+          display: block;
+          margin-bottom: 5px;
+      }
+      .input-group input {
+          width: 100%;
+          padding: 8px;
+          margin-bottom: 5px;
+      }
+      .hint {
+          font-size: 0.8em;
+          color: #666;
+      }
+      .results {
+          margin-top: 20px;
+          padding: 15px;
+          background-color: #f5f5f5;
+          border-radius: 5px;
+      }
+      .positive { color: green; }
+      .negative { color: red; }
+  </style>
 </head>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -37,33 +75,6 @@
 <hr>
 
 <h2 id="contents">Contents</h2>
-
-<ul>
-  <li>
-    <a href="#background">Background</a>
-  </li>
-  <li>
-    <a href="#averages">Averages</a>
-  </li>
-  <li>
-    <a href="#costs">Costs</a>
-  </li>
-  <li>
-    <a href="#tradeoffs">Tradeoffs</a>
-  </li>
-  <li>
-    <a href="#so_you_wanna_drive">So You Wanna Drive?</a>
-  </li>
-  <li>
-    <a href="#overall_analysis">Overall Analysis</a>
-  </li>
-  <li>
-    <a href="#owning_ridesharing">Owning vs. Ridesharing</a>
-  </li>
-  <li>
-    <a href="#see_also">See Also</a>
-  </li>
-</ul>
 
 <hr>
 
@@ -535,6 +546,189 @@
   Full-time driving is likely the worst due to the <a href="https://en.wikipedia.org/wiki/Opportunity_cost">opportunity cost</a>: working an <a href="#other_jobs">average job/career</a> will pay over two times what driving for Uber does, but without the depreciation of the vehicle. And while Uber wages have been <a href="#average_payout">increasing steadily</a>, they fail to keep up with the average <a href="#raise">raise</a> in those jobs.
 </p>
 
+<h3 id="driver_calculator">Should You Drive? Calculator</h3>
+
+<p>
+  Plug in your own driving habits to find your real adjusted wage—your take-home pay after the fuel, maintenance, and insurance that driving for Uber piles on. The defaults reproduce the "average" driver from the tables above (650 hours/year). Set <i>commute miles no longer driven</i> above zero only if Uber is replacing a job you used to commute to (the full-time case), so those miles aren't double-counted against you. The alternative-job wage is there to show the opportunity cost: what the same hours would earn elsewhere.
+</p>
+
+<div id="driver-calculator-root"></div>
+
+<script type="text/babel">
+    const DriverCalculator = () => {
+        // Earnings
+        const [uberWage, setUberWage] = React.useState(16.85);
+        const [hoursPerWeek, setHoursPerWeek] = React.useState(13);
+        const [weeksPerYear, setWeeksPerYear] = React.useState(50);
+
+        // Trip shape
+        const [tripDistance, setTripDistance] = React.useState(6.0);
+        const [tripMinutes, setTripMinutes] = React.useState(25);
+
+        // Vehicle costs
+        const [mpg, setMpg] = React.useState(20.9);
+        const [gasPrice, setGasPrice] = React.useState(2.68);
+        const [maintPer25k, setMaintPer25k] = React.useState(3000);
+        const [insurance, setInsurance] = React.useState(200);
+        const [commuteMilesAvoided, setCommuteMilesAvoided] = React.useState(0);
+
+        // Opportunity cost
+        const [altWage, setAltWage] = React.useState(28.33);
+
+        const chartRef = React.useRef(null);
+        const [chart, setChart] = React.useState(null);
+
+        const hoursPerYear = hoursPerWeek * weeksPerYear;
+        const tripsPerHour = tripMinutes > 0 ? 60 / tripMinutes : 0;
+        const uberMiles = hoursPerYear * tripsPerHour * tripDistance;
+        const costBearingMiles = Math.max(0, uberMiles - commuteMilesAvoided);
+
+        const grossPay = uberWage * hoursPerYear;
+        const fuelCost = mpg > 0 ? (costBearingMiles / mpg) * gasPrice : 0;
+        const maintCost = costBearingMiles * (maintPer25k / 25000);
+        const totalExpenses = fuelCost + maintCost + insurance;
+        const netPay = grossPay - totalExpenses;
+        const adjustedWage = hoursPerYear > 0 ? netPay / hoursPerYear : 0;
+        const altPay = altWage * hoursPerYear;
+
+        React.useEffect(() => {
+            if (chartRef.current) {
+                if (chart) {
+                    chart.destroy();
+                }
+
+                const data = {
+                    labels: ['Gross pay', 'Expenses', 'Net (Uber)', 'Same hours, other job'],
+                    datasets: [
+                        {
+                            label: 'Dollars per year',
+                            data: [
+                                Math.round(grossPay),
+                                Math.round(totalExpenses),
+                                Math.round(netPay),
+                                Math.round(altPay)
+                            ],
+                            backgroundColor: ['#82ca9d', '#ff8042', '#2196f3', '#9c6ade']
+                        }
+                    ]
+                };
+
+                const ctx = chartRef.current.getContext('2d');
+                const newChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `$${Math.round(context.raw).toLocaleString()}/year`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Dollars per year ($)' }
+                            }
+                        }
+                    }
+                });
+                setChart(newChart);
+            }
+        }, [uberWage, hoursPerWeek, weeksPerYear, tripDistance, tripMinutes, mpg, gasPrice, maintPer25k, insurance, commuteMilesAvoided, altWage]);
+
+        return (
+            <div className="calculator">
+
+                <div className="input-group">
+                    <label>Uber wage before vehicle expenses ($/hr)</label>
+                    <input type="number" value={uberWage} onChange={e => setUberWage(Number(e.target.value))} />
+                </div>
+
+                <div className="input-group">
+                    <label>Hours driven per week</label>
+                    <input type="number" value={hoursPerWeek} onChange={e => setHoursPerWeek(Number(e.target.value))} />
+                    <div className="hint">~5 on-the-side, ~13 average, ~40 full-time</div>
+                </div>
+
+                <div className="input-group">
+                    <label>Weeks driven per year</label>
+                    <input type="number" value={weeksPerYear} onChange={e => setWeeksPerYear(Number(e.target.value))} />
+                </div>
+
+                <div className="input-group">
+                    <label>Average trip distance (miles)</label>
+                    <input type="number" value={tripDistance} onChange={e => setTripDistance(Number(e.target.value))} />
+                </div>
+
+                <div className="input-group">
+                    <label>Average trip time (minutes)</label>
+                    <input type="number" value={tripMinutes} onChange={e => setTripMinutes(Number(e.target.value))} />
+                </div>
+
+                <div className="input-group">
+                    <label>Vehicle fuel economy (mpg)</label>
+                    <input type="number" value={mpg} onChange={e => setMpg(Number(e.target.value))} />
+                    <div className="hint">A Prius gets 50+; the average car gets 20.9</div>
+                </div>
+
+                <div className="input-group">
+                    <label>Gas price ($/gallon)</label>
+                    <input type="number" value={gasPrice} onChange={e => setGasPrice(Number(e.target.value))} />
+                </div>
+
+                <div className="input-group">
+                    <label>Maintenance cost per 25,000 miles ($)</label>
+                    <input type="number" value={maintPer25k} onChange={e => setMaintPer25k(Number(e.target.value))} />
+                    <div className="hint">~$3,000 average; a Toyota is far less, a BMW far more</div>
+                </div>
+
+                <div className="input-group">
+                    <label>Rideshare insurance ($/year)</label>
+                    <input type="number" value={insurance} onChange={e => setInsurance(Number(e.target.value))} />
+                </div>
+
+                <div className="input-group">
+                    <label>Commute miles no longer driven ($/year)</label>
+                    <input type="number" value={commuteMilesAvoided} onChange={e => setCommuteMilesAvoided(Number(e.target.value))} />
+                    <div className="hint">Full-time only: miles you'd have driven commuting to a job you quit (~6,500). Leave at 0 otherwise.</div>
+                </div>
+
+                <div className="input-group">
+                    <label>Alternative job wage ($/hr)</label>
+                    <input type="number" value={altWage} onChange={e => setAltWage(Number(e.target.value))} />
+                    <div className="hint">For comparison: what the same hours would earn elsewhere</div>
+                </div>
+
+                <div className="results">
+                    <h3>Take-home pay: <span className="positive">${Math.round(netPay).toLocaleString()}/year</span></h3>
+                    <h3>Expenses: <span className="negative">${Math.round(totalExpenses).toLocaleString()}/year</span></h3>
+                    <h3>Adjusted wage:
+                        <span className={adjustedWage >= altWage ? "positive" : "negative"}> ${adjustedWage.toFixed(2)}/hr</span>
+                    </h3>
+                    <div className="hint">
+                        ~{Math.round(uberMiles).toLocaleString()} Uber miles/year over {Math.round(hoursPerYear).toLocaleString()} hours. The same hours at ${altWage}/hr would pay ${Math.round(altPay).toLocaleString()}/year.
+                    </div>
+                </div>
+
+                <div style={{ marginTop: "20px", height: "400px" }}>
+                    <canvas ref={chartRef} height="350"></canvas>
+                </div>
+            </div>
+        );
+    };
+
+    const driverRoot = ReactDOM.createRoot(document.getElementById('driver-calculator-root'));
+    driverRoot.render(<DriverCalculator />);
+</script>
+
+<br>
+
 <hr>
 
 <h2 id="owning_ridesharing">Owning vs. Ridesharing</h2>
@@ -589,8 +783,163 @@
 \[\text{trip}_{\text{yr total}} = $13.33 \times 600 = $8000\]
 
 <p>
-  For the interested reader wanting to find out their personal situation, simply input personal values.
+  For the interested reader wanting to find out their personal situation, simply input personal values below.
 </p>
+
+<div id="own-calculator-root"></div>
+
+<script type="text/babel">
+    const OwnVsRideshareCalculator = () => {
+        // Owning a car
+        const [milesPerYear, setMilesPerYear] = React.useState(5000);
+        const [costPerMile, setCostPerMile] = React.useState(0.27);
+        const [fixedCost, setFixedCost] = React.useState(5190);
+
+        // Ridesharing instead
+        const [tripsPerYear, setTripsPerYear] = React.useState(600);
+        const [baseFare, setBaseFare] = React.useState(1.07);
+        const [perMinute, setPerMinute] = React.useState(0.17);
+        const [tripMinutes, setTripMinutes] = React.useState(25);
+        const [perMile, setPerMile] = React.useState(0.86);
+        const [tripDistance, setTripDistance] = React.useState(6);
+        const [fees, setFees] = React.useState(2.85);
+
+        const chartRef = React.useRef(null);
+        const [chart, setChart] = React.useState(null);
+
+        const ownCost = costPerMile * milesPerYear + fixedCost;
+        const tripCost = baseFare + perMinute * tripMinutes + perMile * tripDistance + fees;
+        const rideshareCost = tripCost * tripsPerYear;
+        const cheaper = ownCost <= rideshareCost ? 'Owning' : 'Ridesharing';
+        const diff = Math.abs(ownCost - rideshareCost);
+
+        React.useEffect(() => {
+            if (chartRef.current) {
+                if (chart) {
+                    chart.destroy();
+                }
+
+                const data = {
+                    labels: ['Owning a car', 'Ridesharing'],
+                    datasets: [
+                        {
+                            label: 'Cost per year',
+                            data: [Math.round(ownCost), Math.round(rideshareCost)],
+                            backgroundColor: ['#ff8042', '#2196f3']
+                        }
+                    ]
+                };
+
+                const ctx = chartRef.current.getContext('2d');
+                const newChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `$${Math.round(context.raw).toLocaleString()}/year`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Cost per year ($)' }
+                            }
+                        }
+                    }
+                });
+                setChart(newChart);
+            }
+        }, [milesPerYear, costPerMile, fixedCost, tripsPerYear, baseFare, perMinute, tripMinutes, perMile, tripDistance, fees]);
+
+        return (
+            <div className="calculator">
+
+                <h4>If you own a car</h4>
+
+                <div className="input-group">
+                    <label>Miles driven per year</label>
+                    <input type="number" value={milesPerYear} onChange={e => setMilesPerYear(Number(e.target.value))} />
+                </div>
+
+                <div className="input-group">
+                    <label>Variable cost per mile ($)</label>
+                    <input type="number" value={costPerMile} onChange={e => setCostPerMile(Number(e.target.value))} />
+                    <div className="hint">AAA's weighted average is ~$0.27/mile</div>
+                </div>
+
+                <div className="input-group">
+                    <label>Fixed cost per year ($)</label>
+                    <input type="number" value={fixedCost} onChange={e => setFixedCost(Number(e.target.value))} />
+                    <div className="hint">Insurance, registration, depreciation, etc. (~$5,190)</div>
+                </div>
+
+                <h4>If you rideshare instead</h4>
+
+                <div className="input-group">
+                    <label>Rideshare trips per year</label>
+                    <input type="number" value={tripsPerYear} onChange={e => setTripsPerYear(Number(e.target.value))} />
+                    <div className="hint">Each round trip is two rides</div>
+                </div>
+
+                <div className="input-group">
+                    <label>Base fare ($)</label>
+                    <input type="number" value={baseFare} onChange={e => setBaseFare(Number(e.target.value))} />
+                </div>
+
+                <div className="input-group">
+                    <label>Cost per minute ($)</label>
+                    <input type="number" value={perMinute} onChange={e => setPerMinute(Number(e.target.value))} />
+                </div>
+
+                <div className="input-group">
+                    <label>Average trip time (minutes)</label>
+                    <input type="number" value={tripMinutes} onChange={e => setTripMinutes(Number(e.target.value))} />
+                </div>
+
+                <div className="input-group">
+                    <label>Cost per mile ($)</label>
+                    <input type="number" value={perMile} onChange={e => setPerMile(Number(e.target.value))} />
+                </div>
+
+                <div className="input-group">
+                    <label>Average trip distance (miles)</label>
+                    <input type="number" value={tripDistance} onChange={e => setTripDistance(Number(e.target.value))} />
+                </div>
+
+                <div className="input-group">
+                    <label>Booking fee, tolls, surcharges per trip ($)</label>
+                    <input type="number" value={fees} onChange={e => setFees(Number(e.target.value))} />
+                </div>
+
+                <div className="results">
+                    <h3>Owning: <span className="negative">${Math.round(ownCost).toLocaleString()}/year</span></h3>
+                    <h3>Ridesharing: <span className="negative">${Math.round(rideshareCost).toLocaleString()}/year</span></h3>
+                    <h3>Cheaper option:
+                        <span className="positive"> {cheaper} by ${Math.round(diff).toLocaleString()}/year</span>
+                    </h3>
+                    <div className="hint">Average rideshare trip: ${tripCost.toFixed(2)} &times; {tripsPerYear.toLocaleString()} trips</div>
+                </div>
+
+                <div style={{ marginTop: "20px", height: "400px" }}>
+                    <canvas ref={chartRef} height="350"></canvas>
+                </div>
+            </div>
+        );
+    };
+
+    const ownRoot = ReactDOM.createRoot(document.getElementById('own-calculator-root'));
+    ownRoot.render(<OwnVsRideshareCalculator />);
+</script>
+
+<br>
 
 <hr>
 
@@ -607,5 +956,6 @@
 
 
 <script src="../js/theme.js"></script>
+<script src="../js/toc.js"></script>
 </body>
 </html>
