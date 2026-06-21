@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <!-- Apply saved theme before first paint to avoid a flash. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Destruction IV - No Magic Pill</title>
   <link rel="stylesheet" type="text/css" href="../css/main.css">
@@ -72,5 +84,7 @@
   Like my other projects, I do not know when work will begin nor how long it will take. I know it will take longer than expected just as these endeavors often do, but when the cause is noble, the timeline doesn't necessarily matter.
 </p>
 
+
+<script src="../js/theme.js"></script>
 </body>
 </html>

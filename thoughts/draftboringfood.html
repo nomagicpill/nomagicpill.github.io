@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <!-- Apply saved theme before first paint to avoid a flash. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Boring Food for Health Improvements - No Magic Pill</title>
   <link rel="stylesheet" type="text/css" href="../css/main.css">
@@ -358,5 +370,7 @@ https://scitechdaily.com/the-rhyme-as-reason-effect-why-we-find-reason-in-rhyme-
   </li>
 </ul>
 
+
+<script src="../js/theme.js"></script>
 </body>
 </html>

@@ -1,5 +1,61 @@
+/* ===== Theme tokens ===== */
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --heading: #000000;
+  --link: #2563eb;
+  --link-hover: #1d4ed8;
+  --border: #cccccc;
+  --border-light: #e5e5e5;
+  --code-bg: #eeeeee;
+  --code-hover-bg: #cccccc;
+  --muted-bg: #f9f9f9;
+  --muted-border: #dddddd;
+  --tooltip-bg: #333333;
+  --tooltip-text: #ffffff;
+  color-scheme: light;
+}
+
+/* Dark values, shared by system preference and manual override. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121212;
+    --text: #e6e6e6;
+    --heading: #f0f0f0;
+    --link: #6ea8fe;
+    --link-hover: #93bbff;
+    --border: #444444;
+    --border-light: #333333;
+    --code-bg: #2a2a2a;
+    --code-hover-bg: #3a3a3a;
+    --muted-bg: #1e1e1e;
+    --muted-border: #444444;
+    --tooltip-bg: #e6e6e6;
+    --tooltip-text: #111111;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #121212;
+  --text: #e6e6e6;
+  --heading: #f0f0f0;
+  --link: #6ea8fe;
+  --link-hover: #93bbff;
+  --border: #444444;
+  --border-light: #333333;
+  --code-bg: #2a2a2a;
+  --code-hover-bg: #3a3a3a;
+  --muted-bg: #1e1e1e;
+  --muted-border: #444444;
+  --tooltip-bg: #e6e6e6;
+  --tooltip-text: #111111;
+  color-scheme: dark;
+}
+
 body {
-	color: #000;
+	color: var(--text);
+	background-color: var(--bg);
 	font-size: 0.95em;
 	line-height: 1.5;
 	margin: 40px auto;
@@ -9,7 +65,7 @@ body {
 }
 
 table, th, td, tr {
-	border: 1px solid black;
+	border: 1px solid var(--border);
 	border-collapse: collapse;
 	padding: 10px;
 	margin-left: auto;
@@ -33,16 +89,16 @@ img {
 }
 
 .spoiler{
-  color:black;
-  background-color:black;
+  color: var(--text);
+  background-color: var(--text);
 }
 
 .spoiler:hover{
-  background-color:white;
+  background-color: var(--bg);
   }
 
 blockquote {
-	border-left: 2px solid #ccc;
+	border-left: 2px solid var(--border);
 	padding: 0.25em 10px;
 }
 
@@ -60,7 +116,7 @@ ol ul {
 }
 
 code {
-    background-color: #eee;
+    background-color: var(--code-bg);
     border-radius: 3px;
     font-family: courier, monospace;
     padding: 0 3px;
@@ -107,8 +163,8 @@ pre {
 		}
 
 .collapsible {
-  background-color: #eee;
-  color: black;
+  background-color: var(--code-bg);
+  color: var(--text);
   cursor: pointer;
   padding: 18px;
   width: 100%;
@@ -119,14 +175,14 @@ pre {
 }
 
 .active, .collapsible:hover {
-  background-color: #ccc;
+  background-color: var(--code-hover-bg);
 }
 
 .content {
   padding: 0 18px;
   display: none;
   overflow: hidden;
-  background-color: white;
+  background-color: var(--bg);
 }
 
 .collapsible:after {
@@ -145,14 +201,14 @@ pre {
 
 /* Better link styling */
 a {
-  color: #2563eb; /* Nice blue */
+  color: var(--link); /* Nice blue */
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-bottom-color 0.2s ease;
 }
 
 a:hover {
-  border-bottom-color: #2563eb;
+  border-bottom-color: var(--link);
 }
 
 /* Better spacing for content sections */
@@ -197,8 +253,8 @@ html {
 
 /* Fit Adjustment Tracker */
 #tracker-form-container {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  background-color: var(--muted-bg);
+  border: 1px solid var(--muted-border);
   border-radius: 6px;
   padding: 16px;
   margin-bottom: 20px;
@@ -219,11 +275,13 @@ html {
 .tracker-row textarea {
   width: 100%;
   padding: 6px 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 4px;
   font-family: Arial;
   font-size: 0.9em;
   box-sizing: border-box;
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 .tracker-buttons {
@@ -232,7 +290,7 @@ html {
 
 .tracker-buttons button,
 #tracker-add {
-  background-color: #2563eb;
+  background-color: var(--link);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -243,12 +301,12 @@ html {
 
 .tracker-buttons button:hover,
 #tracker-add:hover {
-  background-color: #1d4ed8;
+  background-color: var(--link-hover);
 }
 
 .tracker-delete {
   background: none;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 3px;
   cursor: pointer;
   color: #888;
@@ -260,6 +318,32 @@ html {
   background-color: #fee;
   color: #c00;
   border-color: #c00;
+}
+
+/* Dark-mode toggle button */
+#theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background-color: var(--muted-bg);
+  color: var(--text);
+  font-size: 1.1em;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+#theme-toggle:hover {
+  border-color: var(--link);
 }
 
 /*

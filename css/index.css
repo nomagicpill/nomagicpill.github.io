@@ -4,16 +4,16 @@ body {
     max-width: 900px; /* Wider to accommodate longer titles on single lines */
 }
 
-/* Keep h2 headers black */
+/* Keep h2 headers in the heading color */
 h2 {
-    color: #000;
+    color: var(--heading);
 }
 
 /* Two-column layout for sections */
 .thoughts-columns, .research-columns, .knowledge-columns, .training-columns, .experiences-columns {
     columns: 2;
     column-gap: 4em; /* Wider gap for more breathing room */
-    column-rule: 1px solid #e5e5e5;
+    column-rule: 1px solid var(--border-light);
     margin-bottom: 2em;
 }
 
@@ -24,10 +24,10 @@ h2 {
 }
 
 .subsection h3 {
-    color: #000;
+    color: var(--heading);
     margin: 0 0 0.8em 0;
     font-size: 1.1em;
-    border-bottom: 2px solid #e5e5e5;
+    border-bottom: 2px solid var(--border-light);
     padding-bottom: 0.3em;
 }
 
@@ -60,7 +60,7 @@ h2 {
 
 .subsection li a:hover,
 #best + p + ul li a:hover {
-    border-bottom: 1px solid #2563eb;
+    border-bottom: 1px solid var(--link);
 }
 
 /* Tooltip functionality for both subsections AND Best Of section */
@@ -79,8 +79,8 @@ h2 {
     top: 100%;
     margin-top: 8px;
     padding: 8px 12px;
-    background-color: #333;
-    color: white;
+    background-color: var(--tooltip-bg);
+    color: var(--tooltip-text);
     border-radius: 6px;
     font-size: 0.85em;
     line-height: 1.4;
@@ -111,7 +111,7 @@ h2 {
     top: 100%;
     margin-top: 2px;
     border: 6px solid transparent;
-    border-bottom-color: #333;
+    border-bottom-color: var(--tooltip-bg);
     z-index: 1001;
     opacity: 0;
     visibility: hidden;
@@ -141,7 +141,7 @@ h2 {
     margin-top: 0;
     margin-bottom: 2px;
     border-bottom-color: transparent;
-    border-top-color: #333;
+    border-top-color: var(--tooltip-bg);
 }
 
 /* About section - simple two-column since it's short */

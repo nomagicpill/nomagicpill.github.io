@@ -1,69 +1,227 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Film Reviews - No Magic Pill</title>
-  <link rel="stylesheet" type="text/css" href="../css/film.css">
+  <link rel="alternate" type="application/rss+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
+  <link rel="alternate" type="application/atom+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
   <link rel="icon" href="../media/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <!-- Apply saved theme before first paint to avoid a flash. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
   <style>
-      table {
-          border-collapse: collapse;
-          width: 100%;
-          margin: 20px 0;
+    :root {
+      --bg: #ffffff;
+      --text: #000000;
+      --link: #2563eb;
+      --border: #cccccc;
+      --surface: #ffffff;
+      --muted-text: #666666;
+      --faint-text: #999999;
+      --star-empty: #d9d9d9;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #121212;
+        --text: #e6e6e6;
+        --link: #6ea8fe;
+        --border: #444444;
+        --surface: #1e1e1e;
+        --muted-text: #b0b0b0;
+        --faint-text: #8a8a8a;
+        --star-empty: #555555;
+        color-scheme: dark;
       }
-      th, td {
-          border: 1px solid #ddd;
-          padding: 8px;
-          text-align: left;
-          vertical-align: top;
-      }
-      th {
-          background-color: #f2f2f2;
-          font-weight: bold;
-          cursor: pointer;
-          user-select: none;
-      }
-      th.sortable:hover {
-          background-color: #e8e8e8;
-      }
-      tr:nth-child(even) {
-          background-color: #f9f9f9;
-      }
-      .rating {
-          text-align: center;
-          font-weight: bold;
-      }
-      .date {
-          white-space: nowrap;
-      }
-      .review {
-          max-width: 400px;
-      }
-      .review-toggle {
-          cursor: pointer;
-          color: #0066cc;
-          text-decoration: underline;
-          font-size: 14px;
-      }
-      .review-toggle:hover {
-          color: #004499;
-      }
-      .review-content {
-          display: none;
-          margin-top: 8px;
-          padding-top: 8px;
-          border-top: 1px solid #eee;
-      }
-      .review-content.expanded {
-          display: block;
-      }
-      .sort-arrow {
-          margin-left: 5px;
-          opacity: 0.3;
-      }
-      .sort-arrow.active {
-          opacity: 1;
-      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #121212;
+      --text: #e6e6e6;
+      --link: #6ea8fe;
+      --border: #444444;
+      --surface: #1e1e1e;
+      --muted-text: #b0b0b0;
+      --faint-text: #8a8a8a;
+      --star-empty: #555555;
+      color-scheme: dark;
+    }
+    #theme-toggle {
+      position: fixed; top: 16px; right: 16px;
+      width: 40px; height: 40px; padding: 0;
+      border: 1px solid var(--border); border-radius: 50%;
+      background: var(--surface); color: var(--text);
+      font-size: 1.1em; line-height: 1; cursor: pointer; z-index: 1100;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    }
+    #theme-toggle:hover { border-color: var(--link); }
+    body {
+      color: var(--text);
+      background-color: var(--bg);
+      font-family: Arial, sans-serif;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 40px auto;
+      max-width: 820px;
+      padding: 0 12px;
+    }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    h1 { margin-bottom: 0.3em; }
+
+    /* controls */
+    .film-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 14px;
+      margin: 18px 0 4px;
+    }
+    #film-search {
+      flex: 1 1 220px;
+      padding: 8px 11px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95em;
+      font-family: inherit;
+    }
+    #film-sort {
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.9em;
+      background: var(--surface);
+      cursor: pointer;
+    }
+    #film-stats {
+      width: 100%;
+      color: var(--faint-text);
+      font-size: 0.82em;
+    }
+
+    /* grid */
+    .film-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+      gap: 24px 18px;
+      margin: 22px 0 40px;
+    }
+    .film-card {
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+    }
+    .film-cover-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.28);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      background: linear-gradient(135deg, #4c566a, #2e3440);
+    }
+    .film-card:hover .film-cover-wrap,
+    .film-card:focus-visible .film-cover-wrap {
+      transform: translateY(-4px);
+      box-shadow: 0 9px 22px rgba(0,0,0,0.32);
+    }
+    .film-card:focus-visible { outline: none; }
+    .film-cover-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .film-cover-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 12px;
+      color: #eceff4;
+      text-align: center;
+    }
+    .film-cover-fallback .t { font-weight: bold; font-size: 0.9em; line-height: 1.25; }
+    .film-cover-fallback .a { font-size: 0.78em; opacity: 0.85; margin-top: 8px; }
+    .film-meta { margin-top: 9px; }
+    .film-title { font-size: 0.85em; font-weight: bold; line-height: 1.25; }
+    .film-author { font-size: 0.78em; color: var(--muted-text); margin-top: 1px; }
+    .film-rowline { display: flex; align-items: center; justify-content: space-between; margin-top: 3px; }
+    .film-year { font-size: 0.75em; color: var(--faint-text); }
+    .film-unrated { font-size: 0.72em; color: var(--faint-text); font-style: italic; }
+
+    /* star rating */
+    .stars { position: relative; display: inline-block; color: var(--star-empty); font-size: 0.9em; line-height: 1; letter-spacing: 1px; }
+    .stars::before { content: "\2605\2605\2605\2605\2605"; }
+    .stars .fill { position: absolute; top: 0; left: 0; overflow: hidden; white-space: nowrap; color: #e0a200; }
+    .stars .fill::before { content: "\2605\2605\2605\2605\2605"; }
+
+    /* modal */
+    .film-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+    .film-modal-card {
+      background: var(--surface);
+      border-radius: 10px;
+      max-width: 640px;
+      width: 100%;
+      max-height: 85vh;
+      overflow: auto;
+      padding: 24px 26px 28px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .film-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      background: none;
+      border: none;
+      font-size: 1.6em;
+      line-height: 1;
+      color: var(--faint-text);
+      cursor: pointer;
+    }
+    .film-modal-close:hover { color: #c00; }
+    .film-modal-head { display: flex; gap: 18px; align-items: flex-start; }
+    .film-modal-head img {
+      width: 96px;
+      aspect-ratio: 2 / 3;
+      object-fit: cover;
+      border-radius: 5px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+      flex: 0 0 auto;
+    }
+    .film-modal-title { font-size: 1.25em; font-weight: bold; line-height: 1.25; margin-bottom: 4px; }
+    .film-modal-author { color: var(--muted-text); margin-bottom: 8px; }
+    .film-modal-sub { font-size: 0.85em; color: var(--faint-text); margin-top: 6px; }
+    .film-modal-review { margin-top: 20px; line-height: 1.65; }
+    .film-modal-review.empty { color: var(--faint-text); font-style: italic; }
+
+    @media (max-width: 520px) {
+      .film-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 18px 14px; }
+    }
   </style>
 </head>
 
@@ -74,7 +232,7 @@
 <h1 id="film">Film Reviews</h1>
 
 <p>
-  A non-comprehensive list of movies and television shows I've watched and reviewed with the rating (out of 10) in parentheses. They are in no particular order. Spoilers present.
+  Movies and television shows I've watched and reviewed. Click any poster to read my full review. Spoilers present.
 </p>
 
 <p>
@@ -83,35 +241,40 @@
 
 <hr>
 
-<table>
-    <thead>
-        <tr>
-            <th class="sortable" onclick="sortTable(0)" style="width:25%">Name <span class="sort-arrow">↕</span></th>
-            <th class="sortable" onclick="sortTable(1)" style="width:13%">Date Watched <span class="sort-arrow">↕</span></th>
-            <th class="sortable" onclick="sortTable(2)" style="width:8%">Rating <span class="sort-arrow">↕</span></th>
-            <th style="width:54%">Review</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td></td>
-            <td class="date"></td>
-            <td class="rating"></td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                    <!-- Paste your review here -->
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>The Day of the Jackal Season 1</td>
-            <td class="date">31 May 2026</td>
-            <td class="rating">4.5</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                    <p>
+<div class="film-controls">
+  <input id="film-search" type="search" placeholder="Search title…" autocomplete="off">
+  <select id="film-sort" aria-label="Sort films">
+    <option value="date-desc">Newest first</option>
+    <option value="date-asc">Oldest first</option>
+    <option value="rating-desc">Highest rated</option>
+    <option value="rating-asc">Lowest rated</option>
+    <option value="title-asc">Title (A–Z)</option>
+  </select>
+  <span id="film-stats"></span>
+</div>
+
+<div id="film-grid" class="film-grid"></div>
+
+<!--
+  ===========================  HOW TO ADD A FILM  ===========================
+  Add an <article class="film"> below. Paste your review (normal HTML —
+  <p>, <i>, <a>, blockquotes, etc.) between the tags; leave it empty if you
+  have no review yet. data-date is ISO (YYYY-MM-DD) so sorting stays correct;
+  data-date-display is the human form shown in the modal.
+
+  For a poster, drop a 2:3 JPG at knowledge/media/filmposters/<slug>.jpg
+  (slug = lowercase title before any colon, non-alphanumerics → hyphens,
+  e.g. "Top Gun: Maverick" → top-gun.jpg). Until then a text tile shows.
+  ===========================================================================
+-->
+<div id="film-data" hidden>
+  <article class="film"
+           data-title="The Day of the Jackal Season 1"
+           data-rating="4.5"
+           data-date="2026-05-31"
+           data-date-display="31 May 2026"
+           data-cover="media/filmposters/the-day-of-the-jackal-season-1.jpg">
+<p>
                       DotJ is more of a show about troubleshooting (as Charles would put it!) and problem-solving than the shadowy world of for-hire assassins and the politics and messy relationships surrounding it. (I won't speak on the feasibility of a lot of the kills and methods, but as far as myself and the internet can tell, they're probably not super accurate.) Time and time again Charles is forced to solve problems, whether they are planned (how do I get away from this place after killing this guy?) or on-the-fly (how do I get away from this place now that I've killed this guy and people will be here in 20 seconds?). He consistently comes up with ingenious (albeit potentially impossible, or at least incredibly improbable) ways to accomplish his missions. A few examples (again, looking past feasibility for argument's sake):
                     </p>
                     <ul>
@@ -145,17 +308,15 @@
                         I'm not gonna do the math, but you could probably do some Fermi approximation math to figure out the concentration of security cameras in downtown Munich to see if Charles would've been caught when he kidnapped Elias Fest. My guess is they would've seen him.
                       </li>
                     </ul>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Columbus (2017)</td>
-            <td class="date">4 Feb 2026</td>
-            <td class="rating">4.0</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="Columbus (2017)"
+           data-rating="4.0"
+           data-date="2026-02-04"
+           data-date-display="4 Feb 2026"
+           data-cover="media/filmposters/columbus-2017.jpg">
+<p>
                     This movie has the most still shots I can think of in living memory. It may even have the least number of unique shots—each individual shot is quite long, and when it's not still, it barely pans. The only crazy shot you get is when Casey is dancing like a madman in front of the car headlights. The stillness is representative of Columbus as a city: sleepy, nothing going on; her dancing is representative of her trying to break out of her shell, but failing to do so quickly and going back inside soon after.
                   </p>
                   <p>
@@ -164,17 +325,15 @@
                   <p>
                     Both Casey and Jin are holding onto parents that will never get recover despite their best efforts of a support system or modern medicine. There's a glimmer of hope that they will, but both know they're probably better off letting them go and continuing on with their lives. You think this finally happens at the end when they're all in the car together, but Jin decides to stay while Casey leaves, leaving them trading places.
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Sound of Metal (2020)</td>
-            <td class="date">18 Aug 2025</td>
-            <td class="rating">4.5</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                    <p>
+  </article>
+
+  <article class="film"
+           data-title="Sound of Metal (2020)"
+           data-rating="4.5"
+           data-date="2025-08-18"
+           data-date-display="18 Aug 2025"
+           data-cover="media/filmposters/sound-of-metal-2020.jpg">
+<p>
                       Masterfully written and sounded (as in sounds). Ruben goes deaf, then crazy soon after. The audience goes with him, from a happy life of disgusting smoothies in the morning, fun road trips with the love of his life in the afternoon, and loud shows full of fans in the evening to one of silence and isolation. He can't talk to his girl; his musical rhythm is thrown off since he can't hear anything; he can't even talk to his AA sponsor. His life is thrown off track in a literal moment when he's standing in front of the merch table. He had a plan, he had a future. They were up-and-coming, on their way to the big leagues before this happened.
                     </p>
 
@@ -205,17 +364,15 @@
                     <blockquote>
                       one of the most devastating parts of life is not being able to get back to a happiness you once had, especially if it involves people you love. feeling that joy slipping through your fingers, time cannot rewind and only moves forward, and without your consent. relentlessly, painfully. adapt or die. this is a crushing look at that fight against time and change, but it's also hopeful, and eventually peaceful. the sound design was incredible and the hardcoded subtitles were such a smart move.
                     </blockquote>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Bone Tomahawk (2015)</td>
-            <td class="date">21 Jan 2025</td>
-            <td class="rating">3.5</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="Bone Tomahawk (2015)"
+           data-rating="3.5"
+           data-date="2025-01-21"
+           data-date-display="21 Jan 2025"
+           data-cover="media/filmposters/bone-tomahawk-2015.jpg">
+<p>
                     Bone Tomahawk isn't (just) a western horror flick. It's a story of the times, of love, of heroism and bravery, of accountability, of war, of hatred, of boredom and misery. It's masterfully written and shot.
                   </p>
 
@@ -378,17 +535,15 @@
                   <blockquote>
                     Loved how sudden and not-telegraphed all of the encounters with the troglodytes were. Like, the heroes round a corner and get shot in the arm by an arrow. There was no loud fanfare to these climactic face-offs. Something about how close and quick they were really unnerved me. Because you realize they can happen at any time, without the usual horror movie tropes of a musical crescendo or whatever.
                   </blockquote>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Oppenheimer (2023)</td>
-            <td class="date">25 Jul 2023</td>
-            <td class="rating">4.0</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="Oppenheimer (2023)"
+           data-rating="4.0"
+           data-date="2023-07-25"
+           data-date-display="25 Jul 2023"
+           data-cover="media/filmposters/oppenheimer-2023.jpg">
+<p>
                     The emotion portrayed by all the actors, not just Murphy, was phenomenal. When Murphy made his speech after the "successful" use of the bombs in Japan, you can see him swirling around in his head, dizzy from the events that have unfolded and caused inner moral turmoil. No music is needed, no explanation. Just his face and the surroundings slightly blurred.
                   </p>
 
@@ -399,18 +554,15 @@
                   <p>
                     Special effects were minimal like most Nolan films, but I don't think this added much...
                   </p>
+  </article>
 
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Top Gun: Maverick (2022)</td>
-            <td class="date">24 Jun 2022</td>
-            <td class="rating">3.0</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  <article class="film"
+           data-title="Top Gun: Maverick (2022)"
+           data-rating="3.0"
+           data-date="2022-06-24"
+           data-date-display="24 Jun 2022"
+           data-cover="media/filmposters/top-gun.jpg">
+<p>
                     The flight scenes were fantastic in this movie. All the actors were seated behind real-life military pilots during the scenes and being subjected to real-life forces during the flying, hence the real-looking effects. Tom Cruise has always been adamant about doing his own stunts and making movies look and feel as real as possible. I love this mindset and think more filmmakers—actors and directors alike—should pursue and abide by this. It adds significant credibility to the movie and enhances the realness.
                   </p>
 
@@ -425,30 +577,26 @@
                   <p>
                     The story worked well and they did a good job of continuity from the original. Characters are still there with their own storylines, the history of everyone is recognized and implemented, and they pay homage to the previous film quite a few times (although it may be a bit too much). A few cheesy quotes here and there, but that's to be expected from a film like this.
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>American Psycho</td>
-            <td class="date">23 Apr 2022</td>
-            <td class="rating">2.0</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="American Psycho"
+           data-rating="2.0"
+           data-date="2022-04-23"
+           data-date-display="23 Apr 2022"
+           data-cover="media/filmposters/american-psycho.jpg">
+<p>
                     Bale puts on quite a performance as a sociopath! The mannerisms, the speech, the thoughts. Everything works well together. Outside of it, I didn't find it <i>that</i> entertaining.
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>12 Angry Men</td>
-            <td class="date">19 Apr 2022</td>
-            <td class="rating">3.5</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="12 Angry Men"
+           data-rating="3.5"
+           data-date="2022-04-19"
+           data-date-display="19 Apr 2022"
+           data-cover="media/filmposters/12-angry-men.jpg">
+<p>
                     A key part of this movie is seeing how differently everyone takes the case: some people are serious, others treat it frivolously, others have an strong inclination to blame the kid. Those not taking it seriously share two things in common: not truly understanding reasonable doubt and not accepting the gravity of the situation—a person's life is at stake! And to think there is someone there who practically refuses to listen to the opposite side just to attempt to catch a baseball game.
                   </p>
 
@@ -463,17 +611,15 @@
                   <p>
                     I liked the simplicity of the movie: a single set (minus the courtroom itself and outside the building), the use of 12 main actors, and no gimmicks, only dialogue and raw emotion. Reminds me a bit of <i>Reservoir Dogs</i>. The acting is superb: I hated the Juror 3 and appreciated the jurors who changed their mind and stood up for what they thought was right.
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>The Batman</td>
-            <td class="date">17 Mar 2022</td>
-            <td class="rating">4.0</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="The Batman"
+           data-rating="4.0"
+           data-date="2022-03-17"
+           data-date-display="17 Mar 2022"
+           data-cover="media/filmposters/the-batman.jpg">
+<p>
                     Grunge afffffff. So grunge that Nirvana's <i>Something In The Way</i> was practically the theme song. So grunge that Robert Pattinson wore makeup around his eyes and rarely bothered to clean it up.
                   </p>
 
@@ -520,17 +666,15 @@
                   <p>
                     The movie ends with Riddler meeting the Joker in Arkham Asylum, a standard ending for movies teasing a sequel.
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Margin Call</td>
-            <td class="date">09 Mar 2022</td>
-            <td class="rating">3.5</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="Margin Call"
+           data-rating="3.5"
+           data-date="2022-03-09"
+           data-date-display="09 Mar 2022"
+           data-cover="media/filmposters/margin-call.jpg">
+<p>
                     Hate to do this, but Meek Mill said it right:
                   </p>
 
@@ -557,17 +701,15 @@
                   <p>
                     I have a theory that most people really enjoy movies in which they are cast into the worlds of powerful and or smart people, much like the characters here. This one is no exception, although the superb acting does help!
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>The Terminator</td>
-            <td class="date">05 Feb 2022</td>
-            <td class="rating">4.0</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="The Terminator"
+           data-rating="4.0"
+           data-date="2022-02-05"
+           data-date-display="05 Feb 2022"
+           data-cover="media/filmposters/the-terminator.jpg">
+<p>
                     This movie is not sci-fi action, it's sci-fi horror. Just watch the <a href="https://www.youtube.com/watch?v=VrsspTTpApI">police station scene</a>. 30+ heavily-armed policemen can't stop this guy. He rolls in and demolishes everything in his path, taking a whole hell of a lot of bullets in the process. And yet he's unfazed. Imagine that. The few people you feel truly safe around are getting killed without mercy or second thought. <i>And</i> this guy is after <i>you</i>! Hell naw. This isn't even counting the 10+ shotgun rounds Sarah witnessed him take at the nightclub. Truly an unstoppable force who has plenty of resources at his disposal: weapons, a durable body, ability to change voices.
                   </p>
 
@@ -578,17 +720,15 @@
                   <p>
                     I like the idea of Reese being John's father and think the idea is original, but have to bump my rating of T3 down a bit after they reused it with John and Kate. Do something novel, damn it!
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Terminator 3: Rise of the Machines</td>
-            <td class="date">04 Feb 2022</td>
-            <td class="rating">2.5</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="Terminator 3: Rise of the Machines"
+           data-rating="2.5"
+           data-date="2022-02-04"
+           data-date-display="04 Feb 2022"
+           data-cover="media/filmposters/terminator-3.jpg">
+<p>
                     T2 killed it. T3 didn't. Simple as that. (We'll see how T1 compares.)
                   </p>
 
@@ -607,17 +747,15 @@
                   <p>
                     I really like the fact that General Brewster sent John and Kate to Crystal Peak not to destroy Skynet, but to save themselves and eventually lead the Resistance. I definitely thought that's where the computers were and wondered why there was no one guarding it (although that remains a mystery...). In the end, John ended up leading the Resistance.
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Terminator 2: Judgment Day</td>
-            <td class="date">03 Feb 2022</td>
-            <td class="rating">3.5</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="Terminator 2: Judgment Day"
+           data-rating="3.5"
+           data-date="2022-02-03"
+           data-date-display="03 Feb 2022"
+           data-cover="media/filmposters/terminator-2.jpg">
+<p>
                     Released in 1991, the special effects in T2 were insanely impressive. Now, I wasn't even alive at the time, so I'm not sure what the average SFX quality was, but knowing what late 90s movies were like, I doubt they were <i>that</i> good. Bravo to the team that created that. See more about T2's SFX impressiveness <a href="https://web.archive.org/web/20120102065408/http://www.filmsite.org/visualeffects14.html">here</a>. The T-1000 animation also won the Academy Award for Visual Effects.
                   </p>
 
@@ -628,17 +766,15 @@
                   <p>
                     Acting on all fronts was good. Arnold killed it with his seriousness and demeanor, followed by him trying to learn normal behaviors, like the hilarious high-five scene in the desert. John did a good job of acting a punk kid who has a slightly soft side towards his mother. Sarah played the role of crazy woman well in every scene she was crazy in.
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Ozark: Season 4</td>
-            <td class="date">24 Jan 2022</td>
-            <td class="rating">4.0</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="Ozark: Season 4"
+           data-rating="4.0"
+           data-date="2022-01-24"
+           data-date-display="24 Jan 2022"
+           data-cover="media/filmposters/ozark.jpg">
+<p>
                     The crew nails it again. Most shows that carry on for multiple seasons seem to regress down a path of desperation and <a href="https://en.wikipedia.org/wiki/Jumping_the_shark">jumping the shark</a>. Ozark refuses to do this and sticks to what they're good at.
                   </p>
 
@@ -669,17 +805,15 @@
                   <p>
                     Not much else to say. The various subplots all work together and interweave seamlessly while still being independent. Great job!
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Resident Evil: Welcome to Raccoon City</td>
-            <td class="date">19 Dec 2021</td>
-            <td class="rating">2.0</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="Resident Evil: Welcome to Raccoon City"
+           data-rating="2.0"
+           data-date="2021-12-19"
+           data-date-display="19 Dec 2021"
+           data-cover="media/filmposters/resident-evil.jpg">
+<p>
                     The water must have made the main character stupid as well. Do people never learn in horror movies?! A few prime examples:
                   </p>
 
@@ -712,17 +846,15 @@
                   <p>
                     Overall, a pretty bad movie with money-grab vibes. Like the other Resident Evils after Apocalypse, this probably shouldn't have been created.
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Escape Plan</td>
-            <td class="date">20 Nov 2021</td>
-            <td class="rating">1.5</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="Escape Plan"
+           data-rating="1.5"
+           data-date="2021-11-20"
+           data-date-display="20 Nov 2021"
+           data-cover="media/filmposters/escape-plan.jpg">
+<p>
                     Exactly what I expected. Cool fight scenes, cheesy quotes, and some amount of unrealistic moves that help Stallone escape.
                   </p>
 
@@ -737,17 +869,15 @@
                   <p>
                     I was also surprised how Breslin literally killed two guys in the beginning scene to get to the SHU, and then was let off scot-free. Seriously?!
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Squid Game</td>
-            <td class="date">15 Oct 2021</td>
-            <td class="rating">4.0</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="Squid Game"
+           data-rating="4.0"
+           data-date="2021-10-15"
+           data-date-display="15 Oct 2021"
+           data-cover="media/filmposters/squid-game.jpg">
+<p>
                     The mood is set early into the first episode. Gi-hun's sad, lonely life is explained through his gambling, desperation, and mother's shaming. Pity and disgust are simultaneously felt, one side saying he's sick, he's not right in the head, and the other saying he's failed his own mother and daughter, he's a weak man. A too-good-to-be-true opportunity presents itself, setting the stage for the games to begin.
                   </p>
 
@@ -762,17 +892,15 @@
                   <p>
                     The final twist is unexpected. I initially thought it a ploy by the organization to get Gi-hun into a private room, then thought it was a lookalike Il-nam, then came to terms that it was actually him. I took his enthusiasm throughout the games as either senility—a lack of awareness of the true stakes—or apathy stemming from his inoperable brain tumor.
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>No Time to Die</td>
-            <td class="date">09 Oct 2021</td>
-            <td class="rating">3.0</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                    <p>
+  </article>
+
+  <article class="film"
+           data-title="No Time to Die"
+           data-rating="3.0"
+           data-date="2021-10-09"
+           data-date-display="09 Oct 2021"
+           data-cover="media/filmposters/no-time-to-die.jpg">
+<p>
                       What a disappointing end to such an awesome era of Bond films. There are only a handful of things that can ruin an action movie for me: cheesy quotes and <a href="https://www.urbandictionary.com/define.php?term=plot%20armor">plot armor</a>. Throughout the film Bond becomes an absolute softie towards Madeleine Swann, beginning with a romantic trip to Italy and culminating in him watching an incoming missile and saying "I have always loved you". Seriously? The plot armor is equally as bad: while fighting on the island, he is standing in a wide-open space as five goons are unloading full-auto rifles at him. Miraculously, he manages to <i>walk</i> (not run!) to cover without being hit and proceeds to kill all of them without effort. While not getting hit is fine under some circumstances, no cover plus five machine guns is not one of them.
                     </p>
 
@@ -783,17 +911,15 @@
                     <p>
                       The plot was confusing. It seems Safin's only beef with James was because of his relationship with Swann, but otherwise there's no real reason behind wanting to take over the world. Paloma, the Cuban spy who helps Bond kick ass in Cuba, is set up to be a contributing character, but ends up being only featured in the Cuba scene and nothing else.
                     </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Mare of Easttown</td>
-            <td class="date">06 Jun 2021</td>
-            <td class="rating">2.0</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="Mare of Easttown"
+           data-rating="2.0"
+           data-date="2021-06-06"
+           data-date-display="06 Jun 2021"
+           data-cover="media/filmposters/mare-of-easttown.jpg">
+<p>
                     Yet another detective show: a protagonist who is struggling in their personal life while having to fulfill their police duties. At this point, a plot twist isn't a plot twist. It's an expected element that's predictable. There's marital issues, jealousy, friendship conflicts, and everything that goes into a typical detective show. Admittedly, there were two plot twists, which added some amount of surprise.
                   </p>
 
@@ -804,17 +930,15 @@
                   <p>
                     One idea I have for detective shows is to hide both the amount of episodes and runtime of each episode, unless the viewer specifically navigates to see those. This would prevent viewers from saying "oh, this isn't the guy" when there are two episodes left and they seemingly bagged their culprit.
                   </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Memento</td>
-            <td class="date">18 Dec 2020</td>
-            <td class="rating">3.5</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="Memento"
+           data-rating="3.5"
+           data-date="2020-12-18"
+           data-date-display="18 Dec 2020"
+           data-cover="media/filmposters/memento.jpg">
+<p>
                     Another Nolan-esque film with a distinct style of storytelling and an unheard of plot. Two storylines are presented: one going forwards in time, the other backwards. They eventually converge at the end of the film, but in the middle of the story.
                   </p>
 
@@ -835,17 +959,15 @@
                       <a href="https://www.goodreads.com/book/show/46945.Requiem_for_a_Dream">Requiem for a Dream</a> (<a href="https://www.goodreads.com/review/show/3201915060">review</a>)
                     </li>
                   </ul>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Tenet</td>
-            <td class="date">15 Dec 2020</td>
-            <td class="rating">3.0</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="Tenet"
+           data-rating="3.0"
+           data-date="2020-12-15"
+           data-date-display="15 Dec 2020"
+           data-cover="media/filmposters/tenet.jpg">
+<p>
                     Nolan swings and hits again with a very, very novel concept: reversing time. Note this is not time-travel as most people understand (read: think about). Rather, from t=X where X > 0, time starts to go backwards towards 0, while the person who is reversed (or inverted, as they call it), is experiencing his own thoughts normally, but the world "in reverse". It takes some thinking and getting used to, evident by all of my friends who watched it being incredibly confused during and directly after the movie. Similar novelty to Inception—something that hasn't been made before, thought of before. The layers of inversion add complexity to it in the same sense the dream within a dream ... within a dream does.
                   </p>
 
@@ -868,17 +990,15 @@
                   <blockquote>
                     Here is my full breakdown of the opera and train-yard scenes in TENET: From The Well-Dressed Man’s perspective, he had been tasked with obtaining a “package” from a Ukrainian high official, and his mission is to then hand it off to the CIA. We join him as he is seen celebrating with the high official by attending an orchestra performance at the Kiev Opera House on the 14th. It can be assumed that the exchange had happened at the opera house, for the package is in the WDM’s spot at the coat check. It should also be noted that the high official had been in communication with the WDM (for an unknown amount of time) not knowing he is an undercover CIA agent. From the CIA’s perspective, they have gained intel that there is going to be a terrorist attack on the Kiev Opera House on the 14th. Because this is the same day their contact, the WDM, is making the exchange, they think either the terrorists may be working independently and found out about the exchange (because they may have their own interest in the WDM and the package), or the Ukrainian high official may be behind the attack in some way (perhaps he uncovered that the WDM is indeed an undercover CIA agent). The CIA is basically then operating on “do not trust anybody” because to them, the high official, terrorists, and even the Ukrainian SWAT (who could be following orders from the high official) could all possibly be playing an intricate role in this attack. From The Protagonist’s point of view, he is going in thinking it’s a standard CIA mission. He knows that he and a group of special ops are tasked with going to the opera house and meeting up with a group of private Ukrainians to survey the building. Their mission is to save and escort The Well-Dressed Man, and then bring him and the package back to base. Remember, at this point they are basically told to suspect and trust no-one inside the opera house besides the WDM, which makes sense. The Ukrainian SWAT is called in when the terrorists start the attack, and they think it is indeed just a terrorist attack that they need to stop. With this, it can be assumed that the Ukrainian SWAT is NOT in on the attack or following any orders from the high official. From Sator’s POV, he has been informed, (how is unknown) that the Plutonium piece of the Algorithm is in the hands of The Well-Dressed Man, and this man will be attending a performance at the Kiev Opera House on the 14th. Through posterity or through the same intel the CIA received, Sator knows that there will be a terrorist attack at the opera house on the 14th. This sets Sator’s plan in motion. Sator uses a group of his men to disguise themselves as Ukrainian soldiers. These men are then split into two groups. The first group is tasked with capturing the WDM and the Plutonium. The second group is tasked with planting bombs around the auditorium that will blow up the cheap seats, thus covering their tracks and destroying evidence linking their group to any part in the attack. The terrorists true affiliation is the most vague. To me, I don’t really think we the audience are supposed to know who they are officially with. It’s very possible they could be working for Sator, or they could be working for the Ukrainian high official, or they could just be independent terrorists who also happen to be after the WDM (remember, their attack on the opera house the same day of the WDM’s exchange cannot be a coincidence). Each theory is just as equally possible, believe me I’ve broken down each one, so it’s best to just leave them as a vague group of bad guys after the WDM and the Plutonium. Now let’s get to the attack itself: the terrorists storm the auditorium and immediately take the audience hostage. The Ukrainian SWAT is notified, and that gives the CIA team the signal that it’s time to move in. It’s also important to note that TP seems to be suspicious of the Ukrainians in the van. Remember, he’s taking “trust nobody” very seriously, even outside the opera house. The CIA team breaches and blends in with the Ukrainian SWAT with the intent of reaching The Well-Dressed Man, protecting him, securing the package, and bringing him and the package back to the CIA. TP reaches the WDM and immediately takes out the high official. TP and the WDM exchange code words, now knowing they are both CIA. TP states, “You’ve been made, this siege is a blind for them to vanish you.” Remember, in TP’s eyes he is following CIA intel and suspects the attack was orchestrated against the WDM (regardless of which parties are actually involved). By then saying “But I established contact,” the WDM clearly expresses his confidence that he was in with the high official so there’s no way his cover could have been blown, that there’s no way anyone else found out about the exchange, and that even the exchange itself had already took place smoothly. TP then states, “bring you in or kill you, I have two minutes, make up your mind.” TP says this because he suspects the SWAT are coming to kill the WDM. Because he is disguised as SWAT, TP would have no choice but to kill the WDM to prevent his cover from being blown. WDM agrees, and they then swing down to the auditorium where TP notices SWAT members planting bombs (remember, these are actually Sator’s men, as were the group of SWAT who were gunning down terrorists in the hallway and making their way to the WDM). His suspicions with the Ukrainians are confirmed, and he also decides not to trust the private Ukrainians in the van anymore. Because of this, TP has WDM swap clothes with one of the other CIA guys (who in TENET’s screenplay is nicknamed Target). This is done so the WDM can safely escape with the rest of the CIA team, through the sewers, with the package, and make it back to base. TP and Target can then collect the bombs, save the audience, and make it back to the van to confront the Ukrainians (remember, TP and the CIA team know the Ukrainians in the van are expecting a passenger). They do most of this successfully, but there is one problem... The Ukranium guys in the van are also secretly working with Sator, and they were just pretending to be private Ukrainian ops helping the CIA survey the opera house. These Sator mercenaries knew that the CIA team were going to go in and try to rescue the WDM and secure the Plutonium, and if they did, they would come back to the van with the WDM and Plutonium as discussed. The mercenaries thought that in this case, they would then be able to kill the CIA team, and secure the Plutonium for Sator. Though, as mentioned earlier, TP noticed the SWAT traitors and switched the WDM with Target. When the two go back to the van, the mercenaries instantly realize Target is not the WDM, resulting in them getting attacked, leading to the train-yard sequence. Once you know the guys at the train-yard are Sator’s men, the rest of it becomes pretty clear. Sator’s men interrogate TP and Target to find out where the CIA team along with the “package” is, but TP ends up taking Target’s cyanide pill. Though, it turns out this pill is a fake (it actually acts as a sedative) that was given to Target by TENET, who had distributed these pills to large sums of operatives to test them for recruitment into TENET. When it comes to how the Plutonium ends up back in Ukraine’s hands, this is something that isn’t explained. Though, this is how I think it went down: So when Agent and the WDM swap clothes, Target and TP go back to the auditorium to collect the bombs and so on, while the WDM and the rest of the CIA team take the sewer tunnels to escape safely with the Plutonium. My take on it is that the remainder of Sator’s SWAT tracked down and followed the CIA team through the tunnels, leading to a shootout outside of the opera house. I think Sator’s men killed the entire CIA team, and just when they were about to recover the Plutonium, the real Ukrainian SWAT showed up due to the commotion. I think another shootout took place, but this time Sator’s men were able to escape but couldn’t take the Plutonium with them. This led to the Ukrainians recovering the Plutonium and transporting it to a long-term nuclear storage depot in Trieste for safe-keeping.
                   </blockquote>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>The Queen's Gambit</td>
-            <td class="date">01 Dec 2020</td>
-            <td class="rating">3.0</td>
-            <td class="review">
-                <span class="review-toggle" onclick="toggleReview(this)">Click to read review</span>
-                <div class="review-content">
-                  <p>
+  </article>
+
+  <article class="film"
+           data-title="The Queen&#x27;s Gambit"
+           data-rating="3.0"
+           data-date="2020-12-01"
+           data-date-display="01 Dec 2020"
+           data-cover="media/filmposters/the-queen-s-gambit.jpg">
+<p>
                     Taking place in the 1950s and 1960s, <i>The Queen's Gambit</i> follows the rise of Beth Harmon through the ranks of the chess world, beginning with matches against her orphanage's janitor in the basement and culminating in defeating the world champion Borgov in Moscow (during the Cold War, mind you!).
                   </p>
 
@@ -907,11 +1027,8 @@
                       <a href="https://www.goodreads.com/book/show/40034846-raise-a-genius">Raise a Genius</a> by László Polgár, father of three Hungarian grandmasters, all women. <a href="https://www.goodreads.com/review/show/3336639234">Review here</a>.
                     </li>
                   </ul>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
+  </article>
+</div>
 
 <hr>
 
@@ -920,78 +1037,138 @@
 
 
 <script>
-        let sortDirections = [true, true, true]; // true = ascending, false = descending
+(function () {
+  var grid = document.getElementById("film-grid");
+  var dataEl = document.getElementById("film-data");
+  var searchEl = document.getElementById("film-search");
+  var sortEl = document.getElementById("film-sort");
+  var statsEl = document.getElementById("film-stats");
 
-        function sortTable(columnIndex) {
-            const table = document.querySelector('table');
-            const tbody = table.getElementsByTagName('tbody')[0];
-            const rows = Array.from(tbody.getElementsByTagName('tr'));
-            
-            // Clear previous sort arrows
-            document.querySelectorAll('.sort-arrow').forEach(arrow => {
-                arrow.classList.remove('active');
-                arrow.textContent = '↕';
-            });
-            
-            const ascending = sortDirections[columnIndex];
-            
-            rows.sort((a, b) => {
-                let aVal = a.getElementsByTagName('td')[columnIndex].textContent.trim();
-                let bVal = b.getElementsByTagName('td')[columnIndex].textContent.trim();
-                
-                // Special handling for different column types
-                if (columnIndex === 1) { // Date column
-                    aVal = parseDateForSort(aVal);
-                    bVal = parseDateForSort(bVal);
-                } else if (columnIndex === 2) { // Rating column
-                    aVal = parseFloat(aVal) || -1; // Handle "-" as lowest rating
-                    bVal = parseFloat(bVal) || -1;
-                }
-                
-                if (aVal < bVal) return ascending ? -1 : 1;
-                if (aVal > bVal) return ascending ? 1 : -1;
-                return 0;
-            });
-            
-            // Reorder table rows
-            rows.forEach(row => tbody.appendChild(row));
-            
-            // Update sort arrow
-            const currentArrow = document.querySelectorAll('.sort-arrow')[columnIndex];
-            currentArrow.classList.add('active');
-            currentArrow.textContent = ascending ? '↑' : '↓';
-            
-            // Toggle direction for next click
-            sortDirections[columnIndex] = !ascending;
-        }
+  // read the hand-editable <article> blocks into structured data
+  function parseArticles(container) {
+    if (!container) return [];
+    return [].map.call(container.querySelectorAll("article.film"), function (a) {
+      var r = a.getAttribute("data-rating");
+      return {
+        title: a.getAttribute("data-title") || "",
+        author: a.getAttribute("data-author") || "",
+        rating: r ? parseFloat(r) : null,
+        date: a.getAttribute("data-date") || "",
+        dateDisplay: a.getAttribute("data-date-display") || "",
+        cover: a.getAttribute("data-cover") || "",
+        review: a.innerHTML.trim()
+      };
+    });
+  }
 
-        function parseDateForSort(dateStr) {
-            if (dateStr === '-') return new Date(0); // Earliest possible date for missing dates
-            
-            // Handle date ranges like "27 Nov - 01 Dec 2020"
-            if (dateStr.includes(' - ')) {
-                const parts = dateStr.split(' - ');
-                const startDate = parts[0].trim();
-                // Use the start date for sorting
-                return new Date(startDate + ' ' + dateStr.split(' ').pop());
-            }
-            
-            return new Date(dateStr);
-        }
+  var FILMS = parseArticles(dataEl);
 
-        function toggleReview(element) {
-            const reviewContent = element.nextElementSibling;
-            const isExpanded = reviewContent.classList.contains('expanded');
-            
-            if (isExpanded) {
-                reviewContent.classList.remove('expanded');
-                element.textContent = 'Click to read review';
-            } else {
-                reviewContent.classList.add('expanded');
-                element.textContent = 'Hide review';
-            }
-        }
-    </script>
+  function year(b) { return b.date ? b.date.slice(0, 4) : ""; }
 
+  function starsHTML(rating) {
+    if (rating == null) return '<span class="film-unrated">Unrated</span>';
+    var pct = Math.max(0, Math.min(100, rating / 5 * 100));
+    return '<span class="stars" title="' + rating + ' / 5">' +
+           '<span class="fill" style="width:' + pct + '%"></span></span>';
+  }
+
+  function makeCard(b, i) {
+    var card = document.createElement("button");
+    card.type = "button";
+    card.className = "film-card";
+    card.setAttribute("aria-label", b.title);
+
+    var fallback = '<div class="film-cover-fallback"><span class="t">' + b.title +
+      '</span><span class="a">' + b.author + '</span></div>';
+    var cover = '<div class="film-cover-wrap">' +
+      (b.cover ? '<img src="' + b.cover + '" alt="" loading="lazy" ' +
+        'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';">' +
+        '<div class="film-cover-fallback" style="display:none"><span class="t">' + b.title +
+        '</span><span class="a">' + b.author + '</span></div>'
+        : fallback) + '</div>';
+
+    card.innerHTML = cover +
+      '<div class="film-meta">' +
+        '<div class="film-title">' + b.title + '</div>' +
+        '<div class="film-author">' + b.author + '</div>' +
+        '<div class="film-rowline">' + starsHTML(b.rating) +
+          '<span class="film-year">' + (year(b) || "") + '</span></div>' +
+      '</div>';
+    card.addEventListener("click", function () { openModal(b); });
+    return card;
+  }
+
+  function render() {
+    var q = searchEl.value.trim().toLowerCase();
+    var sort = sortEl.value;
+    var list = FILMS.filter(function (b) {
+      return !q || (b.title + " " + b.author).toLowerCase().indexOf(q) !== -1;
+    });
+    list.sort(function (a, b) {
+      switch (sort) {
+        case "date-asc":   return (a.date || "9999").localeCompare(b.date || "9999");
+        case "rating-desc":return (b.rating || -1) - (a.rating || -1);
+        case "rating-asc": return (a.rating == null ? 99 : a.rating) - (b.rating == null ? 99 : b.rating);
+        case "title-asc":  return a.title.localeCompare(b.title);
+        default:           return (b.date || "").localeCompare(a.date || ""); // date-desc
+      }
+    });
+    grid.innerHTML = "";
+    list.forEach(function (b, i) { grid.appendChild(makeCard(b, i)); });
+    if (!list.length) grid.innerHTML = '<p style="color:#999">No matches.</p>';
+  }
+
+  function updateStats() {
+    var rated = FILMS.filter(function (b) { return b.rating != null; });
+    var avg = rated.length ? (rated.reduce(function (s, b) { return s + b.rating; }, 0) / rated.length) : 0;
+    var years = FILMS.map(year).filter(Boolean);
+    var latest = years.sort().slice(-1)[0];
+    var inLatest = years.filter(function (y) { return y === latest; }).length;
+    var parts = [FILMS.length + " films"];
+    if (rated.length) parts.push("avg ★ " + avg.toFixed(1));
+    if (latest) parts.push(inLatest + " watched in " + latest);
+    statsEl.textContent = parts.join(" · ");
+  }
+
+  // ---- modal ----
+  var modal = null;
+  function openModal(b) {
+    closeModal();
+    modal = document.createElement("div");
+    modal.className = "film-modal";
+    var coverImg = b.cover
+      ? '<img src="' + b.cover + '" alt="" onerror="this.remove()">' : '';
+    var review = b.review
+      ? '<div class="film-modal-review">' + b.review + '</div>'
+      : '<div class="film-modal-review empty">No review yet.</div>';
+    modal.innerHTML =
+      '<div class="film-modal-card" role="dialog" aria-modal="true">' +
+        '<button class="film-modal-close" type="button" aria-label="Close">×</button>' +
+        '<div class="film-modal-head">' + coverImg +
+          '<div><div class="film-modal-title">' + b.title + '</div>' +
+          '<div class="film-modal-author">' + b.author + '</div>' +
+          starsHTML(b.rating) +
+          (b.dateDisplay ? '<div class="film-modal-sub">Watched ' + b.dateDisplay + '</div>' : '') +
+          '</div>' +
+        '</div>' + review +
+      '</div>';
+    document.body.appendChild(modal);
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal || e.target.classList.contains("film-modal-close")) closeModal();
+    });
+  }
+  function closeModal() { if (modal) { modal.remove(); modal = null; } }
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
+
+  searchEl.addEventListener("input", render);
+  sortEl.addEventListener("change", render);
+
+  updateStats();
+  render();
+})();
+</script>
+
+
+<script src="../js/theme.js"></script>
 </body>
 </html>

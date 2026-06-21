@@ -3,6 +3,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <!-- Apply saved theme before first paint to avoid a flash. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Predicting Assassinations of AI Leaders - No Magic Pill</title>
   <link rel="stylesheet" type="text/css" href="../css/main.css">
@@ -313,5 +325,7 @@ https://www.theguardian.com/news/2022/jul/10/violence-guarantees-success-how-ube
 
 
 
+
+<script src="../js/theme.js"></script>
 </body>
 </html>

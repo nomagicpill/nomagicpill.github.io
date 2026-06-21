@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <!-- Apply saved theme before first paint to avoid a flash. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patience - No Magic Pill</title>
   <link rel="stylesheet" type="text/css" href="../css/main.css">
@@ -40,5 +52,7 @@
   To those out there trying to game the system by only doing HIIT-type training to prepare for a marathon, newflash: <a href="https://equipesolitaire.com/blogs/discourse/85824260-no-free-lunch">there's no such thing as a free lunch</a>.
 </p>
 
+
+<script src="../js/theme.js"></script>
 </body>
 </html>

@@ -8,6 +8,18 @@
   <link rel="stylesheet" type="text/css" href="css/main.css">
   <link rel="stylesheet" type="text/css" href="css/index.css">
   <link rel="icon" href="media/favicon.png">
+  <meta charset="utf-8">
+  <!-- Apply saved theme before first paint to avoid a flash. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-BRDHSW3GG3"></script>
   <script>
@@ -1040,5 +1052,6 @@
   </li>
 </ul>
 
+<script src="js/theme.js"></script>
 </body>
 </html>

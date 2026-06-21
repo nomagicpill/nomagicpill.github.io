@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <!-- Apply saved theme before first paint to avoid a flash. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Deprivation for Satisfaction - No Magic Pill</title>
   <link rel="stylesheet" type="text/css" href="../css/main.css">
@@ -215,5 +227,7 @@
 </ul>
 
 
+
+<script src="../js/theme.js"></script>
 </body>
 </html>
