@@ -229,6 +229,80 @@ p {
   }
 }
 
+/* Theme toggle: a PowerPoint-style transition picked at random by theme.js,
+   which tags <html> with [data-transition]. Only runs where the View
+   Transitions API is supported. The new theme is the animated layer; the
+   old one stays put underneath. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none; /* default: instant unless an effect below applies */
+  }
+
+  /* 1. Wipe: new theme sweeps in from top to bottom. */
+  [data-transition="wipe"]::view-transition-new(root) {
+    animation: theme-wipe 0.5s ease;
+  }
+  @keyframes theme-wipe {
+    from { clip-path: inset(0 0 100% 0); }
+    to   { clip-path: inset(0 0 0 0); }
+  }
+
+  /* 2. Circle / iris: new theme grows from the toggle's click point. */
+  [data-transition="circle"]::view-transition-new(root) {
+    animation: theme-circle 0.5s ease;
+  }
+  @keyframes theme-circle {
+    from { clip-path: circle(0 at var(--vt-x, 50%) var(--vt-y, 50%)); }
+    to   { clip-path: circle(150% at var(--vt-x, 50%) var(--vt-y, 50%)); }
+  }
+
+  /* 3. Split: new theme opens outward from the vertical center. */
+  [data-transition="split"]::view-transition-new(root) {
+    animation: theme-split 0.5s ease;
+  }
+  @keyframes theme-split {
+    from { clip-path: inset(0 50% 0 50%); }
+    to   { clip-path: inset(0 0 0 0); }
+  }
+
+  /* 4. Cover: new theme slides down over the old. */
+  [data-transition="cover"]::view-transition-new(root) {
+    animation: theme-cover 0.5s ease;
+  }
+  @keyframes theme-cover {
+    from { transform: translateY(-100%); }
+    to   { transform: translateY(0); }
+  }
+
+  /* 5. Dissolve: new theme fades in. */
+  [data-transition="dissolve"]::view-transition-new(root) {
+    animation: theme-dissolve 3.0s ease;
+  }
+  @keyframes theme-dissolve {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* 6. Corners: a disc blooms from each corner at once and they merge.
+     Each radial gradient is pinned to a corner; growing mask-size expands
+     all four discs together. */
+  [data-transition="corners"]::view-transition-new(root) {
+    mask-image:
+      radial-gradient(circle at top left, #000 70%, transparent 72%),
+      radial-gradient(circle at top right, #000 70%, transparent 72%),
+      radial-gradient(circle at bottom left, #000 70%, transparent 72%),
+      radial-gradient(circle at bottom right, #000 70%, transparent 72%);
+    mask-repeat: no-repeat;
+    mask-position: top left, top right, bottom left, bottom right;
+    animation: theme-corners 3.0s ease;
+  }
+  @keyframes theme-corners {
+    from { mask-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+    to   { mask-size: 220% 220%, 220% 220%, 220% 220%, 220% 220%; }
+  }
+}
+
 /* Remove margin from the last item in any list */
 li:last-child {
     margin-bottom: 0;
