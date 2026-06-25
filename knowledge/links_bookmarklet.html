@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add-Link Bookmarklet - No Magic Pill</title>
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="icon" href="../media/favicon.png">
+  <style>
+    .grab {
+      display: inline-block; padding: 8px 14px; border: 1px solid currentColor;
+      border-radius: 6px; font-weight: bold; text-decoration: none;
+    }
+    code { white-space: pre-wrap; word-break: break-all; }
+  </style>
+</head>
+
+<body>
+
+<h3 id="home"><a href="../index.html">Home</a></h3>
+
+<h1>Add-Link Bookmarklet</h1>
+
+<p>
+  A one-click capture tool for the <a href="links.html">Links</a> archive. On any
+  page you're reading, optionally select a sentence to keep as a quote, then click
+  the bookmarklet. It copies a ready-to-run command to your clipboard. Paste it in
+  your terminal, type your note when prompted, and the entry is spliced into the
+  current month of <code>links.html</code> for you.
+</p>
+
+<h2>Install</h2>
+
+<p>
+  Drag this to your bookmarks bar:
+  <!-- The bookmarklet builds a shell command for links.py and copies it.
+       It shell-escapes single quotes as '\'' so titles/quotes can't break out. -->
+  <a class="grab" href="javascript:(function(){var q=function(s){return %22'%22+String(s).replace(/'/g,%22'%5C%5C''%22)+%22'%22;};var sel=String(window.getSelection()).trim();var cmd=%22python3 /Users/EthanMorse/Documents/nomagicpill.github.io/knowledge/links.py %22+q(location.href)+%22 --title %22+q(document.title);if(sel){cmd+=%22 --quote %22+q(sel);}var done=function(){alert('Copied! Paste it in your terminal, then type your note.');};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(cmd).then(done,function(){window.prompt('Copy this command:',cmd);});}else{window.prompt('Copy this command:',cmd);}})();">+ Add to Links</a>
+</p>
+
+<h2>Use</h2>
+
+<ol>
+  <li>While reading, optionally highlight a sentence to keep as a quote (rendered in "quotation marks").</li>
+  <li>Click <strong>+ Add to Links</strong>. The command lands on your clipboard.</li>
+  <li>Paste it into your terminal and press Enter.</li>
+  <li>At the <code>Note:</code> prompt, type your thoughts (or leave blank for a bare link), then Enter.</li>
+</ol>
+
+<p>
+  The title is auto-filled from the page tab. To override it, edit the
+  <code>--title '...'</code> part before running.
+  Run <code>python3 knowledge/links.py -h</code> for all options.
+</p>
+
+<p>
+  <em>Note:</em> some browsers only allow clipboard writes from a click (this is one),
+  and a few block <code>javascript:</code> bookmarklets entirely. If nothing copies,
+  the bookmarklet falls back to a popup you can copy from by hand.
+</p>
+
+</body>
+</html>

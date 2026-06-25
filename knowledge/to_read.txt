@@ -1,0 +1,9 @@
+# Standing reading queue for to_kobo.py — one URL per line.
+# Blank lines and lines starting with '#' are ignored.
+# Anything after the URL on a line is treated as a note and dropped.
+# Run `python3 knowledge/to_kobo.py` (no args) to bundle these into an EPUB.
+
+https://www.openphilanthropy.org/blog/modeling-human-trajectory
+https://www.yalelawjournal.org/note/amazons-antitrust-paradox
+https://roadsandkingdoms.com/2016/the-dog-thief-killings/
+https://petersmagnusson.org/2009/09/15/why-are-there-5280-feet-in-a-mile/
