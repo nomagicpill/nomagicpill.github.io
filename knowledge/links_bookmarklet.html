@@ -35,7 +35,7 @@
   Drag this to your bookmarks bar:
   <!-- The bookmarklet builds a shell command for links.py and copies it.
        It shell-escapes single quotes as '\'' so titles/quotes can't break out. -->
-  <a class="grab" href="javascript:(function(){var q=function(s){return %22'%22+String(s).replace(/'/g,%22'%5C%5C''%22)+%22'%22;};var sel=String(window.getSelection()).trim();var cmd=%22python3 /Users/EthanMorse/Documents/nomagicpill.github.io/knowledge/links.py %22+q(location.href)+%22 --title %22+q(document.title);if(sel){cmd+=%22 --quote %22+q(sel);}var done=function(){alert('Copied! Paste it in your terminal, then type your note.');};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(cmd).then(done,function(){window.prompt('Copy this command:',cmd);});}else{window.prompt('Copy this command:',cmd);}})();">+ Add to Links</a>
+  <a class="grab" href="javascript:(function(){var q=function(s){return %22'%22+String(s).replace(/'/g,%22'%5C%5C''%22)+%22'%22;};var sel=String(window.getSelection()).trim();var cmd=%22python3 ~/Documents/nomagicpill.github.io/knowledge/links.py %22+q(location.href)+%22 --title %22+q(document.title);if(sel){cmd+=%22 --quote %22+q(sel);}var done=function(){alert('Copied! Paste it in your terminal, then type your note.');};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(cmd).then(done,function(){window.prompt('Copy this command:',cmd);});}else{window.prompt('Copy this command:',cmd);}})();">+ Add to Links</a>
 </p>
 
 <h2>Use</h2>

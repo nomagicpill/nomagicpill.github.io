@@ -1,26 +1,27 @@
 #!/usr/bin/env python3
-"""Bundle a batch of article URLs into one dated EPUB for the Kobo.
+"""Bundle a batch of article URLs into one EPUB for the Kobo.
 
-A thin wrapper around `percollate epub` that gathers URLs from the command line,
-a file, or your standing reading list, de-duplicates them, and writes a single
-table-of-contents'd EPUB you can sideload and read (and annotate in KOReader).
+Gathers URLs from the command line, a file, or your standing reading list, then
+runs `percollate` once to bundle them all into a single table-of-contents'd EPUB
+you can sideload and read (and annotate in KOReader).
+
+percollate is told to process the URLs sequentially (`--wait`) rather than
+launching several headless Chromium instances at once, which is flaky on this
+machine; the cover step (`--no-cover`) is skipped for the same reason.
 
 Examples
 --------
-  # a few links, straight into one book on the Desktop
+  # a few links -> one EPUB in ~/Documents/personal/books/articles
   python3 knowledge/to_kobo.py "https://a.com/x" "https://b.com/y"
 
   # build from a reading list you've been adding to all day
-  python3 knowledge/to_kobo.py --from ~/reading.txt
+  python3 knowledge/to_kobo.py --from ~/reading.txt --open
 
   # no args: reads the standing list at knowledge/to_read.txt (if it exists)
   python3 knowledge/to_kobo.py
 
   # pipe URLs in (e.g. from your clipboard)
   pbpaste | python3 knowledge/to_kobo.py --from -
-
-  # name the book and reveal it in Finder when done
-  python3 knowledge/to_kobo.py --from ~/reading.txt --title "Tonight" --open
 
 Reading-list format
 -------------------
@@ -32,9 +33,14 @@ Reading-list format
 
 Notes
 -----
-  • Needs `percollate` on your PATH (npm install -g percollate).
-  • Default output is ~/Desktop/kobo-YYYY-MM-DD.epub; a counter is appended if
-    that name is taken, so repeat runs in a day won't clobber each other.
+  • Needs `percollate` on your PATH (npm install -g percollate) and a
+    version-matched Chromium under ~/.cache/percollate-chromium (this script
+    prints the one-time download command if it's missing).
+  • Output is ~/Documents/personal/books/articles/kobo-YYYY-MM-DD.epub by default
+    (--output to change, --title to set the book title); a counter is appended if
+    the name is taken. The folder is created if it doesn't exist.
+  • All URLs go into one EPUB, so a single broken link fails the batch — comment
+    it out in the list and rerun.
   • Only the Python standard library is used.
 """
 
@@ -48,22 +54,15 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_LIST = os.path.join(HERE, "to_read.txt")
 
-# percollate renders the EPUB with headless Chromium via puppeteer. Rather than
-# download a second copy, point it at a browser you already have.
-CHROME_CANDIDATES = [
-    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
-    "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
-    "/Applications/Chromium.app/Contents/MacOS/Chromium",
-]
-
-
-def find_chrome():
-    """Return a usable Chrome-family browser path, or None."""
-    for path in CHROME_CANDIDATES:
-        if os.access(path, os.X_OK):
-            return path
-    return None
+# percollate ships puppeteer 19, which can only drive an old Chromium — a modern
+# system Chrome crashes its (removed) old headless mode mid-render, and its own
+# auto-downloader is broken on Node 26. So we keep a version-matched Chromium
+# under ~/.cache and point puppeteer straight at it. (x64 build, rev 1108766, to
+# match the x64 Node from Intel Homebrew running under Rosetta.)
+MATCHED_CHROMIUM = os.path.expanduser(
+    "~/.cache/percollate-chromium/chrome-mac/Chromium.app/Contents/MacOS/Chromium")
+CHROMIUM_URL = ("https://storage.googleapis.com/chromium-browser-snapshots/"
+                "Mac/1108766/chrome-mac.zip")
 
 
 def find_percollate():
@@ -76,6 +75,23 @@ def find_percollate():
                  "  npm install -g percollate\n"
                  "and make sure its bin dir is on your PATH.")
     return p
+
+
+def chromium_env():
+    """Return an env dict pointing puppeteer at the matched Chromium, or exit."""
+    env = os.environ.copy()
+    if "PUPPETEER_EXECUTABLE_PATH" in env:
+        return env
+    if os.access(MATCHED_CHROMIUM, os.X_OK):
+        env["PUPPETEER_EXECUTABLE_PATH"] = MATCHED_CHROMIUM
+        return env
+    sys.exit(
+        "Can't find the Chromium percollate needs at:\n"
+        f"  {MATCHED_CHROMIUM}\n\n"
+        "Download it once with:\n"
+        "  mkdir -p ~/.cache/percollate-chromium\n"
+        f"  curl -fL -o /tmp/c.zip {CHROMIUM_URL}\n"
+        "  unzip -q -o /tmp/c.zip -d ~/.cache/percollate-chromium && rm /tmp/c.zip")
 
 
 def read_list(path):
@@ -112,12 +128,15 @@ def gather_urls(args):
     return deduped
 
 
-def default_output():
-    """~/Desktop/kobo-YYYY-MM-DD.epub, bumping a counter if it's taken."""
-    base = os.path.expanduser(
-        f"~/Desktop/kobo-{datetime.date.today():%Y-%m-%d}")
-    out = base + ".epub"
-    n = 2
+OUTPUT_DIR = os.path.expanduser("~/Documents/personal/books/articles")
+
+
+def pick_output(args):
+    """Return the output .epub path, bumping a counter if it's taken."""
+    if args.output:
+        return os.path.expanduser(args.output)
+    base = os.path.join(OUTPUT_DIR, f"kobo-{datetime.date.today():%Y-%m-%d}")
+    out, n = base + ".epub", 2
     while os.path.exists(out):
         out = f"{base}-{n}.epub"
         n += 1
@@ -126,7 +145,7 @@ def default_output():
 
 def main():
     ap = argparse.ArgumentParser(
-        description="Bundle article URLs into one dated EPUB for the Kobo.",
+        description="Bundle article URLs into one EPUB for the Kobo.",
         formatter_class=argparse.RawDescriptionHelpFormatter, epilog=__doc__)
     ap.add_argument("url", nargs="*", help="Article URLs to include.")
     ap.add_argument("-f", "--from", dest="from_", metavar="FILE",
@@ -144,33 +163,27 @@ def main():
         sys.exit("No URLs to bundle. Pass some URLs, --from FILE, "
                  f"or add lines to {os.path.relpath(DEFAULT_LIST)}.")
 
-    output = os.path.expanduser(args.output) if args.output else default_output()
-    cmd = [find_percollate(), "epub", "--output", output]
-    if args.title:
-        cmd += ["--title", args.title]
-    cmd += urls
-
-    # Let percollate borrow an installed browser instead of downloading Chromium.
-    env = os.environ.copy()
-    if "PUPPETEER_EXECUTABLE_PATH" not in env:
-        chrome = find_chrome()
-        if chrome:
-            env["PUPPETEER_EXECUTABLE_PATH"] = chrome
-            print(f"Using browser: {chrome}")
+    output = pick_output(args)
+    title = args.title or f"Reading {datetime.date.today():%Y-%m-%d}"
+    percollate = find_percollate()
+    # --wait: process sequentially (one Chromium at a time); --no-cover: skip the
+    # screenshot-based cover, which crashes the old Chromium under Rosetta.
+    cmd = [percollate, "epub", "--wait", "1", "--no-cover",
+           "--title", title, "--output", output] + urls
 
     print(f"Bundling {len(urls)} article(s) -> {output}")
     if args.dry_run:
         print("  " + " ".join(cmd))
         return
 
+    out_dir = os.path.dirname(output)
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
     try:
-        subprocess.run(cmd, check=True, env=env)
+        subprocess.run(cmd, check=True, env=chromium_env())
     except subprocess.CalledProcessError as exc:
-        hint = ("If one URL is the culprit, drop it and retry."
-                if "PUPPETEER_EXECUTABLE_PATH" in env else
-                "No browser found for rendering; install Chrome, or run:\n"
-                "  npm install -g --allow-scripts=puppeteer percollate")
-        sys.exit(f"\npercollate failed (exit {exc.returncode}). {hint}")
+        sys.exit(f"\npercollate failed (exit {exc.returncode}). "
+                 "If one URL is the culprit, comment it out in the list and retry.")
 
     print(f"\nDone -> {output}")
     print("  Sideload it to the Kobo over USB and open it in KOReader.")
