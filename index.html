@@ -48,6 +48,9 @@
     <p>
       Subscribe on <a href="https://nomagicpill.substack.com/">Substack</a> on the right for new posts.
     </p>
+    <p>
+      <a href="#" id="random-post">Click here for a random post.</a>
+    </p>
   </div>
   <div style="overflow: hidden; height: 65px;">
   <iframe src="https://nomagicpill.substack.com/embed" width="325" style="background:white; display: block; margin-top: -10px;" frameborder="0" scrolling="no"></iframe>
@@ -1050,5 +1053,32 @@
 </ul>
 
 <script src="js/theme.js"></script>
+<script>
+  // Send readers to a random post, drawn from the internal post links below.
+  (function () {
+    var trigger = document.getElementById('random-post');
+    if (!trigger) return;
+
+    // Collect unique internal .html links, skipping nav/about pages.
+    var seen = {};
+    var posts = [];
+    var links = document.querySelectorAll('a[href$=".html"]');
+    for (var i = 0; i < links.length; i++) {
+      var href = links[i].getAttribute('href');
+      if (!href || /^https?:/i.test(href)) continue;          // external
+      if (/^(index|indexold)\.html$/i.test(href)) continue;   // this page
+      if (/^about\//i.test(href)) continue;                   // about section
+      if (seen[href]) continue;
+      seen[href] = true;
+      posts.push(href);
+    }
+
+    trigger.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (!posts.length) return;
+      window.location.href = posts[Math.floor(Math.random() * posts.length)];
+    });
+  })();
+</script>
 </body>
 </html>

@@ -259,8 +259,8 @@
   ===========================  HOW TO ADD A FILM  ===========================
   Add an <article class="film"> below. Paste your review (normal HTML —
   <p>, <i>, <a>, blockquotes, etc.) between the tags; leave it empty if you
-  have no review yet. data-date is ISO (YYYY-MM-DD) so sorting stays correct;
-  data-date-display is the human form shown in the modal.
+  have no review yet. data-date is ISO (YYYY-MM-DD); it is used both for
+  sorting and as the date shown in the modal.
 
   For a poster, drop a 2:3 JPG at knowledge/media/film/<slug>.jpg
   (slug = lowercase title before any colon, non-alphanumerics → hyphens,
@@ -270,7 +270,6 @@
            data-title=""
            data-rating=""
            data-date="yyyy-mm-dd"
-           data-date-display="dd mon yyy"
            data-cover="media/film/xx.jpg">
            <p>
              
@@ -280,11 +279,21 @@
   ===========================================================================
 -->
 <div id="film-data" hidden>
+
+  <article class="film"
+           data-title="The Drama (2026)"
+           data-rating="3.0"
+           data-date="2026-06-26"
+           data-cover="media/film/the-drama.jpg">
+           <p>
+             
+           </p>
+ </article>
+
   <article class="film"
            data-title="Pitch Black (2000)"
            data-rating="4.2"
            data-date="2026-06-24"
-           data-date-display="24 June 2026"
            data-cover="media/film/pitchblack.jpg">
            <p>
             I first watched this movie when I was in elementary school, probably 9 or 10. That was [redacted] years ago and this shit still slaps. Me and my sibling occasionally make references about dislocating our shoulders to get out of tight spots. We try to sneak up on each other like Jack and Riddick. And while this movie probably isn't good enough to warrant that behavior in most people, it did for me, which is all that matters *insert happy crying emoji here*.
@@ -301,7 +310,6 @@
            data-title="The Day of the Jackal Season 1"
            data-rating="4.5"
            data-date="2026-05-31"
-           data-date-display="31 May 2026"
            data-cover="media/film/the-day-of-the-jackal-season-1.jpg">
                     <p>
                       DotJ is more of a show about troubleshooting (as Charles would put it!) and problem-solving than the shadowy world of for-hire assassins and the politics and messy relationships surrounding it. (I won't speak on the feasibility of a lot of the kills and methods, but as far as myself and the internet can tell, they're probably not super accurate.) Time and time again Charles is forced to solve problems, whether they are planned (how do I get away from this place after killing this guy?) or on-the-fly (how do I get away from this place now that I've killed this guy and people will be here in 20 seconds?). He consistently comes up with ingenious (albeit potentially impossible, or at least incredibly improbable) ways to accomplish his missions. A few examples (again, looking past feasibility for argument's sake):
@@ -343,7 +351,6 @@
            data-title="Columbus (2017)"
            data-rating="4.0"
            data-date="2026-02-04"
-           data-date-display="4 Feb 2026"
            data-cover="media/film/columbus-2017.jpg">
                   <p>
                     This movie has the most still shots I can think of in living memory. It may even have the least number of unique shots—each individual shot is quite long, and when it's not still, it barely pans. The only crazy shot you get is when Casey is dancing like a madman in front of the car headlights. The stillness is representative of Columbus as a city: sleepy, nothing going on; her dancing is representative of her trying to break out of her shell, but failing to do so quickly and going back inside soon after.
@@ -360,7 +367,6 @@
            data-title="Sound of Metal (2020)"
            data-rating="4.5"
            data-date="2025-08-18"
-           data-date-display="18 Aug 2025"
            data-cover="media/film/sound-of-metal-2020.jpg">
                     <p>
                       Masterfully written and sounded (as in sounds). Ruben goes deaf, then crazy soon after. The audience goes with him, from a happy life of disgusting smoothies in the morning, fun road trips with the love of his life in the afternoon, and loud shows full of fans in the evening to one of silence and isolation. He can't talk to his girl; his musical rhythm is thrown off since he can't hear anything; he can't even talk to his AA sponsor. His life is thrown off track in a literal moment when he's standing in front of the merch table. He had a plan, he had a future. They were up-and-coming, on their way to the big leagues before this happened.
@@ -399,7 +405,6 @@
            data-title="Bone Tomahawk (2015)"
            data-rating="3.5"
            data-date="2025-01-21"
-           data-date-display="21 Jan 2025"
            data-cover="media/film/bone-tomahawk-2015.jpg">
                   <p>
                     Bone Tomahawk isn't (just) a western horror flick. It's a story of the times, of love, of heroism and bravery, of accountability, of war, of hatred, of boredom and misery. It's masterfully written and shot.
@@ -570,7 +575,6 @@
            data-title="Oppenheimer (2023)"
            data-rating="4.0"
            data-date="2023-07-25"
-           data-date-display="25 Jul 2023"
            data-cover="media/film/oppenheimer-2023.jpg">
                   <p>
                     The emotion portrayed by all the actors, not just Murphy, was phenomenal. When Murphy made his speech after the "successful" use of the bombs in Japan, you can see him swirling around in his head, dizzy from the events that have unfolded and caused inner moral turmoil. No music is needed, no explanation. Just his face and the surroundings slightly blurred.
@@ -589,7 +593,6 @@
            data-title="Top Gun: Maverick (2022)"
            data-rating="3.0"
            data-date="2022-06-24"
-           data-date-display="24 Jun 2022"
            data-cover="media/film/top-gun.jpg">
                   <p>
                     The flight scenes were fantastic in this movie. All the actors were seated behind real-life military pilots during the scenes and being subjected to real-life forces during the flying, hence the real-looking effects. Tom Cruise has always been adamant about doing his own stunts and making movies look and feel as real as possible. I love this mindset and think more filmmakers—actors and directors alike—should pursue and abide by this. It adds significant credibility to the movie and enhances the realness.
@@ -612,7 +615,6 @@
            data-title="American Psycho"
            data-rating="2.0"
            data-date="2022-04-23"
-           data-date-display="23 Apr 2022"
            data-cover="media/film/american-psycho.jpg">
                   <p>
                     Bale puts on quite a performance as a sociopath! The mannerisms, the speech, the thoughts. Everything works well together. Outside of it, I didn't find it <i>that</i> entertaining.
@@ -623,7 +625,6 @@
            data-title="12 Angry Men"
            data-rating="3.5"
            data-date="2022-04-19"
-           data-date-display="19 Apr 2022"
            data-cover="media/film/12-angry-men.jpg">
                   <p>
                     A key part of this movie is seeing how differently everyone takes the case: some people are serious, others treat it frivolously, others have an strong inclination to blame the kid. Those not taking it seriously share two things in common: not truly understanding reasonable doubt and not accepting the gravity of the situation—a person's life is at stake! And to think there is someone there who practically refuses to listen to the opposite side just to attempt to catch a baseball game.
@@ -646,7 +647,6 @@
            data-title="The Batman"
            data-rating="4.0"
            data-date="2022-03-17"
-           data-date-display="17 Mar 2022"
            data-cover="media/film/the-batman.jpg">
                   <p>
                     Grunge afffffff. So grunge that Nirvana's <i>Something In The Way</i> was practically the theme song. So grunge that Robert Pattinson wore makeup around his eyes and rarely bothered to clean it up.
@@ -701,7 +701,6 @@
            data-title="Margin Call"
            data-rating="3.5"
            data-date="2022-03-09"
-           data-date-display="09 Mar 2022"
            data-cover="media/film/margin-call.jpg">
                   <p>
                     Hate to do this, but Meek Mill said it right:
@@ -736,7 +735,6 @@
            data-title="The Terminator"
            data-rating="4.0"
            data-date="2022-02-05"
-           data-date-display="05 Feb 2022"
            data-cover="media/film/the-terminator.jpg">
                   <p>
                     This movie is not sci-fi action, it's sci-fi horror. Just watch the <a href="https://www.youtube.com/watch?v=VrsspTTpApI">police station scene</a>. 30+ heavily-armed policemen can't stop this guy. He rolls in and demolishes everything in his path, taking a whole hell of a lot of bullets in the process. And yet he's unfazed. Imagine that. The few people you feel truly safe around are getting killed without mercy or second thought. <i>And</i> this guy is after <i>you</i>! Hell naw. This isn't even counting the 10+ shotgun rounds Sarah witnessed him take at the nightclub. Truly an unstoppable force who has plenty of resources at his disposal: weapons, a durable body, ability to change voices.
@@ -755,7 +753,6 @@
            data-title="Terminator 3: Rise of the Machines"
            data-rating="2.5"
            data-date="2022-02-04"
-           data-date-display="04 Feb 2022"
            data-cover="media/film/terminator-3.jpg">
                   <p>
                     T2 killed it. T3 didn't. Simple as that. (We'll see how T1 compares.)
@@ -782,7 +779,6 @@
            data-title="Terminator 2: Judgment Day"
            data-rating="3.5"
            data-date="2022-02-03"
-           data-date-display="03 Feb 2022"
            data-cover="media/film/terminator-2.jpg">
                   <p>
                     Released in 1991, the special effects in T2 were insanely impressive. Now, I wasn't even alive at the time, so I'm not sure what the average SFX quality was, but knowing what late 90s movies were like, I doubt they were <i>that</i> good. Bravo to the team that created that. See more about T2's SFX impressiveness <a href="https://web.archive.org/web/20120102065408/http://www.filmsite.org/visualeffects14.html">here</a>. The T-1000 animation also won the Academy Award for Visual Effects.
@@ -801,7 +797,6 @@
            data-title="Ozark: Season 4"
            data-rating="4.0"
            data-date="2022-01-24"
-           data-date-display="24 Jan 2022"
            data-cover="media/film/ozark.jpg">
                   <p>
                     The crew nails it again. Most shows that carry on for multiple seasons seem to regress down a path of desperation and <a href="https://en.wikipedia.org/wiki/Jumping_the_shark">jumping the shark</a>. Ozark refuses to do this and sticks to what they're good at.
@@ -840,7 +835,6 @@
            data-title="Resident Evil: Welcome to Raccoon City"
            data-rating="2.0"
            data-date="2021-12-19"
-           data-date-display="19 Dec 2021"
            data-cover="media/film/resident-evil.jpg">
                   <p>
                     The water must have made the main character stupid as well. Do people never learn in horror movies?! A few prime examples:
@@ -881,7 +875,6 @@
            data-title="Escape Plan"
            data-rating="1.5"
            data-date="2021-11-20"
-           data-date-display="20 Nov 2021"
            data-cover="media/film/escape-plan.jpg">
                   <p>
                     Exactly what I expected. Cool fight scenes, cheesy quotes, and some amount of unrealistic moves that help Stallone escape.
@@ -904,7 +897,6 @@
            data-title="Squid Game"
            data-rating="4.0"
            data-date="2021-10-15"
-           data-date-display="15 Oct 2021"
            data-cover="media/film/squid-game.jpg">
                   <p>
                     The mood is set early into the first episode. Gi-hun's sad, lonely life is explained through his gambling, desperation, and mother's shaming. Pity and disgust are simultaneously felt, one side saying he's sick, he's not right in the head, and the other saying he's failed his own mother and daughter, he's a weak man. A too-good-to-be-true opportunity presents itself, setting the stage for the games to begin.
@@ -927,7 +919,6 @@
            data-title="No Time to Die"
            data-rating="3.0"
            data-date="2021-10-09"
-           data-date-display="09 Oct 2021"
            data-cover="media/film/no-time-to-die.jpg">
                     <p>
                       What a disappointing end to such an awesome era of Bond films. There are only a handful of things that can ruin an action movie for me: cheesy quotes and <a href="https://www.urbandictionary.com/define.php?term=plot%20armor">plot armor</a>. Throughout the film Bond becomes an absolute softie towards Madeleine Swann, beginning with a romantic trip to Italy and culminating in him watching an incoming missile and saying "I have always loved you". Seriously? The plot armor is equally as bad: while fighting on the island, he is standing in a wide-open space as five goons are unloading full-auto rifles at him. Miraculously, he manages to <i>walk</i> (not run!) to cover without being hit and proceeds to kill all of them without effort. While not getting hit is fine under some circumstances, no cover plus five machine guns is not one of them.
@@ -946,7 +937,6 @@
            data-title="Mare of Easttown"
            data-rating="2.0"
            data-date="2021-06-06"
-           data-date-display="06 Jun 2021"
            data-cover="media/film/mare-of-easttown.jpg">
                   <p>
                     Yet another detective show: a protagonist who is struggling in their personal life while having to fulfill their police duties. At this point, a plot twist isn't a plot twist. It's an expected element that's predictable. There's marital issues, jealousy, friendship conflicts, and everything that goes into a typical detective show. Admittedly, there were two plot twists, which added some amount of surprise.
@@ -965,7 +955,6 @@
            data-title="Memento"
            data-rating="3.5"
            data-date="2020-12-18"
-           data-date-display="18 Dec 2020"
            data-cover="media/film/memento.jpg">
                   <p>
                     Another Nolan-esque film with a distinct style of storytelling and an unheard of plot. Two storylines are presented: one going forwards in time, the other backwards. They eventually converge at the end of the film, but in the middle of the story.
@@ -994,7 +983,6 @@
            data-title="Tenet"
            data-rating="3.0"
            data-date="2020-12-15"
-           data-date-display="15 Dec 2020"
            data-cover="media/film/tenet.jpg">
                   <p>
                     Nolan swings and hits again with a very, very novel concept: reversing time. Note this is not time-travel as most people understand (read: think about). Rather, from t=X where X > 0, time starts to go backwards towards 0, while the person who is reversed (or inverted, as they call it), is experiencing his own thoughts normally, but the world "in reverse". It takes some thinking and getting used to, evident by all of my friends who watched it being incredibly confused during and directly after the movie. Similar novelty to Inception—something that hasn't been made before, thought of before. The layers of inversion add complexity to it in the same sense the dream within a dream ... within a dream does.
@@ -1025,7 +1013,6 @@
            data-title="The Queen&#x27;s Gambit"
            data-rating="3.0"
            data-date="2020-12-01"
-           data-date-display="01 Dec 2020"
            data-cover="media/film/the-queen-s-gambit.jpg">
                   <p>
                     Taking place in the 1950s and 1960s, <i>The Queen's Gambit</i> follows the rise of Beth Harmon through the ranks of the chess world, beginning with matches against her orphanage's janitor in the basement and culminating in defeating the world champion Borgov in Moscow (during the Cold War, mind you!).
@@ -1062,7 +1049,6 @@
            data-title="The Fast and the Furious (2001)"
            data-rating=""
            data-date="2026-06-25"
-           data-date-display="25 June 2026"
            data-cover="media/film/the-fast-and-the-furious-2001.jpg">
            <p>
              
@@ -1073,7 +1059,6 @@
            data-title="Cape Fear (1991)"
            data-rating="3.0"
            data-date="2026-06-25"
-           data-date-display="25 June 2026"
            data-cover="media/film/cape-fear-1991.jpg">
            <p>
              
@@ -1084,7 +1069,6 @@
            data-title="Backrooms (2026)"
            data-rating="2.5"
            data-date="2026-06-13"
-           data-date-display="13 June 2026"
            data-cover="media/film/backrooms-2026.jpg">
            <p>
              
@@ -1095,7 +1079,6 @@
            data-title="HIM (2025)"
            data-rating="3.0"
            data-date="2026-06-04"
-           data-date-display="4 June 2026"
            data-cover="media/film/him-2025.jpg">
            <p>
              
@@ -1106,7 +1089,6 @@
            data-title="Hotel Rwanda (2004)"
            data-rating=""
            data-date="2026-05-23"
-           data-date-display="23 May 2026"
            data-cover="media/film/hotel-rwanda-2004.jpg">
            <p>
              
@@ -1117,7 +1099,6 @@
            data-title="Casino (1995)"
            data-rating="4.5"
            data-date="2026-05-23"
-           data-date-display="23 May 2026"
            data-cover="media/film/casino-1995.jpg">
            <p>
              
@@ -1128,7 +1109,6 @@
            data-title="The Marksman (2021)"
            data-rating="1.5"
            data-date="2026-05-07"
-           data-date-display="7 May 2026"
            data-cover="media/film/the-marksman-2021.jpg">
            <p>
              
@@ -1139,7 +1119,6 @@
            data-title="Non-Stop (2014)"
            data-rating="1.5"
            data-date="2026-05-06"
-           data-date-display="6 May 2026"
            data-cover="media/film/non-stop-2014.jpg">
            <p>
              
@@ -1150,7 +1129,6 @@
            data-title="Moonlight (2016)"
            data-rating="4.0"
            data-date="2026-05-05"
-           data-date-display="5 May 2026"
            data-cover="media/film/moonlight-2016.jpg">
            <p>
              
@@ -1161,7 +1139,6 @@
            data-title="Apex (2026)"
            data-rating="2.5"
            data-date="2026-04-29"
-           data-date-display="29 April 2026"
            data-cover="media/film/apex-2026.jpg">
            <p>
              
@@ -1172,7 +1149,6 @@
            data-title="Nobody 2 (2025)"
            data-rating="1.5"
            data-date="2026-04-26"
-           data-date-display="26 April 2026"
            data-cover="media/film/nobody-2-2025.jpg">
            <p>
              
@@ -1183,7 +1159,6 @@
            data-title="Nuremberg (2025)"
            data-rating=""
            data-date="2026-04-19"
-           data-date-display="19 April 2026"
            data-cover="media/film/nuremberg-2025.jpg">
            <p>
              
@@ -1194,7 +1169,6 @@
            data-title="Primate (2025)"
            data-rating="2.0"
            data-date="2026-04-16"
-           data-date-display="16 April 2026"
            data-cover="media/film/primate-2025.jpg">
            <p>
              
@@ -1205,7 +1179,6 @@
            data-title="Kraven the Hunter (2024)"
            data-rating="1.5"
            data-date="2026-04-16"
-           data-date-display="16 April 2026"
            data-cover="media/film/kraven-the-hunter-2024.jpg">
            <p>
              
@@ -1216,7 +1189,6 @@
            data-title="The Long Walk (2025)"
            data-rating="2.5"
            data-date="2026-03-29"
-           data-date-display="29 March 2026"
            data-cover="media/film/the-long-walk-2025.jpg">
            <p>
              
@@ -1227,7 +1199,6 @@
            data-title="Zootopia (2016)"
            data-rating="4.0"
            data-date="2026-03-28"
-           data-date-display="28 March 2026"
            data-cover="media/film/zootopia-2016.jpg">
            <p>
              
@@ -1238,7 +1209,6 @@
            data-title="The Equalizer (2014)"
            data-rating=""
            data-date="2026-03-28"
-           data-date-display="28 March 2026"
            data-cover="media/film/the-equalizer-2014.jpg">
            <p>
              
@@ -1249,7 +1219,6 @@
            data-title="Spider-Man 3 (2007)"
            data-rating=""
            data-date="2026-03-28"
-           data-date-display="28 March 2026"
            data-cover="media/film/spider-man-3-2007.jpg">
            <p>
              
@@ -1260,7 +1229,6 @@
            data-title="Misery (1990)"
            data-rating="3.0"
            data-date="2026-03-28"
-           data-date-display="28 March 2026"
            data-cover="media/film/misery-1990.jpg">
            <p>
              
@@ -1271,7 +1239,6 @@
            data-title="Kiki's Delivery Service (1989)"
            data-rating="4.5"
            data-date="2026-03-27"
-           data-date-display="27 March 2026"
            data-cover="media/film/kiki-s-delivery-service-1989.jpg">
            <p>
              
@@ -1282,7 +1249,6 @@
            data-title="Dirty Grandpa (2016)"
            data-rating=""
            data-date="2026-03-19"
-           data-date-display="19 March 2026"
            data-cover="media/film/dirty-grandpa-2016.jpg">
            <p>
              
@@ -1293,7 +1259,6 @@
            data-title="Louis Theroux: Inside the Manosphere (2026)"
            data-rating="2.0"
            data-date="2026-03-18"
-           data-date-display="18 March 2026"
            data-cover="media/film/louis-theroux-inside-the-manosphere-2026.jpg">
            <p>
              
@@ -1304,7 +1269,6 @@
            data-title="War Machine (2026)"
            data-rating="2.0"
            data-date="2026-03-16"
-           data-date-display="16 March 2026"
            data-cover="media/film/war-machine-2026.jpg">
            <p>
              
@@ -1315,7 +1279,6 @@
            data-title="Van Helsing (2004)"
            data-rating=""
            data-date="2026-03-12"
-           data-date-display="12 March 2026"
            data-cover="media/film/van-helsing-2004.jpg">
            <p>
              
@@ -1326,7 +1289,6 @@
            data-title="Jumper (2008)"
            data-rating=""
            data-date="2026-03-11"
-           data-date-display="11 March 2026"
            data-cover="media/film/jumper-2008.jpg">
            <p>
              
@@ -1337,7 +1299,6 @@
            data-title="Unhinged (2020)"
            data-rating="1.0"
            data-date="2026-03-09"
-           data-date-display="9 March 2026"
            data-cover="media/film/unhinged-2020.jpg">
            <p>
              
@@ -1348,7 +1309,6 @@
            data-title="Sirāt (2025)"
            data-rating="3.5"
            data-date="2026-03-08"
-           data-date-display="8 March 2026"
            data-cover="media/film/sirat-2025.jpg">
            <p>
              
@@ -1359,7 +1319,6 @@
            data-title="Only the Brave (2017)"
            data-rating="2.0"
            data-date="2026-03-08"
-           data-date-display="8 March 2026"
            data-cover="media/film/only-the-brave-2017.jpg">
            <p>
              
@@ -1370,7 +1329,6 @@
            data-title="The Talented Mr. Ripley (1999)"
            data-rating="3.0"
            data-date="2026-03-05"
-           data-date-display="5 March 2026"
            data-cover="media/film/the-talented-mr-ripley-1999.jpg">
            <p>
              
@@ -1381,7 +1339,6 @@
            data-title="Resident Evil: Death Island (2023)"
            data-rating=""
            data-date="2026-03-04"
-           data-date-display="4 March 2026"
            data-cover="media/film/resident-evil-death-island-2023.jpg">
            <p>
              
@@ -1392,7 +1349,6 @@
            data-title="The Beekeeper (2024)"
            data-rating="1.5"
            data-date="2026-03-03"
-           data-date-display="3 March 2026"
            data-cover="media/film/the-beekeeper-2024.jpg">
            <p>
              
@@ -1403,7 +1359,6 @@
            data-title="Ice Age (2002)"
            data-rating=""
            data-date="2026-03-03"
-           data-date-display="3 March 2026"
            data-cover="media/film/ice-age-2002.jpg">
            <p>
              
@@ -1414,7 +1369,6 @@
            data-title="Before Midnight (2013)"
            data-rating="2.5"
            data-date="2026-02-25"
-           data-date-display="25 February 2026"
            data-cover="media/film/before-midnight-2013.jpg">
            <p>
              
@@ -1425,7 +1379,6 @@
            data-title="School of Rock (2003)"
            data-rating=""
            data-date="2026-02-22"
-           data-date-display="22 February 2026"
            data-cover="media/film/school-of-rock-2003.jpg">
            <p>
              
@@ -1436,7 +1389,6 @@
            data-title="Before Sunset (2004)"
            data-rating="4.5"
            data-date="2026-02-22"
-           data-date-display="22 February 2026"
            data-cover="media/film/before-sunset-2004.jpg">
            <p>
              
@@ -1447,7 +1399,6 @@
            data-title="Sentimental Value (2025)"
            data-rating="4.0"
            data-date="2026-02-20"
-           data-date-display="20 February 2026"
            data-cover="media/film/sentimental-value-2025.jpg">
            <p>
              
@@ -1458,7 +1409,6 @@
            data-title="Turbo (2013)"
            data-rating=""
            data-date="2026-02-18"
-           data-date-display="18 February 2026"
            data-cover="media/film/turbo-2013.jpg">
            <p>
              
@@ -1469,7 +1419,6 @@
            data-title="The Wild Robot (2024)"
            data-rating="3.5"
            data-date="2026-02-16"
-           data-date-display="16 February 2026"
            data-cover="media/film/the-wild-robot-2024.jpg">
            <p>
              
@@ -1480,7 +1429,6 @@
            data-title="The Rip (2026)"
            data-rating="2.0"
            data-date="2026-02-16"
-           data-date-display="16 February 2026"
            data-cover="media/film/the-rip-2026.jpg">
            <p>
              
@@ -1491,7 +1439,6 @@
            data-title="28 Years Later: The Bone Temple (2026)"
            data-rating=""
            data-date="2026-02-05"
-           data-date-display="5 February 2026"
            data-cover="media/film/28-years-later-the-bone-temple-2026.jpg">
            <p>
              
@@ -1502,7 +1449,6 @@
            data-title="The Benchwarmers (2006)"
            data-rating=""
            data-date="2026-02-04"
-           data-date-display="4 February 2026"
            data-cover="media/film/the-benchwarmers-2006.jpg">
            <p>
              
@@ -1513,7 +1459,6 @@
            data-title="Baraka (1992)"
            data-rating="4.5"
            data-date="2026-02-04"
-           data-date-display="4 February 2026"
            data-cover="media/film/baraka-1992.jpg">
            <p>
              
@@ -1524,7 +1469,6 @@
            data-title="Die Another Day (2002)"
            data-rating="1.5"
            data-date="2026-01-26"
-           data-date-display="26 January 2026"
            data-cover="media/film/die-another-day-2002.jpg">
            <p>
              
@@ -1535,7 +1479,6 @@
            data-title="The Killing of a Sacred Deer (2017)"
            data-rating=""
            data-date="2026-01-11"
-           data-date-display="11 January 2026"
            data-cover="media/film/the-killing-of-a-sacred-deer-2017.jpg">
            <p>
              
@@ -1546,7 +1489,6 @@
            data-title="Train Dreams (2025)"
            data-rating="4.5"
            data-date="2026-01-06"
-           data-date-display="6 January 2026"
            data-cover="media/film/train-dreams-2025.jpg">
            <p>
              
@@ -1557,7 +1499,6 @@
            data-title="Tomorrow Never Dies (1997)"
            data-rating=""
            data-date="2026-01-04"
-           data-date-display="4 January 2026"
            data-cover="media/film/tomorrow-never-dies-1997.jpg">
            <p>
              
@@ -1568,7 +1509,6 @@
            data-title="Guy Ritchie's The Covenant (2023)"
            data-rating="3.5"
            data-date="2026-01-04"
-           data-date-display="4 January 2026"
            data-cover="media/film/guy-ritchie-s-the-covenant-2023.jpg">
            <p>
              
@@ -1579,7 +1519,6 @@
            data-title="Plane (2023)"
            data-rating=""
            data-date="2026-01-03"
-           data-date-display="3 January 2026"
            data-cover="media/film/plane-2023.jpg">
            <p>
              
@@ -1590,7 +1529,6 @@
            data-title="Bugonia (2025)"
            data-rating="3.0"
            data-date="2026-01-03"
-           data-date-display="3 January 2026"
            data-cover="media/film/bugonia-2025.jpg">
            <p>
              
@@ -1601,7 +1539,6 @@
            data-title="Wake Up Dead Man (2025)"
            data-rating="3.5"
            data-date="2025-12-29"
-           data-date-display="29 December 2025"
            data-cover="media/film/wake-up-dead-man-2025.jpg">
            <p>
              
@@ -1612,7 +1549,6 @@
            data-title="Forgetting Sarah Marshall (2008)"
            data-rating=""
            data-date="2025-12-29"
-           data-date-display="29 December 2025"
            data-cover="media/film/forgetting-sarah-marshall-2008.jpg">
            <p>
              
@@ -1623,7 +1559,6 @@
            data-title="Frozen (2013)"
            data-rating=""
            data-date="2025-12-21"
-           data-date-display="21 December 2025"
            data-cover="media/film/frozen-2013.jpg">
            <p>
              
@@ -1634,7 +1569,6 @@
            data-title="The Killer (2023)"
            data-rating=""
            data-date="2025-12-19"
-           data-date-display="19 December 2025"
            data-cover="media/film/the-killer-2023.jpg">
            <p>
              
@@ -1645,7 +1579,6 @@
            data-title="The Polar Express (2004)"
            data-rating=""
            data-date="2025-12-18"
-           data-date-display="18 December 2025"
            data-cover="media/film/the-polar-express-2004.jpg">
            <p>
              
@@ -1656,7 +1589,6 @@
            data-title="Breakfast at Tiffany's (1961)"
            data-rating=""
            data-date="2025-12-18"
-           data-date-display="18 December 2025"
            data-cover="media/film/breakfast-at-tiffany-s-1961.jpg">
            <p>
              
@@ -1667,7 +1599,6 @@
            data-title="Carry-On (2024)"
            data-rating=""
            data-date="2025-12-11"
-           data-date-display="11 December 2025"
            data-cover="media/film/carry-on-2024.jpg">
            <p>
              
@@ -1678,7 +1609,6 @@
            data-title="Ambulance (2022)"
            data-rating=""
            data-date="2025-12-11"
-           data-date-display="11 December 2025"
            data-cover="media/film/ambulance-2022.jpg">
            <p>
              
@@ -1689,7 +1619,6 @@
            data-title="Godzilla vs. Kong (2021)"
            data-rating=""
            data-date="2025-12-09"
-           data-date-display="9 December 2025"
            data-cover="media/film/godzilla-vs-kong-2021.jpg">
            <p>
              
@@ -1700,7 +1629,6 @@
            data-title="Caught Stealing (2025)"
            data-rating="2.0"
            data-date="2025-12-08"
-           data-date-display="8 December 2025"
            data-cover="media/film/caught-stealing-2025.jpg">
            <p>
              
@@ -1711,7 +1639,6 @@
            data-title="Havoc (2025)"
            data-rating=""
            data-date="2025-12-01"
-           data-date-display="1 December 2025"
            data-cover="media/film/havoc-2025.jpg">
            <p>
              
@@ -1722,7 +1649,6 @@
            data-title="Frankenstein (2025)"
            data-rating=""
            data-date="2025-12-01"
-           data-date-display="1 December 2025"
            data-cover="media/film/frankenstein-2025.jpg">
            <p>
              
@@ -1733,7 +1659,6 @@
            data-title="Last Seen Alive (2022)"
            data-rating=""
            data-date="2025-11-20"
-           data-date-display="20 November 2025"
            data-cover="media/film/last-seen-alive-2022.jpg">
            <p>
              
@@ -1744,7 +1669,6 @@
            data-title="Planes, Trains and Automobiles (1987)"
            data-rating=""
            data-date="2025-11-19"
-           data-date-display="19 November 2025"
            data-cover="media/film/planes-trains-and-automobiles-1987.jpg">
            <p>
              
@@ -1755,7 +1679,6 @@
            data-title="A House of Dynamite (2025)"
            data-rating="3.5"
            data-date="2025-11-19"
-           data-date-display="19 November 2025"
            data-cover="media/film/a-house-of-dynamite-2025.jpg">
            <p>
              
@@ -1766,7 +1689,6 @@
            data-title="AVP: Alien vs. Predator (2004)"
            data-rating=""
            data-date="2025-11-12"
-           data-date-display="12 November 2025"
            data-cover="media/film/avp-alien-vs-predator-2004.jpg">
            <p>
              
@@ -1777,7 +1699,6 @@
            data-title="The Wrestler (2008)"
            data-rating=""
            data-date="2025-11-08"
-           data-date-display="8 November 2025"
            data-cover="media/film/the-wrestler-2008.jpg">
            <p>
              
@@ -1788,7 +1709,6 @@
            data-title="KPop Demon Hunters (2025)"
            data-rating="3.0"
            data-date="2025-11-08"
-           data-date-display="8 November 2025"
            data-cover="media/film/kpop-demon-hunters-2025.jpg">
            <p>
              
@@ -1799,7 +1719,6 @@
            data-title="The Bikeriders (2023)"
            data-rating="2.0"
            data-date="2025-11-06"
-           data-date-display="6 November 2025"
            data-cover="media/film/the-bikeriders-2023.jpg">
            <p>
              
@@ -1810,7 +1729,6 @@
            data-title="Saw (2004)"
            data-rating=""
            data-date="2025-10-29"
-           data-date-display="29 October 2025"
            data-cover="media/film/saw-2004.jpg">
            <p>
              
@@ -1821,7 +1739,6 @@
            data-title="What Happens in Vegas (2008)"
            data-rating=""
            data-date="2025-10-28"
-           data-date-display="28 October 2025"
            data-cover="media/film/what-happens-in-vegas-2008.jpg">
            <p>
              
@@ -1832,7 +1749,6 @@
            data-title="The Butterfly Effect (2004)"
            data-rating=""
            data-date="2025-10-28"
-           data-date-display="28 October 2025"
            data-cover="media/film/the-butterfly-effect-2004.jpg">
            <p>
              
@@ -1843,7 +1759,6 @@
            data-title="Cheaper by the Dozen (2003)"
            data-rating=""
            data-date="2025-10-28"
-           data-date-display="28 October 2025"
            data-cover="media/film/cheaper-by-the-dozen-2003.jpg">
            <p>
              
@@ -1854,7 +1769,6 @@
            data-title="Wrath of Man (2021)"
            data-rating=""
            data-date="2025-10-18"
-           data-date-display="18 October 2025"
            data-cover="media/film/wrath-of-man-2021.jpg">
            <p>
              
@@ -1865,7 +1779,6 @@
            data-title="War Dogs (2016)"
            data-rating=""
            data-date="2025-10-10"
-           data-date-display="10 October 2025"
            data-cover="media/film/war-dogs-2016.jpg">
            <p>
              
@@ -1876,7 +1789,6 @@
            data-title="The Mule (2018)"
            data-rating=""
            data-date="2025-10-10"
-           data-date-display="10 October 2025"
            data-cover="media/film/the-mule-2018.jpg">
            <p>
              
@@ -1887,7 +1799,6 @@
            data-title="The Hangover Part II (2011)"
            data-rating=""
            data-date="2025-10-10"
-           data-date-display="10 October 2025"
            data-cover="media/film/the-hangover-part-ii-2011.jpg">
            <p>
              
@@ -1898,7 +1809,6 @@
            data-title="Limitless (2011)"
            data-rating=""
            data-date="2025-10-10"
-           data-date-display="10 October 2025"
            data-cover="media/film/limitless-2011.jpg">
            <p>
              
@@ -1909,7 +1819,6 @@
            data-title="Burnt (2015)"
            data-rating=""
            data-date="2025-10-10"
-           data-date-display="10 October 2025"
            data-cover="media/film/burnt-2015.jpg">
            <p>
              
@@ -1920,7 +1829,6 @@
            data-title="Better Man (2024)"
            data-rating=""
            data-date="2025-10-10"
-           data-date-display="10 October 2025"
            data-cover="media/film/better-man-2024.jpg">
            <p>
              
@@ -1931,7 +1839,6 @@
            data-title="American Sniper (2014)"
            data-rating=""
            data-date="2025-10-10"
-           data-date-display="10 October 2025"
            data-cover="media/film/american-sniper-2014.jpg">
            <p>
              
@@ -1942,7 +1849,6 @@
            data-title="When Evil Lurks (2023)"
            data-rating=""
            data-date="2025-10-05"
-           data-date-display="5 October 2025"
            data-cover="media/film/when-evil-lurks-2023.jpg">
            <p>
              
@@ -1953,7 +1859,6 @@
            data-title="The Contender (2000)"
            data-rating="2.0"
            data-date="2025-09-24"
-           data-date-display="24 September 2025"
            data-cover="media/film/the-contender-2000.jpg">
            <p>
              
@@ -1964,7 +1869,6 @@
            data-title="Underwater (2020)"
            data-rating=""
            data-date="2025-09-21"
-           data-date-display="21 September 2025"
            data-cover="media/film/underwater-2020.jpg">
            <p>
              
@@ -1975,7 +1879,6 @@
            data-title="The Hills Have Eyes (2006)"
            data-rating=""
            data-date="2025-09-21"
-           data-date-display="21 September 2025"
            data-cover="media/film/the-hills-have-eyes-2006.jpg">
            <p>
              
@@ -1986,7 +1889,6 @@
            data-title="The Cabin in the Woods (2011)"
            data-rating=""
            data-date="2025-09-21"
-           data-date-display="21 September 2025"
            data-cover="media/film/the-cabin-in-the-woods-2011.jpg">
            <p>
              
@@ -1997,7 +1899,6 @@
            data-title="Slither (2006)"
            data-rating=""
            data-date="2025-09-21"
-           data-date-display="21 September 2025"
            data-cover="media/film/slither-2006.jpg">
            <p>
              
@@ -2008,7 +1909,6 @@
            data-title="Now You See Me 2 (2016)"
            data-rating=""
            data-date="2025-09-21"
-           data-date-display="21 September 2025"
            data-cover="media/film/now-you-see-me-2-2016.jpg">
            <p>
              
@@ -2019,7 +1919,6 @@
            data-title="Jeepers Creepers (2001)"
            data-rating=""
            data-date="2025-09-21"
-           data-date-display="21 September 2025"
            data-cover="media/film/jeepers-creepers-2001.jpg">
            <p>
              
@@ -2030,7 +1929,6 @@
            data-title="Dog Soldiers (2002)"
            data-rating=""
            data-date="2025-09-21"
-           data-date-display="21 September 2025"
            data-cover="media/film/dog-soldiers-2002.jpg">
            <p>
              
@@ -2041,7 +1939,6 @@
            data-title="A Quiet Place (2018)"
            data-rating=""
            data-date="2025-09-21"
-           data-date-display="21 September 2025"
            data-cover="media/film/a-quiet-place-2018.jpg">
            <p>
              
@@ -2052,7 +1949,6 @@
            data-title="30 Days of Night (2007)"
            data-rating=""
            data-date="2025-09-21"
-           data-date-display="21 September 2025"
            data-cover="media/film/30-days-of-night-2007.jpg">
            <p>
              
@@ -2063,7 +1959,6 @@
            data-title="Spy Kids (2001)"
            data-rating=""
            data-date="2025-09-18"
-           data-date-display="18 September 2025"
            data-cover="media/film/spy-kids-2001.jpg">
            <p>
              
@@ -2074,7 +1969,6 @@
            data-title="Marley &amp; Me (2008)"
            data-rating=""
            data-date="2025-09-18"
-           data-date-display="18 September 2025"
            data-cover="media/film/marley-me-2008.jpg">
            <p>
              
@@ -2085,7 +1979,6 @@
            data-title="From Dusk Till Dawn (1996)"
            data-rating=""
            data-date="2025-09-18"
-           data-date-display="18 September 2025"
            data-cover="media/film/from-dusk-till-dawn-1996.jpg">
            <p>
              
@@ -2096,7 +1989,6 @@
            data-title="The Place Beyond the Pines (2012)"
            data-rating="3.0"
            data-date="2025-09-15"
-           data-date-display="15 September 2025"
            data-cover="media/film/the-place-beyond-the-pines-2012.jpg">
            <p>
              
@@ -2107,7 +1999,6 @@
            data-title="Now You See Me (2013)"
            data-rating=""
            data-date="2025-09-15"
-           data-date-display="15 September 2025"
            data-cover="media/film/now-you-see-me-2013.jpg">
            <p>
              
@@ -2118,7 +2009,6 @@
            data-title="The Fast and the Furious: Tokyo Drift (2006)"
            data-rating=""
            data-date="2025-09-14"
-           data-date-display="14 September 2025"
            data-cover="media/film/the-fast-and-the-furious-tokyo-drift-2006.jpg">
            <p>
              
@@ -2129,7 +2019,6 @@
            data-title="A History of Violence (2005)"
            data-rating=""
            data-date="2025-09-13"
-           data-date-display="13 September 2025"
            data-cover="media/film/a-history-of-violence-2005.jpg">
            <p>
              
@@ -2140,7 +2029,6 @@
            data-title="Speed (1994)"
            data-rating=""
            data-date="2025-09-12"
-           data-date-display="12 September 2025"
            data-cover="media/film/speed-1994.jpg">
            <p>
              
@@ -2151,7 +2039,6 @@
            data-title="The Punisher (2004)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/the-punisher-2004.jpg">
            <p>
              
@@ -2162,7 +2049,6 @@
            data-title="Rocky IV (1985)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/rocky-iv-1985.jpg">
            <p>
              
@@ -2173,7 +2059,6 @@
            data-title="Rocky III (1982)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/rocky-iii-1982.jpg">
            <p>
              
@@ -2184,7 +2069,6 @@
            data-title="Rocky II (1979)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/rocky-ii-1979.jpg">
            <p>
              
@@ -2195,7 +2079,6 @@
            data-title="Rocky Balboa (2006)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/rocky-balboa-2006.jpg">
            <p>
              
@@ -2206,7 +2089,6 @@
            data-title="Rocky (1976)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/rocky-1976.jpg">
            <p>
              
@@ -2217,7 +2099,6 @@
            data-title="Rambo: First Blood Part II (1985)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/rambo-first-blood-part-ii-1985.jpg">
            <p>
              
@@ -2228,7 +2109,6 @@
            data-title="Rambo III (1988)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/rambo-iii-1988.jpg">
            <p>
              
@@ -2239,7 +2119,6 @@
            data-title="Rambo (2008)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/rambo-2008.jpg">
            <p>
              
@@ -2250,7 +2129,6 @@
            data-title="Pirates of the Caribbean: Dead Man's Chest (2006)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/pirates-of-the-caribbean-dead-man-s-chest-2006.jpg">
            <p>
              
@@ -2261,7 +2139,6 @@
            data-title="Pirates of the Caribbean: At World's End (2007)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/pirates-of-the-caribbean-at-world-s-end-2007.jpg">
            <p>
              
@@ -2272,7 +2149,6 @@
            data-title="Headhunters (2011)"
            data-rating="3.5"
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/headhunters-2011.jpg">
            <p>
              
@@ -2283,7 +2159,6 @@
            data-title="Happy Feet (2006)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/happy-feet-2006.jpg">
            <p>
              
@@ -2294,7 +2169,6 @@
            data-title="First Blood (1982)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/first-blood-1982.jpg">
            <p>
              
@@ -2305,7 +2179,6 @@
            data-title="Deep Blue Sea (1999)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/deep-blue-sea-1999.jpg">
            <p>
              
@@ -2316,7 +2189,6 @@
            data-title="Cliffhanger (1993)"
            data-rating=""
            data-date="2025-09-09"
-           data-date-display="9 September 2025"
            data-cover="media/film/cliffhanger-1993.jpg">
            <p>
              
@@ -2327,7 +2199,6 @@
            data-title="Iron Man (2008)"
            data-rating=""
            data-date="2025-09-07"
-           data-date-display="7 September 2025"
            data-cover="media/film/iron-man-2008.jpg">
            <p>
              
@@ -2338,7 +2209,6 @@
            data-title="Come and See (1985)"
            data-rating="4.0"
            data-date="2025-09-07"
-           data-date-display="7 September 2025"
            data-cover="media/film/come-and-see-1985.jpg">
            <p>
              
@@ -2349,7 +2219,6 @@
            data-title="This Is the End (2013)"
            data-rating=""
            data-date="2025-09-04"
-           data-date-display="4 September 2025"
            data-cover="media/film/this-is-the-end-2013.jpg">
            <p>
              
@@ -2360,7 +2229,6 @@
            data-title="The Purge (2013)"
            data-rating=""
            data-date="2025-09-04"
-           data-date-display="4 September 2025"
            data-cover="media/film/the-purge-2013.jpg">
            <p>
              
@@ -2371,7 +2239,6 @@
            data-title="Lord of War (2005)"
            data-rating=""
            data-date="2025-09-04"
-           data-date-display="4 September 2025"
            data-cover="media/film/lord-of-war-2005.jpg">
            <p>
              
@@ -2382,7 +2249,6 @@
            data-title="Leave the World Behind (2023)"
            data-rating=""
            data-date="2025-09-04"
-           data-date-display="4 September 2025"
            data-cover="media/film/leave-the-world-behind-2023.jpg">
            <p>
              
@@ -2393,7 +2259,6 @@
            data-title="Constantine (2005)"
            data-rating=""
            data-date="2025-09-04"
-           data-date-display="4 September 2025"
            data-cover="media/film/constantine-2005.jpg">
            <p>
              
@@ -2404,7 +2269,6 @@
            data-title="The Equalizer 2 (2018)"
            data-rating=""
            data-date="2025-09-03"
-           data-date-display="3 September 2025"
            data-cover="media/film/the-equalizer-2-2018.jpg">
            <p>
              
@@ -2415,7 +2279,6 @@
            data-title="The Contractor (2022)"
            data-rating=""
            data-date="2025-09-03"
-           data-date-display="3 September 2025"
            data-cover="media/film/the-contractor-2022.jpg">
            <p>
              
@@ -2426,7 +2289,6 @@
            data-title="The Chronicles of Riddick (2004)"
            data-rating=""
            data-date="2025-09-03"
-           data-date-display="3 September 2025"
            data-cover="media/film/the-chronicles-of-riddick-2004.jpg">
            <p>
              
@@ -2437,7 +2299,6 @@
            data-title="Pacific Rim (2013)"
            data-rating=""
            data-date="2025-09-03"
-           data-date-display="3 September 2025"
            data-cover="media/film/pacific-rim-2013.jpg">
            <p>
              
@@ -2448,7 +2309,6 @@
            data-title="Monster House (2006)"
            data-rating=""
            data-date="2025-09-03"
-           data-date-display="3 September 2025"
            data-cover="media/film/monster-house-2006.jpg">
            <p>
              
@@ -2459,7 +2319,6 @@
            data-title="Land of Bad (2024)"
            data-rating=""
            data-date="2025-09-03"
-           data-date-display="3 September 2025"
            data-cover="media/film/land-of-bad-2024.jpg">
            <p>
              
@@ -2470,7 +2329,6 @@
            data-title="Extraction 2 (2023)"
            data-rating=""
            data-date="2025-09-03"
-           data-date-display="3 September 2025"
            data-cover="media/film/extraction-2-2023.jpg">
            <p>
              
@@ -2481,7 +2339,6 @@
            data-title="Extraction (2020)"
            data-rating=""
            data-date="2025-09-03"
-           data-date-display="3 September 2025"
            data-cover="media/film/extraction-2020.jpg">
            <p>
              
@@ -2492,7 +2349,6 @@
            data-title="Act of Valor (2012)"
            data-rating=""
            data-date="2025-09-03"
-           data-date-display="3 September 2025"
            data-cover="media/film/act-of-valor-2012.jpg">
            <p>
              
@@ -2503,7 +2359,6 @@
            data-title="The Domestics (2018)"
            data-rating="1.5"
            data-date="2025-08-23"
-           data-date-display="23 August 2025"
            data-cover="media/film/the-domestics-2018.jpg">
            <p>
              
@@ -2514,7 +2369,6 @@
            data-title="The Hobbit: The Desolation of Smaug (2013)"
            data-rating=""
            data-date="2025-08-20"
-           data-date-display="20 August 2025"
            data-cover="media/film/the-hobbit-the-desolation-of-smaug-2013.jpg">
            <p>
              
@@ -2525,7 +2379,6 @@
            data-title="The Hobbit: The Battle of the Five Armies (2014)"
            data-rating=""
            data-date="2025-08-20"
-           data-date-display="20 August 2025"
            data-cover="media/film/the-hobbit-the-battle-of-the-five-armies-2014.jpg">
            <p>
              
@@ -2536,7 +2389,6 @@
            data-title="The Hobbit: An Unexpected Journey (2012)"
            data-rating=""
            data-date="2025-08-20"
-           data-date-display="20 August 2025"
            data-cover="media/film/the-hobbit-an-unexpected-journey-2012.jpg">
            <p>
              
@@ -2547,7 +2399,6 @@
            data-title="The Blair Witch Project (1999)"
            data-rating=""
            data-date="2025-08-20"
-           data-date-display="20 August 2025"
            data-cover="media/film/the-blair-witch-project-1999.jpg">
            <p>
              
@@ -2558,7 +2409,6 @@
            data-title="The Babadook (2014)"
            data-rating=""
            data-date="2025-08-20"
-           data-date-display="20 August 2025"
            data-cover="media/film/the-babadook-2014.jpg">
            <p>
              
@@ -2569,7 +2419,6 @@
            data-title="Fury (2014)"
            data-rating=""
            data-date="2025-08-20"
-           data-date-display="20 August 2025"
            data-cover="media/film/fury-2014.jpg">
            <p>
              
@@ -2580,7 +2429,6 @@
            data-title="Ad Astra (2019)"
            data-rating=""
            data-date="2025-08-20"
-           data-date-display="20 August 2025"
            data-cover="media/film/ad-astra-2019.jpg">
            <p>
              
@@ -2591,7 +2439,6 @@
            data-title="The Day After Tomorrow (2004)"
            data-rating=""
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/the-day-after-tomorrow-2004.jpg">
            <p>
              
@@ -2602,7 +2449,6 @@
            data-title="Road House (2024)"
            data-rating=""
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/road-house-2024.jpg">
            <p>
              
@@ -2613,7 +2459,6 @@
            data-title="Prometheus (2012)"
            data-rating=""
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/prometheus-2012.jpg">
            <p>
              
@@ -2624,7 +2469,6 @@
            data-title="Project X (2012)"
            data-rating=""
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/project-x-2012.jpg">
            <p>
              
@@ -2635,7 +2479,6 @@
            data-title="Jarhead (2005)"
            data-rating=""
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/jarhead-2005.jpg">
            <p>
              
@@ -2646,7 +2489,6 @@
            data-title="Independence Day (1996)"
            data-rating="2.5"
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/independence-day-1996.jpg">
            <p>
              
@@ -2657,7 +2499,6 @@
            data-title="I, Robot (2004)"
            data-rating=""
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/i-robot-2004.jpg">
            <p>
              
@@ -2668,7 +2509,6 @@
            data-title="Hancock (2008)"
            data-rating=""
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/hancock-2008.jpg">
            <p>
              
@@ -2679,7 +2519,6 @@
            data-title="Don't Look Up (2021)"
            data-rating=""
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/don-t-look-up-2021.jpg">
            <p>
              
@@ -2690,7 +2529,6 @@
            data-title="Die Hard With a Vengeance (1995)"
            data-rating=""
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/die-hard-with-a-vengeance-1995.jpg">
            <p>
              
@@ -2701,7 +2539,6 @@
            data-title="Body of Lies (2008)"
            data-rating=""
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/body-of-lies-2008.jpg">
            <p>
              
@@ -2712,7 +2549,6 @@
            data-title="Blood Diamond (2006)"
            data-rating=""
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/blood-diamond-2006.jpg">
            <p>
              
@@ -2723,7 +2559,6 @@
            data-title="21 (2008)"
            data-rating=""
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/21-2008.jpg">
            <p>
              
@@ -2734,7 +2569,6 @@
            data-title="17 Again (2009)"
            data-rating=""
            data-date="2025-08-19"
-           data-date-display="19 August 2025"
            data-cover="media/film/17-again-2009.jpg">
            <p>
              
@@ -2745,7 +2579,6 @@
            data-title="Weapons (2025)"
            data-rating=""
            data-date="2025-08-18"
-           data-date-display="18 August 2025"
            data-cover="media/film/weapons-2025.jpg">
            <p>
              
@@ -2756,7 +2589,6 @@
            data-title="Sicario: Day of the Soldado (2018)"
            data-rating=""
            data-date="2025-08-18"
-           data-date-display="18 August 2025"
            data-cover="media/film/sicario-day-of-the-soldado-2018.jpg">
            <p>
              
@@ -2767,7 +2599,6 @@
            data-title="Shot Caller (2017)"
            data-rating=""
            data-date="2025-08-18"
-           data-date-display="18 August 2025"
            data-cover="media/film/shot-caller-2017.jpg">
            <p>
              
@@ -2778,7 +2609,6 @@
            data-title="American Gangster (2007)"
            data-rating=""
            data-date="2025-08-18"
-           data-date-display="18 August 2025"
            data-cover="media/film/american-gangster-2007.jpg">
            <p>
              
@@ -2789,7 +2619,6 @@
            data-title="Band of Brothers (2001)"
            data-rating=""
            data-date="2025-08-15"
-           data-date-display="15 August 2025"
            data-cover="media/film/band-of-brothers-2001.jpg">
            <p>
              
@@ -2800,7 +2629,6 @@
            data-title="Vertical Limit (2000)"
            data-rating=""
            data-date="2025-08-14"
-           data-date-display="14 August 2025"
            data-cover="media/film/vertical-limit-2000.jpg">
            <p>
              
@@ -2811,7 +2639,6 @@
            data-title="The Hunt for Red October (1990)"
            data-rating=""
            data-date="2025-08-14"
-           data-date-display="14 August 2025"
            data-cover="media/film/the-hunt-for-red-october-1990.jpg">
            <p>
              
@@ -2822,7 +2649,6 @@
            data-title="Die Hard 2 (1990)"
            data-rating=""
            data-date="2025-08-14"
-           data-date-display="14 August 2025"
            data-cover="media/film/die-hard-2-1990.jpg">
            <p>
              
@@ -2833,7 +2659,6 @@
            data-title="Deadpool (2016)"
            data-rating=""
            data-date="2025-08-14"
-           data-date-display="14 August 2025"
            data-cover="media/film/deadpool-2016.jpg">
            <p>
              
@@ -2844,7 +2669,6 @@
            data-title="Uncharted (2022)"
            data-rating=""
            data-date="2025-08-12"
-           data-date-display="12 August 2025"
            data-cover="media/film/uncharted-2022.jpg">
            <p>
              
@@ -2855,7 +2679,6 @@
            data-title="The Italian Job (2003)"
            data-rating=""
            data-date="2025-08-12"
-           data-date-display="12 August 2025"
            data-cover="media/film/the-italian-job-2003.jpg">
            <p>
              
@@ -2866,7 +2689,6 @@
            data-title="Shooter (2007)"
            data-rating=""
            data-date="2025-08-12"
-           data-date-display="12 August 2025"
            data-cover="media/film/shooter-2007.jpg">
            <p>
              
@@ -2877,7 +2699,6 @@
            data-title="Lone Survivor (2013)"
            data-rating=""
            data-date="2025-08-12"
-           data-date-display="12 August 2025"
            data-cover="media/film/lone-survivor-2013.jpg">
            <p>
              
@@ -2888,7 +2709,6 @@
            data-title="Invincible (2006)"
            data-rating=""
            data-date="2025-08-12"
-           data-date-display="12 August 2025"
            data-cover="media/film/invincible-2006.jpg">
            <p>
              
@@ -2899,7 +2719,6 @@
            data-title="Four Brothers (2005)"
            data-rating=""
            data-date="2025-08-12"
-           data-date-display="12 August 2025"
            data-cover="media/film/four-brothers-2005.jpg">
            <p>
              
@@ -2910,7 +2729,6 @@
            data-title="Fear (1996)"
            data-rating=""
            data-date="2025-08-12"
-           data-date-display="12 August 2025"
            data-cover="media/film/fear-1996.jpg">
            <p>
              
@@ -2921,7 +2739,6 @@
            data-title="Anora (2024)"
            data-rating=""
            data-date="2025-08-12"
-           data-date-display="12 August 2025"
            data-cover="media/film/anora-2024.jpg">
            <p>
              
@@ -2932,7 +2749,6 @@
            data-title="The Mist (2007)"
            data-rating=""
            data-date="2025-08-11"
-           data-date-display="11 August 2025"
            data-cover="media/film/the-mist-2007.jpg">
            <p>
              
@@ -2943,7 +2759,6 @@
            data-title="Silent Hill (2006)"
            data-rating=""
            data-date="2025-08-11"
-           data-date-display="11 August 2025"
            data-cover="media/film/silent-hill-2006.jpg">
            <p>
              
@@ -2954,7 +2769,6 @@
            data-title="Cujo (1983)"
            data-rating=""
            data-date="2025-08-11"
-           data-date-display="11 August 2025"
            data-cover="media/film/cujo-1983.jpg">
            <p>
              
@@ -2965,7 +2779,6 @@
            data-title="Zack Snyder's Justice League (2021)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/zack-snyder-s-justice-league-2021.jpg">
            <p>
              
@@ -2976,7 +2789,6 @@
            data-title="Wind River (2017)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/wind-river-2017.jpg">
            <p>
              
@@ -2987,7 +2799,6 @@
            data-title="Triple Frontier (2019)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/triple-frontier-2019.jpg">
            <p>
              
@@ -2998,7 +2809,6 @@
            data-title="The Sum of All Fears (2002)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/the-sum-of-all-fears-2002.jpg">
            <p>
              
@@ -3009,7 +2819,6 @@
            data-title="The Mask (1994)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/the-mask-1994.jpg">
            <p>
              
@@ -3020,7 +2829,6 @@
            data-title="The Girl Next Door (2004)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/the-girl-next-door-2004.jpg">
            <p>
              
@@ -3031,7 +2839,6 @@
            data-title="The Accountant² (2025)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/the-accountant2-2025.jpg">
            <p>
              
@@ -3042,7 +2849,6 @@
            data-title="The Accountant (2016)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/the-accountant-2016.jpg">
            <p>
              
@@ -3053,7 +2859,6 @@
            data-title="Tag (2018)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/tag-2018.jpg">
            <p>
              
@@ -3064,7 +2869,6 @@
            data-title="Southpaw (2015)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/southpaw-2015.jpg">
            <p>
              
@@ -3075,7 +2879,6 @@
            data-title="Phone Booth (2002)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/phone-booth-2002.jpg">
            <p>
              
@@ -3086,7 +2889,6 @@
            data-title="Olympus Has Fallen (2013)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/olympus-has-fallen-2013.jpg">
            <p>
              
@@ -3097,7 +2899,6 @@
            data-title="No Hard Feelings (2023)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/no-hard-feelings-2023.jpg">
            <p>
              
@@ -3108,7 +2909,6 @@
            data-title="Kill Bill: Vol. 2 (2004)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/kill-bill-vol-2-2004.jpg">
            <p>
              
@@ -3119,7 +2919,6 @@
            data-title="Den of Thieves 2: Pantera (2025)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/den-of-thieves-2-pantera-2025.jpg">
            <p>
              
@@ -3130,7 +2929,6 @@
            data-title="Den of Thieves (2018)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/den-of-thieves-2018.jpg">
            <p>
              
@@ -3141,7 +2939,6 @@
            data-title="Batman v Superman: Dawn of Justice (2016)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/batman-v-superman-dawn-of-justice-2016.jpg">
            <p>
              
@@ -3152,7 +2949,6 @@
            data-title="Ava (2020)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/ava-2020.jpg">
            <p>
              
@@ -3163,7 +2959,6 @@
            data-title="Argo (2012)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/argo-2012.jpg">
            <p>
              
@@ -3174,7 +2969,6 @@
            data-title="Angel Has Fallen (2019)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/angel-has-fallen-2019.jpg">
            <p>
              
@@ -3185,7 +2979,6 @@
            data-title="American Pie (1999)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/american-pie-1999.jpg">
            <p>
              
@@ -3196,7 +2989,6 @@
            data-title="300 (2006)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/300-2006.jpg">
            <p>
              
@@ -3207,7 +2999,6 @@
            data-title="13 Hours: The Secret Soldiers of Benghazi (2016)"
            data-rating=""
            data-date="2025-08-10"
-           data-date-display="10 August 2025"
            data-cover="media/film/13-hours-the-secret-soldiers-of-benghazi-2016.jpg">
            <p>
              
@@ -3218,7 +3009,6 @@
            data-title="Wrong Turn 4: Bloody Beginnings (2011)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/wrong-turn-4-bloody-beginnings-2011.jpg">
            <p>
              
@@ -3229,7 +3019,6 @@
            data-title="Wrong Turn 3: Left for Dead (2009)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/wrong-turn-3-left-for-dead-2009.jpg">
            <p>
              
@@ -3240,7 +3029,6 @@
            data-title="Wrong Turn 2: Dead End (2007)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/wrong-turn-2-dead-end-2007.jpg">
            <p>
              
@@ -3251,7 +3039,6 @@
            data-title="Wrong Turn (2003)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/wrong-turn-2003.jpg">
            <p>
              
@@ -3262,7 +3049,6 @@
            data-title="Thir13en Ghosts (2001)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/thir13en-ghosts-2001.jpg">
            <p>
              
@@ -3273,7 +3059,6 @@
            data-title="The Devil's Rejects (2005)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/the-devil-s-rejects-2005.jpg">
            <p>
              
@@ -3284,7 +3069,6 @@
            data-title="The Boys in the Boat (2023)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/the-boys-in-the-boat-2023.jpg">
            <p>
              
@@ -3295,7 +3079,6 @@
            data-title="Snakehead Terror (2004)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/snakehead-terror-2004.jpg">
            <p>
              
@@ -3306,7 +3089,6 @@
            data-title="Shark Night 3D (2011)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/shark-night-3d-2011.jpg">
            <p>
              
@@ -3317,7 +3099,6 @@
            data-title="Role Models (2008)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/role-models-2008.jpg">
            <p>
              
@@ -3328,7 +3109,6 @@
            data-title="Neighbors (2014)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/neighbors-2014.jpg">
            <p>
              
@@ -3339,7 +3119,6 @@
            data-title="Lake Placid (1999)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/lake-placid-1999.jpg">
            <p>
              
@@ -3350,7 +3129,6 @@
            data-title="House on Haunted Hill (1999)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/house-on-haunted-hill-1999.jpg">
            <p>
              
@@ -3361,7 +3139,6 @@
            data-title="Chupacabra Terror (2005)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/chupacabra-terror-2005.jpg">
            <p>
              
@@ -3372,7 +3149,6 @@
            data-title="6 Underground (2019)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/6-underground-2019.jpg">
            <p>
              
@@ -3383,7 +3159,6 @@
            data-title="22 Jump Street (2014)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/22-jump-street-2014.jpg">
            <p>
              
@@ -3394,7 +3169,6 @@
            data-title="21 Jump Street (2012)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/21-jump-street-2012.jpg">
            <p>
              
@@ -3405,7 +3179,6 @@
            data-title="1408 (2007)"
            data-rating=""
            data-date="2025-08-09"
-           data-date-display="9 August 2025"
            data-cover="media/film/1408-2007.jpg">
            <p>
              
@@ -3416,7 +3189,6 @@
            data-title="Twelve Monkeys (1995)"
            data-rating=""
            data-date="2025-08-06"
-           data-date-display="6 August 2025"
            data-cover="media/film/twelve-monkeys-1995.jpg">
            <p>
              
@@ -3427,7 +3199,6 @@
            data-title="Paranormal Activity (2007)"
            data-rating=""
            data-date="2025-08-06"
-           data-date-display="6 August 2025"
            data-cover="media/film/paranormal-activity-2007.jpg">
            <p>
              
@@ -3438,7 +3209,6 @@
            data-title="Watchmen (2009)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/watchmen-2009.jpg">
            <p>
              
@@ -3449,7 +3219,6 @@
            data-title="Trap (2024)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/trap-2024.jpg">
            <p>
              
@@ -3460,7 +3229,6 @@
            data-title="Thor (2011)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/thor-2011.jpg">
            <p>
              
@@ -3471,7 +3239,6 @@
            data-title="Thirteen (2003)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/thirteen-2003.jpg">
            <p>
              
@@ -3482,7 +3249,6 @@
            data-title="The Whale (2022)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/the-whale-2022.jpg">
            <p>
              
@@ -3493,7 +3259,6 @@
            data-title="The Village (2004)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/the-village-2004.jpg">
            <p>
              
@@ -3504,7 +3269,6 @@
            data-title="The Hateful Eight (2015)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/the-hateful-eight-2015.jpg">
            <p>
              
@@ -3515,7 +3279,6 @@
            data-title="The Gray Man (2022)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/the-gray-man-2022.jpg">
            <p>
              
@@ -3526,7 +3289,6 @@
            data-title="The Fall Guy (2024)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/the-fall-guy-2024.jpg">
            <p>
              
@@ -3537,7 +3299,6 @@
            data-title="Tears of the Sun (2003)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/tears-of-the-sun-2003.jpg">
            <p>
              
@@ -3548,7 +3309,6 @@
            data-title="Split (2016)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/split-2016.jpg">
            <p>
              
@@ -3559,7 +3319,6 @@
            data-title="Signs (2002)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/signs-2002.jpg">
            <p>
              
@@ -3570,7 +3329,6 @@
            data-title="She's the Man (2006)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/she-s-the-man-2006.jpg">
            <p>
              
@@ -3581,7 +3339,6 @@
            data-title="RED (2010)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/red-2010.jpg">
            <p>
              
@@ -3592,7 +3349,6 @@
            data-title="Nightcrawler (2014)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/nightcrawler-2014.jpg">
            <p>
              
@@ -3603,7 +3359,6 @@
            data-title="Mr. &amp; Mrs. Smith (2005)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/mr-mrs-smith-2005.jpg">
            <p>
              
@@ -3614,7 +3369,6 @@
            data-title="Live Free or Die Hard (2007)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/live-free-or-die-hard-2007.jpg">
            <p>
              
@@ -3625,7 +3379,6 @@
            data-title="Lady in the Water (2006)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/lady-in-the-water-2006.jpg">
            <p>
              
@@ -3636,7 +3389,6 @@
            data-title="Kong: Skull Island (2017)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/kong-skull-island-2017.jpg">
            <p>
              
@@ -3647,7 +3399,6 @@
            data-title="Knock at the Cabin (2023)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/knock-at-the-cabin-2023.jpg">
            <p>
              
@@ -3658,7 +3409,6 @@
            data-title="King Kong (2005)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/king-kong-2005.jpg">
            <p>
              
@@ -3669,7 +3419,6 @@
            data-title="Iron Man 2 (2010)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/iron-man-2-2010.jpg">
            <p>
              
@@ -3680,7 +3429,6 @@
            data-title="Inside Out 2 (2024)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/inside-out-2-2024.jpg">
            <p>
              
@@ -3691,7 +3439,6 @@
            data-title="Indiana Jones and the Temple of Doom (1984)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/indiana-jones-and-the-temple-of-doom-1984.jpg">
            <p>
              
@@ -3702,7 +3449,6 @@
            data-title="Indiana Jones and the Last Crusade (1989)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/indiana-jones-and-the-last-crusade-1989.jpg">
            <p>
              
@@ -3713,7 +3459,6 @@
            data-title="Indiana Jones and the Kingdom of the Crystal Skull (2008)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/indiana-jones-and-the-kingdom-of-the-crystal-skull-2008.jpg">
            <p>
              
@@ -3724,7 +3469,6 @@
            data-title="Incredibles 2 (2018)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/incredibles-2-2018.jpg">
            <p>
              
@@ -3735,7 +3479,6 @@
            data-title="I Know What You Did Last Summer (1997)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/i-know-what-you-did-last-summer-1997.jpg">
            <p>
              
@@ -3746,7 +3489,6 @@
            data-title="Glass Onion (2022)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/glass-onion-2022.jpg">
            <p>
              
@@ -3757,7 +3499,6 @@
            data-title="Freaky Friday (2003)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/freaky-friday-2003.jpg">
            <p>
              
@@ -3768,7 +3509,6 @@
            data-title="Fracture (2007)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/fracture-2007.jpg">
            <p>
              
@@ -3779,7 +3519,6 @@
            data-title="Fantastic Four (2005)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/fantastic-four-2005.jpg">
            <p>
              
@@ -3790,7 +3529,6 @@
            data-title="Escape from New York (1981)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/escape-from-new-york-1981.jpg">
            <p>
              
@@ -3801,7 +3539,6 @@
            data-title="Escape from L.A. (1996)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/escape-from-l-a-1996.jpg">
            <p>
              
@@ -3812,7 +3549,6 @@
            data-title="Crash (2004)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/crash-2004.jpg">
            <p>
              
@@ -3823,7 +3559,6 @@
            data-title="Bullet Train (2022)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/bullet-train-2022.jpg">
            <p>
              
@@ -3834,7 +3569,6 @@
            data-title="Brothers (2009)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/brothers-2009.jpg">
            <p>
              
@@ -3845,7 +3579,6 @@
            data-title="Big Trouble in Little China (1986)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/big-trouble-in-little-china-1986.jpg">
            <p>
              
@@ -3856,7 +3589,6 @@
            data-title="Armageddon (1998)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/armageddon-1998.jpg">
            <p>
              
@@ -3867,7 +3599,6 @@
            data-title="A Good Day to Die Hard (2013)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/a-good-day-to-die-hard-2013.jpg">
            <p>
              
@@ -3878,7 +3609,6 @@
            data-title="50 First Dates (2004)"
            data-rating=""
            data-date="2025-08-04"
-           data-date-display="4 August 2025"
            data-cover="media/film/50-first-dates-2004.jpg">
            <p>
              
@@ -3889,7 +3619,6 @@
            data-title="Red Eye (2005)"
            data-rating=""
            data-date="2025-08-02"
-           data-date-display="2 August 2025"
            data-cover="media/film/red-eye-2005.jpg">
            <p>
              
@@ -3900,7 +3629,6 @@
            data-title="The Grey (2011)"
            data-rating=""
            data-date="2025-07-30"
-           data-date-display="30 July 2025"
            data-cover="media/film/the-grey-2011.jpg">
            <p>
              
@@ -3911,7 +3639,6 @@
            data-title="The Chronicles of Narnia: The Lion, the Witch and the Wardrobe (2005)"
            data-rating=""
            data-date="2025-07-30"
-           data-date-display="30 July 2025"
            data-cover="media/film/the-chronicles-of-narnia-the-lion-the-witch-and-the-wardrobe-2005.jpg">
            <p>
              
@@ -3922,7 +3649,6 @@
            data-title="The A-Team (2010)"
            data-rating=""
            data-date="2025-07-30"
-           data-date-display="30 July 2025"
            data-cover="media/film/the-a-team-2010.jpg">
            <p>
              
@@ -3933,7 +3659,6 @@
            data-title="Taken (2008)"
            data-rating=""
            data-date="2025-07-30"
-           data-date-display="30 July 2025"
            data-cover="media/film/taken-2008.jpg">
            <p>
              
@@ -3944,7 +3669,6 @@
            data-title="Star Wars: Episode II – Attack of the Clones (2002)"
            data-rating=""
            data-date="2025-07-30"
-           data-date-display="30 July 2025"
            data-cover="media/film/star-wars-episode-ii-attack-of-the-clones-2002.jpg">
            <p>
              
@@ -3955,7 +3679,6 @@
            data-title="Star Wars: Episode I – The Phantom Menace (1999)"
            data-rating=""
            data-date="2025-07-30"
-           data-date-display="30 July 2025"
            data-cover="media/film/star-wars-episode-i-the-phantom-menace-1999.jpg">
            <p>
              
@@ -3966,7 +3689,6 @@
            data-title="Clash of the Titans (2010)"
            data-rating=""
            data-date="2025-07-30"
-           data-date-display="30 July 2025"
            data-cover="media/film/clash-of-the-titans-2010.jpg">
            <p>
              
@@ -3977,7 +3699,6 @@
            data-title="Norbit (2007)"
            data-rating=""
            data-date="2025-07-29"
-           data-date-display="29 July 2025"
            data-cover="media/film/norbit-2007.jpg">
            <p>
              
@@ -3988,7 +3709,6 @@
            data-title="Hellboy (2019)"
            data-rating=""
            data-date="2025-07-29"
-           data-date-display="29 July 2025"
            data-cover="media/film/hellboy-2019.jpg">
            <p>
              
@@ -3999,7 +3719,6 @@
            data-title="Train to Busan (2016)"
            data-rating=""
            data-date="2025-07-27"
-           data-date-display="27 July 2025"
            data-cover="media/film/train-to-busan-2016.jpg">
            <p>
              
@@ -4010,7 +3729,6 @@
            data-title="Nobody (2021)"
            data-rating=""
            data-date="2025-07-27"
-           data-date-display="27 July 2025"
            data-cover="media/film/nobody-2021.jpg">
            <p>
              
@@ -4021,7 +3739,6 @@
            data-title="World War Z (2013)"
            data-rating=""
            data-date="2025-07-21"
-           data-date-display="21 July 2025"
            data-cover="media/film/world-war-z-2013.jpg">
            <p>
              
@@ -4032,7 +3749,6 @@
            data-title="The Crazies (2010)"
            data-rating=""
            data-date="2025-07-21"
-           data-date-display="21 July 2025"
            data-cover="media/film/the-crazies-2010.jpg">
            <p>
              
@@ -4043,7 +3759,6 @@
            data-title="Shaun of the Dead (2004)"
            data-rating=""
            data-date="2025-07-21"
-           data-date-display="21 July 2025"
            data-cover="media/film/shaun-of-the-dead-2004.jpg">
            <p>
              
@@ -4054,7 +3769,6 @@
            data-title="Resident Evil: The Final Chapter (2016)"
            data-rating=""
            data-date="2025-07-21"
-           data-date-display="21 July 2025"
            data-cover="media/film/resident-evil-the-final-chapter-2016.jpg">
            <p>
              
@@ -4065,7 +3779,6 @@
            data-title="Resident Evil: Retribution (2012)"
            data-rating=""
            data-date="2025-07-21"
-           data-date-display="21 July 2025"
            data-cover="media/film/resident-evil-retribution-2012.jpg">
            <p>
              
@@ -4076,7 +3789,6 @@
            data-title="Resident Evil: Extinction (2007)"
            data-rating=""
            data-date="2025-07-21"
-           data-date-display="21 July 2025"
            data-cover="media/film/resident-evil-extinction-2007.jpg">
            <p>
              
@@ -4087,7 +3799,6 @@
            data-title="Resident Evil: Apocalypse (2004)"
            data-rating=""
            data-date="2025-07-21"
-           data-date-display="21 July 2025"
            data-cover="media/film/resident-evil-apocalypse-2004.jpg">
            <p>
              
@@ -4098,7 +3809,6 @@
            data-title="Resident Evil: Afterlife (2010)"
            data-rating=""
            data-date="2025-07-21"
-           data-date-display="21 July 2025"
            data-cover="media/film/resident-evil-afterlife-2010.jpg">
            <p>
              
@@ -4109,7 +3819,6 @@
            data-title="Resident Evil (2002)"
            data-rating=""
            data-date="2025-07-21"
-           data-date-display="21 July 2025"
            data-cover="media/film/resident-evil-2002.jpg">
            <p>
              
@@ -4120,7 +3829,6 @@
            data-title="I Am Legend (2007)"
            data-rating=""
            data-date="2025-07-21"
-           data-date-display="21 July 2025"
            data-cover="media/film/i-am-legend-2007.jpg">
            <p>
              
@@ -4131,7 +3839,6 @@
            data-title="Dawn of the Dead (2004)"
            data-rating=""
            data-date="2025-07-21"
-           data-date-display="21 July 2025"
            data-cover="media/film/dawn-of-the-dead-2004.jpg">
            <p>
              
@@ -4142,7 +3849,6 @@
            data-title="Army of the Dead (2021)"
            data-rating=""
            data-date="2025-07-21"
-           data-date-display="21 July 2025"
            data-cover="media/film/army-of-the-dead-2021.jpg">
            <p>
              
@@ -4153,7 +3859,6 @@
            data-title="Timecrimes (2007)"
            data-rating=""
            data-date="2025-07-20"
-           data-date-display="20 July 2025"
            data-cover="media/film/timecrimes-2007.jpg">
            <p>
              
@@ -4164,7 +3869,6 @@
            data-title="The Raid (2011)"
            data-rating=""
            data-date="2025-07-20"
-           data-date-display="20 July 2025"
            data-cover="media/film/the-raid-2011.jpg">
            <p>
              
@@ -4175,7 +3879,6 @@
            data-title="Scooby-Doo (2002)"
            data-rating=""
            data-date="2025-07-20"
-           data-date-display="20 July 2025"
            data-cover="media/film/scooby-doo-2002.jpg">
            <p>
              
@@ -4186,7 +3889,6 @@
            data-title="Primer (2004)"
            data-rating=""
            data-date="2025-07-20"
-           data-date-display="20 July 2025"
            data-cover="media/film/primer-2004.jpg">
            <p>
              
@@ -4197,7 +3899,6 @@
            data-title="When Harry Met Sally... (1989)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/when-harry-met-sally-1989.jpg">
            <p>
              
@@ -4208,7 +3909,6 @@
            data-title="Warrior (2011)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/warrior-2011.jpg">
            <p>
              
@@ -4219,7 +3919,6 @@
            data-title="Training Day (2001)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/training-day-2001.jpg">
            <p>
              
@@ -4230,7 +3929,6 @@
            data-title="Toy Story (1995)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/toy-story-1995.jpg">
            <p>
              
@@ -4241,7 +3939,6 @@
            data-title="To Kill a Mockingbird (1962)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/to-kill-a-mockingbird-1962.jpg">
            <p>
              
@@ -4252,7 +3949,6 @@
            data-title="The Truman Show (1998)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/the-truman-show-1998.jpg">
            <p>
              
@@ -4263,7 +3959,6 @@
            data-title="The SpongeBob SquarePants Movie (2004)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/the-spongebob-squarepants-movie-2004.jpg">
            <p>
              
@@ -4274,7 +3969,6 @@
            data-title="The Sound of Music (1965)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/the-sound-of-music-1965.jpg">
            <p>
              
@@ -4285,7 +3979,6 @@
            data-title="The Sixth Sense (1999)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/the-sixth-sense-1999.jpg">
            <p>
              
@@ -4296,7 +3989,6 @@
            data-title="The Sandlot (1993)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/the-sandlot-1993.jpg">
            <p>
              
@@ -4307,7 +3999,6 @@
            data-title="The Revenant (2015)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/the-revenant-2015.jpg">
            <p>
              
@@ -4318,7 +4009,6 @@
            data-title="The Pursuit of Happyness (2006)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/the-pursuit-of-happyness-2006.jpg">
            <p>
              
@@ -4329,7 +4019,6 @@
            data-title="The Prince of Egypt (1998)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/the-prince-of-egypt-1998.jpg">
            <p>
              
@@ -4340,7 +4029,6 @@
            data-title="The Iron Giant (1999)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/the-iron-giant-1999.jpg">
            <p>
              
@@ -4351,7 +4039,6 @@
            data-title="The Imitation Game (2014)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/the-imitation-game-2014.jpg">
            <p>
              
@@ -4362,7 +4049,6 @@
            data-title="The Graduate (1967)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/the-graduate-1967.jpg">
            <p>
              
@@ -4373,7 +4059,6 @@
            data-title="The Goonies (1985)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/the-goonies-1985.jpg">
            <p>
              
@@ -4384,7 +4069,6 @@
            data-title="The Avengers (2012)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/the-avengers-2012.jpg">
            <p>
              
@@ -4395,7 +4079,6 @@
            data-title="Ted (2012)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/ted-2012.jpg">
            <p>
              
@@ -4406,7 +4089,6 @@
            data-title="Snatch (2000)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/snatch-2000.jpg">
            <p>
              
@@ -4417,7 +4099,6 @@
            data-title="Pirates of the Caribbean: The Curse of the Black Pearl (2003)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/pirates-of-the-caribbean-the-curse-of-the-black-pearl-2003.jpg">
            <p>
              
@@ -4428,7 +4109,6 @@
            data-title="Office Space (1999)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/office-space-1999.jpg">
            <p>
              
@@ -4439,7 +4119,6 @@
            data-title="Napoleon Dynamite (2004)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/napoleon-dynamite-2004.jpg">
            <p>
              
@@ -4450,7 +4129,6 @@
            data-title="Monsters, Inc. (2001)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/monsters-inc-2001.jpg">
            <p>
              
@@ -4461,7 +4139,6 @@
            data-title="Mary Poppins (1964)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/mary-poppins-1964.jpg">
            <p>
              
@@ -4472,7 +4149,6 @@
            data-title="Love Actually (2003)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/love-actually-2003.jpg">
            <p>
              
@@ -4483,7 +4159,6 @@
            data-title="Kung Fu Panda (2008)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/kung-fu-panda-2008.jpg">
            <p>
              
@@ -4494,7 +4169,6 @@
            data-title="Kung Fu Hustle (2004)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/kung-fu-hustle-2004.jpg">
            <p>
              
@@ -4505,7 +4179,6 @@
            data-title="Inside Out (2015)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/inside-out-2015.jpg">
            <p>
              
@@ -4516,7 +4189,6 @@
            data-title="How the Grinch Stole Christmas! (1966)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/how-the-grinch-stole-christmas-1966.jpg">
            <p>
              
@@ -4527,7 +4199,6 @@
            data-title="Home Alone (1990)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/home-alone-1990.jpg">
            <p>
              
@@ -4538,7 +4209,6 @@
            data-title="Holes (2003)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/holes-2003.jpg">
            <p>
              
@@ -4549,7 +4219,6 @@
            data-title="Gone with the Wind (1939)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/gone-with-the-wind-1939.jpg">
            <p>
              
@@ -4560,7 +4229,6 @@
            data-title="Forrest Gump (1994)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/forrest-gump-1994.jpg">
            <p>
              
@@ -4571,7 +4239,6 @@
            data-title="Finding Nemo (2003)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/finding-nemo-2003.jpg">
            <p>
              
@@ -4582,7 +4249,6 @@
            data-title="End of Watch (2012)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/end-of-watch-2012.jpg">
            <p>
              
@@ -4593,7 +4259,6 @@
            data-title="E.T. the Extra-Terrestrial (1982)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/e-t-the-extra-terrestrial-1982.jpg">
            <p>
              
@@ -4604,7 +4269,6 @@
            data-title="Die Hard (1988)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/die-hard-1988.jpg">
            <p>
              
@@ -4615,7 +4279,6 @@
            data-title="Citizen Kane (1941)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/citizen-kane-1941.jpg">
            <p>
              
@@ -4626,7 +4289,6 @@
            data-title="Blazing Saddles (1974)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/blazing-saddles-1974.jpg">
            <p>
              
@@ -4637,7 +4299,6 @@
            data-title="Beauty and the Beast (1991)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/beauty-and-the-beast-1991.jpg">
            <p>
              
@@ -4648,7 +4309,6 @@
            data-title="American History X (1998)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/american-history-x-1998.jpg">
            <p>
              
@@ -4659,7 +4319,6 @@
            data-title="Aladdin (1992)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/aladdin-1992.jpg">
            <p>
              
@@ -4670,7 +4329,6 @@
            data-title="Airplane! (1980)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/airplane-1980.jpg">
            <p>
              
@@ -4681,7 +4339,6 @@
            data-title="A Star Is Born (2018)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/a-star-is-born-2018.jpg">
            <p>
              
@@ -4692,7 +4349,6 @@
            data-title="A Christmas Story (1983)"
            data-rating=""
            data-date="2025-07-19"
-           data-date-display="19 July 2025"
            data-cover="media/film/a-christmas-story-1983.jpg">
            <p>
              
@@ -4703,7 +4359,6 @@
            data-title="The Interview (2014)"
            data-rating=""
            data-date="2025-07-18"
-           data-date-display="18 July 2025"
            data-cover="media/film/the-interview-2014.jpg">
            <p>
              
@@ -4714,7 +4369,6 @@
            data-title="Sausage Party (2016)"
            data-rating=""
            data-date="2025-07-18"
-           data-date-display="18 July 2025"
            data-cover="media/film/sausage-party-2016.jpg">
            <p>
              
@@ -4725,7 +4379,6 @@
            data-title="Harold &amp; Kumar Go to White Castle (2004)"
            data-rating=""
            data-date="2025-07-18"
-           data-date-display="18 July 2025"
            data-cover="media/film/harold-kumar-go-to-white-castle-2004.jpg">
            <p>
              
@@ -4736,7 +4389,6 @@
            data-title="Harold &amp; Kumar Escape from Guantanamo Bay (2008)"
            data-rating=""
            data-date="2025-07-18"
-           data-date-display="18 July 2025"
            data-cover="media/film/harold-kumar-escape-from-guantanamo-bay-2008.jpg">
            <p>
              
@@ -4747,7 +4399,6 @@
            data-title="Epic Movie (2007)"
            data-rating=""
            data-date="2025-07-18"
-           data-date-display="18 July 2025"
            data-cover="media/film/epic-movie-2007.jpg">
            <p>
              
@@ -4758,7 +4409,6 @@
            data-title="Before Sunrise (1995)"
            data-rating=""
            data-date="2025-07-18"
-           data-date-display="18 July 2025"
            data-cover="media/film/before-sunrise-1995.jpg">
            <p>
              
@@ -4769,7 +4419,6 @@
            data-title="Michael Clayton (2007)"
            data-rating=""
            data-date="2025-07-16"
-           data-date-display="16 July 2025"
            data-cover="media/film/michael-clayton-2007.jpg">
            <p>
              
@@ -4780,7 +4429,6 @@
            data-title="Red Notice (2021)"
            data-rating=""
            data-date="2025-07-15"
-           data-date-display="15 July 2025"
            data-cover="media/film/red-notice-2021.jpg">
            <p>
              
@@ -4791,7 +4439,6 @@
            data-title="Kingsman: The Secret Service (2014)"
            data-rating=""
            data-date="2025-07-15"
-           data-date-display="15 July 2025"
            data-cover="media/film/kingsman-the-secret-service-2014.jpg">
            <p>
              
@@ -4802,7 +4449,6 @@
            data-title="Black Bag (2025)"
            data-rating=""
            data-date="2025-07-15"
-           data-date-display="15 July 2025"
            data-cover="media/film/black-bag-2025.jpg">
            <p>
              
@@ -4813,7 +4459,6 @@
            data-title="Zombieland (2009)"
            data-rating=""
            data-date="2025-07-14"
-           data-date-display="14 July 2025"
            data-cover="media/film/zombieland-2009.jpg">
            <p>
              
@@ -4824,7 +4469,6 @@
            data-title="Venom (2018)"
            data-rating=""
            data-date="2025-07-14"
-           data-date-display="14 July 2025"
            data-cover="media/film/venom-2018.jpg">
            <p>
              
@@ -4835,7 +4479,6 @@
            data-title="There Will Be Blood (2007)"
            data-rating=""
            data-date="2025-07-14"
-           data-date-display="14 July 2025"
            data-cover="media/film/there-will-be-blood-2007.jpg">
            <p>
              
@@ -4846,7 +4489,6 @@
            data-title="The Machinist (2004)"
            data-rating=""
            data-date="2025-07-14"
-           data-date-display="14 July 2025"
            data-cover="media/film/the-machinist-2004.jpg">
            <p>
              
@@ -4857,7 +4499,6 @@
            data-title="Out of the Furnace (2013)"
            data-rating=""
            data-date="2025-07-14"
-           data-date-display="14 July 2025"
            data-cover="media/film/out-of-the-furnace-2013.jpg">
            <p>
              
@@ -4868,7 +4509,6 @@
            data-title="Dogtooth (2009)"
            data-rating=""
            data-date="2025-07-14"
-           data-date-display="14 July 2025"
            data-cover="media/film/dogtooth-2009.jpg">
            <p>
              
@@ -4879,7 +4519,6 @@
            data-title="2012 (2009)"
            data-rating=""
            data-date="2025-07-14"
-           data-date-display="14 July 2025"
            data-cover="media/film/2012-2009.jpg">
            <p>
              
@@ -4890,7 +4529,6 @@
            data-title="They Live (1988)"
            data-rating=""
            data-date="2025-07-12"
-           data-date-display="12 July 2025"
            data-cover="media/film/they-live-1988.jpg">
            <p>
              
@@ -4901,7 +4539,6 @@
            data-title="The Menu (2022)"
            data-rating=""
            data-date="2025-07-12"
-           data-date-display="12 July 2025"
            data-cover="media/film/the-menu-2022.jpg">
            <p>
              
@@ -4912,7 +4549,6 @@
            data-title="The Happening (2008)"
            data-rating=""
            data-date="2025-07-12"
-           data-date-display="12 July 2025"
            data-cover="media/film/the-happening-2008.jpg">
            <p>
              
@@ -4923,7 +4559,6 @@
            data-title="Minority Report (2002)"
            data-rating=""
            data-date="2025-07-12"
-           data-date-display="12 July 2025"
            data-cover="media/film/minority-report-2002.jpg">
            <p>
              
@@ -4934,7 +4569,6 @@
            data-title="Miami Vice (2006)"
            data-rating=""
            data-date="2025-07-12"
-           data-date-display="12 July 2025"
            data-cover="media/film/miami-vice-2006.jpg">
            <p>
              
@@ -4945,7 +4579,6 @@
            data-title="Jurassic World Rebirth (2025)"
            data-rating="2.0"
            data-date="2025-07-12"
-           data-date-display="12 July 2025"
            data-cover="media/film/jurassic-world-rebirth-2025.jpg">
            <p>
              
@@ -4956,7 +4589,6 @@
            data-title="In Time (2011)"
            data-rating=""
            data-date="2025-07-12"
-           data-date-display="12 July 2025"
            data-cover="media/film/in-time-2011.jpg">
            <p>
              
@@ -4967,7 +4599,6 @@
            data-title="Déjà Vu (2006)"
            data-rating=""
            data-date="2025-07-12"
-           data-date-display="12 July 2025"
            data-cover="media/film/deja-vu-2006.jpg">
            <p>
              
@@ -4978,7 +4609,6 @@
            data-title="Blackhat (2015)"
            data-rating=""
            data-date="2025-07-12"
-           data-date-display="12 July 2025"
            data-cover="media/film/blackhat-2015.jpg">
            <p>
              
@@ -4989,7 +4619,6 @@
            data-title="A Quiet Place Part II (2020)"
            data-rating=""
            data-date="2025-07-12"
-           data-date-display="12 July 2025"
            data-cover="media/film/a-quiet-place-part-ii-2020.jpg">
            <p>
              
@@ -5000,7 +4629,6 @@
            data-title="The Lincoln Lawyer (2011)"
            data-rating=""
            data-date="2025-07-11"
-           data-date-display="11 July 2025"
            data-cover="media/film/the-lincoln-lawyer-2011.jpg">
            <p>
              
@@ -5011,7 +4639,6 @@
            data-title="Law Abiding Citizen (2009)"
            data-rating=""
            data-date="2025-07-11"
-           data-date-display="11 July 2025"
            data-cover="media/film/law-abiding-citizen-2009.jpg">
            <p>
              
@@ -5022,7 +4649,6 @@
            data-title="War of the Worlds (2005)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/war-of-the-worlds-2005.jpg">
            <p>
              
@@ -5033,7 +4659,6 @@
            data-title="Valkyrie (2008)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/valkyrie-2008.jpg">
            <p>
              
@@ -5044,7 +4669,6 @@
            data-title="Tropic Thunder (2008)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/tropic-thunder-2008.jpg">
            <p>
              
@@ -5055,7 +4679,6 @@
            data-title="The Big Short (2015)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/the-big-short-2015.jpg">
            <p>
              
@@ -5066,7 +4689,6 @@
            data-title="The 40 Year Old Virgin (2005)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/the-40-year-old-virgin-2005.jpg">
            <p>
              
@@ -5077,7 +4699,6 @@
            data-title="Scream (1996)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/scream-1996.jpg">
            <p>
              
@@ -5088,7 +4709,6 @@
            data-title="Over the Hedge (2006)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/over-the-hedge-2006.jpg">
            <p>
              
@@ -5099,7 +4719,6 @@
            data-title="Night at the Museum: Battle of the Smithsonian (2009)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/night-at-the-museum-battle-of-the-smithsonian-2009.jpg">
            <p>
              
@@ -5110,7 +4729,6 @@
            data-title="Night at the Museum (2006)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/night-at-the-museum-2006.jpg">
            <p>
              
@@ -5121,7 +4739,6 @@
            data-title="Mission: Impossible – The Final Reckoning (2025)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/mission-impossible-the-final-reckoning-2025.jpg">
            <p>
              
@@ -5132,7 +4749,6 @@
            data-title="Mission: Impossible – Rogue Nation (2015)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/mission-impossible-rogue-nation-2015.jpg">
            <p>
              
@@ -5143,7 +4759,6 @@
            data-title="Mission: Impossible – Ghost Protocol (2011)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/mission-impossible-ghost-protocol-2011.jpg">
            <p>
              
@@ -5154,7 +4769,6 @@
            data-title="Mission: Impossible – Fallout (2018)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/mission-impossible-fallout-2018.jpg">
            <p>
              
@@ -5165,7 +4779,6 @@
            data-title="Mission: Impossible – Dead Reckoning (2023)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/mission-impossible-dead-reckoning-2023.jpg">
            <p>
              
@@ -5176,7 +4789,6 @@
            data-title="Mission: Impossible III (2006)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/mission-impossible-iii-2006.jpg">
            <p>
              
@@ -5187,7 +4799,6 @@
            data-title="Mission: Impossible II (2000)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/mission-impossible-ii-2000.jpg">
            <p>
              
@@ -5198,7 +4809,6 @@
            data-title="Mission: Impossible (1996)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/mission-impossible-1996.jpg">
            <p>
              
@@ -5209,7 +4819,6 @@
            data-title="Minions: The Rise of Gru (2022)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/minions-the-rise-of-gru-2022.jpg">
            <p>
              
@@ -5220,7 +4829,6 @@
            data-title="Madagascar: Escape 2 Africa (2008)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/madagascar-escape-2-africa-2008.jpg">
            <p>
              
@@ -5231,7 +4839,6 @@
            data-title="Madagascar (2005)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/madagascar-2005.jpg">
            <p>
              
@@ -5242,7 +4849,6 @@
            data-title="Jack Reacher (2012)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/jack-reacher-2012.jpg">
            <p>
              
@@ -5253,7 +4859,6 @@
            data-title="Happy Gilmore (1996)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/happy-gilmore-1996.jpg">
            <p>
              
@@ -5264,7 +4869,6 @@
            data-title="Halloween III: Season of the Witch (1982)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/halloween-iii-season-of-the-witch-1982.jpg">
            <p>
              
@@ -5275,7 +4879,6 @@
            data-title="Halloween II (1981)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/halloween-ii-1981.jpg">
            <p>
              
@@ -5286,7 +4889,6 @@
            data-title="Halloween (2018)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/halloween-2018.jpg">
            <p>
              
@@ -5297,7 +4899,6 @@
            data-title="Halloween (2007)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/halloween-2007.jpg">
            <p>
              
@@ -5308,7 +4909,6 @@
            data-title="Get Smart (2008)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/get-smart-2008.jpg">
            <p>
              
@@ -5319,7 +4919,6 @@
            data-title="Friday the 13th (1980)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/friday-the-13th-1980.jpg">
            <p>
              
@@ -5330,7 +4929,6 @@
            data-title="Freddy vs. Jason (2003)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/freddy-vs-jason-2003.jpg">
            <p>
              
@@ -5341,7 +4939,6 @@
            data-title="Evan Almighty (2007)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/evan-almighty-2007.jpg">
            <p>
              
@@ -5352,7 +4949,6 @@
            data-title="DodgeBall: A True Underdog Story (2004)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/dodgeball-a-true-underdog-story-2004.jpg">
            <p>
              
@@ -5363,7 +4959,6 @@
            data-title="Despicable Me 3 (2017)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/despicable-me-3-2017.jpg">
            <p>
              
@@ -5374,7 +4969,6 @@
            data-title="Despicable Me 2 (2013)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/despicable-me-2-2013.jpg">
            <p>
              
@@ -5385,7 +4979,6 @@
            data-title="Despicable Me (2010)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/despicable-me-2010.jpg">
            <p>
              
@@ -5396,7 +4989,6 @@
            data-title="Date Night (2010)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/date-night-2010.jpg">
            <p>
              
@@ -5407,7 +4999,6 @@
            data-title="Collateral (2004)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/collateral-2004.jpg">
            <p>
              
@@ -5418,7 +5009,6 @@
            data-title="Child's Play (1988)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/child-s-play-1988.jpg">
            <p>
              
@@ -5429,7 +5019,6 @@
            data-title="Casa de Mi Padre (2012)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/casa-de-mi-padre-2012.jpg">
            <p>
              
@@ -5440,7 +5029,6 @@
            data-title="Bruce Almighty (2003)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/bruce-almighty-2003.jpg">
            <p>
              
@@ -5451,7 +5039,6 @@
            data-title="American Made (2017)"
            data-rating=""
            data-date="2025-07-10"
-           data-date-display="10 July 2025"
            data-cover="media/film/american-made-2017.jpg">
            <p>
              
@@ -5462,7 +5049,6 @@
            data-title="V for Vendetta (2005)"
            data-rating=""
            data-date="2025-07-09"
-           data-date-display="9 July 2025"
            data-cover="media/film/v-for-vendetta-2005.jpg">
            <p>
              
@@ -5473,7 +5059,6 @@
            data-title="The Lighthouse (2019)"
            data-rating=""
            data-date="2025-07-09"
-           data-date-display="9 July 2025"
            data-cover="media/film/the-lighthouse-2019.jpg">
            <p>
              
@@ -5484,7 +5069,6 @@
            data-title="John Wick: Chapter 4 (2023)"
            data-rating=""
            data-date="2025-07-09"
-           data-date-display="9 July 2025"
            data-cover="media/film/john-wick-chapter-4-2023.jpg">
            <p>
              
@@ -5495,7 +5079,6 @@
            data-title="John Wick: Chapter 3 – Parabellum (2019)"
            data-rating=""
            data-date="2025-07-09"
-           data-date-display="9 July 2025"
            data-cover="media/film/john-wick-chapter-3-parabellum-2019.jpg">
            <p>
              
@@ -5506,7 +5089,6 @@
            data-title="John Wick: Chapter 2 (2017)"
            data-rating=""
            data-date="2025-07-09"
-           data-date-display="9 July 2025"
            data-cover="media/film/john-wick-chapter-2-2017.jpg">
            <p>
              
@@ -5517,7 +5099,6 @@
            data-title="John Wick (2014)"
            data-rating=""
            data-date="2025-07-09"
-           data-date-display="9 July 2025"
            data-cover="media/film/john-wick-2014.jpg">
            <p>
              
@@ -5528,7 +5109,6 @@
            data-title="Zodiac (2007)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/zodiac-2007.jpg">
            <p>
              
@@ -5539,7 +5119,6 @@
            data-title="You Were Never Really Here (2017)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/you-were-never-really-here-2017.jpg">
            <p>
              
@@ -5550,7 +5129,6 @@
            data-title="White Chicks (2004)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/white-chicks-2004.jpg">
            <p>
              
@@ -5561,7 +5139,6 @@
            data-title="The Witch (2015)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/the-witch-2015.jpg">
            <p>
              
@@ -5572,7 +5149,6 @@
            data-title="The Thing (1982)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/the-thing-1982.jpg">
            <p>
              
@@ -5583,7 +5159,6 @@
            data-title="The Texas Chain Saw Massacre (1974)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/the-texas-chain-saw-massacre-1974.jpg">
            <p>
              
@@ -5594,7 +5169,6 @@
            data-title="The Substance (2024)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/the-substance-2024.jpg">
            <p>
              
@@ -5605,7 +5179,6 @@
            data-title="The Silence of the Lambs (1991)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/the-silence-of-the-lambs-1991.jpg">
            <p>
              
@@ -5616,7 +5189,6 @@
            data-title="The Shining (1980)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/the-shining-1980.jpg">
            <p>
              
@@ -5627,7 +5199,6 @@
            data-title="The Matrix (1999)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/the-matrix-1999.jpg">
            <p>
              
@@ -5638,7 +5209,6 @@
            data-title="The Lord of the Rings: The Two Towers (2002)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/the-lord-of-the-rings-the-two-towers-2002.jpg">
            <p>
              
@@ -5649,7 +5219,6 @@
            data-title="The Lion King (1994)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/the-lion-king-1994.jpg">
            <p>
              
@@ -5660,7 +5229,6 @@
            data-title="The Green Mile (1999)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/the-green-mile-1999.jpg">
            <p>
              
@@ -5671,7 +5239,6 @@
            data-title="The Devil Wears Prada (2006)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/the-devil-wears-prada-2006.jpg">
            <p>
              
@@ -5682,7 +5249,6 @@
            data-title="The Breakfast Club (1985)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/the-breakfast-club-1985.jpg">
            <p>
              
@@ -5693,7 +5259,6 @@
            data-title="Taxi Driver (1976)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/taxi-driver-1976.jpg">
            <p>
              
@@ -5704,7 +5269,6 @@
            data-title="Star Wars: Episode III – Revenge of the Sith (2005)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/star-wars-episode-iii-revenge-of-the-sith-2005.jpg">
            <p>
              
@@ -5715,7 +5279,6 @@
            data-title="Stand by Me (1986)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/stand-by-me-1986.jpg">
            <p>
              
@@ -5726,7 +5289,6 @@
            data-title="Spider-Man 2 (2004)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/spider-man-2-2004.jpg">
            <p>
              
@@ -5737,7 +5299,6 @@
            data-title="Sinners (2025)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/sinners-2025.jpg">
            <p>
              
@@ -5748,7 +5309,6 @@
            data-title="Shutter Island (2010)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/shutter-island-2010.jpg">
            <p>
              
@@ -5759,7 +5319,6 @@
            data-title="Shrek 2 (2004)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/shrek-2-2004.jpg">
            <p>
              
@@ -5770,7 +5329,6 @@
            data-title="Shrek (2001)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/shrek-2001.jpg">
            <p>
              
@@ -5781,7 +5339,6 @@
            data-title="Shallow Hal (2001)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/shallow-hal-2001.jpg">
            <p>
              
@@ -5792,7 +5349,6 @@
            data-title="Se7en (1995)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/se7en-1995.jpg">
            <p>
              
@@ -5803,7 +5359,6 @@
            data-title="Scarface (1983)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/scarface-1983.jpg">
            <p>
              
@@ -5814,7 +5369,6 @@
            data-title="Reservoir Dogs (1992)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/reservoir-dogs-1992.jpg">
            <p>
              
@@ -5825,7 +5379,6 @@
            data-title="Raiders of the Lost Ark (1981)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/raiders-of-the-lost-ark-1981.jpg">
            <p>
              
@@ -5836,7 +5389,6 @@
            data-title="Pulp Fiction (1994)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/pulp-fiction-1994.jpg">
            <p>
              
@@ -5847,7 +5399,6 @@
            data-title="Pitch Perfect (2012)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/pitch-perfect-2012.jpg">
            <p>
              
@@ -5858,7 +5409,6 @@
            data-title="Mean Girls (2004)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/mean-girls-2004.jpg">
            <p>
              
@@ -5869,7 +5419,6 @@
            data-title="Léon: The Professional (1994)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/leon-the-professional-1994.jpg">
            <p>
              
@@ -5880,7 +5429,6 @@
            data-title="Knives Out (2019)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/knives-out-2019.jpg">
            <p>
              
@@ -5891,7 +5439,6 @@
            data-title="Joker (2019)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/joker-2019.jpg">
            <p>
              
@@ -5902,7 +5449,6 @@
            data-title="Jaws (1975)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/jaws-1975.jpg">
            <p>
              
@@ -5913,7 +5459,6 @@
            data-title="It (2017)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/it-2017.jpg">
            <p>
              
@@ -5924,7 +5469,6 @@
            data-title="How to Lose a Guy in 10 Days (2003)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/how-to-lose-a-guy-in-10-days-2003.jpg">
            <p>
              
@@ -5935,7 +5479,6 @@
            data-title="Hot Fuzz (2007)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/hot-fuzz-2007.jpg">
            <p>
              
@@ -5946,7 +5489,6 @@
            data-title="Harry Potter and the Prisoner of Azkaban (2004)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/harry-potter-and-the-prisoner-of-azkaban-2004.jpg">
            <p>
              
@@ -5957,7 +5499,6 @@
            data-title="Harry Potter and the Philosopher's Stone (2001)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/harry-potter-and-the-philosopher-s-stone-2001.jpg">
            <p>
              
@@ -5968,7 +5509,6 @@
            data-title="Harry Potter and the Order of the Phoenix (2007)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/harry-potter-and-the-order-of-the-phoenix-2007.jpg">
            <p>
              
@@ -5979,7 +5519,6 @@
            data-title="Harry Potter and the Half-Blood Prince (2009)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/harry-potter-and-the-half-blood-prince-2009.jpg">
            <p>
              
@@ -5990,7 +5529,6 @@
            data-title="Harry Potter and the Goblet of Fire (2005)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/harry-potter-and-the-goblet-of-fire-2005.jpg">
            <p>
              
@@ -6001,7 +5539,6 @@
            data-title="Harry Potter and the Deathly Hallows: Part 2 (2011)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/harry-potter-and-the-deathly-hallows-part-2-2011.jpg">
            <p>
              
@@ -6012,7 +5549,6 @@
            data-title="Harry Potter and the Deathly Hallows: Part 1 (2010)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/harry-potter-and-the-deathly-hallows-part-1-2010.jpg">
            <p>
              
@@ -6023,7 +5559,6 @@
            data-title="Harry Potter and the Chamber of Secrets (2002)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/harry-potter-and-the-chamber-of-secrets-2002.jpg">
            <p>
              
@@ -6034,7 +5569,6 @@
            data-title="Halloween (1978)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/halloween-1978.jpg">
            <p>
              
@@ -6045,7 +5579,6 @@
            data-title="Fight Club (1999)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/fight-club-1999.jpg">
            <p>
              
@@ -6056,7 +5589,6 @@
            data-title="Ferris Bueller's Day Off (1986)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/ferris-bueller-s-day-off-1986.jpg">
            <p>
              
@@ -6067,7 +5599,6 @@
            data-title="Dune: Part Two (2024)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/dune-part-two-2024.jpg">
            <p>
              
@@ -6078,7 +5609,6 @@
            data-title="Drive (2011)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/drive-2011.jpg">
            <p>
              
@@ -6089,7 +5619,6 @@
            data-title="Donnie Darko (2001)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/donnie-darko-2001.jpg">
            <p>
              
@@ -6100,7 +5629,6 @@
            data-title="Django Unchained (2012)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/django-unchained-2012.jpg">
            <p>
              
@@ -6111,7 +5639,6 @@
            data-title="Crazy, Stupid, Love. (2011)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/crazy-stupid-love-2011.jpg">
            <p>
              
@@ -6122,7 +5649,6 @@
            data-title="Catch Me If You Can (2002)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/catch-me-if-you-can-2002.jpg">
            <p>
              
@@ -6133,7 +5659,6 @@
            data-title="Casablanca (1942)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/casablanca-1942.jpg">
            <p>
              
@@ -6144,7 +5669,6 @@
            data-title="Cars (2006)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/cars-2006.jpg">
            <p>
              
@@ -6155,7 +5679,6 @@
            data-title="Avengers: Endgame (2019)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/avengers-endgame-2019.jpg">
            <p>
              
@@ -6166,7 +5689,6 @@
            data-title="American Beauty (1999)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/american-beauty-1999.jpg">
            <p>
              
@@ -6177,7 +5699,6 @@
            data-title="Alien (1979)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/alien-1979.jpg">
            <p>
              
@@ -6188,7 +5709,6 @@
            data-title="A Clockwork Orange (1971)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/a-clockwork-orange-1971.jpg">
            <p>
              
@@ -6199,7 +5719,6 @@
            data-title="A Bug's Life (1998)"
            data-rating=""
            data-date="2025-07-07"
-           data-date-display="7 July 2025"
            data-cover="media/film/a-bug-s-life-1998.jpg">
            <p>
              
@@ -6210,7 +5729,6 @@
            data-title="Zoolander 2 (2016)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/zoolander-2-2016.jpg">
            <p>
              
@@ -6221,7 +5739,6 @@
            data-title="Zoolander (2001)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/zoolander-2001.jpg">
            <p>
              
@@ -6232,7 +5749,6 @@
            data-title="Whiplash (2014)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/whiplash-2014.jpg">
            <p>
              
@@ -6243,7 +5759,6 @@
            data-title="Wedding Crashers (2005)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/wedding-crashers-2005.jpg">
            <p>
              
@@ -6254,7 +5769,6 @@
            data-title="Warfare (2025)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/warfare-2025.jpg">
            <p>
              
@@ -6265,7 +5779,6 @@
            data-title="WALL·E (2008)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/wall-e-2008.jpg">
            <p>
              
@@ -6276,7 +5789,6 @@
            data-title="Up (2009)"
            data-rating="4.0"
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/up-2009.jpg">
            <p>
              
@@ -6287,7 +5799,6 @@
            data-title="TÁR (2022)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/tar-2022.jpg">
            <p>
              
@@ -6298,7 +5809,6 @@
            data-title="True Grit (2010)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/true-grit-2010.jpg">
            <p>
              
@@ -6309,7 +5819,6 @@
            data-title="Tremors (1990)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/tremors-1990.jpg">
            <p>
              
@@ -6320,7 +5829,6 @@
            data-title="The Wolf of Wall Street (2013)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-wolf-of-wall-street-2013.jpg">
            <p>
              
@@ -6331,7 +5839,6 @@
            data-title="The Town (2010)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-town-2010.jpg">
            <p>
              
@@ -6342,7 +5849,6 @@
            data-title="The Taking of Pelham 1 2 3 (2009)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-taking-of-pelham-1-2-3-2009.jpg">
            <p>
              
@@ -6353,7 +5859,6 @@
            data-title="The Social Network (2010)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-social-network-2010.jpg">
            <p>
              
@@ -6364,7 +5869,6 @@
            data-title="The Shawshank Redemption (1994)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-shawshank-redemption-1994.jpg">
            <p>
              
@@ -6375,7 +5879,6 @@
            data-title="The Prestige (2006)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-prestige-2006.jpg">
            <p>
              
@@ -6386,7 +5889,6 @@
            data-title="The Other Guys (2010)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-other-guys-2010.jpg">
            <p>
              
@@ -6397,7 +5899,6 @@
            data-title="The Martian (2015)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-martian-2015.jpg">
            <p>
              
@@ -6408,7 +5909,6 @@
            data-title="The Lost World: Jurassic Park (1997)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-lost-world-jurassic-park-1997.jpg">
            <p>
              
@@ -6419,7 +5919,6 @@
            data-title="The Lord of the Rings: The Return of the King (2003)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-lord-of-the-rings-the-return-of-the-king-2003.jpg">
            <p>
              
@@ -6430,7 +5929,6 @@
            data-title="The Lord of the Rings: The Fellowship of the Ring (2001)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-lord-of-the-rings-the-fellowship-of-the-ring-2001.jpg">
            <p>
              
@@ -6441,7 +5939,6 @@
            data-title="The Hurt Locker (2008)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-hurt-locker-2008.jpg">
            <p>
              
@@ -6452,7 +5949,6 @@
            data-title="The Godfather (1972)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-godfather-1972.jpg">
            <p>
              
@@ -6463,7 +5959,6 @@
            data-title="The Departed (2006)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-departed-2006.jpg">
            <p>
              
@@ -6474,7 +5969,6 @@
            data-title="The Dark Knight Rises (2012)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-dark-knight-rises-2012.jpg">
            <p>
              
@@ -6485,7 +5979,6 @@
            data-title="The Dark Knight (2008)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-dark-knight-2008.jpg">
            <p>
              
@@ -6496,7 +5989,6 @@
            data-title="The Bourne Ultimatum (2007)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-bourne-ultimatum-2007.jpg">
            <p>
              
@@ -6507,7 +5999,6 @@
            data-title="The Bourne Supremacy (2004)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-bourne-supremacy-2004.jpg">
            <p>
              
@@ -6518,7 +6009,6 @@
            data-title="The Bourne Identity (2002)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-bourne-identity-2002.jpg">
            <p>
              
@@ -6529,7 +6019,6 @@
            data-title="The Adjustment Bureau (2011)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/the-adjustment-bureau-2011.jpg">
            <p>
              
@@ -6540,7 +6029,6 @@
            data-title="Talladega Nights: The Ballad of Ricky Bobby (2006)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/talladega-nights-the-ballad-of-ricky-bobby-2006.jpg">
            <p>
              
@@ -6551,7 +6039,6 @@
            data-title="Superbad (2007)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/superbad-2007.jpg">
            <p>
              
@@ -6562,7 +6049,6 @@
            data-title="Step Brothers (2008)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/step-brothers-2008.jpg">
            <p>
              
@@ -6573,7 +6059,6 @@
            data-title="Sicario (2015)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/sicario-2015.jpg">
            <p>
              
@@ -6584,7 +6069,6 @@
            data-title="Semi-Pro (2008)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/semi-pro-2008.jpg">
            <p>
              
@@ -6595,7 +6079,6 @@
            data-title="Saving Private Ryan (1998)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/saving-private-ryan-1998.jpg">
            <p>
              
@@ -6606,7 +6089,6 @@
            data-title="Requiem for a Dream (2000)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/requiem-for-a-dream-2000.jpg">
            <p>
              
@@ -6617,7 +6099,6 @@
            data-title="Ratatouille (2007)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/ratatouille-2007.jpg">
            <p>
              
@@ -6628,7 +6109,6 @@
            data-title="Prisoners (2013)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/prisoners-2013.jpg">
            <p>
              
@@ -6639,7 +6119,6 @@
            data-title="Point Break (1991)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/point-break-1991.jpg">
            <p>
              
@@ -6650,7 +6129,6 @@
            data-title="Parasite (2019)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/parasite-2019.jpg">
            <p>
              
@@ -6661,7 +6139,6 @@
            data-title="Once Upon a Time... in Hollywood (2019)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/once-upon-a-time-in-hollywood-2019.jpg">
            <p>
              
@@ -6672,7 +6149,6 @@
            data-title="Old School (2003)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/old-school-2003.jpg">
            <p>
              
@@ -6683,7 +6159,6 @@
            data-title="Ocean's Twelve (2004)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/ocean-s-twelve-2004.jpg">
            <p>
              
@@ -6694,7 +6169,6 @@
            data-title="Ocean's Thirteen (2007)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/ocean-s-thirteen-2007.jpg">
            <p>
              
@@ -6705,7 +6179,6 @@
            data-title="Ocean's Eleven (2001)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/ocean-s-eleven-2001.jpg">
            <p>
              
@@ -6716,7 +6189,6 @@
            data-title="O Brother, Where Art Thou? (2000)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/o-brother-where-art-thou-2000.jpg">
            <p>
              
@@ -6727,7 +6199,6 @@
            data-title="No Country for Old Men (2007)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/no-country-for-old-men-2007.jpg">
            <p>
              
@@ -6738,7 +6209,6 @@
            data-title="Moneyball (2011)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/moneyball-2011.jpg">
            <p>
              
@@ -6749,7 +6219,6 @@
            data-title="Mad Max: Fury Road (2015)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/mad-max-fury-road-2015.jpg">
            <p>
              
@@ -6760,7 +6229,6 @@
            data-title="Land of the Lost (2009)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/land-of-the-lost-2009.jpg">
            <p>
              
@@ -6771,7 +6239,6 @@
            data-title="Kill Bill: Vol. 1 (2003)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/kill-bill-vol-1-2003.jpg">
            <p>
              
@@ -6782,7 +6249,6 @@
            data-title="Kicking &amp; Screaming (2005)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/kicking-screaming-2005.jpg">
            <p>
              
@@ -6793,7 +6259,6 @@
            data-title="Jurassic World: Fallen Kingdom (2018)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/jurassic-world-fallen-kingdom-2018.jpg">
            <p>
              
@@ -6804,7 +6269,6 @@
            data-title="Jurassic World Dominion (2022)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/jurassic-world-dominion-2022.jpg">
            <p>
              
@@ -6815,7 +6279,6 @@
            data-title="Jurassic World (2015)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/jurassic-world-2015.jpg">
            <p>
              
@@ -6826,7 +6289,6 @@
            data-title="Jurassic Park III (2001)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/jurassic-park-iii-2001.jpg">
            <p>
              
@@ -6837,7 +6299,6 @@
            data-title="Jurassic Park (1993)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/jurassic-park-1993.jpg">
            <p>
              
@@ -6848,7 +6309,6 @@
            data-title="Jason X (2001)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/jason-x-2001.jpg">
            <p>
              
@@ -6859,7 +6319,6 @@
            data-title="Jason Bourne (2016)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/jason-bourne-2016.jpg">
            <p>
              
@@ -6870,7 +6329,6 @@
            data-title="Jackie Brown (1997)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/jackie-brown-1997.jpg">
            <p>
              
@@ -6881,7 +6339,6 @@
            data-title="Invictus (2009)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/invictus-2009.jpg">
            <p>
              
@@ -6892,7 +6349,6 @@
            data-title="Interstellar (2014)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/interstellar-2014.jpg">
            <p>
              
@@ -6903,7 +6359,6 @@
            data-title="Insomnia (2002)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/insomnia-2002.jpg">
            <p>
              
@@ -6914,7 +6369,6 @@
            data-title="Inside Man (2006)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/inside-man-2006.jpg">
            <p>
              
@@ -6925,7 +6379,6 @@
            data-title="Inglourious Basterds (2009)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/inglourious-basterds-2009.jpg">
            <p>
              
@@ -6936,7 +6389,6 @@
            data-title="Inception (2010)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/inception-2010.jpg">
            <p>
              
@@ -6947,7 +6399,6 @@
            data-title="Her (2013)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/her-2013.jpg">
            <p>
              
@@ -6958,7 +6409,6 @@
            data-title="Hell or High Water (2016)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/hell-or-high-water-2016.jpg">
            <p>
              
@@ -6969,7 +6419,6 @@
            data-title="Heat (1995)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/heat-1995.jpg">
            <p>
              
@@ -6980,7 +6429,6 @@
            data-title="Green Zone (2010)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/green-zone-2010.jpg">
            <p>
              
@@ -6991,7 +6439,6 @@
            data-title="GoodFellas (1990)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/goodfellas-1990.jpg">
            <p>
              
@@ -7002,7 +6449,6 @@
            data-title="Good Will Hunting (1997)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/good-will-hunting-1997.jpg">
            <p>
              
@@ -7013,7 +6459,6 @@
            data-title="Gladiator (2000)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/gladiator-2000.jpg">
            <p>
              
@@ -7024,7 +6469,6 @@
            data-title="Get Out (2017)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/get-out-2017.jpg">
            <p>
              
@@ -7035,7 +6479,6 @@
            data-title="Ford v Ferrari (2019)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/ford-v-ferrari-2019.jpg">
            <p>
              
@@ -7046,7 +6489,6 @@
            data-title="Fast Five (2011)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/fast-five-2011.jpg">
            <p>
              
@@ -7057,7 +6499,6 @@
            data-title="Ex Machina (2015)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/ex-machina-2015.jpg">
            <p>
              
@@ -7068,7 +6509,6 @@
            data-title="Elysium (2013)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/elysium-2013.jpg">
            <p>
              
@@ -7079,7 +6519,6 @@
            data-title="Elf (2003)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/elf-2003.jpg">
            <p>
              
@@ -7090,7 +6529,6 @@
            data-title="Eight Legged Freaks (2002)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/eight-legged-freaks-2002.jpg">
            <p>
              
@@ -7101,7 +6539,6 @@
            data-title="Dunkirk (2017)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/dunkirk-2017.jpg">
            <p>
              
@@ -7112,7 +6549,6 @@
            data-title="Dune (2021)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/dune-2021.jpg">
            <p>
              
@@ -7123,7 +6559,6 @@
            data-title="Dredd (2012)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/dredd-2012.jpg">
            <p>
              
@@ -7134,7 +6569,6 @@
            data-title="Despicable Me 4 (2024)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/despicable-me-4-2024.jpg">
            <p>
              
@@ -7145,7 +6579,6 @@
            data-title="Deadpool 2 (2018)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/deadpool-2-2018.jpg">
            <p>
              
@@ -7156,7 +6589,6 @@
            data-title="Contagion (2011)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/contagion-2011.jpg">
            <p>
              
@@ -7167,7 +6599,6 @@
            data-title="Civil War (2024)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/civil-war-2024.jpg">
            <p>
              
@@ -7178,7 +6609,6 @@
            data-title="Children of Men (2006)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/children-of-men-2006.jpg">
            <p>
              
@@ -7189,7 +6619,6 @@
            data-title="Boyhood (2014)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/boyhood-2014.jpg">
            <p>
              
@@ -7200,7 +6629,6 @@
            data-title="Blades of Glory (2007)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/blades-of-glory-2007.jpg">
            <p>
              
@@ -7211,7 +6639,6 @@
            data-title="Blade Runner 2049 (2017)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/blade-runner-2049-2017.jpg">
            <p>
              
@@ -7222,7 +6649,6 @@
            data-title="Blade Runner (1982)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/blade-runner-1982.jpg">
            <p>
              
@@ -7233,7 +6659,6 @@
            data-title="Black Swan (2010)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/black-swan-2010.jpg">
            <p>
              
@@ -7244,7 +6669,6 @@
            data-title="Batman Begins (2005)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/batman-begins-2005.jpg">
            <p>
              
@@ -7255,7 +6679,6 @@
            data-title="Austin Powers: The Spy Who Shagged Me (1999)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/austin-powers-the-spy-who-shagged-me-1999.jpg">
            <p>
              
@@ -7266,7 +6689,6 @@
            data-title="Austin Powers: International Man of Mystery (1997)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/austin-powers-international-man-of-mystery-1997.jpg">
            <p>
              
@@ -7277,7 +6699,6 @@
            data-title="Arrival (2016)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/arrival-2016.jpg">
            <p>
              
@@ -7288,7 +6709,6 @@
            data-title="Annihilation (2018)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/annihilation-2018.jpg">
            <p>
              
@@ -7299,7 +6719,6 @@
            data-title="Anchorman: The Legend of Ron Burgundy (2004)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/anchorman-the-legend-of-ron-burgundy-2004.jpg">
            <p>
              
@@ -7310,7 +6729,6 @@
            data-title="Anchorman 2: The Legend Continues (2013)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/anchorman-2-the-legend-continues-2013.jpg">
            <p>
              
@@ -7321,7 +6739,6 @@
            data-title="28 Years Later (2025)"
            data-rating="3.0"
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/28-years-later-2025.jpg">
            <p>
              
@@ -7332,7 +6749,6 @@
            data-title="28 Weeks Later (2007)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/28-weeks-later-2007.jpg">
            <p>
              
@@ -7343,7 +6759,6 @@
            data-title="28 Days Later (2002)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/28-days-later-2002.jpg">
            <p>
              
@@ -7354,7 +6769,6 @@
            data-title="127 Hours (2010)"
            data-rating=""
            data-date="2025-07-06"
-           data-date-display="6 July 2025"
            data-cover="media/film/127-hours-2010.jpg">
            <p>
              
@@ -7386,7 +6800,6 @@
         author: a.getAttribute("data-author") || "",
         rating: r ? parseFloat(r) : null,
         date: a.getAttribute("data-date") || "",
-        dateDisplay: a.getAttribute("data-date-display") || "",
         cover: a.getAttribute("data-cover") || "",
         review: a.innerHTML.trim()
       };
@@ -7396,6 +6809,16 @@
   var FILMS = parseArticles(dataEl);
 
   function year(b) { return b.date ? b.date.slice(0, 4) : ""; }
+
+  var MONTHS = ["January","February","March","April","May","June",
+                "July","August","September","October","November","December"];
+  // turn an ISO date (YYYY-MM-DD) into "2026 June 26"; parse parts by hand
+  // so we never hit a timezone off-by-one from the Date constructor.
+  function formatDate(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || "");
+    if (!m) return iso || "";
+    return m[1] + " " + MONTHS[parseInt(m[2], 10) - 1] + " " + parseInt(m[3], 10);
+  }
 
   function starsHTML(rating) {
     if (rating == null) return '<span class="film-unrated">Unrated</span>';
@@ -7480,7 +6903,7 @@
           '<div><div class="film-modal-title">' + b.title + '</div>' +
           '<div class="film-modal-author">' + b.author + '</div>' +
           starsHTML(b.rating) +
-          (b.dateDisplay ? '<div class="film-modal-sub">Watched ' + b.dateDisplay + '</div>' : '') +
+          (b.date ? '<div class="film-modal-sub">Watched ' + formatDate(b.date) + '</div>' : '') +
           '</div>' +
         '</div>' + review +
       '</div>';

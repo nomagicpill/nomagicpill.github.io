@@ -83,10 +83,17 @@ img {
 	margin-left: auto;
 	margin-right: auto;
 	image-orientation: from-image;
-	max-width: 75%;
+	max-width: 100%;
 	height: auto;
   border-radius: 6px; /* Subtle rounding */
 }
+
+/* Standard image size buckets. width sets the target size; max-width:100%
+   keeps images from overflowing the column on narrow/mobile screens.
+   Defined after .center so they win when both classes are present. */
+.img-small  { width: 300px; max-width: 100%; }
+.img-medium { width: 500px; max-width: 100%; }
+.img-large  { width: 100%;  max-width: 100%; }
 
 .spoiler{
   color: var(--text);
