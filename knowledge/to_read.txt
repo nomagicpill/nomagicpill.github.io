@@ -3,8 +3,23 @@
 # Anything after the URL on a line is treated as a note and dropped.
 # Run `python3 knowledge/to_kobo.py` (no args) to bundle these into an EPUB.
 
-https://www.openphilanthropy.org/blog/modeling-human-trajectory
-https://www.yalelawjournal.org/note/amazons-antitrust-paradox
-https://thecorrespondent.com/3789/Operation-Easy-Chair-or-how-a-little-company-in-Holland-helped-the-CIA-bug-the-Russians/106823277-f4300cc3
-https://educatedguesswork.org/posts/nuclear-weapon-disposal/
-https://electricliterature.com/eating-well-is-a-portal-into-prousts-in-search-of-lost-time/
+https://www.gsb.stanford.edu/insights/why-feelings-guilt-may-signal-leadership-potential
+https://www.lesswrong.com/posts/bNCDexejSZpkuu3yz/you-can-use-gpt-4-to-create-prompt-injections-against-gpt-4
+https://www.saurik.com/optimism.html
+https://mcc.gse.harvard.edu/reports/loneliness-in-america
+https://www.blackwellscap.com/wp-content/uploads/2022/02/BW_Peloton_Presentation_Feb072022.pdf
+https://en.wikipedia.org/wiki/Sarbanes%E2%80%93Oxley_Act
+https://www.lesswrong.com/posts/HCAyiuZe9wz8tG6EF/my-tentative-best-guess-on-how-eas-and-rationalists
+https://www.inf.ed.ac.uk/teaching/courses/pi/2016_2017/phil/tufte-powerpoint.pdf
+https://www.cs.cornell.edu/jeh/book.pdf?file=book.pdf
+https://semiengineering.com/complex-chips-make-security-more-difficult/
+https://www.lesswrong.com/posts/z73dfgvGdcXxYKDs6/housing-and-transportation-roundup-2
+https://www.nature.com/articles/d41586-023-00241-8
+https://en.m.wikipedia.org/wiki/Sportswashing
+https://www.lesswrong.com/posts/Wcrujo7wadRpuq8vx/thinkhaven-1
+https://squirrelinhell.blogspot.com/2017/12/happiness-is-chore.html
+https://www.lesswrong.com/posts/QGRj2PGiK5eawgQN2/reflections-on-premium-poker-tools-part-1-my-journey
+https://cheapskatesguide.org/articles/joys-and-sorrows.html
+https://odd-lots-books.netlify.app/
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3836174/
+https://marxists.architexturez.net/archive/marx/letters/papa/1837-fl6.htm

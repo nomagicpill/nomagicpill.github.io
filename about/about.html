@@ -374,6 +374,36 @@
   <label><input type="checkbox" name="checkbox" value="value">Copy, format, and post to Substack, Twitter/X, LessWrong, Hacker News, r/slatestarcodex</label><br>
 </p>
 
+<h3 id="custom">Moving to a Custom Domain Through Cloudflare</h3>
+
+<p>
+  I moved from my [pseudonym].github.io to my [pseudonym].site domain in June 2026. The process was simple, but not obvious, so I'm documenting it here in case a search engine picks it up and can help others out.
+</p>
+
+<ol>
+  <li>
+    Set up Cloudflare account
+  </li>
+  <li>
+    Purchase domain through Cloudflare
+  </li>
+  <li>
+    Connect Cloudflare domain to Github.com repository (on Cloudflare website)
+  </li>
+  <li>
+    Add a <a href="../wrangler.toml"><code>wrangler.toml</code></a> file to the main directory where <code>index.html</code> is located. I had Claude Sonnet 4.6 tell me what I needed here.
+  </li>
+  <li>
+    Create two <a href="https://en.wikipedia.org/wiki/CNAME_record">CNAME</a> records (thanks to <a href="https://muhannad.io/post/2023-04-09-moving-the-website-from-github-pages-to-cloudflare-pages/">this guy for helping me with this!</a>): on the dashboard, go to DNS>Records. Add two records, where type is CNAME, content is the Github pages domain (e.g., nomagicpill.github.io), and the name is nomagicpill.site and www.nomagicpill.site, respectively.
+  </li>
+  <li>
+    Enable HTTPS on Cloudflare. I just asked the internal AI to do this because the search function didn't bring anything up.
+  </li>
+  <li>
+    Enter the custom domain in the GitHub pages "Custom domain" section. The DNS check should be successful.
+  </li>
+</ol>
+
 <button type="button" class="collapsible">List of Substack Posts</button>
 
 <div class="content">
@@ -452,7 +482,7 @@
 
 <ul>
   <li>
-    <a href="https://niplav.github.io/index.html">niplav</a>
+    <a href="https://niplav.site/index.html">niplav</a>
   </li>
   <li>
     <a href="https://deusexvita.substack.com/">Joshua Derrick</a>
