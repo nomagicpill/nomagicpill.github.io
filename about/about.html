@@ -64,60 +64,9 @@
   Strava: Contact me for link
 </p>
 
-<!--
-
 <p>
-  Solve the following math problem to see my email:
+  Focusmate: Contact me for link
 </p>
-
-    <p id="question">Loading question...</p>
-    
-    <input type="number" id="answer" placeholder="Enter your answer" onkeydown="if(event.key === 'Enter') checkAnswer()">
-    <button onclick="checkAnswer()">Submit</button>
-    
-    <div class="feedback" id="feedback"></div>
-
-    <p id="emailImage">
-      
-    </p>
-    
-    <script>
-        let num1, num2, correctAnswer;
-
-        function generateNewQuestion() {
-            num1 = Math.floor(Math.random() * 11) + 2;
-            num2 = Math.floor(Math.random() * 11) + 2;
-            correctAnswer = num1 * num2;
-            
-            document.getElementById('question').textContent = `What is ${num1} × ${num2}?`;
-            document.getElementById('answer').value = '';
-            document.getElementById('feedback').textContent = '';
-            document.getElementById('feedback').className = 'feedback';
-            document.getElementById('emailImage').style.display = 'none';
-        }
-
-        function checkAnswer() {
-            const userAnswer = document.getElementById('answer').value;
-            const feedback = document.getElementById('feedback');
-            const emailImage = document.getElementById('emailImage');
-            
-            if (parseInt(userAnswer) === correctAnswer) {
-                feedback.textContent = 'Correct! Here is my email:';
-                feedback.className = 'feedback';
-                emailImage.style.display = 'block';
-            } else {
-                feedback.textContent = `Wrong answer. Please try again.`;
-                feedback.className = 'feedback error';
-                emailImage.style.display = 'none';
-                // Wait a moment before showing new question
-                setTimeout(generateNewQuestion, 2000);
-            }
-        }
-
-        generateNewQuestion();
-    </script>
-
--->
 
 <hr>
 
