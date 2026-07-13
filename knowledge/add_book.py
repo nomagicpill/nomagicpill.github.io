@@ -210,7 +210,6 @@ def main():
         f'           data-author="{html.escape(args.author, quote=True)}"\n'
         f'           data-rating="{args.rating or ""}"\n'
         f'           data-date="{iso}"\n'
-        f'           data-date-display="{html.escape(args.date, quote=True)}"\n'
         f'           data-cover="media/bookcovers/{slug}.jpg">\n'
         '\n'
         '  </article>\n')
