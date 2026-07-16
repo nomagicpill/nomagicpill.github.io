@@ -36,6 +36,18 @@ Eyewear, interlocks, facilities safety, environment, etc. List of all nasty gase
 
 ergonomics
 
+hazmat crew
+
+buddy system and best practices; i like to call out "MOVING" whenever i'm doing something
+
+why does safety matter?
+- liability, company would get sued
+- downtime in a factory is very bad
+- bad PR, dissuades good talent from joining company
+- literally kills talent in some cases
+
+practice: don't be a fucking idiot and talk to others
+
 -->
 
 <h1 id="fabs4">Fabs IV: Safety</h1>
@@ -66,9 +78,25 @@ ergonomics
 
 <hr>
 
+<h2 id="why">Why Does Safety Matter?</h2>
+
+<h3 id="liability">Liability</h3>
+
+
+
+<h3 id="reputation">Reputation</h3>
+
+
+
+<h3 id="downtime">Cost of Downtime</h3>
+
+
+
+<hr>
+
 <h2 id="people">The People</h2>
 
-<h3 id="mandatory">The Big Things</h3>
+<h3 id="clothing">Mandatory Clothing</h3>
 
 <p>
   Let's first dispel the myth that the <a href="https://en.wikipedia.org/wiki/Cleanroom_suit">cleanroom suits</a> fab personnel wear are for the people's safety. They are not. They are for the chip's safety. They serve to prevent the wearer's skin and hair from getting onto the chips. We lose a fair amount of skin and hair every day and any of that falling on a chip can be catastrophic, even existential. Why risk this when you can simply doom your wage slaves to a day of sweat, discomfort, and modesty?
@@ -96,10 +124,16 @@ ergonomics
   That's about it for mandatory clothing. Wear some safety glasses, wear <i>something</i> on your feet, and wear a bunny suit. What's between the bunny suit and skin is pretty much up to the person, and I've seen some questionable shirts while walking through the office!
 </p>
 
-<h3 id="optional">Optional Clothing (No, Not That Kind!)</h3>
+<h3 id="optional">Sometimes-Needed Clothing</h3>
 
 <p>
-  Sometimes special garments must be donned for safety purposes, generally when someone is entering an area where acid can spill on them:
+  Sometimes special garments must be donned for safety purposes, generally when someone is entering an area where special dangers exist.
+</p>
+
+<h4>Acid Clothing</h4>
+
+<p>
+  There are a lot of acids in a fab: <a href="https://en.wikipedia.org/wiki/Hydrofluoric_acid">hydrofluoric</a>, <a href="https://en.wikipedia.org/wiki/Sulfuric_acid">sulfuric</a>, <a href="https://en.wikipedia.org/wiki/Phosphoric_acid">phosphoric</a>, just to name a few. All of them are harmful to the human body.
 </p>
 
 <ul>
@@ -114,7 +148,69 @@ ergonomics
   </li>
 </ul>
 
+<h4>Electrical Clothing</h4>
 
+<p>
+  <a href="https://en.wikipedia.org/wiki/Arc_flash">Arc flashes</a> are no joke and will fry your skin to a crisp if you aren't wearing equipment. If you are wearing equipment, then at least it'll be an open casket funeral. Electrical work in certain areas, especially when "hot" (or electricity is live), requires arc flash equipment that is not dissimilar to a bomb suit (which it's colloquially called by electricians), minus the protection against shrapnel.
+</p>
+
+<img class="img-medium" src="media/fabs4/arcflashsuit.png">
+<figcaption>
+  [FINISH]
+</figcaption>
+
+<h4></h4>
+
+<p>
+  Hard hats are required in spaces where you can easily hit your head on something or parts can fall down from above. Some people wear bump caps in confined spaces to protect against bumps, but they are no substitute for hard hats when falling objects are a risk.
+</p>
+
+<p>
+  
+</p>
+
+<h4>SCBA</h4>
+
+<p>
+  Robotic dexterity hasn't caught up to humans yet, so we still occasionally have to do some nasty work with gases and chemical that requires <a href="https://en.wikipedia.org/wiki/Self-contained_breathing_apparatus">self-contained breathing apparatuses</a> (SCBA; note the lack of a 'U'(nderwater) since fabs aren't underwater). SCBA users get fit checks before using it to ensure the mask seals securely against their face. Not coincidentally, it's also the only time some people shave their beards (so the mask fits better, else the hair would cause leaks).
+</p>
+
+<h3>Practices</h3>
+
+<p>
+  Being a clear, loud communicator in the fab is important when working with a partner. There are many loud noises and dangerous situations that require messages to be received correctly lest the receiver act based on an incorrect message.
+</p>
+
+<p>
+  My modus operandi is a command-reply structure of:
+</p>
+
+<ol>
+  <li>
+    The person in the dangerous position (p<sub>d</sub>) commands the person in the safe position (p<sub>s</sub>) what to do. This prevents p<sub>s</sub> from doing something that endangers p<sub>d</sub>.
+    <ul>
+      <li>
+        Ex: "Move robot1 blade1 10 counts forward"
+      </li>
+    </ul>
+  </li>
+  <li>
+    p<sub>s</sub> repeats the command, waits a second, then performs the command. p<sub>d</sub> should be in a safe position since they know what's about to happen.
+    <ul>
+      <li>
+        Ex: "Moving robot1 blade1 10 counts forward" *waits one second* *issues robot command*
+      </li>
+    </ul>
+  </li>
+  <li>
+    Repeat as needed for the rest of the work.
+    <ul>
+      <li>
+        Other commands-responses may be hold-holding, lift-lifting, etc.
+      </li>
+    </ul> 
+  </li>
+</ol>
 
 
 <hr>
