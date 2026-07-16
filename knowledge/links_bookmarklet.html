@@ -24,27 +24,28 @@
 <p>
   A one-click capture tool for the <a href="links.html">Links</a> archive. On any
   page you're reading, optionally select a sentence to keep as a quote, then click
-  the bookmarklet. It copies a ready-to-run command to your clipboard. Paste it in
-  your terminal, type your note when prompted, and the entry is spliced into the
-  current month of <code>links.html</code> for you.
+  the bookmarklet. It asks for your note right there in the browser, then copies a
+  ready-to-run command to your clipboard. Paste it in your terminal, press Enter,
+  and the entry is spliced into the current month of <code>links.html</code> for you.
 </p>
 
 <h2>Install</h2>
 
 <p>
   Drag this to your bookmarks bar:
-  <!-- The bookmarklet builds a shell command for links.py and copies it.
-       It shell-escapes single quotes as '\'' so titles/quotes can't break out. -->
-  <a class="grab" href="javascript:(function(){var q=function(s){return %22'%22+String(s).replace(/'/g,%22'%5C%5C''%22)+%22'%22;};var sel=String(window.getSelection()).trim();var cmd=%22python3 ~/Documents/nomagicpill.github.io/knowledge/links.py %22+q(location.href)+%22 --title %22+q(document.title);if(sel){cmd+=%22 --quote %22+q(sel);}var done=function(){alert('Copied! Paste it in your terminal, then type your note.');};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(cmd).then(done,function(){window.prompt('Copy this command:',cmd);});}else{window.prompt('Copy this command:',cmd);}})();">+ Add to Links</a>
+  <!-- The bookmarklet prompts for a note in-browser, then builds a shell command
+       for links.py and copies it. It shell-escapes single quotes as '\'' so the
+       note/title/quote can't break out. -->
+  <a class="grab" href="javascript:(function(){var q=function(s){return %22'%22+String(s).replace(/'/g,%22'%5C%5C''%22)+%22'%22;};var sel=String(window.getSelection()).trim();var note=window.prompt('Your note (leave blank for a bare link):','');if(note===null){return;}note=note.trim();var cmd=%22python3 ~/Documents/nomagicpill.github.io/knowledge/links.py %22+q(location.href)+%22 %22+q(note)+%22 --title %22+q(document.title);if(sel){cmd+=%22 --quote %22+q(sel);}var done=function(){alert('Copied! Paste it in your terminal and press Enter.');};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(cmd).then(done,function(){window.prompt('Copy this command:',cmd);});}else{window.prompt('Copy this command:',cmd);}})();">+ Add to Links</a>
 </p>
 
 <h2>Use</h2>
 
 <ol>
   <li>While reading, optionally highlight a sentence to keep as a quote (rendered in "quotation marks").</li>
-  <li>Click <strong>+ Add to Links</strong>. The command lands on your clipboard.</li>
-  <li>Paste it into your terminal and press Enter.</li>
-  <li>At the <code>Note:</code> prompt, type your thoughts (or leave blank for a bare link), then Enter.</li>
+  <li>Click <strong>+ Add to Links</strong>. In the popup, type your note (or leave it blank for a bare link) and hit OK.</li>
+  <li>The ready-to-run command, note and all, lands on your clipboard.</li>
+  <li>Paste it into your terminal and press Enter. That's it.</li>
 </ol>
 
 <p>

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
   <!-- Apply saved theme before first paint to avoid a flash. -->
   <script>
     (function () {
@@ -13,12 +12,13 @@
       } catch (e) {}
     })();
   </script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semiconductor Fabs IV: The Life (of an Engineer) - No Magic Pill</title>
+  <title>Fabs IV: Safety - No Magic Pill</title>
   <link rel="alternate" type="application/rss+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
   <link rel="alternate" type="application/atom+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
   <link rel="stylesheet" type="text/css" href="../css/main.css">
   <link rel="icon" href="../media/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
 </head>
 
 <body>
@@ -27,37 +27,21 @@
 
 <!--
 
-<img src="media/fabs3/.">
+<img src="media//.">
 <figcaption>
 
 </figcaption>
 
+Eyewear, interlocks, facilities safety, environment, etc. List of all nasty gases (two step gases) and their LD50 values. LOTO, electrical hazards, arc flashes
+
+ergonomics
+
 -->
 
-<h1 id="fabs4">Semiconductor Fabs IV: The Life (of an Engineer)</h1>
+<h1 id="fabs4">Fabs IV: Safety</h1>
 
 <p>
-  [FINISH]
-</p>
-
-<hr>
-
-<h2 id="series">Semiconductor Fab Series</h2>
-
-<p>
-  <a href="fabs.html">Semiconductor Fabs I: The Equipment</a>
-</p>
-
-<p>
-  <a href="fabs2.html">Semiconductor Fabs II: The Operation</a>
-</p>
-
-<p>
-  <a href="fabs3.html">Semiconductor Fabs III: The Data and Automation</a>
-</p>
-
-<p>
-  <a href="fabs4.html">Semiconductor Fabs IV: The Life (of an Engineer)</a>
+  In-depth look at semiconductor fab safety protocols and systems.
 </p>
 
 <hr>
@@ -72,11 +56,72 @@
   I tried to include as many links as possible to allow the reader to go down rabbit holes as they see fit.
 </p>
 
+<p>
+  I like anecdotes because they give a glimpse into what fab culture is like. They also tend to be funny.
+</p>
+
+<p>
+  I don't work in an advanced or new fab, but have some glimpses into them.
+</p>
+
+<hr>
+
+<h2 id="people">The People</h2>
+
+<h3 id="mandatory">The Big Things</h3>
+
+<p>
+  Let's first dispel the myth that the <a href="https://en.wikipedia.org/wiki/Cleanroom_suit">cleanroom suits</a> fab personnel wear are for the people's safety. They are not. They are for the chip's safety. They serve to prevent the wearer's skin and hair from getting onto the chips. We lose a fair amount of skin and hair every day and any of that falling on a chip can be catastrophic, even existential. Why risk this when you can simply doom your wage slaves to a day of sweat, discomfort, and modesty?
+</p>
+
+<p>
+  Next, we'll move onto a fit check. Safety glasses? Check. But those better be <a href="https://blog.ansi.org/ansi/ansi-isea-z87-1-2025-safety-glasses-eye-protection/">ANSI Z87.1</a> or OSHA will want a word. Z87.1 is focused on minimizing and/or preventing injuries such as "impact, non-ionizing radiation and liquid splash exposures in occupational and educational environments such as machinery operations, material welding and cutting, chemical handling, and assembly operations". Fabs are a place where liquid can splash, parts can fall through the floor into the subfab below, and both very high and very low pressure environments can fail (also known as explode and implode, respectively) if the right sequence of events happens. I'd want to protect my eyes, too!
+</p>
+
+<img class="img-medium" src="media/fabs4/radiancelamphead.jpg">
+<figcaption>
+  40 kg. Imagine having to move this by hand and dropping it on your toe. Your toe would cease to exist.
+</figcaption>
+
+<p>
+  Shoe-wise, some folks like rocking the Nike Fab 11s, which is my overused joke for steel-toed boots. (Nike or Jordan really should start supplying cleanroom boots for the collab potential—just imagine a TSMC x Air Jordan.) Fabs are basically just filled with super fancy, super expensive machinery. And machinery comes with heavy parts that people may need to carry around. I'd want to protect my toes from a big block of steel from falling on them, too! (To be clear, steel-toed boots aren't required at my fab, but can be purchased.)
+</p>
+
+<img class="img-medium" src="media/fabs4/tsmcxairjordan.png">
+<figcaption>
+  NanoBanana coming for <a href="https://en.wikipedia.org/wiki/Tinker_Hatfield">Tinker Hatfield</a>'s job
+</figcaption>
+
+<p>
+  That's about it for mandatory clothing. Wear some safety glasses, wear <i>something</i> on your feet, and wear a bunny suit. What's between the bunny suit and skin is pretty much up to the person, and I've seen some questionable shirts while walking through the office!
+</p>
+
+<h3 id="optional">Optional Clothing (No, Not That Kind!)</h3>
+
+<p>
+  Sometimes special garments must be donned for safety purposes, generally when someone is entering an area where acid can spill on them:
+</p>
+
+<ul>
+  <li>
+    <a href="https://www.dupont.com/personal-protection/tychem.html">Tychem suits</a>: This godforsaken suit has zero breathability whatsoever. It feels like it is constantly exchanging dry air for humid air to make the inside of the suit even hotter. Their unofficial motto is "start sweating within 30 seconds guaranteed or your money back!". I've never gotten my money back. In all seriousness, the lack of breathability is by design. I don't want some horrible liquid leaking through the fabric if it spills on me!   
+  </li>
+  <li>
+    Face shield: Covers the entire face, not just the eyes. I like my face without any burns or holes, thank you very much.
+  </li>
+  <li>
+    Acid gloves: More protection in case you need to handle something around acid.
+  </li>
+</ul>
+
+
 
 
 <hr>
 
-<h2 id="context">Context</h2>
+<h2 id="equipment">The Equipment</h2>
+
+
 
 
 
@@ -84,173 +129,7 @@
 
 <hr>
 
-<h2 id="week">A Week in the Life Of</h2>
-
-<p>
-  Here are a few example weeks that show what a process or equipment engineer could experience. These are fictional, but not out of the realm of possibilities.
-</p>
-
-<h3 id="week1">Week 1: A Little Bit of Everything</h3>
-
-<h4>Monday</h4>
-
-<p>
-  Passdown at 7:00am sharp. The night shift technicians do mental gymnastics while telling carefully crafted lies about why they didn't do shit last night...the equipment (also called a tool) wasn't cooperating with them despite it being an inanimate object, the replacement part they ordered didn't get in until an hour before shift change even though they didn't check until an hour before shift change, Angry Birds was calling their name. The dayshifters listen in silence and prepare their shit-talking remarks for after the meeting. I ask questions if I need to and say thank you at all times, lest one of my tools be the neglected one for any perceived sign of disrespect. We go over other important information or events: upcoming maintenance, equipment metrics (tool availability, fail modes and counts, mean time between failure), who's out of the office over the next few days. The engineers then meet to discuss their rough plans for the day, whether it's working on projects or helping to recover their equipment so it can get to producing chips (money) again.
-</p>
-
-<p>
-  After passdown, I start planning my week day-by-day. I'm consistently overzealous in my plans, but I never learn or adjust because that would be giving up and losing hope, two things that are important to never do.
-</p>
-
-<h4>Tuesday</h4>
-
-<p>
-  
-</p>
-
-<h4>Wednesday</h4>
-
-<p>
-  
-</p>
-
-<h4>Thursday</h4>
-
-<p>
-  
-</p>
-
-<h4>Friday</h4>
-
-<p>
-  
-</p>
-
-<h4>Saturday and Sunday</h4>
-
-<p>
-  
-</p>
-
-<h3 id="week2">Week 2: A Major Quality Event and The Long Hours That Result From It</h3>
-
-<h4>Monday</h4>
-
-<p>
-  
-</p>
-
-<h4>Tuesday</h4>
-
-<p>
-  
-</p>
-
-<h4>Wednesday</h4>
-
-<p>
-  
-</p>
-
-<h4>Thursday</h4>
-
-<p>
-  
-</p>
-
-<h4>Friday</h4>
-
-<p>
-  
-</p>
-
-<h4>Saturday and Sunday</h4>
-
-<p>
-  
-</p>
-
-<h3 id="week3">Week 3: Quiet, So Let's Explore Projects That Are Fun But Not Important</h3>
-
-<h4>Monday</h4>
-
-<p>
-  
-</p>
-
-<h4>Tuesday</h4>
-
-<p>
-  
-</p>
-
-<h4>Wednesday</h4>
-
-<p>
-  
-</p>
-
-<h4>Thursday</h4>
-
-<p>
-  
-</p>
-
-<h4>Friday</h4>
-
-<p>
-  
-</p>
-
-<h4>Saturday and Sunday</h4>
-
-<p>
-  
-</p>
-
-<h3 id="week4">Week 4: </h3>
-
-<h4>Monday</h4>
-
-<p>
-  
-</p>
-
-<h4>Tuesday</h4>
-
-<p>
-  
-</p>
-
-<h4>Wednesday</h4>
-
-<p>
-  
-</p>
-
-<h4>Thursday</h4>
-
-<p>
-  
-</p>
-
-<h4>Friday</h4>
-
-<p>
-  
-</p>
-
-<h4>Saturday and Sunday</h4>
-
-<p>
-  
-</p>
-
-
-
-
-
-
+<h2 id="building">The Building</h2>
 
 
 <hr>
