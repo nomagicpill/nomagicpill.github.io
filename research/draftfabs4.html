@@ -12,7 +12,7 @@
       } catch (e) {}
     })();
   </script>
-  <title>Fabs IV: Safety - No Magic Pill</title>
+  <title>Semiconductor Fabs IV: Safety - No Magic Pill</title>
   <link rel="alternate" type="application/rss+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
   <link rel="alternate" type="application/atom+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
   <link rel="stylesheet" type="text/css" href="../css/main.css">
@@ -46,11 +46,15 @@ why does safety matter?
 - bad PR, dissuades good talent from joining company
 - literally kills talent in some cases
 
+add games using fable
+
 practice: don't be a fucking idiot and talk to others
+
+EMO circuits
 
 -->
 
-<h1 id="fabs4">Fabs IV: Safety</h1>
+<h1 id="fabs4">Semiconductor Fabs IV: Safety</h1>
 
 <p>
   In-depth look at semiconductor fab safety protocols and systems.
@@ -82,11 +86,24 @@ practice: don't be a fucking idiot and talk to others
 
 <h3 id="liability">Liability</h3>
 
+<p>
+  Reportable incidents are <a href="https://www.osha.gov/report">defined by OSHA</a> as:
+</p>
+
+<blockquote>
+  when an employee is killed on the job or suffers a work-related hospitalization, amputation, or loss of an eye
+</blockquote>
+
+<p>
+  Pretty serious stuff that comes with some hefty penalties 
+</p>
 
 
 <h3 id="reputation">Reputation</h3>
 
-
+<p>
+  Being known as an unsafe company speaks volumes about the culture, repelling potential talent and pushing them towards places where they know they'll get to see their family at the end of the day.
+</p>
 
 <h3 id="downtime">Cost of Downtime</h3>
 
@@ -182,7 +199,7 @@ practice: don't be a fucking idiot and talk to others
 </p>
 
 <p>
-  My modus operandi is a command-reply structure of:
+  My modus operandi is a command-acknowledgement structure of:
 </p>
 
 <ol>
@@ -195,10 +212,10 @@ practice: don't be a fucking idiot and talk to others
     </ul>
   </li>
   <li>
-    p<sub>s</sub> repeats the command, waits a second, then performs the command. p<sub>d</sub> should be in a safe position since they know what's about to happen.
+    p<sub>s</sub> acknowledges the command by verbally repeating it, waiting a second, then performing the command. p<sub>d</sub> should be in a safe position since they know what's about to happen.
     <ul>
       <li>
-        Ex: "Moving robot1 blade1 10 counts forward" *waits one second* *issues robot command*
+        Ex: "Moving robot1 blade1 10 counts forward" *waits one second* *issues robot command to move 10 counts forward*
       </li>
     </ul>
   </li>
@@ -217,8 +234,80 @@ practice: don't be a fucking idiot and talk to others
 
 <h2 id="equipment">The Equipment</h2>
 
+<h3 id="interlocks">Interlocks</h3>
+
+<p>
+  From <a href="https://en.wikipedia.org/wiki/Interlock_(engineering)">Wikipedia</a>:
+</p>
+
+<blockquote>
+  An interlock is a feature or device that is commonly used in engineering and safety systems to keep machines, devices, and processes from operating until the guards are in place or the required circumstances are met. When being utilized, interlocks are used to prevent or reduce the chances of injury to the operator, damage to the equipment, and actions being completed in the wrong order or in an unsafe way.
+</blockquote>
+
+<p>
+  Fab equipment is filled with interlocks of various types:
+</p>
+
+<ul>
+  <li>
+    Hardware: Enabled or disabled by <a href="">jumper</a> configuration, these can be physically changed at the tool, but require specialized knowledge of what to move and where.
+  </li>
+  <li>
+    Software: Written into the equipment's programs, these are effectively absolute. There exist ways to trick the interlocks into being satisfied to allow, but these are a very quick ticket to the unemployment line if done improperly.
+  </li>
+</ul>
+
+<p>
+  What are some examples of interlocks? Let's look at this random interlock card I found on the internet! The lights will be on if the interlock is satisfied to help personnel understand any issues that are preventing the chamber from operating.
+</p>
+
+<img class="img-verysmall" src="media/fabs4/interlockcard.png">
+
+<p>
+  Going down the list:
+</p>
+
+<ul>
+  <li>
+    GP OK: Is the gas panel door closed and are any other issues present?
+  </li>
+  <li>
+    SLT VLV CLSD: This is the "door" to the buffer chamber where the robot that transfers wafer in and out of the chamber exists. The SV being open could expose the buffer to nasty gases, which could in turn contaminate other chamber if said gases lingered for too long. Overriden by taking a magnet and tricking the sensor that detects the SV being open or closed. 
+  </li>
+  <li>
+    CUST VAC: Not exactly sure, but this means customer vacuum, so likely verifying the facility is pulling vacuum somewhere.
+  </li>
+  <li>
+    RGH PUMP FAIL: Checks if the pump is in a good state?
+  </li>
+  <li>
+    CHAM LID CVR: There's a cover that sits over the chamber lid itself, likely to protect against electricity or other hazards. This needs to be installed for the interlock to be satisfied.
+  </li>
+  <li>
+    CHAM LID: The chamber lid needs to be closed because we don't want to flow nasty gases into the fab air.
+  </li>
+  <li>
+    HTR HUB OT: The heater hub temperatures needs to be low enough for the interlock to be satisfied.
+  </li>
+</ul>
+
+<p>
+  Why would someone want to override these interlocks? They're there for our safety! Sometimes overriding interlocks is needed to troubleshoot. For example, watching problematic robots move while troubleshooting is very helpful in order to hear noises, feel vibrations, watch for jerky movements, etc. But often times the only way to get a clear view is to override interlocks. The equipment manufacturers understand this and make it easy enough to override interlocks while ensuring it's intentional.
+</p>
 
 
+
+
+
+<h3 id="alarms">Alarms</h3>
+
+<p>
+  Tools have alarms that will result from abnormal conditions, which aren't necessarily always a safety hazard.
+</p>
+
+
+
+<h3 id="ergonomics">Ergonomics</h3>
 
 
 

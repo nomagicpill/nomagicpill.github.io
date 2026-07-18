@@ -91,6 +91,7 @@ img {
 /* Standard image size buckets. width sets the target size; max-width:100%
    keeps images from overflowing the column on narrow/mobile screens.
    Defined after .center so they win when both classes are present. */
+.img-verysmall  { width: 150px; max-width: 100%; }
 .img-small  { width: 300px; max-width: 100%; }
 .img-medium { width: 500px; max-width: 100%; }
 .img-large  { width: 100%;  max-width: 100%; }
