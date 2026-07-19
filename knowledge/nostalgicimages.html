@@ -20,7 +20,7 @@ function shuffleArray(array) {
     return array;
 }
 
-fetch("media/nostalgicpictures/image_widths_heights.json").then(f => {
+fetch("media/nostalgicimages/image_widths_heights.json").then(f => {
     if (f.status == 404) {
         alert("unable to find image_widths_heights.json -- you should run lister.py to create it.");
     }
