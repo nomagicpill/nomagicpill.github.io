@@ -50,8 +50,6 @@ add games using fable
 
 practice: don't be a fucking idiot and talk to others
 
-EMO circuits
-
 -->
 
 <h1 id="fabs4">Semiconductor Fabs IV: Safety</h1>
@@ -107,7 +105,17 @@ EMO circuits
 
 <h3 id="downtime">Cost of Downtime</h3>
 
+<p>
+  Fab uptime is incredibly important—from: <a href="https://semiconductorx.com/fab-resilience.html">Fab Resilience - Uptime Standards</a>:
+</p>
 
+<blockquote>
+  A semiconductor fab is among the most demanding 24/7/365 operating environments in any industry. The consequences of downtime are not measured in inconvenience — they are measured in scrapped wafer lots, tool re-qualification cycles, and production gaps that cascade through customer supply chains for weeks after the event that caused them. A one-hour unplanned outage at a leading-edge fab running 60,000 wafer starts per month represents approximately $2–5M in lost production value, plus the cost of any in-process lots scrapped, plus the tool recovery and re-qualification labor before production can resume. A 24-hour outage at the same facility approaches $50–100M in combined direct and indirect impact.
+</blockquote>
+
+<p>
+  Now I'm not sure exactly what happens when there's a major reportable safety incident—whether the fab gets completely shut down, only the area around where the accident occurred, or just the tool related to the accident—but regardless, it's downtime and not the good kind. Personnel are now required to prevent that safety incident from ever happening again when it potentially could've been prevented with some simple training, whereas now it has to be completely foolproof.
+</p>
 
 <hr>
 
@@ -195,7 +203,11 @@ EMO circuits
 <h3>Practices</h3>
 
 <p>
-  Being a clear, loud communicator in the fab is important when working with a partner. There are many loud noises and dangerous situations that require messages to be received correctly lest the receiver act based on an incorrect message.
+  The practice that keeps you safe 99% of the time—where the 1% is the unpredictable, unexplainable, unstoppable shit that very rarely happens, and much less often affects someone when it does happen—is pretty simple: don't be an idiot. I stop and ask myself "if someone else did this and got hurt because of it, would I think they're an idiot?" before doing something potentially dangerous and if the answer is yes, I reassess my strategy and refine my plan until the answer is no. There are other, more official strategies like <a href="https://www.inframark.com/pause-before-you-act/">PAUSE</a>.
+</p>
+
+<p>
+  Not on the via negativa side of things, being a clear, loud communicator is important when working with a partner. There are many loud noises and dangerous situations that require messages to be received correctly lest the receiver act based on an incorrect message.
 </p>
 
 <p>
@@ -207,7 +219,7 @@ EMO circuits
     The person in the dangerous position (p<sub>d</sub>) commands the person in the safe position (p<sub>s</sub>) what to do. This prevents p<sub>s</sub> from doing something that endangers p<sub>d</sub>.
     <ul>
       <li>
-        Ex: "Move robot1 blade1 10 counts forward"
+        Ex: p<sub>d</sub> says "move robot1 blade1 10 counts forward"
       </li>
     </ul>
   </li>
@@ -215,7 +227,7 @@ EMO circuits
     p<sub>s</sub> acknowledges the command by verbally repeating it, waiting a second, then performing the command. p<sub>d</sub> should be in a safe position since they know what's about to happen.
     <ul>
       <li>
-        Ex: "Moving robot1 blade1 10 counts forward" *waits one second* *issues robot command to move 10 counts forward*
+        Ex: p<sub>s</sub> replies by saying "moving robot1 blade1 10 counts forward", then waits a moment, then issues a robot command to move 10 counts forward
       </li>
     </ul>
   </li>
@@ -228,7 +240,6 @@ EMO circuits
     </ul> 
   </li>
 </ol>
-
 
 <hr>
 
@@ -292,7 +303,7 @@ EMO circuits
 </ul>
 
 <p>
-  Why would someone want to override these interlocks? They're there for our safety! Sometimes overriding interlocks is needed to troubleshoot. For example, watching problematic robots move while troubleshooting is very helpful in order to hear noises, feel vibrations, watch for jerky movements, etc. But often times the only way to get a clear view is to override interlocks. The equipment manufacturers understand this and make it easy enough to override interlocks while ensuring it's intentional.
+  Why would someone want to override these interlocks? After all, they're there for our safety! Sometimes overriding interlocks is needed to troubleshoot. For example, watching problematic robots move while troubleshooting is very helpful in order to hear noises, feel vibrations, watch for jerky movements, etc. But often times the only way to get a clear view is to override interlocks. The equipment manufacturers understand this and make it easy enough to override interlocks while ensuring it's intentional.
 </p>
 
 
@@ -302,14 +313,65 @@ EMO circuits
 <h3 id="alarms">Alarms</h3>
 
 <p>
-  Tools have alarms that will result from abnormal conditions, which aren't necessarily always a safety har
+  Tools have alarms that will result from abnormal conditions, which aren't necessarily always a safety hazard.
 </p>
 
 
 
 <h3 id="ergonomics">Ergonomics</h3>
 
+<p>
+  Equipment parts can be heavy and often cumbersome to lift because the equipment's small footprint doesn't allow for personnel to get easy leverage on said parts. It can be a jungle inside, underneath, or on top of equipment!
+</p>
 
+<img class="img-medium" src="media/fabs4/centura.jpg">
+<figcaption>
+  This equipment is cannibalized to shreds, but the idea is there: it's a lot of parts in a small volume!
+</figcaption>
+
+<p>
+  Equipment manufacturers will often include various ergonomic fixtures to help personnel with maintenance. Examples may include motorized cranes that can assist with lifting parts straight up and down instead of forcing personnel to come from the side; 
+</p>
+
+<p>
+  If custom solutions are required, then fabs can outsource to companies who will build tools to their specification. For example, take <a href="https://alum-a-lift.com/lift/36545-iso-5-cleanroom-lift-for-handling-lithography-tools/">this lift from Alum-a-Lift</a>:
+</p>
+
+<img class="img-medium" src="media/fabs4/alumalift.png">
+<figcaption>
+  No idea what is does besides lift lithography equipment, but looks cool!
+</figcaption>
+
+<h3 id="emergencyoff">The Emergency Off Circuit, or The Big Red Button</h3>
+
+<p>
+  All equipment comes equipped with emergency off (EMO) buttons at strategic locations to maximize accessibility to the button. When pressed, the entire tool and anything connected to the EMO circuit shuts off immediately because the physical connection is severed.
+</p>
+
+<p>
+  Why would someone want to press the EMO button? Here are some example reasons:
+</p>
+
+<ul>
+  <li>
+    Pyrophoric gas, or <a href="https://www.youtube.com/watch?v=Fq8ljo7Br14">gas that ignites into flames</a> when exposed to air is leaking from the tool. Pressing the EMO button will cause all valves related to that gas to close immediately, stopping the leak (this is presuming a weld or something didn't break, of which there are other solutions since a valve may not be able to stop that depending on where it is).
+  </li>
+  <li>
+    A robot is actively pressing against a person who wasn't aware it was still able to move. Pressing the EMO button will turn off the robots motor and allow the person to move the robot out of the way.
+  </li>
+  <li>
+    A water line is leaking water all over sensitive electronics. Pressing the EMO button will turn off valves and stop water flow.
+  </li>
+</ul>
+
+<img class="img-medium" src="media/fabs4/emo.jpg">
+<figcaption>
+  Example of EMO and "Robot Interrupt" buttons, the latter of which stops the robot without powering off the equipment
+</figcaption>
+
+<p>
+  I've pressed an EMO button once in my life, but that was at my university fab and because of a major operator error. EMO presses at the industrial level are rare because of how well the equipment is designed and the people are trained. You do not want to press the EMO! If you are pressing the EMO, your day is probably really bad or about to get really bad! (Okay, okay, pressing the EMO is kind of fun because of how forbidden it is and its nice tactile feel, so if the equipment is ever off do yourself a favor and get a press in.)
+</p>
 
 
 <hr>
