@@ -12,7 +12,7 @@
       } catch (e) {}
     })();
   </script>
-  <title>Semiconductor Fabs IV: Safety - No Magic Pill</title>
+  <title>Semiconductor Fabs IV: The Safety - No Magic Pill</title>
   <link rel="alternate" type="application/rss+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
   <link rel="alternate" type="application/atom+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
   <link rel="stylesheet" type="text/css" href="../css/main.css">
@@ -48,14 +48,40 @@ why does safety matter?
 
 add games using fable
 
-practice: don't be a fucking idiot and talk to others
+see safety section from fabs1
+
+normally closed vs normally open
+
+safety philosophy: automatic (no human intervention), difficult and intentional to override, better safe than sorry
+
+add fabs4 to other series lists
 
 -->
 
-<h1 id="fabs4">Semiconductor Fabs IV: Safety</h1>
+<h1 id="fabs4">Semiconductor Fabs IV: The Safety</h1>
 
 <p>
   In-depth look at semiconductor fab safety protocols and systems.
+</p>
+
+<hr>
+
+<h2 id="series">Semiconductor Fab Series</h2>
+
+<p>
+  <a href="fabs.html">Semiconductor Fabs I: The Equipment</a>
+</p>
+
+<p>
+  <a href="fabs2.html">Semiconductor Fabs II: The Operation</a>
+</p>
+
+<p>
+  <a href="fabs3.html">Semiconductor Fabs III: The Data and Automation</a>
+</p>
+
+<p>
+  <a href="fabs4.html">Semiconductor Fabs IV: The Safety</a>
 </p>
 
 <hr>
@@ -80,6 +106,58 @@ practice: don't be a fucking idiot and talk to others
 
 <hr>
 
+<h2 id="philosophy">Safety Philosophy</h2>
+
+<p>
+  
+</p>
+
+<h3 id="automatic">Automate Where Possible</h3>
+
+<p>
+  <a href="fabs3.html#automation">Semiconductor Fabs III: The Data and Automation</a> discusses why automation is so important in a fab from a material perspective: it's faster, safer, easier, and cheaper. But it also applies physical safety as well. Humans in the loop can be catastrophic—they misinterpret something, make the wrong decision, perform the wrong action, or be really stupid. Having physical connections, electrical signals, and default safe conditions do the work minimizes the chance of taking the wrong action and enforces stupidity, just in the way that computers are stupid and do exactly what they're told to.
+</p>
+
+<h3 id="intentional">All Intention, No Accidents</h3>
+
+<p>
+  Sometimes safety mechanisms must be overridden for legitimate reasons. When this happens, it shouldn't be an accident or something someone stumbled upon. Instead, it should be the physical equivalent of those <a href="#" class="popup-trigger" onclick="openPopupSequence(event)">annoying pop-up boxes</a> making sure that continuing is the desired acton. This almost feels like the equivalent of <a href="https://en.wikipedia.org/wiki/Long-term_nuclear_waste_warning_messages">long-term nuclear waste warning messages</a>: as one gets closer to fully overriding some protective measure, it should be more obvious that they <i>probably</i> shouldn't be doing that.
+</p>
+
+<h3 id="convenience">(In)Conveniences</h3>
+
+<p>
+  Safety should be easy. Doing the right thing should be easy. Doing the wrong thing should be difficult (see section directly above) and inconvenient. <a href="https://www.lesswrong.com/posts/reitXJgJXFzKpdKyd/beware-trivial-inconveniences">Trivial inconveniences</a> exist and apply in the fab, even if the rules try to claim they don't. People will be unsafe if being safe is too much of a pain in the ass.
+</p>
+
+<p>
+  Some examples of making safety easy and convenient:
+</p>
+
+<ul>
+  <li>
+    Ensuring safety gear (hard hats, safety glasses, gloves) are adequately stocked in all necessary areas so employees don't have to go searching for it.
+  </li>
+  <li>
+    Creating custom tools that are simple to find, simple to use, and make the job easier. The tool should have a designated storage location where users store it after use. 
+  </li>
+  <li>
+    Avoiding pressuring employees to work faster than is safe or they are comfortable. Calling them four times in an hour to ask for "status updates" conveys something that feels more like desperation and pressure than urgency and checking in. Being kind and ensuring that safety is a top priority—and reflecting that in actions—is key to encouraging safe behavior.
+  </li>
+</ul>
+
+<h3 id="safesorry">Better Safe Than Sorry</h3>
+
+<p>
+  When in doubt, take a step back and get a better idea. Some organizations use the <a href="https://www.inframark.com/pause-before-you-act/">PAUSE methodology</a> (pause, assess, understand, share, execute), which is great! It gives someone who is uncomfortable a way to assess the situation at hand before continuing.
+</p>
+
+<p>
+  Everyone should be better safe than sorry (injured, maimed, dead). This could mean stopping work until someone more experienced can work on it, asking for help, or refusing to do something outright because it is a safety concern.
+</p>
+
+<hr>
+
 <h2 id="why">Why Does Safety Matter?</h2>
 
 <h3 id="liability">Liability</h3>
@@ -93,28 +171,39 @@ practice: don't be a fucking idiot and talk to others
 </blockquote>
 
 <p>
-  Pretty serious stuff that comes with some hefty penalties 
+  Since I'm not an expert on OSHA violations, I <a href="https://claude.ai/share/e0462272-7516-4e8e-8c9a-b81e84b96f55">asked Claude Sonnet 5 to summarize what happens</a>:
 </p>
 
+<blockquote>
+  <p>
+    When a semiconductor fab has a fatality, in-patient hospitalization, amputation, or loss of an eye, the clock starts immediately: employers must report a death to <a href="https://www.osha.gov/report">OSHA within 8 hours</a>, and a hospitalization, amputation, or eye loss within 24 hours. Failing to report on time is itself a separate, citable violation under <a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1904/1904.39">29 CFR 1904.39</a>.
+  </p>
 
-<h3 id="reputation">Reputation</h3>
+  <p>
+    Fatalities almost always trigger a full OSHA inspection, and severe injuries frequently do — especially in a hazard-dense environment like a fab, with toxic gases, high-voltage equipment, and cleanroom chemical exposure. Employers are also required to preserve the incident scene until OSHA releases it, which can mean idling the affected tool or line for days or weeks while the investigation runs.
+  </p>
+
+  <p>
+    If OSHA finds violations, the fines add up fast. As of 2026, <a href="https://www.osha.gov/memos/2026-05-21/2026-annual-adjustments-osha-civil-penalties">serious or other-than-serious violations carry penalties of up to $16,550 each</a>, while willful or repeat violations can reach <a href="https://osha-defense.com/osha-fines-2026">$165,514 per violation</a> — and a single inspection often produces multiple citations, so totals can climb into six or seven figures. Willful violations tied to a worker's death can also trigger criminal referral.
+  </p>
+
+  <p>
+    The costs that outlast the headline fine are often the bigger operational hit: a spike in the company's workers' compensation experience modification rate (raising premiums for years), disqualification from safety-prequalified client contracts, and — for repeat or egregious cases — placement in OSHA's Severe Violator Enforcement Program, which brings mandatory follow-up inspections. For a fab, where a single tool going down can stall an entire process flow, the downtime from a scene-preservation hold or a corrective-action order is frequently more costly than the citation itself.
+  </p>
+</blockquote>
 
 <p>
-  Being known as an unsafe company speaks volumes about the culture, repelling potential talent and pushing them towards places where they know they'll get to see their family at the end of the day.
-</p>
-
-<h3 id="downtime">Cost of Downtime</h3>
-
-<p>
-  Fab uptime is incredibly important—from: <a href="https://semiconductorx.com/fab-resilience.html">Fab Resilience - Uptime Standards</a>:
+  And to add to the <a href="https://semiconductorx.com/fab-resilience.html">cost of downtime portion</a>:
 </p>
 
 <blockquote>
   A semiconductor fab is among the most demanding 24/7/365 operating environments in any industry. The consequences of downtime are not measured in inconvenience — they are measured in scrapped wafer lots, tool re-qualification cycles, and production gaps that cascade through customer supply chains for weeks after the event that caused them. A one-hour unplanned outage at a leading-edge fab running 60,000 wafer starts per month represents approximately $2–5M in lost production value, plus the cost of any in-process lots scrapped, plus the tool recovery and re-qualification labor before production can resume. A 24-hour outage at the same facility approaches $50–100M in combined direct and indirect impact.
 </blockquote>
 
+<h3 id="reputation">Reputation</h3>
+
 <p>
-  Now I'm not sure exactly what happens when there's a major reportable safety incident—whether the fab gets completely shut down, only the area around where the accident occurred, or just the tool related to the accident—but regardless, it's downtime and not the good kind. Personnel are now required to prevent that safety incident from ever happening again when it potentially could've been prevented with some simple training, whereas now it has to be completely foolproof.
+  Being known as an unsafe company speaks volumes about the culture, repelling potential talent and pushing them towards places where they know they'll get to see their family at the end of the day.
 </p>
 
 <hr>
@@ -337,7 +426,7 @@ practice: don't be a fucking idiot and talk to others
   If custom solutions are required, then fabs can outsource to companies who will build tools to their specification. For example, take <a href="https://alum-a-lift.com/lift/36545-iso-5-cleanroom-lift-for-handling-lithography-tools/">this lift from Alum-a-Lift</a>:
 </p>
 
-<img class="img-medium" src="media/fabs4/alumalift.png">
+<img class="img-large" src="media/fabs4/alumalift.png">
 <figcaption>
   No idea what is does besides lift lithography equipment, but looks cool!
 </figcaption>
@@ -373,10 +462,96 @@ practice: don't be a fucking idiot and talk to others
   I've pressed an EMO button once in my life, but that was at my university fab and because of a major operator error. EMO presses at the industrial level are rare because of how well the equipment is designed and the people are trained. You do not want to press the EMO! If you are pressing the EMO, your day is probably really bad or about to get really bad! (Okay, okay, pressing the EMO is kind of fun because of how forbidden it is and its nice tactile feel, so if the equipment is ever off do yourself a favor and get a press in.)
 </p>
 
-
 <hr>
 
 <h2 id="building">The Building</h2>
+
+<p>
+  The building itself—the foundation, the trusses, the <a href="https://en.wikipedia.org/wiki/Waffle_slab">waffle floor</a>—isn't anything special, but rather the features and systems that interact with the equipment and facilities.
+</p>
+
+<h3 id="fire">Fire Suppression Systems</h3>
+
+<p>
+  <a href="media/fabs4/NFPA-318-2006.pdf">NPFA 318: Standard for the Protection of Semiconductor Fabrication Facilities</a> "presents requirements to safeguard facilities containing cleanrooms from fire and related hazards to protect against injury, loss of life, and property damage". (Note the linked document is from 2006 because I couldn't find an updated one on the internet.) Here are some nice features:
+</p>
+
+<blockquote>
+  Optical flame detectors that will respond to the flame signature of silane shall be provided at silane gas cylinders in the open dispensing systems described in Section 8.4. Activation of detectors shall result in the closing of the cylinder automatic shutoff valves described in 8.1.2.
+</blockquote>
+
+<blockquote>
+  A local visual and audible alarm shall be provided to indicate activation of any interlock. [Intentionally silencing the alarm is much better than not hearing it at all.]
+</blockquote>
+
+<blockquote>
+  Tools utilizing hazardous chemicals shall be designed to accept inputs from monitoring equipment. [This allows the monitoring equipment to tell the tool to shut off because something is wrong.]
+</blockquote>
+
+<p>
+  They seem to really care about silane given it has two subsections and one main section devoted entirely to the gas!
+</p>
+
+<h3 id="gas">Gases</h3>
+
+<p>
+  Some gases that fabs use have very low <a href="https://en.wikipedia.org/wiki/Median_lethal_dose">median lethal doses</a> (<a href="https://en.wikipedia.org/wiki/Arsine#Microelectronics_applications">arsine</a> to <a href="https://en.wikipedia.org/wiki/Phosphine">phosphine</a>), low <a href="https://en.wikipedia.org/wiki/Flammability_limit">flammability limits</a>, or are <a href="https://en.wikipedia.org/wiki/Asphyxiant_gas">asphyxiants</a>. Gas detectors are placed at strategic locations to maximize detection capabilities so the faster it's detected, the sooner it can be stopped and fixed.
+</p>
+
+<p>
+  Some places that gas detectors are located:
+</p>
+
+<ul>
+  <li>
+    Exhaust: Vacuum chambers and places that have one barrier of protection between hazardous gases and humans (e.g., <a href="fabs.html#gaspanel">gas panel</a> gas lines) have exhaust pipes that are connected to vacuum pumps, creating slight negative pressure and pulling in any gases in the volume it's connected to. Gas detectors are connected to these pipes and constantly monitoring for any nasty gases. If it detects any, there is definitely something wrong, so it sends a signal to stop the tool and/or stop the gas flow on the facility side. 
+  </li>
+  <li>
+    Gas Cabinets: Similar to the exhaust pip detectors, some gases are housed in standalone cabints to improve detection capabilities (smaller volume means a larger concentration per a constant leak) and improve safety.
+  </li>
+</ul>
+
+<p>
+  Some gases are housed in <a href="https://en.wikipedia.org/wiki/Double-walled_pipe">double-walled pipes</a>, where the pipe that carries the main gas is enclosed within another pipe filled with an inert gas, such as nitrogen. This creates an added layer of safety and immediately dilutes the dangerous gas.
+</p>
+
+
+
+
+
+<h3 id="scrubbers">Scrubbers</h3>
+
+
+
+<h3 id="gascontainment">Gas Containment</h3>
+
+
+
+
+
+
+<hr>
+
+<h2 id="mortality">General Mortality and Disease Rates for Fab Employees</h2>
+
+<p>
+  I've heard some crazy health-related rumors throughout my fab life: exposure to <a href="https://en.wikipedia.org/wiki/Photoresist">photoresist</a> will cause men to become sterile; photoresist will cause women to only have female children; working in a fab will make you go clinically insane because of the long hours and insane pressure and mind-boggling physics that make <a href="https://en.wikipedia.org/wiki/Clarke%27s_three_laws">magic seem real</a>.
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <hr>
@@ -384,7 +559,99 @@ practice: don't be a fucking idiot and talk to others
 <h2 id="see_also">See Also</h2>
 
 
+<!-- pop-up button section -->
 
+<div id="popupOverlay" class="popup-overlay" onclick="closePopupSequence(event)">
+  <div class="popup-box" onclick="event.stopPropagation()">
+
+    <div class="popup-step" data-step="1">
+      <p>Are you sure you want to open that lid?</p>
+      <button class="popup-btn" onclick="nextStep()">Yes, I'm sure</button>
+    </div>
+
+    <div class="popup-step" data-step="2" style="display:none;">
+      <p>Are you sure that you want to remove the protective cover with various warning labels on it?</p>
+      <button class="popup-btn" onclick="nextStep()">Yes, but now I'm kinda second guessing if I should be doing this!</button>
+    </div>
+
+    <div class="popup-step" data-step="3" style="display:none;">
+      <p>Are you sure you want to put that cable on and make it so the interlock doesn't matter anymore?</p>
+      <button class="popup-btn" onclick="nextStep()">Okay now I'm a bit scared but gonna continue anyway</button>
+    </div>
+
+    <div class="popup-step" data-step="4" style="display:none;">
+      <p>You are now in a potentially dangerous situation. Don't say the signs didn't warn you!</p>
+      <button class="popup-btn" onclick="closePopupSequence()">...what have I done...</button>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+.popup-overlay.active {
+  display: flex;
+}
+.popup-box {
+  background: #fff;
+  max-width: 420px;
+  width: 90%;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  font-family: inherit;
+}
+.popup-box p {
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+.popup-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background: #222;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+.popup-btn:hover {
+  background: #444;
+}
+</style>
+
+<script>
+let currentStep = 1;
+
+function openPopupSequence(e) {
+  e.preventDefault();
+  currentStep = 1;
+  showStep(currentStep);
+  document.getElementById('popupOverlay').classList.add('active');
+}
+
+function nextStep() {
+  currentStep++;
+  showStep(currentStep);
+}
+
+function showStep(step) {
+  document.querySelectorAll('.popup-step').forEach(el => {
+    el.style.display = (parseInt(el.dataset.step) === step) ? 'block' : 'none';
+  });
+}
+
+function closePopupSequence(e) {
+  document.getElementById('popupOverlay').classList.remove('active');
+}
+</script>
 
 <script src="../js/theme.js"></script>
 <script src="../js/toc.js"></script>
