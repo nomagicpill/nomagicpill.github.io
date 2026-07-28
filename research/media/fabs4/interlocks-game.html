@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>Choose Your Interlock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Chakra+Petch:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080b14;
+    --bg2:#03050a;
+    --neon-cyan:#00e5ff;
+    --neon-pink:#ff2e63;
+    --neon-gold:#ffb800;
+    --good:#39ff88;
+    --bad:#ff4d4d;
+    --text:#eaf6ff;
+    --text-dim:#8b99b3;
+    --card-bg:#10162a;
+    --card-bg2:#141b33;
+    --card-border:#26335c;
+    --accent:var(--neon-pink);
+    --font-display:'Russo One', sans-serif;
+    --font-ui:'Chakra Petch', sans-serif;
+    --font-mono:'Share Tech Mono', monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-ui);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* ambient backdrop */
+  .backdrop{
+    position:fixed; inset:0; z-index:-2;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255,46,99,0.12), transparent 45%),
+      radial-gradient(circle at 80% 85%, rgba(0,229,255,0.10), transparent 45%),
+      var(--bg2);
+  }
+  .stripes{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image: repeating-linear-gradient(
+      -35deg,
+      rgba(255,255,255,0.02) 0px,
+      rgba(255,255,255,0.02) 2px,
+      transparent 2px,
+      transparent 40px
+    );
+  }
+  .vignette{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    box-shadow: inset 0 0 220px 60px rgba(0,0,0,0.65);
+  }
+
+  a{color:var(--neon-cyan);}
+  .back-link{
+    position:fixed; top:14px; left:16px; z-index:20;
+    font-family:var(--font-ui); font-weight:600; font-size:13px;
+    letter-spacing:0.05em; text-decoration:none; color:var(--text-dim);
+    border:1px solid var(--card-border); padding:6px 12px; border-radius:6px;
+    background:rgba(8,11,20,0.6);
+  }
+  .back-link:hover{color:var(--neon-cyan); border-color:var(--neon-cyan);}
+
+  main{
+    max-width:1100px; margin:0 auto; padding:70px 20px 60px;
+    min-height:100vh;
+  }
+
+  .screen{display:none;}
+  .screen.active{display:block;}
+
+  /* ---------- Select screen ---------- */
+  .arcade-title{text-align:center; margin-bottom:34px;}
+  .arcade-title h1{
+    font-family:var(--font-display);
+    font-size:clamp(32px, 6vw, 58px);
+    line-height:1.05;
+    margin:0;
+    letter-spacing:0.02em;
+    color:var(--text);
+    text-shadow:
+      0 0 10px rgba(0,229,255,0.55),
+      0 0 26px rgba(255,46,99,0.35);
+  }
+  .arcade-title h1 span{
+    color:var(--neon-gold);
+    text-shadow:
+      0 0 10px rgba(255,184,0,0.65),
+      0 0 30px rgba(255,46,99,0.4);
+  }
+  .arcade-title .subtitle{
+    font-family:var(--font-mono);
+    color:var(--neon-cyan);
+    letter-spacing:0.25em;
+    font-size:13px;
+    margin-top:10px;
+  }
+
+  .fighter-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+    gap:18px;
+    margin-top:10px;
+  }
+
+  .fighter-card{
+    background:linear-gradient(160deg, var(--card-bg), var(--card-bg2));
+    border:1px solid var(--card-border);
+    border-radius:12px;
+    padding:20px 16px 16px;
+    cursor:pointer;
+    text-align:center;
+    color:var(--text);
+    font-family:var(--font-ui);
+    transition:transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .fighter-card::before{
+    content:"";
+    position:absolute; inset:0;
+    background:radial-gradient(circle at 50% 0%, var(--fc-accent, var(--neon-pink)) 0%, transparent 60%);
+    opacity:0.12;
+    pointer-events:none;
+  }
+  .fighter-card:hover, .fighter-card:focus-visible{
+    transform:translateY(-4px) scale(1.02);
+    border-color:var(--fc-accent, var(--neon-pink));
+    box-shadow:0 8px 26px -6px var(--fc-accent, var(--neon-pink));
+  }
+  .fighter-card .icon-wrap{
+    width:96px; height:96px; margin:0 auto 10px;
+    color:var(--fc-accent, var(--neon-pink));
+    filter:drop-shadow(0 0 10px var(--fc-accent, var(--neon-pink)));
+  }
+  .fighter-card .icon-wrap svg{width:100%; height:100%;}
+  .fighter-card .f-name{
+    font-family:var(--font-display);
+    font-size:16px;
+    letter-spacing:0.03em;
+    margin:2px 0 2px;
+  }
+  .fighter-card .f-codename{
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--text-dim);
+    margin-bottom:12px;
+  }
+  .stat-row{
+    display:flex; align-items:center; gap:8px; margin:4px 0;
+    font-size:11px; letter-spacing:0.05em; color:var(--text-dim);
+  }
+  .stat-row .stat-label{width:56px; text-align:left; flex-shrink:0;}
+  .stat-bar{display:flex; gap:3px;}
+  .stat-bar span{
+    width:12px; height:8px; border-radius:2px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.12);
+  }
+  .stat-bar span.filled{
+    background:var(--fc-accent, var(--neon-pink));
+    border-color:var(--fc-accent, var(--neon-pink));
+    box-shadow:0 0 6px var(--fc-accent, var(--neon-pink));
+  }
+
+  .legend-note, .disclaimer{
+    text-align:center; color:var(--text-dim); font-size:12px;
+    margin-top:26px; line-height:1.6; max-width:640px; margin-left:auto; margin-right:auto;
+  }
+
+  /* ---------- VS Flash ---------- */
+  .vs-flash{
+    position:fixed; inset:0; z-index:50;
+    display:none;
+    align-items:center; justify-content:center;
+    background:#000;
+    overflow:hidden;
+  }
+  .vs-flash.playing{display:flex;}
+  .vs-flash .wipe{
+    position:absolute; inset:0;
+    background:var(--accent);
+    clip-path:polygon(0 0,0 0,0 100%,0 100%);
+  }
+  .vs-flash.playing .wipe{
+    animation:vsWipe 0.7s ease-in-out forwards;
+  }
+  @keyframes vsWipe{
+    0%{clip-path:polygon(0 0,0 0,0 100%,0 100%);}
+    45%{clip-path:polygon(0 0,100% 0,100% 100%,0 100%);}
+    100%{clip-path:polygon(100% 0,100% 0,100% 100%,100% 100%);}
+  }
+  .vs-flash .vs-text{
+    position:relative; z-index:2;
+    font-family:var(--font-display);
+    color:#04060b;
+    font-size:clamp(28px,7vw,64px);
+    letter-spacing:0.04em;
+    opacity:0;
+    transform:scale(0.6);
+  }
+  .vs-flash.playing .vs-text{
+    animation:vsText 0.7s ease-out 0.15s forwards;
+  }
+  @keyframes vsText{
+    0%{opacity:0; transform:scale(0.6);}
+    60%{opacity:1; transform:scale(1.08);}
+    100%{opacity:1; transform:scale(1);}
+  }
+
+  /* ---------- Game screen ---------- */
+  .game-header{
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:12px;
+    border-bottom:1px solid var(--card-border);
+    padding-bottom:14px; margin-bottom:18px;
+  }
+  .ghost-btn{
+    background:transparent; color:var(--text-dim);
+    border:1px solid var(--card-border); border-radius:6px;
+    padding:8px 14px; font-family:var(--font-ui); font-weight:600;
+    font-size:13px; letter-spacing:0.04em; cursor:pointer;
+  }
+  .ghost-btn:hover, .ghost-btn:focus-visible{color:var(--neon-cyan); border-color:var(--neon-cyan);}
+
+  .round-tag{
+    font-family:var(--font-mono); color:var(--text-dim); font-size:12px; letter-spacing:0.2em;
+  }
+
+  .fighter-banner{text-align:right;}
+  .fighter-banner .fb-name{
+    font-family:var(--font-display); font-size:clamp(20px,4vw,30px);
+    color:var(--accent); text-shadow:0 0 14px var(--accent);
+    display:block;
+  }
+  .fighter-banner .fb-codename{
+    font-family:var(--font-mono); font-size:13px; color:var(--text-dim);
+  }
+
+  .fighter-blurb{
+    max-width:760px; color:var(--text); font-size:15px; line-height:1.6;
+    border-left:3px solid var(--accent); padding-left:14px; margin:0 0 8px;
+  }
+  .instructions{
+    font-family:var(--font-mono); font-size:12.5px; color:var(--neon-gold);
+    letter-spacing:0.04em; margin-bottom:20px;
+  }
+
+  .interlock-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:14px;
+    margin-bottom:26px;
+  }
+
+  .interlock-card{
+    text-align:left;
+    background:var(--card-bg);
+    border:2px solid var(--card-border);
+    border-radius:10px;
+    padding:14px;
+    cursor:pointer;
+    color:var(--text);
+    font-family:var(--font-ui);
+    transition:border-color 0.12s ease, transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .interlock-card:hover, .interlock-card:focus-visible{
+    border-color:var(--accent);
+    transform:translateY(-2px);
+  }
+  .interlock-card.selected{
+    border-color:var(--accent);
+    box-shadow:0 0 0 1px var(--accent), 0 6px 18px -8px var(--accent);
+    background:var(--card-bg2);
+  }
+  .interlock-card .ic-code{
+    font-family:var(--font-mono); font-size:14px; font-weight:700;
+    color:var(--neon-cyan); letter-spacing:0.02em; display:block; margin-bottom:4px;
+  }
+  .interlock-card .ic-name{
+    font-size:13px; color:var(--text-dim); display:block; margin-bottom:8px;
+  }
+  .interlock-card .ic-desc{
+    font-size:13px; line-height:1.5; color:var(--text);
+  }
+  .interlock-card .ic-badge{
+    display:none;
+    font-family:var(--font-ui); font-weight:700; font-size:11px;
+    letter-spacing:0.08em; padding:3px 8px; border-radius:4px;
+    margin-bottom:8px;
+  }
+  .interlock-card .ic-explain{display:none; font-size:13px; line-height:1.55; margin-top:8px;}
+
+  .interlock-card.revealed{cursor:default;}
+  .interlock-card.revealed:hover{transform:none;}
+  .interlock-card.revealed .ic-badge, .interlock-card.revealed .ic-explain{display:block;}
+
+  .interlock-card.state-correct{border-color:var(--good); background:rgba(57,255,136,0.06);}
+  .interlock-card.state-correct .ic-badge{background:rgba(57,255,136,0.15); color:var(--good);}
+  .interlock-card.state-wrong{border-color:var(--bad); background:rgba(255,77,77,0.06);}
+  .interlock-card.state-wrong .ic-badge{background:rgba(255,77,77,0.15); color:var(--bad);}
+  .interlock-card.state-missed{border-color:var(--neon-gold); background:rgba(255,184,0,0.06);}
+  .interlock-card.state-missed .ic-badge{background:rgba(255,184,0,0.15); color:var(--neon-gold);}
+  .interlock-card.state-skipped{opacity:0.55;}
+  .interlock-card.state-skipped .ic-badge{background:rgba(255,255,255,0.08); color:var(--text-dim);}
+
+  .game-footer{
+    position:sticky; bottom:0;
+    background:linear-gradient(0deg, var(--bg) 60%, transparent);
+    padding:18px 0 6px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    flex-wrap:wrap;
+  }
+  #selected-count{font-family:var(--font-mono); color:var(--text-dim); font-size:13px; letter-spacing:0.08em;}
+
+  .primary-btn{
+    font-family:var(--font-display); font-size:15px; letter-spacing:0.04em;
+    background:var(--accent); color:#04060b; border:none; border-radius:8px;
+    padding:12px 26px; cursor:pointer;
+    box-shadow:0 0 18px var(--accent);
+    transition:transform 0.12s ease, filter 0.12s ease;
+  }
+  .primary-btn:hover, .primary-btn:focus-visible{filter:brightness(1.12); transform:translateY(-2px);}
+  .primary-btn:disabled{opacity:0.4; cursor:not-allowed; box-shadow:none;}
+
+  .results-bar{
+    display:flex; align-items:center; gap:18px; flex-wrap:wrap; width:100%;
+    justify-content:space-between;
+  }
+  .score-block{display:flex; align-items:center; gap:14px;}
+  .rank-badge{
+    font-family:var(--font-display); font-size:34px;
+    width:56px; height:56px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    border:2px solid var(--accent); color:var(--accent);
+    text-shadow:0 0 12px var(--accent); flex-shrink:0;
+  }
+  .score-text .score-line1{font-family:var(--font-ui); font-weight:700; font-size:15px;}
+  .score-text .score-line2{font-family:var(--font-mono); font-size:12px; color:var(--text-dim);}
+  .results-actions{display:flex; gap:10px; flex-wrap:wrap;}
+
+  footer.credits{text-align:center; color:var(--text-dim); font-size:11px; margin-top:40px;}
+
+  :focus-visible{outline:3px solid var(--neon-cyan); outline-offset:2px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  @media (max-width:560px){
+    .fighter-banner{text-align:left;}
+    .game-header{flex-direction:column; align-items:flex-start;}
+    .results-bar{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<div class="backdrop"></div>
+<div class="stripes"></div>
+<div class="vignette"></div>
+
+<a class="back-link" href="../../fabs4.html">&larr; BACK TO FABS IV</a>
+
+<main>
+
+  <section id="select-screen" class="screen active">
+    <div class="arcade-title">
+      <h1>CHOOSE YOUR<br><span>INTERLOCK</span></h1>
+      <p class="subtitle">SELECT YOUR FAB TOOL TO BEGIN</p>
+    </div>
+
+    <div class="fighter-grid" id="fighter-grid"></div>
+
+    <p class="legend-note">Stat bars are a flavor read on hazardous-energy categories (chemical &middot; thermal &middot; electrical &middot; stored/kinetic &mdash; the same buckets OSHA's lockout&#8211;tagout rule uses), not precise measurements.</p>
+    <p class="disclaimer">The interlocks in this game are illustrative examples built around real fab safety-system concepts &mdash; not a verbatim spec sheet copied from any single commercial tool.</p>
+  </section>
+
+  <section id="game-screen" class="screen">
+    <div class="game-header">
+      <div>
+        <button class="ghost-btn" id="back-btn" type="button">&#9664; CHANGE FIGHTER</button>
+        <div class="round-tag" id="round-tag">ROUND 1</div>
+      </div>
+      <div class="fighter-banner">
+        <span class="fb-name" id="fb-name"></span>
+        <span class="fb-codename" id="fb-codename"></span>
+      </div>
+    </div>
+
+    <p class="fighter-blurb" id="fb-blurb"></p>
+    <p class="instructions" id="instructions">TAG EVERY INTERLOCK THAT BELONGS ON THIS TOOL. THEN LOCK IN.</p>
+
+    <div class="interlock-grid" id="interlock-grid" role="group" aria-label="Interlock choices"></div>
+
+    <div class="game-footer" id="game-footer">
+      <span id="selected-count" aria-live="polite">0 SELECTED</span>
+      <button class="primary-btn" id="lockin-btn" type="button">LOCK IN &#9654;</button>
+    </div>
+  </section>
+
+  <footer class="credits">No Magic Pill &middot; Choose Your Interlock</footer>
+</main>
+
+<div class="vs-flash" id="vs-flash" aria-hidden="true">
+  <div class="wipe"></div>
+  <div class="vs-text" id="vs-text"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var ICONS = {
+    etch: '<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">'
+      + '<polygon points="60,10 100,35 100,85 60,110 20,85 20,35" stroke="currentColor" stroke-width="3" opacity="0.45"/>'
+      + '<polygon points="60,28 86,44 86,76 60,92 34,76 34,44" stroke="currentColor" stroke-width="2" opacity="0.8"/>'
+      + '<path d="M64 20 L46 62 L60 62 L52 100 L82 52 L64 52 Z" fill="currentColor"/>'
+      + '</svg>',
+    cvd: '<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">'
+      + '<rect x="25" y="75" width="70" height="10" rx="2" fill="currentColor" opacity="0.45"/>'
+      + '<rect x="30" y="60" width="60" height="10" rx="2" fill="currentColor" opacity="0.65"/>'
+      + '<rect x="35" y="45" width="50" height="10" rx="2" fill="currentColor" opacity="0.85"/>'
+      + '<path d="M60 8 C46 26 46 42 60 44 C74 42 74 26 60 8 Z" fill="currentColor"/>'
+      + '</svg>',
+    wet: '<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">'
+      + '<path d="M48 14 H72 V44 L93 90 A11 11 0 0 1 83 105 H37 A11 11 0 0 1 27 90 L48 44 Z" stroke="currentColor" stroke-width="4"/>'
+      + '<path d="M33 88 Q46 79 60 88 T87 88" stroke="currentColor" stroke-width="3"/>'
+      + '<path d="M33 97 Q46 88 60 97 T87 97" stroke="currentColor" stroke-width="3" opacity="0.55"/>'
+      + '</svg>',
+    imp: '<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">'
+      + '<circle cx="22" cy="60" r="13" fill="currentColor"/>'
+      + '<line x1="35" y1="60" x2="84" y2="60" stroke="currentColor" stroke-width="5"/>'
+      + '<circle cx="98" cy="60" r="17" stroke="currentColor" stroke-width="3"/>'
+      + '<line x1="98" y1="42" x2="98" y2="78" stroke="currentColor" stroke-width="2"/>'
+      + '<line x1="80" y1="60" x2="116" y2="60" stroke="currentColor" stroke-width="2"/>'
+      + '</svg>',
+    furn: '<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">'
+      + '<rect x="28" y="38" width="64" height="48" rx="12" stroke="currentColor" stroke-width="4"/>'
+      + '<path d="M44 22 Q49 32 44 42" stroke="currentColor" stroke-width="3"/>'
+      + '<path d="M60 16 Q65 29 60 42" stroke="currentColor" stroke-width="3"/>'
+      + '<path d="M76 22 Q81 32 76 42" stroke="currentColor" stroke-width="3"/>'
+      + '</svg>',
+    cmp: '<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">'
+      + '<circle cx="60" cy="60" r="45" stroke="currentColor" stroke-width="3" opacity="0.4"/>'
+      + '<path d="M60 60 m0 -30 a30 30 0 1 1 -21 8" stroke="currentColor" stroke-width="4"/>'
+      + '<circle cx="60" cy="60" r="8" fill="currentColor"/>'
+      + '</svg>'
+  };
+
+  var FIGHTERS = [
+    { id:"etch", name:"PLASMA ETCHER", codename:'"THE REAPER"', accent:"#b026ff",
+      blurb:"Strikes a reactive gas plasma under vacuum to carve away material from the wafer, ion by ion.",
+      stats:{CHEM:4, THERM:2, ELEC:3, ENERGY:4} },
+    { id:"cvd", name:"CVD CHAMBER", codename:'"THE ALCHEMIST"', accent:"#ff6a00",
+      blurb:"Bakes precursor gases onto a heated wafer surface, building thin films one atomic layer at a time.",
+      stats:{CHEM:5, THERM:4, ELEC:2, ENERGY:2} },
+    { id:"wet", name:"WET BENCH", codename:'"THE CORROSIVE"', accent:"#00ffa3",
+      blurb:"Bathes wafers in acid and solvent tanks to clean, etch, or strip material the old-fashioned liquid way.",
+      stats:{CHEM:5, THERM:2, ELEC:1, ENERGY:1} },
+    { id:"imp", name:"ION IMPLANTER", codename:'"THE MARKSMAN"', accent:"#00baff",
+      blurb:"Fires a high-energy beam of dopant ions to punch specific atoms into precise depths of the wafer.",
+      stats:{CHEM:3, THERM:1, ELEC:5, ENERGY:3} },
+    { id:"furn", name:"DIFFUSION FURNACE", codename:'"THE FORGE"', accent:"#ff2e2e",
+      blurb:"Cooks a full boat of wafers at extreme heat to grow oxide layers or drive dopants deeper into the silicon.",
+      stats:{CHEM:3, THERM:5, ELEC:1, ENERGY:1} },
+    { id:"cmp", name:"CMP TOOL", codename:'"THE GRINDER"', accent:"#9fb4c7",
+      blurb:"Spins a slurry-soaked pad against the wafer to polish it perfectly flat before the next layer goes on.",
+      stats:{CHEM:2, THERM:1, ELEC:1, ENERGY:3} }
+  ];
+
+  var INTERLOCKS = [
+    { id:"cham_lid_clsd", code:"CHAM LID CLSD", name:"Chamber Lid Closed",
+      desc:"Confirms the process chamber lid is fully closed and latched before power or gas can be enabled.",
+      home:"etch",
+      explain:"The lid has to be sealed before RF power can strike a plasma here \u2014 otherwise reactive gas and stray RF energy have a straight path to the operator." },
+    { id:"gp_ok", code:"GP OK", name:"Gas Panel OK",
+      desc:"Confirms the gas panel enclosure is sealed and its internal gas-detection sensors report clear.",
+      home:"etch",
+      explain:"Etch gases like Cl2 and HBr are nasty enough that the whole panel has to check in healthy before any of it is allowed to flow toward the chamber here." },
+    { id:"slt_vlv_clsd", code:"SLT VLV CLSD", name:"Slit Valve Closed",
+      desc:"Confirms the valve between the process chamber and the wafer-transfer chamber is shut.",
+      home:"etch",
+      explain:"Etch byproducts are exactly what you don't want drifting into the transfer chamber where the wafer-handling robot lives \u2014 this valve keeps the two worlds apart here." },
+    { id:"exh_flow_ok", code:"EXH FLOW OK", name:"Exhaust / Abatement Flow OK",
+      desc:"Confirms the point-of-use abatement system is running and pulling exhaust properly.",
+      home:"etch",
+      explain:"This tool can't strike a plasma until its scrubber or burner is confirmed running \u2014 otherwise the hazardous byproducts have nowhere safe to go." },
+
+    { id:"htr_hub_ot", code:"HTR HUB OT", name:"Heater Hub Over-Temp",
+      desc:"Confirms the heater/susceptor temperature is below its defined ceiling.",
+      home:"cvd",
+      explain:"Push the heater too hot around a gas like silane and you risk a runaway reaction \u2014 this cuts gas flow the instant the ceiling is crossed here." },
+    { id:"cham_lid_cvr", code:"CHAM LID CVR", name:"Chamber Lid Cover",
+      desc:"Confirms a physical cover is installed over the lid mechanism.",
+      home:"cvd",
+      explain:"The cover has to be on before certain gas steps are allowed here, so nobody's hand ends up near live heater wiring during a deposition run." },
+    { id:"n2_purge_ok", code:"N2 PURGE OK", name:"Nitrogen Purge OK",
+      desc:"Confirms the inert purge line is flowing and at the correct pressure.",
+      home:"cvd",
+      explain:"Deposition gases here are pyrophoric \u2014 the chamber won't move to the next step until it's confirmed properly diluted and purged with nitrogen first." },
+    { id:"flame_det_ok", code:"FLAME DET OK", name:"Flame Detector Clear",
+      desc:"Confirms optical flame sensors near the gas dispensing area report no flame signature.",
+      home:"cvd",
+      explain:"Silane can self-ignite on contact with air \u2014 this sensor has to see zero flame before the tool keeps that gas valve open." },
+
+    { id:"bath_temp_ok", code:"BATH TEMP OK", name:"Bath Temperature OK",
+      desc:"Confirms the chemical bath temperature is within its safe operating band.",
+      home:"wet",
+      explain:"Some acid mixtures here, like a piranha bath, can violently off-gas or boil over if they run hot \u2014 this keeps the bath inside a safe range." },
+    { id:"fume_ok", code:"FUME OK", name:"Fume Exhaust OK",
+      desc:"Confirms local exhaust ventilation at the station is active.",
+      home:"wet",
+      explain:"These open baths off-gas constantly \u2014 dispense won't start here until the local exhaust is confirmed pulling." },
+    { id:"sash_pos_ok", code:"SASH POS OK", name:"Sash Position OK",
+      desc:"Confirms a sliding sash or shield is lowered below a set height.",
+      home:"wet",
+      explain:"The sash has to be down before certain dispense or agitation steps run here, keeping the operator's face and torso out of splash range." },
+    { id:"di_flow_ok", code:"DI FLOW OK", name:"DI Water Flow OK",
+      desc:"Confirms deionized rinse water flow is available.",
+      home:"wet",
+      explain:"An acid step won't proceed here unless the rinse water needed to clear it afterward is confirmed flowing \u2014 a failed rinse can leave live acid sitting on a wafer or fixture." },
+
+    { id:"hv_cab_clsd", code:"HV CAB CLSD", name:"High-Voltage Cabinet Closed",
+      desc:"Confirms cabinets housing high-voltage supplies are closed and their door switches satisfied.",
+      home:"imp",
+      explain:"Those cabinets carry serious voltage here \u2014 the door switch has to confirm closed before the supplies inside are allowed to energize." },
+    { id:"beam_enc_locked", code:"BEAM ENC LOCKED", name:"Beamline Enclosure Locked",
+      desc:"Confirms access doors around the beamline and end station are closed and locked.",
+      home:"imp",
+      explain:"A beam like this throws off X-rays as a byproduct \u2014 the enclosure has to be locked up like a radiation cabinet before the beam is allowed to run." },
+    { id:"src_gas_ok", code:"SRC GAS OK", name:"Source Gas Panel OK",
+      desc:"Confirms the dopant gas cabinet is sealed and its own detection system reports clear.",
+      home:"imp",
+      explain:"The source here runs on gases like arsine or phosphine \u2014 the cabinet has to check in clean before any of it gets near the ion source." },
+    { id:"vac_ok", code:"VAC OK", name:"Vacuum Level OK",
+      desc:"Confirms the system has reached and is holding proper vacuum.",
+      home:"imp",
+      explain:"Strike the beam here without proper vacuum and it ionizes the wrong gas entirely \u2014 the beamline won't fire until vacuum is confirmed." },
+
+    { id:"boat_pos_ok", code:"BOAT POS OK", name:"Boat Loader Position OK",
+      desc:"Confirms the wafer boat loading paddle is fully retracted.",
+      home:"furn",
+      explain:"Close this door on a paddle that hasn't retracted and you crush both the paddle and every wafer on it \u2014 this has to clear first." },
+    { id:"tube_temp_ok", code:"TUBE TEMP OK", name:"Tube Temperature OK",
+      desc:"Confirms the furnace tube temperature is within its programmed band.",
+      home:"furn",
+      explain:"Certain gas steps here, like an oxidation or a hydrogen anneal, won't start until the tube is confirmed at the right temperature for that recipe." },
+    { id:"h2_flame_det", code:"H2 FLAME DET", name:"Hydrogen Flame Detector",
+      desc:"Confirms a flame sensor at the exhaust reports proper combustion.",
+      home:"furn",
+      explain:"This tool burns off hydrogen at the exhaust during oxidation \u2014 if the sensor doesn't see a proper burn, the H2 valve won't stay open." },
+    { id:"door_seal_ok", code:"DOOR SEAL OK", name:"Door Seal OK",
+      desc:"Confirms the furnace door is fully seated and sealed.",
+      home:"furn",
+      explain:"Process gas flow doesn't start here until the door is confirmed sealed \u2014 otherwise it's leaking straight into the fab bay air." },
+
+    { id:"carrier_load_ok", code:"CARRIER LOAD OK", name:"Wafer Carrier Seated",
+      desc:"Confirms the wafer is properly seated in the carrier head.",
+      home:"cmp",
+      explain:"Spin up down-force and rotation here on a wafer that isn't seated right and it can eject out of the carrier at speed \u2014 this has to check out first." },
+    { id:"slurry_flow_ok", code:"SLURRY FLOW OK", name:"Slurry Flow OK",
+      desc:"Confirms slurry delivery flow is active.",
+      home:"cmp",
+      explain:"Run the pad dry against a wafer at process speed and you generate real heat and particulate at the interface \u2014 slurry flow has to be confirmed here first." },
+    { id:"pad_cond_ok", code:"PAD COND OK", name:"Pad Conditioner Engaged",
+      desc:"Confirms the conditioning disk is engaged and rotating.",
+      home:"cmp",
+      explain:"Without active conditioning here the pad glazes over fast, and a glazed pad at full pressure runs hot and unpredictably \u2014 this checks conditioning is live before ramping pressure." },
+    { id:"estop_clr", code:"E-STOP CLR", name:"Emergency Stop Clear",
+      desc:"Confirms all E-stop and light-curtain sensors around the moving carrier arm are clear.",
+      home:"cmp",
+      explain:"The carrier arm here indexes between stations under real force \u2014 nothing moves until every E-stop and light curtain around it reads clear." }
+  ];
+
+  var FIGHTER_BY_ID = {};
+  FIGHTERS.forEach(function(f){ FIGHTER_BY_ID[f.id] = f; });
+
+  var STAT_LABELS = ["CHEM","THERM","ELEC","ENERGY"];
+
+  // ---- state ----
+  var state = {
+    currentFighter: null,
+    round: 1,
+    selected: new Set(),
+    locked: false,
+    roundInterlocks: []
+  };
+
+  // ---- utils ----
+  function shuffle(arr){
+    var a = arr.slice();
+    for(var i=a.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c];
+    });
+  }
+  function renderStatBar(value){
+    var out = "";
+    for(var i=1;i<=5;i++){
+      out += '<span class="' + (i<=value ? "filled" : "") + '"></span>';
+    }
+    return out;
+  }
+
+  // ---- render: fighter select ----
+  function renderFighterGrid(){
+    var grid = document.getElementById("fighter-grid");
+    var html = "";
+    FIGHTERS.forEach(function(f){
+      html += '<button type="button" class="fighter-card" style="--fc-accent:' + f.accent + '" data-fighter="' + f.id + '">'
+        + '<div class="icon-wrap">' + ICONS[f.id] + '</div>'
+        + '<div class="f-name">' + f.name + '</div>'
+        + '<div class="f-codename">' + f.codename + '</div>'
+        + STAT_LABELS.map(function(label){
+            return '<div class="stat-row"><span class="stat-label">' + label + '</span><span class="stat-bar">' + renderStatBar(f.stats[label]) + '</span></div>';
+          }).join("")
+        + '</button>';
+    });
+    grid.innerHTML = html;
+  }
+
+  // ---- game round setup ----
+  function pickRoundInterlocks(fighterId){
+    var home = INTERLOCKS.filter(function(i){ return i.home === fighterId; });
+    var away = INTERLOCKS.filter(function(i){ return i.home !== fighterId; });
+    var distractors = shuffle(away).slice(0, 6);
+    return shuffle(home.concat(distractors));
+  }
+
+  function startFighter(fighterId){
+    state.currentFighter = fighterId;
+    state.round = 1;
+    beginRound();
+    playVsFlash(fighterId, function(){
+      setActiveScreen("game-screen");
+    });
+  }
+
+  function beginRound(){
+    var fighter = FIGHTER_BY_ID[state.currentFighter];
+    document.documentElement.style.setProperty("--accent", fighter.accent);
+    document.getElementById("fb-name").textContent = fighter.name;
+    document.getElementById("fb-codename").textContent = fighter.codename;
+    document.getElementById("fb-blurb").textContent = fighter.blurb;
+    document.getElementById("round-tag").textContent = "ROUND " + state.round;
+
+    state.selected = new Set();
+    state.locked = false;
+    state.roundInterlocks = pickRoundInterlocks(state.currentFighter);
+
+    document.getElementById("instructions").textContent = "TAG EVERY INTERLOCK THAT BELONGS ON THIS TOOL. THEN LOCK IN.";
+    renderInterlockGrid();
+    renderFooterPreLock();
+  }
+
+  function renderInterlockGrid(){
+    var grid = document.getElementById("interlock-grid");
+    var html = "";
+    state.roundInterlocks.forEach(function(it){
+      var selectedClass = state.selected.has(it.id) ? "selected" : "";
+      html += '<button type="button" class="interlock-card ' + selectedClass + '" data-id="' + it.id + '" aria-pressed="' + state.selected.has(it.id) + '">'
+        + '<span class="ic-badge"></span>'
+        + '<span class="ic-code">' + escapeHtml(it.code) + '</span>'
+        + '<span class="ic-name">' + escapeHtml(it.name) + '</span>'
+        + '<span class="ic-desc">' + escapeHtml(it.desc) + '</span>'
+        + '<span class="ic-explain"></span>'
+        + '</button>';
+    });
+    grid.innerHTML = html;
+  }
+
+  function renderFooterPreLock(){
+    var footer = document.getElementById("game-footer");
+    footer.innerHTML =
+      '<span id="selected-count" aria-live="polite">' + state.selected.size + ' SELECTED</span>'
+      + '<button class="primary-btn" id="lockin-btn" type="button">LOCK IN &#9654;</button>';
+  }
+
+  function updateSelectedCount(){
+    var el = document.getElementById("selected-count");
+    if(el) el.textContent = state.selected.size + " SELECTED";
+  }
+
+  function toggleInterlock(id){
+    if(state.locked) return;
+    if(state.selected.has(id)) state.selected.delete(id);
+    else state.selected.add(id);
+
+    var card = document.querySelector('.interlock-card[data-id="' + id + '"]');
+    if(card){
+      card.classList.toggle("selected", state.selected.has(id));
+      card.setAttribute("aria-pressed", state.selected.has(id));
+    }
+    updateSelectedCount();
+  }
+
+  function lockIn(){
+    state.locked = true;
+    var fighter = FIGHTER_BY_ID[state.currentFighter];
+    var homeIds = INTERLOCKS.filter(function(i){ return i.home === state.currentFighter; }).map(function(i){ return i.id; });
+    var total = homeIds.length;
+
+    var correctSelected = 0, incorrectSelected = 0, missed = 0;
+
+    state.roundInterlocks.forEach(function(it){
+      var isHome = it.home === state.currentFighter;
+      var isSelected = state.selected.has(it.id);
+      var card = document.querySelector('.interlock-card[data-id="' + it.id + '"]');
+      if(!card) return;
+      card.classList.add("revealed");
+
+      var badge = card.querySelector(".ic-badge");
+      var explain = card.querySelector(".ic-explain");
+      var homeFighterName = FIGHTER_BY_ID[it.home].name;
+
+      if(isHome && isSelected){
+        correctSelected++;
+        card.classList.add("state-correct");
+        badge.textContent = "CORRECT";
+        explain.textContent = it.explain;
+      } else if(!isHome && isSelected){
+        incorrectSelected++;
+        card.classList.add("state-wrong");
+        badge.textContent = "WRONG";
+        explain.textContent = it.code + " actually belongs on the " + homeFighterName + ". " + it.explain;
+      } else if(isHome && !isSelected){
+        missed++;
+        card.classList.add("state-missed");
+        badge.textContent = "MISSED";
+        explain.textContent = "This one belongs here too. " + it.explain;
+      } else {
+        card.classList.add("state-skipped");
+        badge.textContent = "CORRECTLY SKIPPED";
+        explain.textContent = it.code + " is for the " + homeFighterName + ", not this tool.";
+      }
+    });
+
+    var score = Math.max(0, correctSelected - incorrectSelected);
+    var pct = total ? score/total : 0;
+    var rank = getRank(pct, incorrectSelected);
+
+    document.getElementById("instructions").textContent = "RESULTS \u2014 every card is annotated below.";
+
+    var footer = document.getElementById("game-footer");
+    footer.innerHTML =
+      '<div class="results-bar">'
+      + '<div class="score-block">'
+        + '<div class="rank-badge">' + rank.rank + '</div>'
+        + '<div class="score-text">'
+          + '<div class="score-line1">' + score + '/' + total + ' correct &middot; ' + incorrectSelected + ' false trigger' + (incorrectSelected===1?"":"s") + ' &middot; ' + missed + ' missed</div>'
+          + '<div class="score-line2">' + rank.label + '</div>'
+        + '</div>'
+      + '</div>'
+      + '<div class="results-actions">'
+        + '<button class="ghost-btn" id="rematch-btn" type="button">REMATCH &#8635;</button>'
+        + '<button class="primary-btn" id="newfighter-btn" type="button">NEW FIGHTER</button>'
+      + '</div>'
+      + '</div>';
+  }
+
+  function getRank(pct, falsePositives){
+    if(pct === 1 && falsePositives === 0) return {rank:"S", label:"FLAWLESS \u2014 CLEAN BUILD"};
+    if(pct >= 0.75) return {rank:"A", label:"SOLID \u2014 READY FOR QUAL"};
+    if(pct >= 0.5) return {rank:"B", label:"PASSABLE \u2014 REVIEW THE MISSES"};
+    if(pct >= 0.25) return {rank:"C", label:"ROUGH START \u2014 RUN IT BACK"};
+    return {rank:"D", label:"BACK TO TRAINING"};
+  }
+
+  function setActiveScreen(id){
+    document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+    document.getElementById(id).classList.add("active");
+    window.scrollTo({top:0, behavior: reduceMotion ? "auto" : "smooth"});
+  }
+
+  function playVsFlash(fighterId, callback){
+    var fighter = FIGHTER_BY_ID[fighterId];
+    var flash = document.getElementById("vs-flash");
+    var text = document.getElementById("vs-text");
+
+    if(reduceMotion){
+      callback();
+      return;
+    }
+
+    document.documentElement.style.setProperty("--accent", fighter.accent);
+    text.textContent = fighter.name;
+    flash.style.display = "flex";
+    void flash.offsetWidth; // reflow
+    flash.classList.add("playing");
+
+    setTimeout(function(){
+      callback();
+      setTimeout(function(){
+        flash.classList.remove("playing");
+        flash.style.display = "none";
+      }, 250);
+    }, 650);
+  }
+
+  // ---- events ----
+  document.getElementById("fighter-grid").addEventListener("click", function(e){
+    var card = e.target.closest(".fighter-card");
+    if(!card) return;
+    startFighter(card.getAttribute("data-fighter"));
+  });
+
+  document.getElementById("interlock-grid").addEventListener("click", function(e){
+    var card = e.target.closest(".interlock-card");
+    if(!card || state.locked) return;
+    toggleInterlock(card.getAttribute("data-id"));
+  });
+
+  document.getElementById("game-footer").addEventListener("click", function(e){
+    if(e.target.id === "lockin-btn"){ lockIn(); }
+    if(e.target.id === "rematch-btn"){ state.round++; beginRound(); }
+    if(e.target.id === "newfighter-btn"){ setActiveScreen("select-screen"); }
+  });
+
+  document.getElementById("back-btn").addEventListener("click", function(){
+    setActiveScreen("select-screen");
+  });
+
+  // ---- init ----
+  renderFighterGrid();
+})();
+</script>
+</body>
+</html>

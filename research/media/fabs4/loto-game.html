@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>LOTO Sequencer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --steel:#2a2e33;
+    --steel2:#363c42;
+    --steel3:#1e2225;
+    --hazard-yellow:#f5c400;
+    --hazard-black:#161616;
+    --tag-red:#c8102e;
+    --tag-white:#f7f3ea;
+    --tag-ink:#1c1a17;
+    --tag-ink-dim:#6b6459;
+    --metal:#c3cad0;
+    --metal-dim:#8a9299;
+    --verified:#2f9e57;
+    --wrong:#d1483d;
+    --font-display:'Oswald', sans-serif;
+    --font-body:'Barlow', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0; padding:0;}
+  body{
+    background:radial-gradient(circle at 30% 0%, var(--steel2), var(--steel) 55%, var(--steel3));
+    color:var(--tag-white);
+    font-family:var(--font-body);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .back-link{
+    position:fixed; top:14px; left:16px; z-index:20;
+    font-family:var(--font-body); font-size:12px; font-weight:600; letter-spacing:0.03em;
+    color:var(--metal-dim); text-decoration:none;
+  }
+  .back-link:hover{color:var(--hazard-yellow);}
+
+  .hazard-strip{
+    height:10px; width:100%;
+    background-image:repeating-linear-gradient(-45deg, var(--hazard-yellow) 0 14px, var(--hazard-black) 14px 28px);
+  }
+
+  main{max-width:760px; margin:0 auto; padding:44px 20px 60px;}
+
+  .header{text-align:center; margin-bottom:22px;}
+  .lock-wrap{width:78px; height:78px; margin:0 auto 6px;}
+  #shackle-group{transform-origin:46px 34px; transition:transform 0.5s ease;}
+  #shackle-group.open{transform:rotate(-42deg) translate(-9px,-3px);}
+
+  .header h1{
+    font-family:var(--font-display); font-weight:700; text-transform:uppercase;
+    letter-spacing:0.04em; font-size:clamp(22px,4.5vw,32px);
+    margin:0 0 6px; color:var(--hazard-yellow);
+  }
+  .header p{margin:0; color:var(--metal-dim); font-size:14px; max-width:520px; margin:0 auto;}
+
+  #lock-status{
+    display:inline-block; margin-top:10px; font-family:var(--font-display);
+    font-size:12.5px; letter-spacing:0.12em; padding:3px 12px; border-radius:3px;
+    border:1px solid var(--metal-dim); color:var(--metal-dim);
+  }
+  #lock-status.st-verified{color:var(--verified); border-color:var(--verified);}
+  #lock-status.st-wrong{color:var(--wrong); border-color:var(--wrong);}
+
+  .board{margin:26px 0 20px;}
+
+  .slot{
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:9px;
+    background:rgba(0,0,0,0.18);
+    border-radius:6px;
+    padding:8px 12px 8px 8px;
+  }
+  .peg{
+    flex-shrink:0; width:34px; height:34px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--metal), var(--metal-dim));
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:700; font-size:14px; color:var(--steel3);
+    box-shadow:inset 0 -2px 3px rgba(0,0,0,0.3);
+  }
+  .slot-drop{flex:1; min-height:64px; display:flex;}
+
+  .tag-card{
+    position:relative;
+    background:linear-gradient(160deg, var(--tag-white), #ece5d4);
+    color:var(--tag-ink);
+    border:2px solid var(--tag-red);
+    border-radius:4px;
+    padding:8px 10px 8px 22px;
+    width:100%;
+    cursor:grab;
+    touch-action:none;
+    user-select:none;
+    box-shadow:0 2px 6px rgba(0,0,0,0.35);
+  }
+  .tag-card.dragging{cursor:grabbing; box-shadow:0 12px 26px rgba(0,0,0,0.5); opacity:0.95;}
+  .tag-card::before{
+    content:""; position:absolute; left:8px; top:50%; transform:translateY(-50%);
+    width:9px; height:9px; border-radius:50%;
+    background:var(--steel); border:2px solid var(--metal-dim);
+  }
+  .tag-title{
+    font-family:var(--font-display); font-weight:600; font-size:14px;
+    letter-spacing:0.01em; line-height:1.25; margin-bottom:4px;
+  }
+  .tag-controls{display:flex; gap:6px; align-items:center;}
+  .tag-controls button{
+    font-family:var(--font-display); font-size:11px; font-weight:700;
+    background:transparent; border:1px solid var(--tag-ink-dim); color:var(--tag-ink-dim);
+    border-radius:3px; padding:1px 7px; cursor:pointer; line-height:1.5;
+  }
+  .tag-controls button:hover, .tag-controls button:focus-visible{
+    color:var(--tag-ink); border-color:var(--tag-ink);
+  }
+  .tag-reason{
+    font-size:0; max-height:0; overflow:hidden; opacity:0;
+    transition:max-height 0.25s ease, opacity 0.25s ease, font-size 0.25s ease, margin-top 0.25s ease;
+    line-height:1.4; color:var(--tag-ink-dim); margin-top:0;
+  }
+  .tag-card.checked .tag-reason{font-size:12.5px; max-height:120px; opacity:1; margin-top:6px;}
+
+  .tag-card.correct{border-color:var(--verified);}
+  .tag-card.correct .tag-reason{color:#245a38;}
+  .tag-card.incorrect{border-color:var(--wrong);}
+  .tag-card.incorrect .tag-reason{color:#7c2a20;}
+
+  .badge{
+    display:none; position:absolute; top:6px; right:8px;
+    font-family:var(--font-display); font-weight:700; font-size:10px; letter-spacing:0.08em;
+  }
+  .tag-card.checked .badge{display:inline-block;}
+  .tag-card.correct .badge{color:var(--verified);}
+  .tag-card.incorrect .badge{color:var(--wrong);}
+
+  .controls{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:14px;
+  }
+  button.primary{
+    font-family:var(--font-display); font-weight:700; letter-spacing:0.05em; text-transform:uppercase;
+    background:var(--hazard-yellow); color:var(--hazard-black);
+    border:none; border-radius:4px; padding:10px 22px; cursor:pointer; font-size:13.5px;
+  }
+  button.primary:hover{filter:brightness(1.08);}
+  button.ghost{
+    font-family:var(--font-display); font-weight:600; letter-spacing:0.04em; text-transform:uppercase;
+    background:transparent; color:var(--metal-dim); border:1px solid var(--metal-dim);
+    border-radius:4px; padding:9px 16px; cursor:pointer; font-size:12.5px;
+  }
+  button.ghost:hover{color:var(--tag-white); border-color:var(--tag-white);}
+  #score-note{font-size:13px; color:var(--metal-dim); font-family:var(--font-body);}
+
+  .result-banner{
+    margin-top:20px; padding:14px 18px; border-radius:5px;
+    border:1px solid var(--metal-dim); font-size:14px; line-height:1.5;
+  }
+  .result-banner.verified{background:rgba(47,158,87,0.12); border-color:var(--verified); color:var(--tag-white);}
+  .result-banner.notyet{background:rgba(209,72,61,0.1); border-color:var(--wrong); color:var(--tag-white);}
+  .result-banner p{margin:0;}
+  .result-banner b{color:var(--hazard-yellow);}
+
+  footer.credits{text-align:center; color:var(--metal-dim); font-size:11px; margin-top:40px;}
+
+  :focus-visible{outline:2px solid var(--hazard-yellow); outline-offset:2px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition-duration:0.001ms !important;}
+  }
+
+  @media (max-width:480px){
+    .slot{flex-wrap:wrap;}
+    .peg{width:28px; height:28px; font-size:12px;}
+  }
+</style>
+</head>
+<body>
+
+<a class="back-link" href="../../fabs4.html">&larr; back to fabs iv</a>
+<div class="hazard-strip"></div>
+
+<main>
+  <div class="header">
+    <div class="lock-wrap">
+      <svg viewBox="0 0 72 72" width="100%" height="100%">
+        <rect x="16" y="34" width="40" height="30" rx="5" fill="var(--tag-red)" stroke="#161616" stroke-width="2"/>
+        <g id="shackle-group">
+          <path d="M24 34 V22 A12 12 0 0 1 48 22 V34" fill="none" stroke="var(--metal)" stroke-width="6" stroke-linecap="round"/>
+        </g>
+        <circle cx="36" cy="49" r="4" fill="#161616"/>
+      </svg>
+    </div>
+    <h1>LOTO Sequencer</h1>
+    <p>Get the 11-step energy control procedure back in order before the first lock goes on.</p>
+    <div id="lock-status">NOT LOCKED OUT</div>
+  </div>
+
+  <div class="board" id="board"></div>
+
+  <div class="controls">
+    <button class="primary" id="check-btn">CHECK SEQUENCE</button>
+    <button class="ghost" id="reshuffle-btn">RESHUFFLE</button>
+    <span id="score-note"></span>
+  </div>
+
+  <div class="result-banner" id="result-banner" hidden></div>
+
+  <footer class="credits">No Magic Pill &middot; LOTO Sequencer</footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var STEPS = [
+    { id:"identify", num:1, title:"Identify every energy source feeding the equipment and how to isolate each one.",
+      reason:"You can't isolate what you haven't identified first \u2014 this always comes before any shutdown action." },
+    { id:"notify1", num:2, title:"Notify affected employees that the equipment is about to be shut down for servicing.",
+      reason:"People working with or near the machine need a heads-up before it goes down, not after it's already off." },
+    { id:"shutdown", num:3, title:"Shut the equipment down using its normal stopping procedure.",
+      reason:"An orderly shutdown has to happen before you start pulling isolation devices, or you risk shocking the system mid-operation." },
+    { id:"isolate", num:4, title:"Operate every energy-isolating device to disconnect the equipment from all its energy sources.",
+      reason:"Isolation happens after the machine is already stopped, and before any lock goes on \u2014 you can't lock a device you haven't switched to isolated yet." },
+    { id:"lockapply", num:5, title:"Apply your own lock and tag to each isolating device \u2014 one lock per authorized employee, no sharing.",
+      reason:"The lock only means something once the device is already isolated. It goes on right after isolation, before anyone touches stored energy." },
+    { id:"storedenergy", num:6, title:"Relieve or restrain any stored or residual energy (pressure, springs, elevated mass, capacitors).",
+      reason:"Even with the lock on, trapped energy can still hurt someone. This has to be cleared before anyone verifies a true zero-energy state." },
+    { id:"verify", num:7, title:"Verify a zero-energy state \u2014 attempt to start the equipment through its normal controls, then return controls to neutral.",
+      reason:"This is the last checkpoint before hands go on the machine \u2014 after stored energy is cleared, before any work starts." },
+    { id:"work", num:8, title:"Perform the maintenance or servicing work.",
+      reason:"The work itself only happens once every prior step has confirmed it's actually safe to be here." },
+    { id:"inspect", num:9, title:"Inspect the work area \u2014 confirm tools are removed, guards are reinstalled, and employees are safely positioned.",
+      reason:"You inspect before removing any locks \u2014 once a lock comes off, the machine can move again, so leftover tools should be caught first." },
+    { id:"notify2", num:10, title:"Notify affected employees that servicing is complete and the equipment is about to be re-energized.",
+      reason:"People need to know it's coming back to life before it actually does \u2014 this happens before the locks come off, not after." },
+    { id:"removelock", num:11, title:"Remove your own lock and tag, then re-energize the equipment.",
+      reason:"Always last. Only after everyone's been warned and the area's been checked does the equipment get its power back." }
+  ];
+
+  var STEP_BY_ID = {};
+  STEPS.forEach(function(s){ STEP_BY_ID[s.id] = s; });
+  var TOTAL = STEPS.length;
+
+  var boardOrder = []; // array of step ids, index = slot position (0-based)
+
+  function shuffleIds(){
+    var ids = STEPS.map(function(s){ return s.id; });
+    var isSorted = true;
+    var attempts = 0;
+    do{
+      for(var i=ids.length-1;i>0;i--){
+        var j = Math.floor(Math.random()*(i+1));
+        var tmp=ids[i]; ids[i]=ids[j]; ids[j]=tmp;
+      }
+      isSorted = ids.every(function(id, idx){ return STEP_BY_ID[id].num === idx+1; });
+      attempts++;
+    } while(isSorted && attempts < 20);
+    return ids;
+  }
+
+  function buildTagCard(stepId, slotIndex){
+    var step = STEP_BY_ID[stepId];
+    var card = document.createElement("div");
+    card.className = "tag-card";
+    card.setAttribute("data-step", stepId);
+    card.setAttribute("tabindex", "0");
+    card.innerHTML =
+      '<span class="badge"></span>'
+      + '<div class="tag-title">' + step.title + '</div>'
+      + '<div class="tag-controls">'
+        + '<button type="button" data-dir="up" ' + (slotIndex===0 ? "disabled" : "") + '>\u25B2</button>'
+        + '<button type="button" data-dir="down" ' + (slotIndex===TOTAL-1 ? "disabled" : "") + '>\u25BC</button>'
+      + '</div>'
+      + '<div class="tag-reason"></div>';
+    return card;
+  }
+
+  function render(){
+    var board = document.getElementById("board");
+    board.innerHTML = "";
+    boardOrder.forEach(function(stepId, index){
+      var slot = document.createElement("div");
+      slot.className = "slot";
+      slot.innerHTML = '<div class="peg">' + (index+1) + '</div><div class="slot-drop" data-slot="' + index + '"></div>';
+      board.appendChild(slot);
+      slot.querySelector(".slot-drop").appendChild(buildTagCard(stepId, index));
+    });
+  }
+
+  function swap(i, j){
+    var tmp = boardOrder[i];
+    boardOrder[i] = boardOrder[j];
+    boardOrder[j] = tmp;
+  }
+
+  // ---- init ----
+  boardOrder = shuffleIds();
+  render();
+
+  // ---- up/down buttons (delegation) ----
+  document.getElementById("board").addEventListener("click", function(e){
+    var btn = e.target.closest("button[data-dir]");
+    if(!btn || btn.disabled) return;
+    var card = btn.closest(".tag-card");
+    var slotDrop = card.closest(".slot-drop");
+    var index = parseInt(slotDrop.getAttribute("data-slot"), 10);
+    var dir = btn.getAttribute("data-dir");
+    var targetIndex = dir === "up" ? index - 1 : index + 1;
+    if(targetIndex < 0 || targetIndex >= TOTAL) return;
+    swap(index, targetIndex);
+    render();
+  });
+
+  // ---- pointer drag ----
+  var dragState = null;
+
+  document.addEventListener("pointerdown", function(e){
+    var card = e.target.closest(".tag-card");
+    if(!card) return;
+    if(e.target.closest("button")) return;
+    var slotDrop = card.closest(".slot-drop");
+    var rect = card.getBoundingClientRect();
+    dragState = {
+      card: card,
+      sourceIndex: parseInt(slotDrop.getAttribute("data-slot"), 10),
+      offsetX: e.clientX - rect.left,
+      offsetY: e.clientY - rect.top,
+      startX: e.clientX,
+      startY: e.clientY,
+      moved: false,
+      width: rect.width,
+      height: rect.height
+    };
+    try{ card.setPointerCapture(e.pointerId); }catch(err){}
+  });
+
+  document.addEventListener("pointermove", function(e){
+    if(!dragState) return;
+    var dx = e.clientX - dragState.startX, dy = e.clientY - dragState.startY;
+    var card = dragState.card;
+    if(!dragState.moved && Math.hypot(dx, dy) > 6){
+      dragState.moved = true;
+      card.style.width = dragState.width + "px";
+      card.style.position = "fixed";
+      card.style.zIndex = "999";
+      card.style.pointerEvents = "none";
+      card.classList.add("dragging");
+      document.body.appendChild(card);
+    }
+    if(dragState.moved){
+      card.style.left = (e.clientX - dragState.offsetX) + "px";
+      card.style.top = (e.clientY - dragState.offsetY) + "px";
+    }
+  });
+
+  function endDrag(e){
+    if(!dragState) return;
+    if(dragState.moved){
+      var target = document.elementFromPoint(e.clientX, e.clientY);
+      var slotEl = target ? target.closest(".slot-drop") : null;
+      if(slotEl){
+        var targetIndex = parseInt(slotEl.getAttribute("data-slot"), 10);
+        if(targetIndex !== dragState.sourceIndex){
+          swap(dragState.sourceIndex, targetIndex);
+        }
+      }
+      dragState.card.remove();
+      render();
+    }
+    dragState = null;
+  }
+  document.addEventListener("pointerup", endDrag);
+  document.addEventListener("pointercancel", endDrag);
+
+  // ---- check sequence ----
+  document.getElementById("check-btn").addEventListener("click", function(){
+    var correctCount = 0;
+    document.querySelectorAll(".tag-card").forEach(function(card){
+      var slotDrop = card.closest(".slot-drop");
+      var index = parseInt(slotDrop.getAttribute("data-slot"), 10);
+      var step = STEP_BY_ID[card.getAttribute("data-step")];
+      var isCorrect = step.num === index + 1;
+      card.classList.add("checked", isCorrect ? "correct" : "incorrect");
+      var badge = card.querySelector(".badge");
+      var reason = card.querySelector(".tag-reason");
+      if(isCorrect){
+        correctCount++;
+        badge.textContent = "VERIFIED";
+        reason.textContent = step.reason;
+      } else {
+        badge.textContent = "OUT OF ORDER";
+        reason.textContent = "This is actually step " + step.num + ". " + step.reason;
+      }
+    });
+
+    var lockStatus = document.getElementById("lock-status");
+    var banner = document.getElementById("result-banner");
+    var shackle = document.getElementById("shackle-group");
+    banner.hidden = false;
+    document.getElementById("score-note").textContent = correctCount + " / " + TOTAL + " correctly placed";
+
+    if(correctCount === TOTAL){
+      lockStatus.textContent = "LOCKED OUT";
+      lockStatus.className = "st-verified";
+      shackle.classList.remove("open");
+      banner.className = "result-banner verified";
+      banner.innerHTML = "<p><b>STATION LOCKED OUT</b> \u2014 all " + TOTAL + " steps verified in order. The shackle just closed for a reason: that's the actual sequence, every time.</p>";
+    } else {
+      lockStatus.textContent = "NOT LOCKED OUT";
+      lockStatus.className = "st-wrong";
+      shackle.classList.add("open");
+      banner.className = "result-banner notyet";
+      banner.innerHTML = "<p>" + correctCount + " of " + TOTAL + " steps are in the right place. Check the tags marked OUT OF ORDER below, fix them, and check again.</p>";
+    }
+  });
+
+  // ---- reshuffle ----
+  document.getElementById("reshuffle-btn").addEventListener("click", function(){
+    boardOrder = shuffleIds();
+    render();
+    document.getElementById("result-banner").hidden = true;
+    document.getElementById("score-note").textContent = "";
+    var lockStatus = document.getElementById("lock-status");
+    lockStatus.textContent = "NOT LOCKED OUT";
+    lockStatus.className = "";
+    document.getElementById("shackle-group").classList.add("open");
+  });
+
+  document.getElementById("shackle-group").classList.add("open");
+})();
+</script>
+</body>
+</html>

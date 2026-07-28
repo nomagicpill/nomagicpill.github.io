@@ -44,6 +44,11 @@
     if (h.id === 'home' || h.id === 'contents') return;
     if (h.hasAttribute('data-no-toc')) return;
 
+    // Only include headings that appear after the Contents heading, so
+    // series links or other headings above it are left out of the TOC.
+    if (!(contentsHeading.compareDocumentPosition(h) &
+          Node.DOCUMENT_POSITION_FOLLOWING)) return;
+
     if (!h.id) h.id = slugify(h.textContent);
 
     var li = document.createElement('li');

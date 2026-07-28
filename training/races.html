@@ -23,17 +23,13 @@
 
 <h3 id="home"><a href="../index.html">Home</a></h3>
 
-<!--
-<img src="media/races/.">
-<figcaption>
-
-</figcaption>
--->
-
 <h1 id="races">Race Reports</h1>
 
 <p>
-  List of race reports by date.
+  Bicycle race reports, newest first. Each report opens with a standardized
+  info block followed by notes and takeaways. Where I have the ride file, a
+  <code>.fit</code> download sits on the Links line&mdash;drop it into your
+  head unit or analysis tool of choice.
 </p>
 
 <hr>
@@ -140,29 +136,33 @@
 
 <hr>
 
-<button type="button" class="collapsible"></button>
+<!-- ===================================================================
+     RACE REPORT TEMPLATE — copy this block for each new race.
+     - Put it directly below this comment so reports stay newest-first.
+     - The <h2> id becomes the anchor AND the .fit filename
+       (e.g. id="2026_litwhizzy" -> media/races/fit/2026_litwhizzy.fit).
+     - Give the newest report class="collapsible active" + the content
+       div style="display: block;" so it opens by default; remove both
+       from the report that is no longer newest.
+     - Standard fields, in order: Date, Venue, Location, Distance, Bike,
+       Result, Links. Delete Venue / Location / Links if you have nothing
+       for them; keep Date, Distance, Bike, and Result.
 
+<button type="button" class="collapsible">YEAR Race Name</button>
 <div class="content">
-
-<h2 id=""></h2>
-
+<h2 id="year_shortname">YEAR Race Name</h2>
 <ul>
-  <li>
-    Date: 
-  </li>
-  <li>
-    Route: 
-  </li>
-  <li>
-    Bike: 
-  </li>
-  <li>
-    Place: 
-  </li>
+  <li>Date: DD Month YYYY</li>
+  <li>Venue: <a href="">Venue name</a></li>
+  <li>Location: City, ST</li>
+  <li>Distance: 00 mi, 0,000 ft gain</li>
+  <li>Bike: </li>
+  <li>Result: </li>
+  <li>Links: <a href="">Strava</a> &middot; <a href="">Results</a> &middot; <a href="media/races/fit/year_shortname.fit" download>.fit</a></li>
 </ul>
 
 <p>
-  
+
 </p>
 
 </div>
@@ -170,22 +170,70 @@
 <p></p>
 
 <hr>
+==================================================================== -->
+
+<button type="button" class="collapsible">2026 Judgment Day (Trail-to-Trail)</button>
+<div class="content">
+<h2 id="year_shortname">2026 Judgment Day (Trail-to-Trail)</h2>
+<ul>
+  <li>Date: 25 July 2026</li>
+  <li>Venue: <a href="">Venue name</a></li>
+  <li>Distance: 85 mi</li>
+  <li>Bike: Canyon World Cup CF 6</li>
+  <li>Result: DNF</li>
+  <li>Links: <a href="media/races/fit/year_shortname.fit" download>.fit</a></li>
+</ul>
+
+<p>
+  Hey! Turns out I'm still pretty fit. This was surprisingly easy for me given the mountain biking portions, heat, and how much power I was outputting. But also turns out my heat tolerance sucks and I should ride the indoor trainer less.
+</p>
+
+<p>
+  Making it to the next turn on the Garmin map is a surprisingly effective strategy for slowly chopping off distance.
+</p>
+
+<p>
+  The sun was brutal. Pretty much full exposure (no cloud cover, no shade) between trails. I wore my UV arm sleeves which helped a bit, but aren't that cool, so kinda cancels out? No sunscreen. Probably just need to spend more time riding in the sun to get acclimated.
+</p>
+
+<p>
+  Nutrition was almost entirely liquid with a few gels. Probably 400+ g of sugar throughout the entire ride. Stomach handled it surprisingly well!
+</p>
+
+<p>
+  Lessons:
+</p>
+
+<ul>
+  <li>
+    Ride outside around half the time to get acclimated to the heat, even if that's moving the trainer to the balcony
+  </li>
+  <li>
+    Use the map feature to slowly chop away at distances
+  </li>
+  <li>
+    Gloves are very nice for padding reasons
+  </li>
+</ul>
+
+</div>
+
+<p></p>
+
+<hr>
+
+<button type="button" class="collapsible active">2026 Gravel Free For All</button>
+
+<div class="content" style="display: block;">
 
 <h2 id="2026_freeforall">2026 Gravel Free For All</h2>
 
 <ul>
-  <li>
-    Date: 30 May 2026
-  </li>
-  <li>
-    Route: 101 miles
-  </li>
-  <li>
-    Bike: Canyon World Cup CF 6
-  </li>
-  <li>
-    Place: No idea
-  </li>
+  <li>Date: 30 May 2026</li>
+  <li>Distance: 101 miles</li>
+  <li>Bike: Canyon World Cup CF 6</li>
+  <li>Result: Unknown</li>
+  <li>Links: <a href="media/races/fit/2026_freeforall.fit" download>.fit</a></li>
 </ul>
 
 <p>
@@ -197,7 +245,7 @@
 </p>
 
 <p>
-  My stomach can't handle as much fueling as I thought it could. My total carb (sugar) intake was 450 g (10x25 + 53*3 + 20 + 20 + 10), making it about 75 g carbs/hour. This isn't terrible, but could definitely be improved. I need to start doing longer rides and training my stomach to continue wolfing down the fuel. Liquid is definitely easier, but sometimes there's something about eating solid food. Also, how cold the liquid is matters more to me than I thought it did. I'll make sure to get ice at these various places if the drink itself isn't cold. 
+  My stomach can't handle as much fueling as I thought it could. My total carb (sugar) intake was 450 g (10x25 + 53*3 + 20 + 20 + 10), making it about 75 g carbs/hour. This isn't terrible, but could definitely be improved. I need to start doing longer rides and training my stomach to continue wolfing down the fuel. Liquid is definitely easier, but sometimes there's something about eating solid food. Also, how cold the liquid is matters more to me than I thought it did. I'll make sure to get ice at these various places if the drink itself isn't cold.
 </p>
 
 <p>
@@ -219,18 +267,11 @@
 <h2 id="2026_litwhizzy">2026 Lit Whizzy</h2>
 
 <ul>
-  <li>
-    Date: 07 February 2026
-  </li>
-  <li>
-    Route: 46-mile option
-  </li>
-  <li>
-    Bike: Canyon World Cup CF 6
-  </li>
-  <li>
-    Place: 3rd I think?
-  </li>
+  <li>Date: 07 February 2026</li>
+  <li>Distance: 46-mile option</li>
+  <li>Bike: Canyon World Cup CF 6</li>
+  <li>Result: 3rd (unofficial)</li>
+  <li>Links: <a href="media/races/fit/2026_litwhizzy.fit" download>.fit</a></li>
 </ul>
 
 <p>
@@ -268,18 +309,10 @@
 <h2 id="2025_cts">2025 Central Texas Showdown</h2>
 
 <ul>
-  <li>
-    Info: 24 October 2025
-  </li>
-  <li>
-    Route: Slowdown; 300 miles with 14,000 feet of elevation gain
-  </li>
-  <li>
-    Bike: Canyon World Cup CF 6
-  </li>
-  <li>
-    Place: DNF
-  </li>
+  <li>Date: 24 October 2025</li>
+  <li>Distance: Slowdown route — 300 miles, 14,000 ft gain</li>
+  <li>Bike: Canyon World Cup CF 6</li>
+  <li>Result: DNF (60 miles)</li>
 </ul>
 
 <p>
@@ -331,18 +364,10 @@
 <h2 id="2025_qhu">2025 Quanah Hill Uprising</h2>
 
 <ul>
-  <li>
-    Info: 01 March 2025
-  </li>
-  <li>
-    Route: 7.0 mi loop with 500+ ft elevation gain per lap
-  </li>
-  <li>
-    Bike: Canyon World Cup CF 6
-  </li>
-  <li>
-    Place: DNF
-  </li>
+  <li>Date: 01 March 2025</li>
+  <li>Distance: 7.0-mile loop, 500+ ft gain per lap</li>
+  <li>Bike: Canyon World Cup CF 6</li>
+  <li>Result: DNF</li>
 </ul>
 
 <p>
@@ -374,23 +399,13 @@
 <h2 id="2024_24_hours_canyon">2024 24 Hours in the Canyon</h2>
 
 <ul>
-  <li>
-    Info: 01-02 June 2021 in Palo Duro Canyon
-  </li>
-  <li>
-    Route: 8.5 mi loop with 450 ft elevation gain per lap. Map <a href="https://24hoursinthecanyon.org/competitive-mtb/">here</a>.
-  </li>
-  <li>
-    Bike: Canyon World Cup CF 6
-  </li>
-  <li>
-    Place: 1st overall in 24-hour solo mountain bike with 24 laps. Results <a href="https://www.mychiptime.com/searchevent.php?id=15709">here</a>.
-    <ul>
-      <li>
-        Course record is 263.5 miles (31 laps) in 23:36:52 from 2015. That's averaging 46:27 min per lap! I averaged 53 min per lap including rests.
-      </li>
-    </ul>
-  </li>
+  <li>Date: 01-02 June 2024</li>
+  <li>Venue: 24 Hours in the Canyon</li>
+  <li>Location: Palo Duro Canyon, TX</li>
+  <li>Distance: 8.5-mile loop, 450 ft gain per lap</li>
+  <li>Bike: Canyon World Cup CF 6</li>
+  <li>Result: 1st overall in 24-hour solo mountain bike with 24 laps. Course record is 263.5 miles (31 laps) in 23:36:52 from 2015—averaging 46:27 min per lap. I averaged 53 min per lap including rests.</li>
+  <li>Links: <a href="https://www.mychiptime.com/searchevent.php?id=15709">Results</a> &middot; <a href="https://24hoursinthecanyon.org/competitive-mtb/">Course map</a></li>
 </ul>
 
 <p>
@@ -456,18 +471,11 @@
 <h2 id="2024_excrucation_exam">2024 Excruciation Exam</h2>
 
 <ul>
-  <li>
-    Info: 13 January 2024
-  </li>
-  <li>
-    Route: Lap at BCR, ride to RHR, lap at RHR, ride to BCR, lap at BCR
-  </li>
-  <li>
-    Bike: Ibis DV9
-  </li>
-  <li>
-    Place: 1st in age group (19-29) out of two by 30 seconds; 18th out of 53 overall (<a href="https://my.raceresult.com/273449/">full results here</a>)
-  </li>
+  <li>Date: 13 January 2024</li>
+  <li>Distance: Lap at BCR &rarr; ride to RHR &rarr; lap at RHR &rarr; ride to BCR &rarr; lap at BCR</li>
+  <li>Bike: Ibis DV9</li>
+  <li>Result: 1st in age group (19-29) out of two by 30 seconds; 18th out of 53 overall</li>
+  <li>Links: <a href="https://my.raceresult.com/273449/">Results</a></li>
 </ul>
 
 <p>
@@ -511,15 +519,12 @@
 <h2 id="2023_blowout">2023 Bluff Creek Blowout</h2>
 
 <ul>
-  <li>
-    Info: 14-15 October 2023 at Bluff Creek Ranch in Warda, TX
-  </li>
-  <li>
-    Bike: Ibis DV9
-  </li>
-  <li>
-    Place: 2nd in 21-50 age division, 3rd overall for 24-hour solo men
-  </li>
+  <li>Date: 14-15 October 2023</li>
+  <li>Venue: Bluff Creek Ranch</li>
+  <li>Location: Warda, TX</li>
+  <li>Distance: 24-hour solo lap race</li>
+  <li>Bike: Ibis DV9</li>
+  <li>Result: 2nd in 21-50 age division; 3rd overall for 24-hour solo men</li>
 </ul>
 
 <p>
@@ -574,21 +579,13 @@
 <h2 id="everesting4">Everesting IV</h2>
 
 <ul>
-  <li>
-    Info: 02 June 2023 at Big View Drive in Austin, TX
-  </li>
-  <li>
-    Route: From bottom of Big View up to Narrow Ridge Drive
-  </li>
-  <li>
-    Bike: Ibis DV9 (with slicks)
-  </li>
-  <li>
-    Place: Not a race, but failed
-  </li>
-  <li>
-    Strava: <a href="https://strava.app.link/L4Jmonrv8Eb">Quitter quitter no chicken dinner</a>
-  </li>
+  <li>Date: 02 June 2023</li>
+  <li>Venue: Big View Drive</li>
+  <li>Location: Austin, TX</li>
+  <li>Distance: Repeats from the bottom of Big View up to Narrow Ridge Drive (Everesting: 29,029 ft climbing)</li>
+  <li>Bike: Ibis DV9 (with slicks)</li>
+  <li>Result: DNF (not a race)</li>
+  <li>Links: <a href="https://strava.app.link/L4Jmonrv8Eb">Strava</a></li>
 </ul>
 
 <p>
@@ -612,18 +609,12 @@
 <h2 id="2023_roundup">2023 Rocky Hill Roundup</h2>
 
 <ul>
-  <li>
-    Info: 19 February 2023 gat Rocky Hill Ranch in Smithville, Texas
-  </li>
-  <li>
-    Route: Two 8.5-mile loops
-  </li>
-  <li>
-    Bike: Ibis DV9
-  </li>
-  <li>
-    Place: 2nd of 8 in Cat 2 19-29
-  </li>
+  <li>Date: 19 February 2023</li>
+  <li>Venue: Rocky Hill Ranch</li>
+  <li>Location: Smithville, TX</li>
+  <li>Distance: Two 8.5-mile loops</li>
+  <li>Bike: Ibis DV9</li>
+  <li>Result: 2nd of 8 in Cat 2 19-29</li>
 </ul>
 
 <p>
@@ -651,18 +642,12 @@
 <h2 id="2023_barber_hills">2023 Barber Hills Hard Labor</h2>
 
 <ul>
-  <li>
-    Info: 05 February at <a href="https://www.facebook.com/barberhillstrail/">Barber Hills Trails</a> (registration page <a href="https://www.bikereg.com/barberhillshardlabor2023">here</a>)
-  </li>
-  <li>
-    Route: Two six-mile loops
-  </li>
-  <li>
-    Bike: Ibis DV9
-  </li>
-  <li>
-    Place: 1st of 8 in Cat 2 19-29
-  </li>
+  <li>Date: 05 February 2023</li>
+  <li>Venue: <a href="https://www.facebook.com/barberhillstrail/">Barber Hills Trails</a></li>
+  <li>Distance: Two six-mile loops</li>
+  <li>Bike: Ibis DV9</li>
+  <li>Result: 1st of 8 in Cat 2 19-29</li>
+  <li>Links: <a href="https://www.bikereg.com/barberhillshardlabor2023">Registration</a></li>
 </ul>
 
 <p>
@@ -710,18 +695,12 @@
 <h2 id="2023_discomfort">2023 Miles of DisComfort</h2>
 
 <ul>
-  <li>
-    Info: 30 January at <a href="https://www.flatrockranchtx.com/">Flat Rock Ranch</a> (registration page <a href="https://www.bikereg.com/2023discomfort">here</a>)
-  </li>
-  <li>
-    Route: Three 17-mile loops
-  </li>
-  <li>
-    Bike: Ibis DV9
-  </li>
-  <li>
-    Place: 1st in age group (19-29) competing against no one else, 32 out of 61 overall (<a href="https://my.raceresult.com/232304/#0_72B1B6">full results here</a>)
-  </li>
+  <li>Date: 30 January 2023</li>
+  <li>Venue: <a href="https://www.flatrockranchtx.com/">Flat Rock Ranch</a></li>
+  <li>Distance: Three 17-mile loops</li>
+  <li>Bike: Ibis DV9</li>
+  <li>Result: 1st in age group (19-29, uncontested); 32nd out of 61 overall</li>
+  <li>Links: <a href="https://my.raceresult.com/232304/#0_72B1B6">Results</a> &middot; <a href="https://www.bikereg.com/2023discomfort">Registration</a></li>
 </ul>
 
 <p>
@@ -762,18 +741,11 @@
 <h2 id="2023_excrucation_exam">2023 Excruciation Exam</h2>
 
 <ul>
-  <li>
-    Info: 07 January 2023
-  </li>
-  <li>
-    Route: Lap at BCR, ride to RHR, lap at RHR, ride to BCR, lap at BCR
-  </li>
-  <li>
-    Bike: Ibis DV9
-  </li>
-  <li>
-    Place: 2nd in age group (19-29) out of two, 18th out of 53 overall (<a href="https://my.raceresult.com/229440/results">full results here</a>)
-  </li>
+  <li>Date: 07 January 2023</li>
+  <li>Distance: Lap at BCR &rarr; ride to RHR &rarr; lap at RHR &rarr; ride to BCR &rarr; lap at BCR</li>
+  <li>Bike: Ibis DV9</li>
+  <li>Result: 2nd in age group (19-29) out of two; 18th out of 53 overall</li>
+  <li>Links: <a href="https://my.raceresult.com/229440/results">Results</a></li>
 </ul>
 
 <p>
@@ -824,18 +796,12 @@
 <h2 id="2022_chucks">2022 Chuck's Big New Adventure</h2>
 
 <ul>
-  <li>
-    Info: 17 December 2022 at <a href="https://www.rockyhillranch.com/">Rocky Hill Ranch</a>
-  </li>
-  <li>
-    Route: One 0.5-mile start loop followed by three 14-mile loops
-  </li>
-  <li>
-    Bike: Ibis DV9
-  </li>
-  <li>
-    Place: 1st in age group (19-29, but it was just me), 29th out of 88 overall (<a href="https://my.raceresult.com/225294/results">full results here</a>)
-  </li>
+  <li>Date: 17 December 2022</li>
+  <li>Venue: <a href="https://www.rockyhillranch.com/">Rocky Hill Ranch</a></li>
+  <li>Distance: One 0.5-mile start loop followed by three 14-mile loops</li>
+  <li>Bike: Ibis DV9</li>
+  <li>Result: 1st in age group (19-29, uncontested); 29th out of 88 overall</li>
+  <li>Links: <a href="https://my.raceresult.com/225294/results">Results</a></li>
 </ul>
 
 <p>
@@ -882,18 +848,12 @@
 <h2 id="2022_hugelland">2022 Hügelland Holiday Marathon</h2>
 
 <ul>
-  <li>
-    Info: 03 December 2022 at <a href="https://www.trailforks.com/region/hill-top-trails/">Hill Top Trails</a>
-  </li>
-  <li>
-    Route: One 2.5-mile start loop followed by three 13.5-mile loops
-  </li>
-  <li>
-    Bike: Ibis DV9
-  </li>
-  <li>
-    Place: 2nd in age group (19-29), 25th overall (<a href="https://my.raceresult.com/227880/">full results here</a>)
-  </li>
+  <li>Date: 03 December 2022</li>
+  <li>Venue: <a href="https://www.trailforks.com/region/hill-top-trails/">Hill Top Trails</a></li>
+  <li>Distance: One 2.5-mile start loop followed by three 13.5-mile loops</li>
+  <li>Bike: Ibis DV9</li>
+  <li>Result: 2nd in age group (19-29); 25th overall</li>
+  <li>Links: <a href="https://my.raceresult.com/227880/">Results</a></li>
 </ul>
 
 <p>
@@ -946,18 +906,12 @@
 <h2 id="2022_24_hours_canyon">2022 24 Hours in the Canyon</h2>
 
 <ul>
-  <li>
-    Info: 04-05 June 2021 in Palo Duro Canyon
-  </li>
-  <li>
-    Route: 8.5 mi loop with 450 ft elevation gain per lap. Map <a href="https://24hoursinthecanyon.org/competitive-mtb/">here</a>.
-  </li>
-  <li>
-    Bike: Turner Flux
-  </li>
-  <li>
-    Place: 2nd in age group (18-34), 6th overall in solo 24-hour MTB
-  </li>
+  <li>Date: 04-05 June 2022</li>
+  <li>Venue: 24 Hours in the Canyon</li>
+  <li>Location: Palo Duro Canyon, TX</li>
+  <li>Distance: 8.5-mile loop, 450 ft gain per lap</li>
+  <li>Bike: Turner Flux</li>
+  <li>Result: 2nd in age group (18-34); 6th overall in solo 24-hour MTB</li>
 </ul>
 
 <p>
@@ -1117,15 +1071,11 @@
 <h2 id="2021_tour_de_boerne">2021 Tour de Boerne</h2>
 
 <ul>
-  <li>
-    Info: 26 June 2021, started on Don Strange Ranch
-  </li>
-  <li>
-    Route: 61.38 mi, 3,700 ft elevation gain, 3:47:50 moving time, 16.2 mph average (all according to Strava)
-  </li>
-  <li>
-    Bike: 6KU Fixie
-  </li>
+  <li>Date: 26 June 2021</li>
+  <li>Venue: Don Strange Ranch</li>
+  <li>Distance: 61.38 mi, 3,700 ft gain (3:47:50 moving, 16.2 mph avg per Strava)</li>
+  <li>Bike: 6KU Fixie (48/16)</li>
+  <li>Result: Finished (ride, not raced)</li>
 </ul>
 
 <p>
@@ -1178,15 +1128,12 @@
 <h2 id="may_2021_first_friday_crit_may_2021">May 2021 First Friday Crit</h2>
 
 <ul>
-  <li>
-    Info: 07 May 2021, 9:35pm start time, off Mission Road in San Antonio, Texas
-  </li>
-  <li>
-    Place: No idea, guessing around 15/25 (guessing on both numbers)
-  </li>
-  <li>
-    Bike: 6KU Fixie
-  </li>
+  <li>Date: 07 May 2021 (9:35pm start)</li>
+  <li>Venue: First Friday Crit (off Mission Road)</li>
+  <li>Location: San Antonio, TX</li>
+  <li>Distance: Criterium (lapped out on lap 9)</li>
+  <li>Bike: 6KU Fixie</li>
+  <li>Result: ~15/25 (estimated)</li>
 </ul>
 
 <p>
@@ -1224,6 +1171,12 @@
 <hr>
 
 <h2 id="see_also">See Also</h2>
+
+<ul>
+  <li><a href="endeavors.html">Endeavors</a></li>
+  <li><a href="everesting.html">Everesting</a></li>
+  <li><a href="journal.html">Training Journal</a></li>
+</ul>
 
 <script>
 var coll = document.getElementsByClassName("collapsible");

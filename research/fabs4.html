@@ -25,39 +25,6 @@
 
 <h3 id="home"><a href="../index.html">Home</a></h3>
 
-<!--
-
-<img src="media//.">
-<figcaption>
-
-</figcaption>
-
-Eyewear, interlocks, facilities safety, environment, etc. List of all nasty gases (two step gases) and their LD50 values. LOTO, electrical hazards, arc flashes
-
-ergonomics
-
-hazmat crew
-
-buddy system and best practices; i like to call out "MOVING" whenever i'm doing something
-
-why does safety matter?
-- liability, company would get sued
-- downtime in a factory is very bad
-- bad PR, dissuades good talent from joining company
-- literally kills talent in some cases
-
-add games using fable
-
-see safety section from fabs1
-
-normally closed vs normally open
-
-safety philosophy: automatic (no human intervention), difficult and intentional to override, better safe than sorry
-
-add fabs4 to other series lists
-
--->
-
 <h1 id="fabs4">Semiconductor Fabs IV: The Safety</h1>
 
 <p>
@@ -104,24 +71,24 @@ add fabs4 to other series lists
   I don't work in an advanced or new fab, but have some glimpses into them.
 </p>
 
+<p>
+  Interactive animations are denoted by the large "Click here to [X]!". While rudimentary, they get the job done. These were vibe coded using Claude Sonnet 5.
+</p>
+
 <hr>
 
-<h2 id="philosophy">Safety Philosophy</h2>
-
-<p>
-  
-</p>
+<h2 id="philosophy">Philosophy</h2>
 
 <h3 id="automatic">Automate Where Possible</h3>
 
 <p>
-  <a href="fabs3.html#automation">Semiconductor Fabs III: The Data and Automation</a> discusses why automation is so important in a fab from a material perspective: it's faster, safer, easier, and cheaper. But it also applies physical safety as well. Humans in the loop can be catastrophic—they misinterpret something, make the wrong decision, perform the wrong action, or be really stupid. Having physical connections, electrical signals, and default safe conditions do the work minimizes the chance of taking the wrong action and enforces stupidity, just in the way that computers are stupid and do exactly what they're told to.
+  <a href="fabs3.html#automation">Semiconductor Fabs III: The Data and Automation</a> discusses why automation is so important in a fab from a material perspective: it's faster, safer (for the product), easier, and cheaper. But it also applies physical safety as well. Humans in the loop can be catastrophic—they misinterpret something, make the wrong decision, perform the wrong action, or be really stupid. Having physical connections, electrical signals, and default safe conditions do the work minimizes the chance of taking the wrong action and enforces stupidity, just in the way that computers are stupid and do exactly what they're told to.
 </p>
 
 <h3 id="intentional">All Intention, No Accidents</h3>
 
 <p>
-  Sometimes safety mechanisms must be overridden for legitimate reasons. When this happens, it shouldn't be an accident or something someone stumbled upon. Instead, it should be the physical equivalent of those <a href="#" class="popup-trigger" onclick="openPopupSequence(event)">annoying pop-up boxes</a> making sure that continuing is the desired acton. This almost feels like the equivalent of <a href="https://en.wikipedia.org/wiki/Long-term_nuclear_waste_warning_messages">long-term nuclear waste warning messages</a>: as one gets closer to fully overriding some protective measure, it should be more obvious that they <i>probably</i> shouldn't be doing that.
+  Sometimes safety mechanisms must be overridden for legitimate reasons. When this happens, it shouldn't be an accident or something someone stumbled upon. Instead, it should be the physical equivalent of those <a href="#" class="popup-trigger" onclick="openPopupSequence(event)">annoying pop-up boxes</a> making sure that continuing is the desired action. This almost feels like the equivalent of <a href="https://en.wikipedia.org/wiki/Long-term_nuclear_waste_warning_messages">long-term nuclear waste warning messages</a>: as one gets closer to fully overriding some protective measure, it should be more obvious that they <i>probably</i> shouldn't be doing that.
 </p>
 
 <h3 id="convenience">(In)Conveniences</h3>
@@ -156,6 +123,16 @@ add fabs4 to other series lists
   Everyone should be better safe than sorry (injured, maimed, dead). This could mean stopping work until someone more experienced can work on it, asking for help, or refusing to do something outright because it is a safety concern.
 </p>
 
+<h3 id="redundancy">Redundancy</h3>
+
+<p>
+  Shit happens. It can come in the form of a failed part, a forgotten procedure, or plain human mistakes. This is why redundancy is built in to the equipment and other methods. We want to have at least two points of "shit happening" before it can affect the worker!
+</p>
+
+<p>
+  Redundancy comes in the form of <a href="#interlocks">interlocks</a>, <a href="#practices">safety practices</a>, and proper <a href="#procedures">procedures</a>.
+</p>
+
 <hr>
 
 <h2 id="why">Why Does Safety Matter?</h2>
@@ -171,7 +148,7 @@ add fabs4 to other series lists
 </blockquote>
 
 <p>
-  Since I'm not an expert on OSHA violations, I <a href="https://claude.ai/share/e0462272-7516-4e8e-8c9a-b81e84b96f55">asked Claude Sonnet 5 to summarize what happens</a>:
+  Since I'm not an expert on OSHA violations, I asked Claude Sonnet 5 to summarize what happens:
 </p>
 
 <blockquote>
@@ -193,12 +170,8 @@ add fabs4 to other series lists
 </blockquote>
 
 <p>
-  And to add to the <a href="https://semiconductorx.com/fab-resilience.html">cost of downtime portion</a>:
+  I'm unable to find papers rigorously quantifying downtime impact in terms of $/hr, although it's certainly a lot. Engineers and technicians may have to physically fix the equipment, parts may break and require replacement (money and time), equipment has to get requalified, and line speed drops substantially as a result of all the delays associated with each of those. Time and money are the name of the game!
 </p>
-
-<blockquote>
-  A semiconductor fab is among the most demanding 24/7/365 operating environments in any industry. The consequences of downtime are not measured in inconvenience — they are measured in scrapped wafer lots, tool re-qualification cycles, and production gaps that cascade through customer supply chains for weeks after the event that caused them. A one-hour unplanned outage at a leading-edge fab running 60,000 wafer starts per month represents approximately $2–5M in lost production value, plus the cost of any in-process lots scrapped, plus the tool recovery and re-qualification labor before production can resume. A 24-hour outage at the same facility approaches $50–100M in combined direct and indirect impact.
-</blockquote>
 
 <h3 id="reputation">Reputation</h3>
 
@@ -235,7 +208,7 @@ add fabs4 to other series lists
 </figcaption>
 
 <p>
-  That's about it for mandatory clothing. Wear some safety glasses, wear <i>something</i> on your feet, and wear a bunny suit. What's between the bunny suit and skin is pretty much up to the person, and I've seen some questionable shirts while walking through the office!
+  That's about it for mandatory clothing. Wear some safety glasses, wear <i>something</i> on your feet, and wear a bunny suit. And gloves! But those are also for the wafer's protection. What's between the bunny suit and skin is pretty much up to the person—I've seen some questionable shirts while walking through the office!
 </p>
 
 <h3 id="optional">Sometimes-Needed Clothing</h3>
@@ -247,7 +220,7 @@ add fabs4 to other series lists
 <h4>Acid Clothing</h4>
 
 <p>
-  There are a lot of acids in a fab: <a href="https://en.wikipedia.org/wiki/Hydrofluoric_acid">hydrofluoric</a>, <a href="https://en.wikipedia.org/wiki/Sulfuric_acid">sulfuric</a>, <a href="https://en.wikipedia.org/wiki/Phosphoric_acid">phosphoric</a>, just to name a few. All of them are harmful to the human body.
+  There are a lot of acids in a fab: <a href="https://en.wikipedia.org/wiki/Hydrofluoric_acid">hydrofluoric</a>, <a href="https://en.wikipedia.org/wiki/Sulfuric_acid">sulfuric</a>, <a href="https://en.wikipedia.org/wiki/Phosphoric_acid">phosphoric</a>, just to name a few. All of them are harmful to the human body, so we protect it by wearing:
 </p>
 
 <ul>
@@ -262,6 +235,8 @@ add fabs4 to other series lists
   </li>
 </ul>
 
+<img class="img-small" src="media/fabs4/acidsuit.jpg">
+
 <h4>Electrical Clothing</h4>
 
 <p>
@@ -269,24 +244,17 @@ add fabs4 to other series lists
 </p>
 
 <img class="img-medium" src="media/fabs4/arcflashsuit.png">
-<figcaption>
-  [FINISH]
-</figcaption>
 
-<h4></h4>
+<h4>Head Protection</h4>
 
 <p>
   Hard hats are required in spaces where you can easily hit your head on something or parts can fall down from above. Some people wear bump caps in confined spaces to protect against bumps, but they are no substitute for hard hats when falling objects are a risk.
 </p>
 
-<p>
-  
-</p>
-
 <h4>SCBA</h4>
 
 <p>
-  Robotic dexterity hasn't caught up to humans yet, so we still occasionally have to do some nasty work with gases and chemical that requires <a href="https://en.wikipedia.org/wiki/Self-contained_breathing_apparatus">self-contained breathing apparatuses</a> (SCBA; note the lack of a 'U'(nderwater) since fabs aren't underwater). SCBA users get fit checks before using it to ensure the mask seals securely against their face. Not coincidentally, it's also the only time some people shave their beards (so the mask fits better, else the hair would cause leaks).
+  Robotic dexterity hasn't caught up to humans yet, so we still occasionally have to do some nasty work with gases and chemical that requires <a href="https://en.wikipedia.org/wiki/Self-contained_breathing_apparatus">self-contained breathing apparatuses</a> (SCBA; note the lack of a 'U'(nderwater) since fabs aren't underwater). SCBA users get fit checks before using it to ensure the mask seals securely against their face. Not coincidentally, it's also the only time some people shave their beards—this helps the mask better seal against the face, else the hair would cause leaks.
 </p>
 
 <h3>Practices</h3>
@@ -330,6 +298,36 @@ add fabs4 to other series lists
   </li>
 </ol>
 
+<h4>Lockout/Tagout</h4>
+
+<p>
+  The <a href="https://en.wikipedia.org/wiki/Lockout%E2%80%93tagout">Lockout/tagout (LOTO) Wikipedia page</a> does a good job of explaining it:
+</p>
+
+<blockquote>
+  a safety procedure that ensures dangerous equipment is properly shut off and not able to be restarted prior to the completion of maintenance or repair work. It requires that hazardous energy sources be "isolated and rendered inoperative" before work is started on the equipment in question. The isolated power sources are then locked and a tag is placed on the lock identifying the worker and reason the LOTO is placed on it. The worker then holds the key for the lock, ensuring that only that worker can remove the lock and start the equipment. This prevents accidental startup of equipment while it is in a hazardous state or while a worker is in direct contact with it.
+</blockquote>
+
+<p>
+  This system is incredibly effective provided the worker actually follows it. Equipment is designed so that at least the main power switch can be locked out. Other individual components (such as RF power generators) may have LOTO capabilities on their associated electrical breakers so that the equipment as a whole may operate as normal except for said component; this is to allow troubleshooting or maintenance that requires general power, but doesn't require that specific component. (To connect this with the <a href="#interlocks">Interlocks section</a>, interlocks should prevent any of these bad components from turning on if someone is working on the equipment, but there may be some freak accident, so LOTO is a foolproof way of eliminating the risk.)
+</p>
+
+<img class="img-medium" src="media/fabs4/loto-poster.png">
+
+<p>
+  LOTO locks can be removed by someone other than the owner under certain circumstances that must be run through the site's safety lead. If it's removed without consulting said person and someone finds out, bye bye!
+</p>
+
+<h1 align="middle">
+  <a href="media/fabs4/loto-game.html">Click here to test your LOTO skills!</a>
+</h1>
+
+<h4 id="procedures">Procedures</h4>
+
+<p>
+  Procedures are important because they standardize tasks into <a href="https://en.wikipedia.org/wiki/Best_practice">best known methods</a> to ensure consistency, quality, and safety when performed. By documenting them into an easy-to-read, step-by-step format, workers won't miss any safety-related subtasks.
+</p>
+
 <hr>
 
 <h2 id="equipment">The Equipment</h2>
@@ -350,7 +348,7 @@ add fabs4 to other series lists
 
 <ul>
   <li>
-    Hardware: Enabled or disabled by <a href="">jumper</a> configuration, these can be physically changed at the tool, but require specialized knowledge of what to move and where.
+    Hardware: Enabled or disabled by <a href="https://en.wikipedia.org/wiki/Jumper_(computing)">jumper</a> configuration, these can be physically changed at the tool, but require specialized knowledge of what to move and where.
   </li>
   <li>
     Software: Written into the equipment's programs, these are effectively absolute. There exist ways to trick the interlocks into being satisfied to allow, but these are a very quick ticket to the unemployment line if done improperly.
@@ -358,13 +356,13 @@ add fabs4 to other series lists
 </ul>
 
 <p>
-  What are some examples of interlocks? Let's look at this random interlock card I found on the internet! The lights will be on if the interlock is satisfied to help personnel understand any issues that are preventing the chamber from operating.
+  What are some examples of interlocks? Let's look at this random interlock card I found on the internet!
 </p>
 
 <img class="img-verysmall" src="media/fabs4/interlockcard.png">
 
 <p>
-  Going down the list:
+  Going down the list in a non-exhaustive manner:
 </p>
 
 <ul>
@@ -372,7 +370,7 @@ add fabs4 to other series lists
     GP OK: Is the gas panel door closed and are any other issues present?
   </li>
   <li>
-    SLT VLV CLSD: This is the "door" to the buffer chamber where the robot that transfers wafer in and out of the chamber exists. The SV being open could expose the buffer to nasty gases, which could in turn contaminate other chamber if said gases lingered for too long. Overriden by taking a magnet and tricking the sensor that detects the SV being open or closed. 
+    SLT VLV CLSD: This is the "door" to the buffer chamber where the robot that transfers wafer in and out of the chamber exists. The SV being open could expose the buffer to nasty gases, which could in turn contaminate other chamber if said gases lingered for too long. Overridden by taking a magnet and tricking the sensor that detects the SV being open or closed. 
   </li>
   <li>
     CUST VAC: Not exactly sure, but this means customer vacuum, so likely verifying the facility is pulling vacuum somewhere.
@@ -392,20 +390,18 @@ add fabs4 to other series lists
 </ul>
 
 <p>
-  Why would someone want to override these interlocks? After all, they're there for our safety! Sometimes overriding interlocks is needed to troubleshoot. For example, watching problematic robots move while troubleshooting is very helpful in order to hear noises, feel vibrations, watch for jerky movements, etc. But often times the only way to get a clear view is to override interlocks. The equipment manufacturers understand this and make it easy enough to override interlocks while ensuring it's intentional.
+  Why would someone want to override these interlocks? After all, they're there for our safety! This is true, but sometimes overriding interlocks is needed to troubleshoot. For example, watching problematic robots move while troubleshooting is very helpful in order to hear noises, feel vibrations, watch for jerky movements, etc. But often times the only way to get a clear view is to override interlocks. The equipment manufacturers understand this and make it easy enough to override interlocks while ensuring it's intentional.
 </p>
 
-
-
-
+<h1 align="middle">
+  <a href="media/fabs4/interlocks-game.html">Click here to play an interlock game!</a>
+</h1>
 
 <h3 id="alarms">Alarms</h3>
 
 <p>
-  Tools have alarms that will result from abnormal conditions, which aren't necessarily always a safety hazard.
+  Tools will output alarms (or warnings, which are less severe and disruptive) that will result from abnormal conditions, which aren't necessarily always a safety hazard, but can be. This may stop the tool from processing to prevent something small from turning catastrophic. For example, a low water flow fault may be the result of a large leak. If the tool kept processing and applying gross amounts of power that eventually connected with the water, then neither the tool nor the equipment engineer would have a very fun day.
 </p>
-
-
 
 <h3 id="ergonomics">Ergonomics</h3>
 
@@ -415,11 +411,11 @@ add fabs4 to other series lists
 
 <img class="img-medium" src="media/fabs4/centura.jpg">
 <figcaption>
-  This equipment is cannibalized to shreds, but the idea is there: it's a lot of parts in a small volume!
+  It's a lot of parts in a small footprint!
 </figcaption>
 
 <p>
-  Equipment manufacturers will often include various ergonomic fixtures to help personnel with maintenance. Examples may include motorized cranes that can assist with lifting parts straight up and down instead of forcing personnel to come from the side; 
+  Equipment manufacturers will often include various ergonomic fixtures to help personnel with maintenance. Examples may include motorized cranes that can assist with lifting parts straight up and down instead of forcing personnel to come from the side; fixtures to compress high-pressure gas springs; and specialized tools that fit in certain areas to minimize potential pinch points or awkward angles for employees.
 </p>
 
 <p>
@@ -431,14 +427,18 @@ add fabs4 to other series lists
   No idea what is does besides lift lithography equipment, but looks cool!
 </figcaption>
 
+<p>
+  (Not super-related to safety: fabs often have their own machine shops on-site that engineers can send drawings to for quick prototyping. These have most of the standard shop equipment—mills, lathes, bandsaws, drill presses—so most things can get done. If they don't have the capability or capacity, the job may be sent to a larger shop that the company works with.)
+</p>
+
 <h3 id="emergencyoff">The Emergency Off Circuit, or The Big Red Button</h3>
 
 <p>
-  All equipment comes equipped with emergency off (EMO) buttons at strategic locations to maximize accessibility to the button. When pressed, the entire tool and anything connected to the EMO circuit shuts off immediately because the physical connection is severed.
+  All equipment comes equipped with emergency off (EMO) buttons at strategic locations to maximize accessibility. When pressed, the entire tool and anything external connected to the EMO circuit shuts off immediately because the physical connection is severed. <a href="https://en.wikipedia.org/wiki/Uninterruptible_power_supply">Uninterruptible power supplies (UPS)</a> will generally be connected to equipment computers to maintain data and allow for proper shut down if needed.
 </p>
 
 <p>
-  Why would someone want to press the EMO button? Here are some example reasons:
+  Why would someone want to press the EMO button? Here are some example situations:
 </p>
 
 <ul>
@@ -459,7 +459,15 @@ add fabs4 to other series lists
 </figcaption>
 
 <p>
-  I've pressed an EMO button once in my life, but that was at my university fab and because of a major operator error. EMO presses at the industrial level are rare because of how well the equipment is designed and the people are trained. You do not want to press the EMO! If you are pressing the EMO, your day is probably really bad or about to get really bad! (Okay, okay, pressing the EMO is kind of fun because of how forbidden it is and its nice tactile feel, so if the equipment is ever off do yourself a favor and get a press in.)
+  Because power is removed from everything, parts will default to the power-off state, which is generally synonymous with "safest state". For example, valves that control the flow of gases can be either normally-open (N/O; power off means gas can flow) or normally-closed (N/C; power off means gas cannot flow). Valve states are strategically chosen based on the gas: purge gases that help dilute toxic gases, like nitrogen, have N/O valves so that if power shuts off, the equipment gets purged properly; toxic gases have N/C valves so that they stop flowing immediately upon power off. The orientations are physically manufactured, so the only way that someone can mess up is by installing the wrong valve, which is mitigated by labeling and different colors.
+</p>
+
+<h1 align="middle">
+  <a href="media/fabs4/valve-game.html">Click here to test your valve knowledge!</a>
+</h1>
+
+<p>
+  I've pressed an EMO button once in my life, but that was at my university fab and because of a major operator error. EMO presses at the industrial level are rare because of how well the equipment is designed and the people are trained. You do not want to press the EMO! If you are pressing the EMO, your day is probably really bad or about to get really bad! (I'll admit that pressing the EMO is kind of fun because of how forbidden it is and its nice tactile feel, so if the equipment is ever off do yourself a favor and get a nice lil' press in.)
 </p>
 
 <hr>
@@ -495,8 +503,44 @@ add fabs4 to other series lists
 <h3 id="gas">Gases</h3>
 
 <p>
-  Some gases that fabs use have very low <a href="https://en.wikipedia.org/wiki/Median_lethal_dose">median lethal doses</a> (<a href="https://en.wikipedia.org/wiki/Arsine#Microelectronics_applications">arsine</a> to <a href="https://en.wikipedia.org/wiki/Phosphine">phosphine</a>), low <a href="https://en.wikipedia.org/wiki/Flammability_limit">flammability limits</a>, or are <a href="https://en.wikipedia.org/wiki/Asphyxiant_gas">asphyxiants</a>. Gas detectors are placed at strategic locations to maximize detection capabilities so the faster it's detected, the sooner it can be stopped and fixed.
+  Some gases that fabs use have very low <a href="https://en.wikipedia.org/wiki/Median_lethal_dose">median lethal doses</a> (<a href="https://en.wikipedia.org/wiki/Arsine#Microelectronics_applications">arsine</a> to <a href="https://en.wikipedia.org/wiki/Phosphine">phosphine</a>), low <a href="https://en.wikipedia.org/wiki/Flammability_limit">flammability limits</a>, or are <a href="https://en.wikipedia.org/wiki/Asphyxiant_gas">asphyxiants</a>. I've heard the high-(LD/LC)<sub>50</sub> gases referred to as "two-step gases" because once you inhale them and take two steps, you're dead. Here are the most toxic gases in a fab (and an <a href="https://www.ccohs.ca/oshanswers/chemicals/ld50.html">explanation on LC<sub>50</sub> and LD<sub>50</sub></a>):
 </p>
+
+<table>
+  <tr>
+    <th>Gas</th>
+    <th>LD<sub>50</sub></th>
+    <th>LC<sub>50</sub></th>
+    <th>OSHA PEL</th>
+  </tr>
+  <tr>
+    <td><a href="https://en.wikipedia.org/wiki/Arsine">Arsine (AsH<sub>3</sub>)</a></td>
+    <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/Arsine#section=Toxicity-Data">2.5 mg/kg</a></td>
+    <td><a href="https://nano-fab.git-pages.rit.edu/lab-user-information/SDS/sds_arsine.pdf">45 ppm (rat, 4 h)</a></td>
+    <td><a href="https://web.stanford.edu/dept/EHS/cgi-bin/lcst/lcss/lcss13.html">0.05 ppm (0.2 mg/m&sup3;) TWA</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://en.wikipedia.org/wiki/Phosphine">Phosphine (PH<sub>3</sub>)</a></td>
+    <td>Not established (gas; no standard oral/dermal route)</td>
+    <td><a href="https://www.cdpr.ca.gov/wp-content/uploads/2024/10/phosphine.pdf">11 ppm (rat, 4 h)</a></td>
+    <td><a href="https://nj.gov/health/eoh/rtkweb/documents/fs/1514.pdf">0.3 ppm TWA</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://en.wikipedia.org/wiki/Diborane">Diborane (B<sub>2</sub>H<sub>6</sub>)</a></td>
+    <td>Not established (gas; no standard oral/dermal route)</td>
+    <td><a href="https://amp.generalair.com/MsdsDocs/MATH4502S.pdf">40 ppm (rat, 4 h)</a></td>
+    <td><a href="https://web.stanford.edu/dept/EHS/cgi-bin/lcss/lcss28.html">0.1 ppm TWA</a></td>
+  </tr>
+</table>
+
+<p>
+  Gas detectors are placed at strategic locations to maximize detection capabilities so the faster it's detected, the sooner it can be stopped and fixed.
+</p>
+
+<img class="img-medium" src="media/fabs4/smell.jpg">
+<figcaption>
+  Gas detectors smelling arsine knowing full well some shit has hit the fan
+</figcaption>
 
 <p>
   Some places that gas detectors are located:
@@ -515,21 +559,6 @@ add fabs4 to other series lists
   Some gases are housed in <a href="https://en.wikipedia.org/wiki/Double-walled_pipe">double-walled pipes</a>, where the pipe that carries the main gas is enclosed within another pipe filled with an inert gas, such as nitrogen. This creates an added layer of safety and immediately dilutes the dangerous gas.
 </p>
 
-
-
-
-
-<h3 id="scrubbers">Scrubbers</h3>
-
-
-
-<h3 id="gascontainment">Gas Containment</h3>
-
-
-
-
-
-
 <hr>
 
 <h2 id="mortality">General Mortality and Disease Rates for Fab Employees</h2>
@@ -539,31 +568,39 @@ add fabs4 to other series lists
 </p>
 
 <p>
-  That said, fabs are incredibly safe thanks to the equipment manufacturers and fab companies working together to <strike>minimize their liability</strike> take care of their precious employees. Searching for "semiconductor fab osha death" on Google turns up only a few results:
+  That said, fabs are incredibly safe thanks to the equipment manufacturers and fab companies working together to <strike>minimize their liability</strike> take care of their precious employees. Here's Claude's response after researching semiconductor fab deaths and major safety incidents:
 </p>
 
+<blockquote>
+  <p>
+    Looking at recent history, the semiconductor industry's fatal incidents fall into three distinct categories, and conflating them overstates the risk of actually working in an operating fab.
+  </p>
 
+  <p>
+    Acute accidents inside a running cleanroom or gas system are rare but do occur. In January 2013, a contractor died and four others were injured after a <a href="https://techcrunch.com/?p=770447">hydrofluoric acid gas leak at Samsung's Hwaseong plant</a>. In Japan, older incidents include a <a href="https://www.sciencedirect.com/science/article/abs/pii/S0950423003000998">1989 CVD gas cabinet explosion and a 1996 pipeline-cleaning explosion</a>, both fatal to a single worker.
+  </p>
 
+  <p>
+    The more common source of fatalities tied to "fabs" in the news is actually construction of new facilities, not fab operations. TSMC's Arizona buildout has seen at least one confirmed death — <a href="https://www.12news.com/article/news/local/valley/tsmc-could-be-fined-16000-penalty-after-worker-died-at-construction-site-phoenix-arizona/75-7de4ac60-40b6-4c2d-bdd1-9607938c2a54">a worker killed by an over-pressurized waste tank in May 2024</a> — plus <a href="https://appleinsider.com/articles/23/07/14/arizona-workers-accuse-tsmc-of-fatalities-at-dangerous-construction-site">disputed reports of additional construction-site deaths</a> from labor representatives. Samsung's Taylor, Texas project has also seen <a href="https://evrimagaci.org/gpt/industrial-accidents-at-samsung-and-ourhome-spark-safety-probes-541653">a fatal fall involving a subcontractor</a> and <a href="https://www.kvue.com/article/news/local/investigation-contractor-dies-taylor-texas-samsung-plant/269-50c6569a-56ec-486e-9007-1ef6cd04e407">a separate contractor death</a>, both under investigation. Wolfspeed's Durham, NC site saw <a href="https://aol.com/worker-dies-recent-accident-wolfspeed-200919368.html">a contractor die the day after a workplace accident in 2026</a>.</p>
 
+  <p>
+    A third, distinct category is long-latency illness from chemical exposure, which shows up in the data as elevated disease risk rather than a single incident. A cohort study of South Korean semiconductor workers employed between 1998 and 2012 found <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10398905/">elevated leukemia mortality specifically among female wafer-fab line operators</a>, though not across the workforce as a whole.
+  </p>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <p>
+    Taken together, the pattern suggests that acute fatalities on an active fab floor are genuinely uncommon; most of the fatal incidents making headlines happen during the construction of new fabs, which carries risks more typical of large industrial construction generally rather than semiconductor manufacturing itself.
+  </p>
+</blockquote>
 
 <hr>
 
 <h2 id="see_also">See Also</h2>
 
+<ul>
+  <li>
+    <a href="https://gwern.net/slowing-moores-law">Slowing Moore's Law: How It Could Happen</a>
+  </li>
+</ul>
 
 <!-- pop-up button section -->
 

@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>Valve State Sort</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#0e3358;
+    --board2:#124272;
+    --board3:#0a2947;
+    --line:#bfe0ff;
+    --ink-light:#eaf4ff;
+    --ink-dim:#8fb3d9;
+    --tag:#ecdfc2;
+    --tag2:#e2d3ae;
+    --tag-ink:#2b2416;
+    --tag-ink-dim:#6b5f47;
+    --stamp-approved:#2f7d55;
+    --stamp-reject:#b3392c;
+    --font-tech:'Space Mono', monospace;
+    --font-hand:'Kalam', cursive;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--board);
+    color:var(--ink-light);
+    font-family:var(--font-tech);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .grid-overlay{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(191,224,255,0.06) 0px, rgba(191,224,255,0.06) 1px, transparent 1px, transparent 28px),
+      repeating-linear-gradient(90deg, rgba(191,224,255,0.06) 0px, rgba(191,224,255,0.06) 1px, transparent 1px, transparent 28px);
+  }
+
+  .back-link{
+    position:fixed; top:14px; left:16px; z-index:20;
+    font-family:var(--font-tech); font-size:12px; letter-spacing:0.04em;
+    color:var(--ink-dim); text-decoration:none;
+    border-bottom:1px dashed var(--ink-dim); padding-bottom:2px;
+  }
+  .back-link:hover{color:var(--ink-light); border-color:var(--ink-light);}
+
+  main{
+    max-width:1000px; margin:0 auto; padding:64px 22px 60px;
+    position:relative;
+  }
+
+  /* corner registration marks on the sheet */
+  main::before, main::after,
+  .sheet-mark-tl, .sheet-mark-tr{
+    content:""; position:absolute; width:18px; height:18px;
+    border-color:var(--line); opacity:0.55; pointer-events:none;
+  }
+  main::before{ top:26px; left:6px; border-left:1px solid var(--line); border-top:1px solid var(--line); }
+  main::after{ bottom:16px; right:6px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
+
+  .sheet-header{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:20px; flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
+    padding-bottom:18px; margin-bottom:20px;
+  }
+  .sheet-title h1{
+    font-family:var(--font-tech); font-weight:700;
+    font-size:clamp(22px,4vw,32px); letter-spacing:0.03em;
+    margin:0 0 6px; color:var(--ink-light);
+  }
+  .sheet-title p{
+    margin:0; color:var(--ink-dim); font-size:13.5px; max-width:520px; line-height:1.5;
+  }
+
+  .title-block{
+    border:1px solid var(--line);
+    font-size:11px;
+    min-width:220px;
+  }
+  .title-block table{border-collapse:collapse; width:100%;}
+  .title-block td{
+    border:1px solid var(--line);
+    padding:4px 8px;
+    color:var(--ink-dim);
+  }
+  .title-block td.field-label{color:var(--ink-dim); width:38%;}
+  .title-block td.field-value{color:var(--ink-light); font-weight:700;}
+  #status-value{color:var(--ink-light);}
+  #status-value.st-approved{color:var(--stamp-approved);}
+  #status-value.st-revise{color:var(--stamp-reject);}
+
+  .brief{
+    background:rgba(191,224,255,0.05);
+    border-left:2px solid var(--line);
+    padding:12px 16px;
+    margin-bottom:26px;
+    font-size:13.5px; line-height:1.6; color:var(--ink-light);
+  }
+  .brief ul{margin:8px 0 0; padding-left:18px;}
+  .brief li{margin-bottom:4px; color:var(--ink-dim);}
+  .brief li b{color:var(--ink-light);}
+
+  h2.section-label{
+    font-size:12px; letter-spacing:0.14em; color:var(--ink-dim);
+    font-weight:700; margin:0 0 8px;
+    display:flex; align-items:center; gap:10px;
+  }
+  h2.section-label::after{content:""; flex:1; height:1px; background:var(--line); opacity:0.4;}
+
+  .supply-tray-wrap{margin-bottom:28px;}
+  .dropzone{
+    display:flex; flex-wrap:wrap; gap:10px;
+    min-height:96px;
+    border:1px dashed var(--line);
+    border-radius:4px;
+    padding:12px;
+  }
+  #tray{background:rgba(191,224,255,0.03);}
+
+  .manifolds{
+    display:grid; grid-template-columns:1fr 1fr; gap:18px;
+    margin-bottom:24px;
+  }
+  .manifold{position:relative;}
+  .manifold-label{
+    font-size:12.5px; font-weight:700; letter-spacing:0.06em;
+    color:var(--ink-light); margin-bottom:6px;
+  }
+  .manifold-label span{
+    display:block; font-weight:400; font-size:11px; color:var(--ink-dim); letter-spacing:0.03em; margin-top:2px;
+  }
+  .manifold .dropzone{
+    background:var(--board2);
+    border-color:var(--line);
+    position:relative;
+  }
+  .manifold .dropzone::before, .manifold .dropzone::after{
+    content:""; position:absolute; width:12px; height:12px; pointer-events:none;
+    border-color:var(--line); opacity:0.6;
+  }
+  .manifold .dropzone::before{top:-1px; left:-1px; border-top:2px solid var(--line); border-left:2px solid var(--line);}
+  .manifold .dropzone::after{bottom:-1px; right:-1px; border-bottom:2px solid var(--line); border-right:2px solid var(--line);}
+
+  /* gas tag cards */
+  .gas-card{
+    width:128px;
+    background:linear-gradient(160deg, var(--tag), var(--tag2));
+    color:var(--tag-ink);
+    border-radius:3px;
+    padding:8px 8px 6px;
+    position:relative;
+    box-shadow:0 2px 5px rgba(0,0,0,0.35);
+    touch-action:none;
+    user-select:none;
+    cursor:grab;
+    border-left:4px solid transparent;
+    transition:border-color 0.15s ease;
+  }
+  .gas-card.dragging{cursor:grabbing; box-shadow:0 10px 24px rgba(0,0,0,0.5); opacity:0.95;}
+  .gas-card .valve-icon{width:100%; height:18px; color:var(--tag-ink-dim); margin-bottom:2px;}
+  .gas-card .gas-formula{font-weight:700; font-size:15px; line-height:1.1;}
+  .gas-card .gas-name{font-size:10.5px; color:var(--tag-ink-dim); margin-bottom:6px;}
+
+  .quick-assign{display:flex; gap:4px; flex-wrap:wrap;}
+  .quick-assign button{
+    font-family:var(--font-tech); font-size:9.5px; letter-spacing:0.02em;
+    background:transparent; color:var(--tag-ink-dim);
+    border:1px solid var(--tag-ink-dim); border-radius:3px;
+    padding:2px 5px; cursor:pointer;
+  }
+  .quick-assign button:hover, .quick-assign button:focus-visible{
+    color:var(--tag-ink); border-color:var(--tag-ink);
+  }
+
+  .stamp{
+    position:absolute; top:6px; right:6px;
+    font-family:var(--font-tech); font-weight:700; font-size:9px;
+    letter-spacing:0.1em; padding:2px 5px; border-radius:3px;
+    border:2px solid transparent; transform:rotate(-9deg);
+    mix-blend-mode:multiply; display:none;
+  }
+  .gas-card.inspected .stamp{display:inline-block;}
+  .stamp.approved{color:var(--stamp-approved); border-color:var(--stamp-approved);}
+  .stamp.reject{color:var(--stamp-reject); border-color:var(--stamp-reject);}
+
+  .note{
+    font-family:var(--font-hand); font-size:0; line-height:1.35;
+    max-height:0; overflow:hidden; opacity:0;
+    transition:max-height 0.25s ease, opacity 0.25s ease, font-size 0.25s ease;
+    margin-top:0;
+  }
+  .gas-card.inspected .note{
+    font-size:13px; max-height:160px; opacity:1; margin-top:6px;
+  }
+  .note.approved-note{color:#1f5c3d;}
+  .note.reject-note{color:#7c261b;}
+
+  .gas-card.inspected.approved{border-left-color:var(--stamp-approved);}
+  .gas-card.inspected.reject{border-left-color:var(--stamp-reject);}
+
+  .controls{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    margin-top:8px;
+  }
+  button.primary{
+    font-family:var(--font-tech); font-weight:700; font-size:13px; letter-spacing:0.05em;
+    background:var(--ink-light); color:var(--board3);
+    border:none; border-radius:4px; padding:10px 22px; cursor:pointer;
+  }
+  button.primary:disabled{opacity:0.35; cursor:not-allowed;}
+  button.primary:not(:disabled):hover{background:#fff;}
+  button.ghost{
+    font-family:var(--font-tech); font-size:12.5px; letter-spacing:0.04em;
+    background:transparent; color:var(--ink-dim);
+    border:1px solid var(--line); border-radius:4px; padding:9px 16px; cursor:pointer;
+  }
+  button.ghost:hover{color:var(--ink-light); border-color:var(--ink-light);}
+  #progress-note{font-size:12px; color:var(--ink-dim);}
+
+  .result-banner{
+    margin-top:24px; padding:16px 18px; border-radius:4px;
+    border:1px solid var(--line); font-size:14px; line-height:1.55;
+  }
+  .result-banner.approved-banner{
+    background:rgba(47,125,85,0.12); border-color:var(--stamp-approved);
+  }
+  .result-banner.reject-banner{
+    background:rgba(179,57,44,0.1); border-color:var(--stamp-reject);
+  }
+  .stamp-big{
+    display:inline-block; font-family:var(--font-tech); font-weight:700;
+    font-size:22px; letter-spacing:0.2em; color:var(--stamp-approved);
+    border:3px solid var(--stamp-approved); border-radius:6px;
+    padding:4px 14px; transform:rotate(-6deg); margin-bottom:10px;
+    mix-blend-mode:screen;
+  }
+  .result-banner p{margin:0;}
+
+  footer.credits{text-align:center; color:var(--ink-dim); font-size:11px; margin-top:44px;}
+
+  :focus-visible{outline:2px solid var(--ink-light); outline-offset:2px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition-duration:0.001ms !important;}
+  }
+
+  @media (max-width:640px){
+    .manifolds{grid-template-columns:1fr;}
+    .sheet-header{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-overlay"></div>
+<a class="back-link" href="../../fabs4.html">&larr; back to fabs iv</a>
+
+<main>
+  <header class="sheet-header">
+    <div class="sheet-title">
+      <h1>VALVE STATE SORT</h1>
+      <p>Every gas line fails to one of two states when power drops. Sort each cylinder tag onto the manifold matching how it should fail.</p>
+    </div>
+    <div class="title-block">
+      <table>
+        <tr><td class="field-label">DWG NO.</td><td class="field-value">VLV&#8209;002</td></tr>
+        <tr><td class="field-label">SCALE</td><td class="field-value">NTS</td></tr>
+        <tr><td class="field-label">DRAWN BY</td><td class="field-value">READER</td></tr>
+        <tr><td class="field-label">STATUS</td><td class="field-value" id="status-value">IN PROGRESS</td></tr>
+      </table>
+    </div>
+  </header>
+
+  <div class="brief">
+    <p>On loss of power, a valve settles into whichever state it's built for &mdash; there's no in-between.</p>
+    <ul>
+      <li><b>N.O. &mdash; Normally Open:</b> powered = closed, power lost = open. Used where the gas should keep flowing through a fault.</li>
+      <li><b>N.C. &mdash; Normally Closed:</b> powered = open, power lost = closed. Used where the gas must stop flowing through a fault.</li>
+    </ul>
+  </div>
+
+  <div class="supply-tray-wrap">
+    <h2 class="section-label">SUPPLY &mdash; <span id="supply-count">16 unsorted</span></h2>
+    <div class="dropzone" id="tray-zone" data-zone="tray"></div>
+  </div>
+
+  <div class="manifolds">
+    <div class="manifold">
+      <div class="manifold-label">N.O. MANIFOLD<span>fails open on power loss</span></div>
+      <div class="dropzone" id="no-zone" data-zone="no"></div>
+    </div>
+    <div class="manifold">
+      <div class="manifold-label">N.C. MANIFOLD<span>fails closed on power loss</span></div>
+      <div class="dropzone" id="nc-zone" data-zone="nc"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="primary" id="inspect-btn" disabled>INSPECT WORK</button>
+    <button class="ghost" id="reset-btn">RESET</button>
+    <span id="progress-note">16 remaining in supply</span>
+  </div>
+
+  <div class="result-banner" id="result-banner" hidden></div>
+
+  <footer class="credits">No Magic Pill &middot; Valve State Sort</footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var GASES = [
+    { id:"n2", formula:"N2", name:"Nitrogen", group:"no",
+      note:"Inert. On a power loss it needs to keep flowing to purge and dilute anything hazardous left in the lines." },
+    { id:"ar", formula:"Ar", name:"Argon", group:"no",
+      note:"Inert. A dead system should keep diluting with argon, not trap it behind a valve that just failed." },
+    { id:"he", formula:"He", name:"Helium", group:"no",
+      note:"Inert, used for things like backside wafer cooling. Nothing dangerous about letting it keep flowing on a fault." },
+    { id:"cda", formula:"CDA", name:"Clean Dry Air", group:"no",
+      note:"Inert utility gas. Losing power shouldn't cut off the dry air a purge or pneumatic actuator depends on." },
+
+    { id:"ash3", formula:"AsH3", name:"Arsine", group:"nc",
+      note:"Extremely toxic and pyrophoric. The last thing you want on a dead system is this still flowing somewhere." },
+    { id:"ph3", formula:"PH3", name:"Phosphine", group:"nc",
+      note:"Toxic and pyrophoric, same story as arsine. A power loss should be the moment this stops moving." },
+    { id:"b2h6", formula:"B2H6", name:"Diborane", group:"nc",
+      note:"Toxic and pyrophoric. Same logic as the other dopant gases: fail closed, not open." },
+    { id:"sih4", formula:"SiH4", name:"Silane", group:"nc",
+      note:"Pyrophoric, it ignites on contact with air. A dead system should trap it behind a closed valve immediately." },
+    { id:"cl2", formula:"Cl2", name:"Chlorine", group:"nc",
+      note:"Toxic and corrosive. This should stop flowing the instant power is lost, full stop." },
+    { id:"hcl", formula:"HCl", name:"Hydrogen Chloride", group:"nc",
+      note:"Toxic and corrosive, same as chlorine. Fail closed." },
+    { id:"h2", formula:"H2", name:"Hydrogen", group:"nc",
+      note:"Flammable across a wide concentration range. A dead system shouldn't keep flowing it." },
+    { id:"o3", formula:"O3", name:"Ozone", group:"nc",
+      note:"A powerful, toxic oxidizer. This should never keep flowing on its own after a fault." },
+    { id:"nf3", formula:"NF3", name:"Nitrogen Trifluoride", group:"nc",
+      note:"Toxic, and it breaks down into hydrofluoric acid on contact with moisture. Fail closed, always." },
+    { id:"wf6", formula:"WF6", name:"Tungsten Hexafluoride", group:"nc",
+      note:"Toxic and moisture-reactive, forming HF-like byproducts. This needs to stop the moment something goes wrong." },
+    { id:"bcl3", formula:"BCl3", name:"Boron Trichloride", group:"nc",
+      note:"Toxic and corrosive, and it reacts with moisture too. Same fail-closed logic as the rest." },
+    { id:"forming", formula:"N2/H2", name:"Forming Gas", group:"nc",
+      note:"Mostly nitrogen, but that hydrogen fraction is still flammable. A blend gets treated as hazardous if any part of it can ignite." }
+  ];
+
+  var VALVE_ICON = '<svg class="valve-icon" viewBox="0 0 60 20" fill="none" xmlns="http://www.w3.org/2000/svg">'
+    + '<line x1="0" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="2"/>'
+    + '<polygon points="16,2 30,10 16,18" stroke="currentColor" stroke-width="1.6" fill="none"/>'
+    + '<polygon points="44,2 30,10 44,18" stroke="currentColor" stroke-width="1.6" fill="none"/>'
+    + '<line x1="44" y1="10" x2="60" y2="10" stroke="currentColor" stroke-width="2"/>'
+    + '</svg>';
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for(var i=a.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+
+  function zoneOf(cardEl){
+    return cardEl.parentElement.getAttribute("data-zone");
+  }
+
+  function renderQuickButtons(cardEl){
+    var zone = zoneOf(cardEl);
+    var wrap = cardEl.querySelector(".quick-assign");
+    var buttons = [];
+    if(zone === "tray"){
+      buttons = [{t:"no", l:"\u2192 N.O."}, {t:"nc", l:"\u2192 N.C."}];
+    } else if(zone === "no"){
+      buttons = [{t:"nc", l:"\u2192 N.C."}, {t:"tray", l:"\u21A9 supply"}];
+    } else {
+      buttons = [{t:"no", l:"\u2192 N.O."}, {t:"tray", l:"\u21A9 supply"}];
+    }
+    wrap.innerHTML = buttons.map(function(b){
+      return '<button type="button" data-target="' + b.t + '">' + b.l + '</button>';
+    }).join("");
+  }
+
+  function buildCard(gas){
+    var card = document.createElement("div");
+    card.className = "gas-card";
+    card.setAttribute("data-id", gas.id);
+    card.setAttribute("tabindex", "0");
+    card.innerHTML =
+      '<span class="stamp"></span>'
+      + VALVE_ICON
+      + '<div class="gas-formula">' + gas.formula + '</div>'
+      + '<div class="gas-name">' + gas.name + '</div>'
+      + '<div class="quick-assign"></div>'
+      + '<div class="note"></div>';
+    return card;
+  }
+
+  function clearAllStamps(){
+    document.querySelectorAll(".gas-card").forEach(function(c){
+      c.classList.remove("inspected", "approved", "reject");
+      c.querySelector(".stamp").textContent = "";
+      c.querySelector(".stamp").className = "stamp";
+      c.querySelector(".note").textContent = "";
+      c.querySelector(".note").className = "note";
+    });
+    document.getElementById("result-banner").hidden = true;
+    var statusEl = document.getElementById("status-value");
+    statusEl.textContent = "IN PROGRESS";
+    statusEl.className = "field-value";
+  }
+
+  function updateProgress(){
+    var tray = document.getElementById("tray-zone");
+    var remaining = tray.children.length;
+    document.getElementById("supply-count").textContent = remaining + " unsorted";
+    document.getElementById("progress-note").textContent = remaining + " remaining in supply";
+    document.getElementById("inspect-btn").disabled = remaining !== 0;
+  }
+
+  function moveCard(cardEl, targetZone){
+    clearAllStamps();
+    cardEl.style.position = "";
+    cardEl.style.left = "";
+    cardEl.style.top = "";
+    cardEl.style.width = "";
+    cardEl.style.height = "";
+    cardEl.style.zIndex = "";
+    cardEl.style.pointerEvents = "";
+    cardEl.classList.remove("dragging");
+    var container = document.querySelector('.dropzone[data-zone="' + targetZone + '"]');
+    container.appendChild(cardEl);
+    renderQuickButtons(cardEl);
+    updateProgress();
+  }
+
+  // ---- init board ----
+  var tray = document.getElementById("tray-zone");
+  shuffle(GASES).forEach(function(gas){
+    var card = buildCard(gas);
+    tray.appendChild(card);
+    renderQuickButtons(card);
+  });
+  updateProgress();
+
+  // ---- quick-assign buttons (event delegation) ----
+  document.addEventListener("click", function(e){
+    var btn = e.target.closest(".quick-assign button");
+    if(!btn) return;
+    var card = btn.closest(".gas-card");
+    moveCard(card, btn.getAttribute("data-target"));
+  });
+
+  // ---- pointer drag ----
+  var dragState = null;
+
+  document.addEventListener("pointerdown", function(e){
+    var card = e.target.closest(".gas-card");
+    if(!card) return;
+    if(e.target.closest("button")) return;
+    var rect = card.getBoundingClientRect();
+    dragState = {
+      card: card,
+      offsetX: e.clientX - rect.left,
+      offsetY: e.clientY - rect.top,
+      startX: e.clientX,
+      startY: e.clientY,
+      moved: false,
+      width: rect.width,
+      height: rect.height
+    };
+    try{ card.setPointerCapture(e.pointerId); }catch(err){}
+  });
+
+  document.addEventListener("pointermove", function(e){
+    if(!dragState) return;
+    var dx = e.clientX - dragState.startX, dy = e.clientY - dragState.startY;
+    var card = dragState.card;
+    if(!dragState.moved && Math.hypot(dx, dy) > 6){
+      dragState.moved = true;
+      card.style.width = dragState.width + "px";
+      card.style.height = dragState.height + "px";
+      card.style.position = "fixed";
+      card.style.zIndex = "999";
+      card.style.pointerEvents = "none";
+      card.classList.add("dragging");
+      document.body.appendChild(card);
+    }
+    if(dragState.moved){
+      card.style.left = (e.clientX - dragState.offsetX) + "px";
+      card.style.top = (e.clientY - dragState.offsetY) + "px";
+    }
+  });
+
+  function endDrag(e){
+    if(!dragState) return;
+    var card = dragState.card;
+    if(dragState.moved){
+      card.style.pointerEvents = "";
+      var target = document.elementFromPoint(e.clientX, e.clientY);
+      var zoneEl = target ? target.closest(".dropzone") : null;
+      var targetZone = zoneEl ? zoneEl.getAttribute("data-zone") : zoneOf(card);
+      moveCard(card, targetZone);
+    }
+    dragState = null;
+  }
+  document.addEventListener("pointerup", endDrag);
+  document.addEventListener("pointercancel", endDrag);
+
+  // ---- inspect ----
+  document.getElementById("inspect-btn").addEventListener("click", function(){
+    var gasById = {};
+    GASES.forEach(function(g){ gasById[g.id] = g; });
+
+    var correct = 0, wrong = 0;
+    function evaluate(cardEl, zone){
+      var gas = gasById[cardEl.getAttribute("data-id")];
+      var isCorrect = gas.group === zone;
+      cardEl.classList.add("inspected", isCorrect ? "approved" : "reject");
+      var stampEl = cardEl.querySelector(".stamp");
+      var noteEl = cardEl.querySelector(".note");
+      if(isCorrect){
+        correct++;
+        stampEl.textContent = "APPROVED";
+        stampEl.className = "stamp approved";
+        noteEl.textContent = gas.note;
+        noteEl.className = "note approved-note";
+      } else {
+        wrong++;
+        stampEl.textContent = "REDLINE";
+        stampEl.className = "stamp reject";
+        var correctZone = gas.group === "no" ? "N.O. manifold" : "N.C. manifold";
+        noteEl.textContent = "Wrong manifold \u2014 belongs on the " + correctZone + ". " + gas.note;
+        noteEl.className = "note reject-note";
+      }
+    }
+
+    document.querySelectorAll('#no-zone .gas-card').forEach(function(c){ evaluate(c, "no"); });
+    document.querySelectorAll('#nc-zone .gas-card').forEach(function(c){ evaluate(c, "nc"); });
+
+    var banner = document.getElementById("result-banner");
+    banner.hidden = false;
+    var statusEl = document.getElementById("status-value");
+
+    if(wrong === 0){
+      banner.className = "result-banner approved-banner";
+      banner.innerHTML = '<div class="stamp-big">APPROVED</div><p>All ' + correct + ' valves verified. Drawing released for fab.</p>';
+      statusEl.textContent = "APPROVED";
+      statusEl.className = "field-value st-approved";
+    } else {
+      banner.className = "result-banner reject-banner";
+      banner.innerHTML = '<p>' + correct + ' correct, ' + wrong + ' misconfigured. Check the redlined tags below, fix them, and re-inspect.</p>';
+      statusEl.textContent = "REVISE";
+      statusEl.className = "field-value st-revise";
+    }
+  });
+
+  // ---- reset ----
+  document.getElementById("reset-btn").addEventListener("click", function(){
+    var tray = document.getElementById("tray-zone");
+    var allCards = Array.prototype.slice.call(document.querySelectorAll(".gas-card"));
+    shuffle(allCards).forEach(function(card){
+      card.style.position = ""; card.style.left = ""; card.style.top = "";
+      card.style.width = ""; card.style.height = ""; card.style.zIndex = ""; card.style.pointerEvents = "";
+      card.classList.remove("dragging");
+      tray.appendChild(card);
+      renderQuickButtons(card);
+    });
+    clearAllStamps();
+    updateProgress();
+  });
+
+})();
+</script>
+</body>
+</html>
