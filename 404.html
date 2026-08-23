@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Apply saved theme before first paint to avoid a flash. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - No Magic Pill</title>
+  <!-- Root-absolute paths only: this page is served for any missing URL, at any
+       depth, so "../css/main.css" would resolve differently every time. -->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="icon" href="/media/favicon.png">
+
+  <style>
+    /* Extra tokens for the game. main.css defines its palette in three places
+       (light, system-dark, forced-dark); these have to mirror all three. */
+    :root {
+      --grid: #ececec;
+      --overlay-bg: rgba(255, 255, 255, 0.88);
+      --pill-a: #d93025;
+      --pill-b: #fafafa;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --grid: #262626;
+        --overlay-bg: rgba(18, 18, 18, 0.88);
+        --pill-a: #ef5350;
+        --pill-b: #e6e6e6;
+      }
+    }
+    :root[data-theme="dark"] {
+      --grid: #262626;
+      --overlay-bg: rgba(18, 18, 18, 0.88);
+      --pill-a: #ef5350;
+      --pill-b: #e6e6e6;
+    }
+
+    [hidden] { display: none !important; }
+
+    #game { margin: 25px 0 10px; }
+
+    #hud {
+      display: flex;
+      justify-content: space-between;
+      max-width: 480px;
+      margin: 0 auto 6px;
+      font-family: monospace;
+      font-size: 0.9em;
+      letter-spacing: 0.05em;
+    }
+
+    #stage {
+      position: relative;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    #board {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      background-color: var(--muted-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      /* Swiping only takes over the board once a ride is actually running,
+         so a visitor who just wants to scroll past can still scroll. */
+      touch-action: manipulation;
+    }
+    #stage.playing #board { touch-action: none; }
+    #board:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+    #overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 15px;
+      text-align: center;
+      background-color: var(--overlay-bg);
+      border-radius: 4px;
+    }
+    #overlay p { margin: 0; }
+    #msg { max-width: 24em; }
+
+    #start {
+      font: inherit;
+      color: var(--bg);
+      background-color: var(--link);
+      border: none;
+      border-radius: 4px;
+      padding: 8px 18px;
+      cursor: pointer;
+    }
+    #start:hover { background-color: var(--link-hover); }
+
+    #hint, #caption {
+      font-size: 0.85em;
+      color: var(--text);
+      opacity: 0.7;
+    }
+    #caption { text-align: center; margin-top: 10px; }
+  </style>
+</head>
+
+<body>
+
+<h3 id="home"><a href="/index.html">Home</a></h3>
+
+<h1 id="not_found">404</h1>
+
+<p>
+  This page doesn't exist. It may have been renamed, moved, or never written. Try the <a href="/index.html">home page</a> instead.
+</p>
+
+<p>
+  In the meantime, you may play this game that is directly related to this site's content.
+</p>
+
+<hr>
+
+<!-- Unhidden by the script below, so a visitor without JS just gets the text. -->
+<div id="game" hidden>
+  <div id="hud">
+    <span id="score">PELOTON: 1</span>
+    <span id="best"></span>
+  </div>
+
+  <div id="stage">
+    <canvas id="board" width="480" height="360" tabindex="0"
+            aria-label="A cyclist collecting pills. Each pill adds a rider to the peloton behind you."></canvas>
+    <div id="overlay">
+      <p id="msg">You are one cyclist. Every pill adds a rider behind you.</p>
+      <button id="start" type="button">Start ride</button>
+      <p id="hint">Arrow keys or WASD &middot; swipe on mobile &middot; Esc to stop</p>
+    </div>
+  </div>
+
+  <p id="caption">Every pill makes the peloton longer and the ride faster.</p>
+</div>
+
+<script>
+(function () {
+  var canvas = document.getElementById('board');
+  if (!canvas || !canvas.getContext) return;
+
+  var ctx = canvas.getContext('2d');
+  var game = document.getElementById('game');
+  var stage = document.getElementById('stage');
+  var overlay = document.getElementById('overlay');
+  var msg = document.getElementById('msg');
+  var startBtn = document.getElementById('start');
+  var scoreEl = document.getElementById('score');
+  var bestEl = document.getElementById('best');
+
+  var COLS = 20, ROWS = 15, CELL = 24;
+  var START_MS = 130, MIN_MS = 60, RAMP = 5;
+
+  var snake, dir, nextDir, pill, tickMs, facing = 1;
+  var playing = false, paused = false, raf = null, acc = 0, last = 0;
+
+  var best = 0;
+  try { best = parseInt(localStorage.getItem('peloton-best'), 10) || 0; } catch (e) {}
+
+  /* ---- theme ---- */
+
+  // Colours come from the CSS tokens so the board follows the site theme.
+  // Cached, and thrown away whenever the theme changes under us.
+  var css = null;
+  function colors() {
+    if (css) return css;
+    var s = getComputedStyle(document.documentElement);
+    function tok(name, fallback) {
+      return s.getPropertyValue(name).trim() || fallback;
+    }
+    css = {
+      rider: tok('--text', '#000000'),
+      lead: tok('--link', '#2563eb'),
+      grid: tok('--grid', '#ececec'),
+      pillA: tok('--pill-a', '#d93025'),
+      pillB: tok('--pill-b', '#fafafa'),
+      border: tok('--border', '#cccccc')
+    };
+    return css;
+  }
+  function invalidate() { css = null; draw(); }
+
+  if (window.MutationObserver) {
+    new MutationObserver(invalidate).observe(document.documentElement, {
+      attributes: true, attributeFilter: ['data-theme']
+    });
+  }
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    if (mq.addEventListener) mq.addEventListener('change', invalidate);
+  }
+
+  /* ---- state ---- */
+
+  function fit() {
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = COLS * CELL * dpr;
+    canvas.height = ROWS * CELL * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+  }
+
+  function reset() {
+    snake = [{ x: 5, y: 7 }];
+    dir = { x: 1, y: 0 };
+    nextDir = dir;
+    facing = 1;
+    tickMs = START_MS;
+    placePill();
+    updateHud();
+  }
+
+  function placePill() {
+    var free = [];
+    for (var y = 0; y < ROWS; y++) {
+      for (var x = 0; x < COLS; x++) {
+        var taken = false;
+        for (var i = 0; i < snake.length; i++) {
+          if (snake[i].x === x && snake[i].y === y) { taken = true; break; }
+        }
+        if (!taken) free.push({ x: x, y: y });
+      }
+    }
+    pill = free.length ? free[Math.floor(Math.random() * free.length)] : null;
+  }
+
+  function updateHud() {
+    scoreEl.textContent = 'PELOTON: ' + snake.length;
+    bestEl.textContent = best ? 'BEST: ' + best : '';
+  }
+
+  function step() {
+    dir = nextDir;
+    if (dir.x !== 0) facing = dir.x;
+
+    var head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+    if (head.x < 0 || head.y < 0 || head.x >= COLS || head.y >= ROWS) {
+      return end('You rode off the course.');
+    }
+
+    var eating = pill && head.x === pill.x && head.y === pill.y;
+    // The tail tip vacates its cell this tick unless we are growing into it.
+    var solid = eating ? snake.length : snake.length - 1;
+    for (var i = 0; i < solid; i++) {
+      if (snake[i].x === head.x && snake[i].y === head.y) {
+        return end('You crashed into your own peloton.');
+      }
+    }
+
+    snake.unshift(head);
+    if (eating) {
+      placePill();
+      tickMs = Math.max(MIN_MS, tickMs - RAMP);
+      updateHud();
+    } else {
+      snake.pop();
+    }
+  }
+
+  function loop(ts) {
+    if (!playing) return;
+    if (!last) last = ts;
+    acc += ts - last;
+    last = ts;
+    // Cap the catch-up so a backgrounded tab doesn't fast-forward the ride.
+    if (acc > 500) acc = 500;
+    while (playing && acc >= tickMs) {
+      acc -= tickMs;
+      step();
+    }
+    draw();
+    if (playing) raf = window.requestAnimationFrame(loop);
+  }
+
+  function show(text, label) {
+    msg.textContent = text;
+    startBtn.textContent = label;
+    overlay.hidden = false;
+  }
+
+  function run() {
+    overlay.hidden = true;
+    playing = true;
+    paused = false;
+    stage.classList.add('playing');
+    acc = 0;
+    last = 0;
+    canvas.focus();
+    raf = window.requestAnimationFrame(loop);
+  }
+
+  function halt() {
+    playing = false;
+    stage.classList.remove('playing');
+    if (raf) { window.cancelAnimationFrame(raf); raf = null; }
+  }
+
+  function pause() {
+    if (!playing) return;
+    halt();
+    paused = true;
+    show('Ride paused.', 'Resume');
+  }
+
+  function end(reason) {
+    halt();
+    paused = false;
+    if (snake.length > best) {
+      best = snake.length;
+      try { localStorage.setItem('peloton-best', String(best)); } catch (e) {}
+    }
+    updateHud();
+    show(reason + ' Peloton of ' + snake.length + '.', 'Ride again');
+    draw();
+  }
+
+  /* ---- input ---- */
+
+  function turn(x, y) {
+    // No reversing straight into your own front wheel. Compared against the
+    // last applied direction, not the queued one, so two fast turns in a
+    // single tick can't fold the rider back on itself.
+    if (snake.length > 1 && x === -dir.x && y === -dir.y) return;
+    nextDir = { x: x, y: y };
+  }
+
+  var KEYS = {
+    ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0],
+    w: [0, -1], s: [0, 1], a: [-1, 0], d: [1, 0]
+  };
+
+  document.addEventListener('keydown', function (e) {
+    // Nothing is captured until a ride is actually running: someone who landed
+    // here by mistake keeps arrow-key scrolling and can just leave.
+    if (!playing) return;
+
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      end('Ride ended.');
+      return;
+    }
+
+    var k = KEYS[e.key] || KEYS[String(e.key).toLowerCase()];
+    if (!k) return;
+    e.preventDefault();
+    turn(k[0], k[1]);
+  });
+
+  var touch = null;
+  canvas.addEventListener('touchstart', function (e) {
+    if (playing) touch = e.changedTouches[0];
+  }, { passive: true });
+
+  canvas.addEventListener('touchmove', function (e) {
+    if (playing) e.preventDefault();
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', function (e) {
+    if (!playing || !touch) return;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - touch.clientX;
+    var dy = t.clientY - touch.clientY;
+    touch = null;
+    if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return;
+    if (Math.abs(dx) > Math.abs(dy)) turn(dx > 0 ? 1 : -1, 0);
+    else turn(0, dy > 0 ? 1 : -1);
+  }, { passive: true });
+
+  startBtn.addEventListener('click', function () {
+    if (paused) { run(); return; }
+    reset();
+    run();
+  });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) pause();
+  });
+
+  window.addEventListener('resize', fit);
+
+  /* ---- drawing ---- */
+
+  function roundRect(x, y, w, h, r) {
+    if (ctx.roundRect) { ctx.roundRect(x, y, w, h, r); return; }
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function drawPill(cx, cy, c) {
+    var w = CELL * 0.64, h = CELL * 0.34, r = h / 2;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(-Math.PI / 4);
+    ctx.beginPath();
+    roundRect(-w / 2, -h / 2, w, h, r);
+    ctx.save();
+    ctx.clip();
+    ctx.fillStyle = c.pillA;
+    ctx.fillRect(-w / 2, -h / 2, w / 2, h);
+    ctx.fillStyle = c.pillB;
+    ctx.fillRect(0, -h / 2, w / 2, h);
+    ctx.restore();
+    ctx.strokeStyle = c.border;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // A cyclist: two wheels, a frame, and a rider leaning over the bars.
+  function drawRider(cx, cy, color) {
+    var r = CELL * 0.16;
+    var wy = cy + CELL * 0.18;
+    var bx = CELL * 0.22;
+
+    ctx.save();
+    if (facing < 0) {
+      ctx.translate(cx, cy);
+      ctx.scale(-1, 1);
+      ctx.translate(-cx, -cy);
+    }
+
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = 1.4;
+
+    ctx.beginPath();
+    ctx.moveTo(cx - bx + r, wy);
+    ctx.arc(cx - bx, wy, r, 0, Math.PI * 2);
+    ctx.moveTo(cx + bx + r, wy);
+    ctx.arc(cx + bx, wy, r, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(cx - bx, wy);
+    ctx.lineTo(cx, cy - CELL * 0.02);
+    ctx.lineTo(cx + bx, wy);
+    ctx.moveTo(cx, cy - CELL * 0.02);
+    ctx.lineTo(cx + CELL * 0.10, cy - CELL * 0.20);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(cx + CELL * 0.15, cy - CELL * 0.27, CELL * 0.10, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  function draw() {
+    if (!snake) return;
+    var c = colors();
+    var W = COLS * CELL, H = ROWS * CELL;
+
+    ctx.clearRect(0, 0, W, H);
+
+    ctx.strokeStyle = c.grid;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (var x = 1; x < COLS; x++) {
+      ctx.moveTo(x * CELL + 0.5, 0);
+      ctx.lineTo(x * CELL + 0.5, H);
+    }
+    for (var y = 1; y < ROWS; y++) {
+      ctx.moveTo(0, y * CELL + 0.5);
+      ctx.lineTo(W, y * CELL + 0.5);
+    }
+    ctx.stroke();
+
+    if (pill) drawPill(pill.x * CELL + CELL / 2, pill.y * CELL + CELL / 2, c);
+
+    // Back to front, so the leader sits on top of the wheel behind them.
+    for (var i = snake.length - 1; i >= 0; i--) {
+      ctx.globalAlpha = i === 0 ? 1 : Math.max(0.35, 1 - i * 0.06);
+      drawRider(
+        snake[i].x * CELL + CELL / 2,
+        snake[i].y * CELL + CELL / 2,
+        i === 0 ? c.lead : c.rider
+      );
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  game.hidden = false;
+  reset();
+  fit();
+})();
+</script>
+
+<script src="/js/theme.js"></script>
+</body>
+</html>

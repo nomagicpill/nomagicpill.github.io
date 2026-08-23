@@ -1,11 +1,13 @@
 /*
  * Lightweight reading enhancements, no dependencies:
  *   1. A scroll progress bar across the top of the page (left to right).
- *   2. An auto-generated table of contents built from the page's
+ *   2. Collapsible sections that open themselves when linked to.
+ *   3. An auto-generated table of contents built from the page's
  *      <h2> (main bullets) and <h3> (sub-bullets) headings.
  *
  * The TOC replaces the manual list that follows a `<h2 id="contents">`
- * heading. If there's no Contents heading, only the progress bar runs.
+ * heading. If there's no Contents heading, only the progress bar and the
+ * collapsible handling run.
  */
 (function () {
   // ----- Scroll progress bar (top, left to right) -----
@@ -23,6 +25,87 @@
   window.addEventListener('scroll', updateProgress, { passive: true });
   window.addEventListener('resize', updateProgress);
   updateProgress();
+
+  // ----- Collapsible sections open when linked to -----
+  // Sections are written as <button class="collapsible"> followed by a
+  // <div class="content"> that starts hidden, so a link into one -- a TOC
+  // entry, a shared #anchor -- used to land on a section the reader still
+  // had to click open. Expand it first and let the normal anchor scroll
+  // follow. The inline per-page toggle scripts are left alone: we set the
+  // same inline display and .active class they do, so the next click on the
+  // button still closes the section.
+
+  function contentOf(button) {
+    var content = button.nextElementSibling;
+    return (content && content.classList.contains('content')) ? content : null;
+  }
+
+  // The toggle button of the nearest collapsible section containing `el`,
+  // or null if `el` isn't inside one.
+  function sectionButtonFor(el) {
+    for (var node = el; node && node !== document.body; node = node.parentNode) {
+      if (node.nodeType !== 1 || !node.classList.contains('content')) continue;
+      var button = node.previousElementSibling;
+      if (button && button.classList.contains('collapsible')) return button;
+    }
+    return null;
+  }
+
+  function openSection(button) {
+    var content = contentOf(button);
+    if (!content || content.style.display === 'block') return false;
+    content.style.display = 'block';
+    button.classList.add('active');
+    return true;
+  }
+
+  // Open every collapsible wrapping `el` (and `el` itself when it is a
+  // toggle button), outward through any nesting. True if anything opened.
+  function reveal(el) {
+    var opened = false;
+    if (el.classList && el.classList.contains('collapsible')) {
+      opened = openSection(el) || opened;
+    }
+    for (var b = sectionButtonFor(el); b; b = sectionButtonFor(b)) {
+      opened = openSection(b) || opened;
+    }
+    return opened;
+  }
+
+  function targetOf(hash) {
+    if (!hash || hash.length < 2) return null;
+    var id = hash.slice(1);
+    try { id = decodeURIComponent(id); } catch (e) {}
+    return document.getElementById(id);
+  }
+
+  // Same-page link clicks: expand before the browser's own scroll runs, so
+  // it measures a page where the target is visible.
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest && e.target.closest('a[href]');
+    if (!link || !link.hash) return;
+    if (link.host !== location.host || link.pathname !== location.pathname) return;
+    var target = targetOf(link.hash);
+    if (target) reveal(target);
+  });
+
+  // Back/forward and any other hash change the click handler didn't cover.
+  window.addEventListener('hashchange', function () {
+    var target = targetOf(location.hash);
+    if (target && reveal(target)) target.scrollIntoView();
+  });
+
+  // A hash the page loaded with: the browser already tried and failed to
+  // scroll to a hidden target, so scroll again once the section is open.
+  // Deferred a frame so the generated TOC below is in place first.
+  if (location.hash) {
+    var landing = targetOf(location.hash);
+    if (landing) {
+      requestAnimationFrame(function () {
+        if (reveal(landing)) landing.scrollIntoView({ behavior: 'instant' });
+      });
+    }
+  }
 
   // ----- Auto table of contents -----
   var contentsHeading = document.getElementById('contents');
@@ -49,11 +132,21 @@
     if (!(contentsHeading.compareDocumentPosition(h) &
           Node.DOCUMENT_POSITION_FOLLOWING)) return;
 
-    if (!h.id) h.id = slugify(h.textContent);
+    // Where the TOC entry points. A heading with its own id keeps it. An
+    // unnamed heading that titles a collapsible section borrows the toggle
+    // button's id instead of minting a matching one of its own -- the
+    // button is the section's hand-written anchor, and it sits above the
+    // hidden content rather than inside it.
+    var anchorId = h.id;
+    if (!anchorId) {
+      var button = sectionButtonFor(h);
+      if (button && button.id) anchorId = button.id;
+    }
+    if (!anchorId) anchorId = h.id = slugify(h.textContent);
 
     var li = document.createElement('li');
     var a = document.createElement('a');
-    a.href = '#' + h.id;
+    a.href = '#' + anchorId;
     a.textContent = h.textContent;
     li.appendChild(a);
 
