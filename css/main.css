@@ -224,6 +224,20 @@ p {
   margin-bottom: 1.2em;
 }
 
+/* Vertical separation between stacked blocks (images, iframes, collapsibles,
+   rules, tables). Replaces the old empty-<p> spacer: the space belongs to the
+   element that needs it, and is tunable from this one rule.
+   Sized in rem, not em, because the gap must not depend on the element's own
+   font-size -- buttons default to 13.3px and would otherwise get a smaller gap
+   than the 18.24px an empty <p> used to produce. */
+.gap {
+  margin-top: calc(1.2 * 0.95rem);   /* 1.2 x the 0.95em body size */
+}
+
+.gap-bottom {
+  margin-bottom: calc(1.2 * 0.95rem);
+}
+
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
