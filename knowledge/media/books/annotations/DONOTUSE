@@ -1,0 +1,507 @@
+
+<annotationSet xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://ns.adobe.com/digitaleditions/annotations">
+    <publication>
+        <dc:identifier>9780375413452</dc:identifier>
+        <dc:title>The Shadow of the Sun</dc:title>
+        <dc:creator>Ryszard Kapuscinski</dc:creator>
+        <dc:description>&lt;p&gt;In 1957, Ryszard Kapuscinski arrived in Africa to witness the beginning of the end of colonial rule as the first African correspondent of Poland's state newspaper.  From the early days of independence in Ghana to the ongoing ethnic genocide in Rwanda, Kapuscinski has crisscrossed vast distances pursuing the swift, and often violent, events that followed liberation. Kapuscinski hitchhikes with caravans, wanders the Sahara with nomads, and lives in the poverty-stricken slums of Nigeria.  He wrestles a king cobra to the death and suffers through a bout of malaria. What emerges is an extraordinary depiction of Africa--not as a group of nations or geographic locations--but as a vibrant and frequently joyous montage of peoples, cultures, and encounters.  Kapuscinski's trenchant observations, wry analysis and overwhelming humanity paint a remarkable portrait of the continent and its people.  His unorthodox approach and profound respect for the people he meets challenge conventional...</dc:description>
+        <dc:language>en</dc:language>
+    </publication>
+    <annotation>
+        <dc:identifier>urn:uuid:7a5b1331-7932-4f73-a6a8-d527a8a16ee2</dc:identifier>
+        <dc:date>2026-06-10T03:15:03Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/32/1:666)" end="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/33:0)" progress="0.0644068" color="4">
+                <text>Only city life brought them a measure of stability.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:b5ce4ac6-e6ff-4847-940b-beea4d33dd3c</dc:identifier>
+        <dc:date>2026-06-10T03:12:58Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/27/1:440)" end="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/28/1:312)" progress="0.0610169" color="4">
+                <text>How is it that during the nineteenth century there were ships on lakes deep in the interior of the continent? They were first disassembled at oceanic ports, then carried piecemeal on people’s heads and put back together again on the shores of the lakes. Cities, factories, mining equipment, electrical plants, </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:19042bb4-852d-4fbe-964a-aa8088fff7a8</dc:identifier>
+        <dc:date>2026-06-10T03:09:47Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/17/1:242)" end="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/18/1:3)" progress="0.0542373" color="4">
+                <text>It is a subservient, passive essence, and, most importantly, one dependent on man. The</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:53fa13b7-808b-4e77-bc82-4b24c842841e</dc:identifier>
+        <dc:date>2026-06-10T03:14:47Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/31/1:168)" end="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/32/1:68)" progress="0.0610169" color="4">
+                <text>Living and moving about in small groups allowed them to flee danger </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:368fdf55-a9ec-4c4e-a51c-4068e52abdc6</dc:identifier>
+        <dc:date>2026-06-10T03:07:41Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/14/1:125)" end="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/15/1:192)" progress="0.0508475" color="4">
+                <text>The European and the African have an entirely different concept of time. In the European worldview, time exists outside man, exists objectively, and has measurable and linear characteristics. </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:20661768-bccd-411c-a8da-ae6a1a54fb20</dc:identifier>
+        <dc:date>2026-06-10T03:13:09Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/28/1:312)" end="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/29:0)" progress="0.0610169" color="4">
+                <text>hospitals, all were carried in sections deep into Africa. All the products of nineteenth-century technology were transported into Africa’s interior on the heads of its inhabitants.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:37c6e87b-92cb-4d9b-9218-ea257e6fbd31</dc:identifier>
+        <dc:date>2026-06-10T03:13:52Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/30/1:97)" end="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/30/1:317)" progress="0.0610169" color="4">
+                <text>immensity of African space (more than thirty million square kilometers!) and the defenseless, barefoot, wretched man who inhabits it. Whichever direction he turns, there is distance, emptiness, wilderness, boundlessness.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:64655299-9bae-4084-8001-38496c1fd0f3</dc:identifier>
+        <dc:date>2026-06-11T02:24:11Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/36/1:203)" end="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/37:0)" progress="0.0644068" color="4">
+                <text>Rather than a material or territorial community, it is a spiritual community that binds the African to those closest to him.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:7eec805c-220f-49ad-ae18-dbe989004a63</dc:identifier>
+        <dc:date>2026-06-10T03:04:53Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/4/1:339)" end="OPS/Kapu_9780375413452_epub_c02_r1.htm#point(/1/2/1/5/1:3)" progress="0.0474576" color="4">
+                <text>A breeze is a financially measurable commodity: the most expensive houses are built where the breeze is best. Still air has no value; it has only to move, however, and then immediately acquires a price. The</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:037513b0-5937-4ecd-9df7-bed58c8974f9</dc:identifier>
+        <dc:date>2026-06-11T02:31:35Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c03_r1.htm#point(/1/2/1/6/1:246)" end="OPS/Kapu_9780375413452_epub_c03_r1.htm#point(/1/2/1/6/1:524)" progress="0.0779661" color="4">
+                <text>For Africa’s immensity, its dearth of navigable rivers and its lack of roads, as well as its difficult, murderous climate, while presenting an impediment to its development, also furnished a natural defense against invasion: colonialists were unable to penetrate very deeply. </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:80221d20-47d7-4d02-b160-fa2aa5810bdd</dc:identifier>
+        <dc:date>2026-06-12T02:31:03Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c03_r1.htm#point(/1/2/1/30/1:548)" end="OPS/Kapu_9780375413452_epub_c03_r1.htm#point(/1/2/1/31/1:3)" progress="0.101695" color="4">
+                <text>One can tell from afar that a chief is coming—because of the open umbrella. A great chief has an enormous, decorative umbrella, held by a special servant; a lesser chief walks about with an ordinary umbrella purchased from an Arab in the marketplace. “</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:0e380742-1c33-4775-9960-881e67ea46d2</dc:identifier>
+        <dc:date>2026-06-12T02:32:51Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c03_r1.htm#point(/1/2/1/34/1:87)" end="OPS/Kapu_9780375413452_epub_c03_r1.htm#point(/1/2/1/34/1:252)" progress="0.105085" color="4">
+                <text>the principle tenet of the clan legal code is that each offense must be punished. If an offense goes unpunished, the clan will meet with catastrophe, will face ruin.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:3db3725e-5743-40bf-9418-22d1fe2c96c4</dc:identifier>
+        <dc:date>2026-06-12T20:21:50Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c05_r1.htm#point(/1/2/1/6/1:426)" end="OPS/Kapu_9780375413452_epub_c05_r1.htm#point(/1/2/1/6/1:702)" progress="0.142373" color="4">
+                <text>When Grzimek flew over a large herd, however, it was different. It sufficed for there to be among them a single overly sensitive one, a hysteric, a hothouse flower, who at the sound of the engine would start to thrash around waiting to flee. The entire herd would immediately </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:ae91bcbf-738b-4f16-a6b0-d9430ac0c1aa</dc:identifier>
+        <dc:date>2026-06-22T03:10:31Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c08_r1.htm#point(/1/2/1/102/1:309)" end="OPS/Kapu_9780375413452_epub_c08_r1.htm#point(/1/2/1/102/1:309)" progress="0.288136" color="0"/>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:c75ecde0-024c-4a20-b4b7-c9c396d5f479</dc:identifier>
+        <dc:date>2026-06-17T04:22:50Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c08_r1.htm#point(/1/2/1/56/1:243)" end="OPS/Kapu_9780375413452_epub_c08_r1.htm#point(/1/2/1/57:0)" progress="0.254237" color="4">
+                <text>its interior was successfully defended by a difficult tropical climate, long incurable diseases (malaria, smallpox, sleeping illness, leprosy, and the like), the lack of roads and means of transport, and, also, the frequently fierce resistance of its inhabitants. This inaccessibility of Africa gave birth to the myth of its mystery: Conrad’s “Heart of Darkness” began at the continent’s sunny coasts, as one disembarked from the ship onto solid ground.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:782c9c7f-ab18-4017-9081-1715ca80a0d9</dc:identifier>
+        <dc:date>2026-06-28T02:30:59Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c10_r1.htm#point(/1/2/1/24/1:558)" end="OPS/Kapu_9780375413452_epub_c10_r1.htm#point(:1)" progress="0.355932" color="4">
+                <text>Suleiman arranged the feathers, tied them together with a piece of thread, and hung them from the top of my door frame. From that moment on, nothing ever disappeared from my apartment.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:8f328ed9-419e-4fb4-84eb-12bbd6cddec3</dc:identifier>
+        <dc:date>2026-06-28T02:26:27Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c10_r1.htm#point(/1/2/1/18/1:794)" end="OPS/Kapu_9780375413452_epub_c10_r1.htm#point(/1/2/1/19:0)" progress="0.345763" color="4">
+                <text>You live in the immediate, current moment; each day is an obstacle difficult to surmount, and the imagination does not reach beyond the present, does not concoct plans, does not dream.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:8cedc964-7817-4c95-adf9-b77a32979af9</dc:identifier>
+        <dc:date>2026-06-28T02:33:18Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c11_r1.htm#point(/1/2/1/6/1:425)" end="OPS/Kapu_9780375413452_epub_c11_r1.htm#point(/1/2/1/6/1:592)" progress="0.359322" color="4">
+                <text>Yet even this brief sojourn was vital and important to them: it injected variety into their lives, provided a subject for later conversation, and, above all, was both </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:7f88f7c3-c80b-4361-9f43-2a3615c5de98</dc:identifier>
+        <dc:date>2026-06-28T02:42:12Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c11_r1.htm#point(/1/2/1/25/1:141)" end="OPS/Kapu_9780375413452_epub_c11_r1.htm#point(/1/2/1/25/1:141)" progress="0.379661" color="0"/>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:0173edea-1a39-46df-a517-0d6f6832352c</dc:identifier>
+        <dc:date>2026-06-28T02:33:27Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c11_r1.htm#point(/1/2/1/6/1:592)" end="OPS/Kapu_9780375413452_epub_c11_r1.htm#point(/1/2/1/7:0)" progress="0.362712" color="4">
+                <text>material proof of the existence of another world and a bracing confirmation that that world, since it had sent them a mechanical envoy, must know that they existed.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:fecc65d0-0f6e-4859-9a55-a4449a54a0f7</dc:identifier>
+        <dc:date>2026-07-03T13:57:49Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c15_r1.htm#point(/1/2/1/21/1:379)" end="OPS/Kapu_9780375413452_epub_c15_r1.htm#point(/1/2/1/21/1:574)" progress="0.494915" color="4">
+                <text>It is a masterpiece of patchwork, of collage and pop art, a testament to the heights of imagination attained by those hardworking tailors whose little shops we passed driving here along the road </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:b5ecca84-ef07-42f5-8182-3f5849c1ca58</dc:identifier>
+        <dc:date>2026-07-03T13:54:55Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c15_r1.htm#point(/1/2/1/16/1:469)" end="OPS/Kapu_9780375413452_epub_c15_r1.htm#point(/1/2/1/17/1:185)" progress="0.491525" color="4">
+                <text>Someone arriving here from the city is considered a great gentleman, a Croesus, a lord. Although the city is not far away, it nevertheless belongs to another, better world, a planet of </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:c05a9b8b-781e-4427-851a-f1fb7450b18b</dc:identifier>
+        <dc:date>2026-07-03T13:55:15Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c15_r1.htm#point(/1/2/1/17/1:184)" end="OPS/Kapu_9780375413452_epub_c15_r1.htm#point(/1/2/1/18:0)" progress="0.491525" color="4">
+                <text> plenty. Both sides, those from the city and those from the country, understand this, which is why the person from the city knows he cannot arrive here empty-handed. Consequently, preparations for a trip to the countryside cost people from the city much time and money. When my friend in Kampala purchases anything, he immediately explains, “I have to take this to the country.” He walks the streets, inspects the merchandise, and deliberates: “This would be good for a present, when I go to the country.”</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:a24e1736-2c83-432f-911e-f6584b4fcd05</dc:identifier>
+        <dc:date>2026-07-13T02:55:17Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c16_r1.htm#point(/1/2/1/30/1:757)" end="OPS/Kapu_9780375413452_epub_c16_r1.htm#point(/1/2/1/30/1:994)" progress="0.538983" color="4">
+                <text>Europe at the time was convinced that whoever first secured Fashoda would realize his expansionist ideal of an uninterrupted colonial empire. A race began between London and Paris. Both capitals sent military expeditions toward Fashoda. </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:a830bda3-586c-4b8a-aef8-a47521b0f815</dc:identifier>
+        <dc:date>2026-07-07T03:03:05Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c16_r1.htm#point(/1/2/1/16/1:385)" end="OPS/Kapu_9780375413452_epub_c16_r1.htm#point(/1/2/1/16/1:385)" progress="0.518644" color="0"/>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:8a3f3211-f8a2-4fa2-bd27-1d5e9d58a260</dc:identifier>
+        <dc:date>2026-07-03T14:10:03Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c16_r1.htm#point(/1/2/1/13/1:628)" end="OPS/Kapu_9780375413452_epub_c16_r1.htm#point(/1/2/1/13/1:816)" progress="0.515254" color="4">
+                <text>let us remember that fear of revenge is deeply rooted in the African mentality, that the immemorial right of reprisal has always regulated interpersonal, private, and clan relations here).</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:9da5600c-3ce1-4479-92bb-be295c08d9a2</dc:identifier>
+        <dc:date>2026-07-03T14:01:11Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c16_r1.htm#point(/1/2/1/3/1:695)" end="OPS/Kapu_9780375413452_epub_c16_r1.htm#point(/1/2/1/3/1:1053)" progress="0.501695" color="4">
+                <text>As a rule, the populations of African states are multitribal (Congo is inhabited by 300 tribes, Nigeria by 250, and so on), whereas only one group inhabits Rwanda, the Banyarwanda, a single nation divided into three castes: the Tutsi cattle owners (14 percent of the population), the Hutu farmers (85 percent), and the Twa laborers and servants (1 percent). </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:5b389e2c-990a-46d4-a4fb-24ee3840f90b</dc:identifier>
+        <dc:date>2026-07-15T03:15:19Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c16_r1.htm#point(/1/2/1/40/1:624)" end="OPS/Kapu_9780375413452_epub_c16_r1.htm#point(/1/2/1/40/1:1051)" progress="0.552542" color="4">
+                <text>On the road to the Highest Ideal, which was nothing less than the total annihilation of the enemy, it was critical that the nation be united in crime; through mass participation in the criminal act there would arise an all-unifying feeling of guilt, so that every citizen, having on his conscience another’s death, would be haunted from that moment by someone else’s inalienable right to retaliation, behind which he could </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:6afd899f-616c-4537-9522-9df8108397dd</dc:identifier>
+        <dc:date>2026-07-03T14:12:12Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c16_r1.htm#point(/1/2/1/15/1:173)" end="OPS/Kapu_9780375413452_epub_c16_r1.htm#point(/1/2/1/15/1:173)" progress="0.518644" color="0"/>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:963eba6d-a997-4421-9a9a-33a28c35521f</dc:identifier>
+        <dc:date>2026-07-29T03:03:30Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c17_r1.htm#point(/1/2/1/23/1:498)" end="OPS/Kapu_9780375413452_epub_c17_r1.htm#point(:1)" progress="0.579661" color="4">
+                <text>But it is possible that one day a man will be born with such strength of vision and such willpower that, staring intently into the blackness, he will see the night begin to thicken, stiffen, coalesce into black crystals, and then will see these crystals compose themselves ever more clearly into the silent and dark visage of a wizard.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:7445e9a9-7017-4253-9e21-cad93dbedf51</dc:identifier>
+        <dc:date>2026-07-21T02:36:12Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c17_r1.htm#point(/1/2/1/22/1:289)" end="OPS/Kapu_9780375413452_epub_c17_r1.htm#point(/1/2/1/22/1:289)" progress="0.579661" color="0"/>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:745dbda1-42ad-45c3-90a5-ed3b3069d065</dc:identifier>
+        <dc:date>2026-07-15T03:17:52Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c17_r1.htm#point(/1/2/1/2/2:446)" end="OPS/Kapu_9780375413452_epub_c17_r1.htm#point(/1/2/1/2/2:499)" progress="0.555932" color="4">
+                <text>it that they may flatly refuse to drive after sunset.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:e6cb6763-09cf-4e3c-a75f-402bb2d4254e</dc:identifier>
+        <dc:date>2026-07-21T02:34:44Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c17_r1.htm#point(/1/2/1/19/1:1514)" end="OPS/Kapu_9780375413452_epub_c17_r1.htm#point(/1/2/1/20/1:510)" progress="0.576271" color="4">
+                <text>The Amba are a homogeneous, cohesive community who live in small villages scattered in sparsely wooded bush; often they suspect a neighboring village, inhabited by their kinsmen, of harboring the wizard who has caused them misfortune. They declare war on the village they judge to be evil. The besieged community defends itself, and sometimes undertakes a war of retaliation. The unceasing wars the Amba wage among themselves leave them thoroughly weakened and defenseless against aggressors from other tribes.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:00dc1275-cf6a-488f-a12b-fc1e3da25949</dc:identifier>
+        <dc:date>2026-07-15T03:17:42Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c17_r1.htm#point(/1/2/1/2/2:354)" end="OPS/Kapu_9780375413452_epub_c17_r1.htm#point(/1/2/1/2/2:446)" progress="0.555932" color="4">
+                <text>In Africa, drivers avoid traveling at night—darkness unnerves them. They are so afraid of </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:7f7e609e-490c-4b35-990a-85ab3bdd6591</dc:identifier>
+        <dc:date>2026-08-05T02:47:11Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c18_r1.htm#point(/1/2/1/15/1:496)" end="OPS/Kapu_9780375413452_epub_c18_r1.htm#point(/1/2/1/16/1:706)" progress="0.6" color="4">
+                <text>Documents? There never were any. There are no written orders, no ordnance maps, cryptographs, leaflets, proclamations, newspapers, letters. The custom of writing memoirs and diaries does not exist (most frequently, there is simply no paper). There is no tradition of writing histories. Most important—who would do this? There are no collectors of memorabilia, curators, archivists, historians, archaeologists. It is actually just as well there are no such people nosing about the battlefields. They would be quickly spotted by the police, imprisoned, and, suspected of spying, shot. History in these parts appears suddenly, descends like a deus ex machina, reaps its bloody harvest, seizes its prey, and </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:a12d12a1-3612-47f8-bb92-3cf21a14976f</dc:identifier>
+        <dc:date>2026-08-05T02:45:11Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c18_r1.htm#point(/1/2/1/13/1:644)" end="OPS/Kapu_9780375413452_epub_c18_r1.htm#point(/1/2/1/13/1:1005)" progress="0.59661" color="4">
+                <text>Anthropologists have long wondered how they came to be so tall and thin. They subsist almost exclusively on milk, sometimes supplemented by the blood of their cows, which they raise, worship, and love. Killing cattle is forbidden, and women cannot touch them. The Dinka and the Nuer have subordinated their lives to the needs and requirements of their animals. </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:dca43d06-3877-42c3-87c0-7e27b733fb6e</dc:identifier>
+        <dc:date>2026-08-06T04:42:15Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c20_r1.htm#point(/1/2/1/18/1:1178)" end="OPS/Kapu_9780375413452_epub_c20_r1.htm#point(/1/2/1/18/1:1297)" progress="0.661017" color="4">
+                <text>Life here is a constant struggle, an endlessly repeated effort to tilt in one’s favor the fragile, flimsy, and shaky </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:a54a9831-217b-454c-acc4-89fee4f672fe</dc:identifier>
+        <dc:date>2026-08-09T02:40:20Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c21_r1.htm#point(/1/2/1/22/1:42)" end="OPS/Kapu_9780375413452_epub_c21_r1.htm#point(/1/2/1/22/1:226)" progress="0.684746" color="4">
+                <text>It is called “Lagos Plan of Action for the Economic Development of Africa 1980­ 2000.” African leaders convened in Lagos in 1980 to consider solutions to the continent’s crisis.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:3697dfb3-f24d-4d66-8011-5f586616d78d</dc:identifier>
+        <dc:date>2026-08-10T03:25:59Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c21_r1.htm#point(/1/2/1/50/1:6)" end="OPS/Kapu_9780375413452_epub_c21_r1.htm#point(/1/2/1/51:0)" progress="0.698305" color="4">
+                <text>the plastic container appeared. A miracle! A revolution! First of all, it is relatively inexpensive (although in certain houses it is the only thing of any value): it costs around two dollars. Most important, however, it is light. And it comes in various sizes, so even a small child can fetch several liters of water.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:235a16ec-47a8-48c7-8dad-682a1185de5a</dc:identifier>
+        <dc:date>2026-08-07T04:56:52Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c21_r1.htm#point(/1/2/1/1/1:0)" end="OPS/Kapu_9780375413452_epub_c21_r1.htm#point(/1/2/1/1/1:0)" progress="0.667797" color="0"/>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:cc32cb7f-697c-45d5-8f63-ee9d4ca91713</dc:identifier>
+        <dc:date>2026-08-09T02:38:25Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c21_r1.htm#point(/1/2/1/14/3:900)" end="OPS/Kapu_9780375413452_epub_c21_r1.htm#point(/1/2/1/15/1:272)" progress="0.681356" color="4">
+                <text>I went to the university in Addis Ababa. It is this country’s only institution of higher learning. I visited the university bookstore, which is this country’s only bookstore. Empty shelves. No books, no periodicals—nothing. It is this way in most African countries. </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:1a81b7ea-48f3-49e1-9e5c-cb0c63940835</dc:identifier>
+        <dc:date>2026-08-18T18:40:08Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c22_r1.htm#point(/1/2/1/88/1:550)" end="OPS/Kapu_9780375413452_epub_c22_r1.htm#point(/1/2/1/89:0)" progress="0.786441" color="4">
+                <text>. If a tree trunk falls across the road, it will not be removed; people will go around it, onto the adjoining field, and eventually beat out a new road. An unfinished house will stay unfinished, a ruined one will stay ruined. Similarly with this statue. They have no intention of ever rebuilding it, but they will also not cart away the debris. The act of destruction itself ends the matter: if some material trace remains, it has no meaning anymore, no weight, and therefore is not worth paying attention to.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:34ccba63-1174-4b97-8d4e-622b7630ebaa</dc:identifier>
+        <dc:date>2026-08-17T03:00:22Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c22_r1.htm#point(/1/2/1/71/1:84)" end="OPS/Kapu_9780375413452_epub_c22_r1.htm#point(/1/2/1/71/1:84)" progress="0.769492" color="0"/>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:066a6536-5af6-4d3c-96b3-875802ea5d24</dc:identifier>
+        <dc:date>2026-08-17T02:58:15Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c22_r1.htm#point(/1/2/1/66/1:138)" end="OPS/Kapu_9780375413452_epub_c22_r1.htm#point(/1/2/1/67:0)" progress="0.762712" color="4">
+                <text>History is so often the product of thoughtlessness: it is the offspring of human stupidity, the fruit of benightedness, idiocy, and folly. In such instances, it is enacted by people who do not know what they are doing—more, who do not want to know, who reject the possibility with disgust and anger. We see them hastening toward their own destruction, forging their own fetters, tying the noose, diligently and repeatedly checking whether the fetters and the noose are strong, whether they will hold and be effective.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:b6e4a1bc-0db9-479e-8349-8a9c650b6356</dc:identifier>
+        <dc:date>2026-08-18T18:32:25Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c22_r1.htm#point(/1/2/1/72/1:794)" end="OPS/Kapu_9780375413452_epub_c22_r1.htm#point(/1/2/1/73/1:280)" progress="0.769492" color="4">
+                <text>Having chosen the name, the warlord sets about enlisting an army. This is not difficult. In each country, in each city, thousands of hungry and unemployed boys dream of joining a warlord’s brigade. The commander will give them arms, and, equally important, a sense of belonging.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:d60b9bbb-7be8-45ed-a2b7-935e01d5586a</dc:identifier>
+        <dc:date>2026-08-18T18:41:08Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c23_r1.htm#point(/1/2/1/2/2:258)" end="OPS/Kapu_9780375413452_epub_c23_r1.htm#point(/1/2/1/2/2:464)" progress="0.789831" color="4">
+                <text>Our world consists of thousands—no, millions—of places with their own distinct names (names, moreover, that are written or pronounced differently in different languages, creating the impression of even </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:a0156a2d-f0ee-4e6a-a6e8-6edb80eba014</dc:identifier>
+        <dc:date>2026-08-18T18:41:19Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c23_r1.htm#point(/1/2/1/2/2:464)" end="OPS/Kapu_9780375413452_epub_c23_r1.htm#point(/1/2/1/2/2:1146)" progress="0.789831" color="4">
+                <text>greater multiplicity), and their numbers are so overwhelming that traveling around the globe we cannot commit to memory even a small percentage of them. Or—which also often happens—our minds are awash with the names of towns, regions, and countries that we are no longer able to connect meaningfully with any image, view, or landscape, with any event or human face. Everything becomes confused, twisted, blurred. We place the Sodori oases in Libya instead of in Sudan, the town of Tefé in Laos instead of in Brazil, the small fishing port of Galle in Portugal instead of where it actually lies—in Sri Lanka. The oneness of the world, so unachievable in the realm of empirical</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:b64af048-d3cd-403f-b292-f940409429ba</dc:identifier>
+        <dc:date>2026-08-18T18:55:22Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c23_r1.htm#point(/1/2/1/8/1:79)" end="OPS/Kapu_9780375413452_epub_c23_r1.htm#point(/1/2/1/9:0)" progress="0.79661" color="4">
+                <text>decipher the landscape, which for you is merely a baffling collection of signs and symbols, as unintelligible and bewildering as Chinese characters to a non-Chinese. “What does this tree tell you?” “Nothing!” “Nothing? Why, it says that you must now turn left, or otherwise you will be lost. And this rock?” “This rock? Also nothing!” “Nothing? Don’t you see that it is telling you to make a sharp right, at once, because straight ahead lies wilderness, a wasteland, death?”</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:dcab591f-017d-43ce-9f9f-954a5f4eee59</dc:identifier>
+        <dc:date>2026-08-18T18:41:30Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c23_r1.htm#point(/1/2/1/2/2:1147)" end="OPS/Kapu_9780375413452_epub_c23_r1.htm#point(/1/2/1/3:0)" progress="0.789831" color="4">
+                <text>reality, lives in our minds, in the superimposed layers of tangled and confused memories.</text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:a3c18ad3-defa-4e71-a229-a710f76a6ff9</dc:identifier>
+        <dc:date>2026-08-18T18:55:14Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c23_r1.htm#point(/1/2/1/7/1:419)" end="OPS/Kapu_9780375413452_epub_c23_r1.htm#point(/1/2/1/8/1:79)" progress="0.79661" color="4">
+                <text>Your only hope is someone local, someone who knows the area intimately and can </text>
+            </fragment>
+        </target>
+    </annotation>
+    <annotation>
+        <dc:identifier>urn:uuid:7aa77a3d-b6e7-4914-9336-88350d6fa9a8</dc:identifier>
+        <dc:date>2026-08-18T18:55:04Z</dc:date>
+        <dc:creator>urn:uuid:c2fe88b6-8a71-4223-b7b7-59d00b234a1d</dc:creator>
+        <target>
+            <fragment start="OPS/Kapu_9780375413452_epub_c23_r1.htm#point(/1/2/1/7/1:151)" end="OPS/Kapu_9780375413452_epub_c23_r1.htm#point(/1/2/1/8:0)" progress="0.79661" color="4">
+                <text>In Africa, if you leave the few main roads, you are lost. There are no guideposts, signs, markings. There are no detailed maps. Furthermore, the same roads run differently depending on the time of year, the weather, the level of water, the reach of the constant fires.</text>
+            </fragment>
+        </target>
+    </annotation>
+    
+</annotationSet>
