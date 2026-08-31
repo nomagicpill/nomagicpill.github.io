@@ -183,10 +183,35 @@ run manually; nothing runs them automatically.
 | [knowledge/links.py](knowledge/links.py) | Adds a link + commentary to `knowledge/links.html`, creating the month's `<h2>`/`<ul>` section if needed. Auto-fetches the page `<title>`. |
 | [knowledge/add_book.py](knowledge/add_book.py) | Adds an `<article class="book">` to `knowledge/books.html` and downloads the cover from Open Library into `knowledge/media/bookcovers/`. |
 | [knowledge/to_kobo.py](knowledge/to_kobo.py) | Bundles article URLs into one EPUB via `percollate` (external tool). Reads `knowledge/to_read.txt`, which is gitignored. |
+| [knowledge/from_kobo.py](knowledge/from_kobo.py) | The return trip: turns a Kobo `.annot` highlight file into `<blockquote>` blocks to paste into a book's notes on `knowledge/books.html`. Keeps every `<text>` element and discards the rest. |
 | [experiences/add_place.py](experiences/add_place.py) | Geocodes a place via OpenStreetMap Nominatim and writes an entry into the `PLACES` block of `experiences/map.html` (delimited by `PLACES:START` / `PLACES:END` comments). |
 | `knowledge/media/*/lister.py` | Regenerates `image_widths_heights.json` for the image-gallery pages (`vibes.html`, `nostalgicimages.html`). Needs `pillow` + `pillow-heif`. |
 
 Note: despite the helper, `knowledge/books.html` is currently maintained by hand.
+
+### Kobo highlights -> books.html
+
+The Kobo stores highlights as Adobe Digital Editions annotation XML, one
+`.annot` file per book under `Digital Editions/Annotations` on the device.
+Copy them off over USB into `knowledge/media/books/annotations/`, then:
+
+```
+python3 knowledge/from_kobo.py knowledge/media/books/annotations/BOOK.annot --order reading --copy
+```
+
+`--copy` puts the output on the clipboard (macOS `pbcopy`) indented 4 spaces, so
+it drops straight into a `<p>` in `books.html`; `-o FILE` writes to a file
+instead, and with neither it prints to stdout (the summary goes to stderr, so
+piping stays clean). Other flags: `--order reading` sorts by position in the
+book, worth using because the Kobo writes its file roughly by date rather than
+in reading order; `--dedupe` drops passages highlighted twice; `--indent N`
+changes the indent. Several files can be passed at once, which adds a
+`<!-- Title - Author -->` comment above each book's quotes.
+
+Highlight text is re-escaped for HTML on the way out, and whitespace inside a
+passage is collapsed to single spaces. Bookmarks (a saved place rather than a
+selection) carry no `<text>` element and so drop out. Typed notes, if you ever
+make them, live in a separate `<content>` element and are currently discarded.
 
 ## Pages that break the mold
 
@@ -205,7 +230,10 @@ world; edits there don't generalize.
 - `knowledge/books.html`, `knowledge/film.html` — card grids with search/sort
   controls. Data lives inline as hidden `<article data-*>` elements that the
   page's script reads and renders. Both files carry a "HOW TO ADD" comment block
-  documenting the record format; follow it.
+  documenting the record format; follow it. `tools/film-bookmarklet.html` (not
+  linked from the site map) installs a bookmarklet that reads a Letterboxd film
+  page and copies a `tools/add-film.py` command; the script fetches the 600×900
+  poster and inserts the entry. Stdlib Python, run by hand — not a build step.
 - `knowledge/vibes.html`, `knowledge/nostalgicimages.html` — image galleries fed
   by a generated `image_widths_heights.json`.
 - `experiences/map.html` — interactive SVG travel map over `media/worldmap.svg`,

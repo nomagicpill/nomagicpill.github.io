@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Apply saved theme before first paint to avoid a flash. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <title>Alternative Neighborhoods for the Wealthy Minimalist - No Magic Pill</title>
+  <link rel="alternate" type="application/rss+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
+  <link rel="alternate" type="application/atom+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="icon" href="../media/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+</head>
+
+<body>
+
+<h3 id="home"><a href="../index.html">Home</a></h3>
+
+<!--
+
+<img class="img-medium" src="media//.">
+<figcaption>
+
+</figcaption>
+
+<table>
+  <tr>
+    <th>Header</th>
+  </tr>
+  <tr>
+    <td>Row1</td>
+  </tr>
+  <tr>
+    <td>Row2</td>
+  </tr>
+</table>
+
+
+-->
+
+<h1 id="neighborhoods">Alternative Neighborhoods for the Wealthy Minimalist</h1>
+
+<p>
+  Stop living big and start living easy.
+</p>
+
+<hr>
+
+<h2 id="contents">Contents</h2>
+
+<hr>
+
+<h2 id="problems">Big Home Problems</h2>
+
+<p>
+  Revealed preferences tell me two things about where wealthy people choose to live: they like big houses and/or desirable areas. But how much of that liking is everything that comes with the subtle brags about living in <i>that</i> neighborhood, the being around similar people, the low crime rates?
+</p>
+
+<p>
+  My guess is a lot. But to get there they have to pay a pretty price tag for a massive house with one-purpose rooms that gather dust and a feeling that they need to fill it.
+</p>
+
+<p>
+  What if they could keep everything that's awesome about a multi-million-dollar home—the quality, the people, the location—just without everything that's bad—the spaciousness, the materialism—and with some extra goodies?
+</p>
+
+<hr>
+
+<h2 id="plannedandrun">Masterfully Planned <i>and</i> Masterfully Run</h2>
+
+<p>
+  Master-planned communities are just that: planned. They are rarely <i>run</i> as well as they are planned for cost reasons—paying a salary to run these well is expensive! The minimum upkeep is still met through maintaining facilities, putting on occasional events, etc., but after that people are left to their own devices.
+</p>
+
+<p>
+  What if someone wanted more? They'd have to figure it out themselves. What if a bunch of people wanted more? They'd have to figure it out themselves, or could get a group rate with some third-party fixer. What if an entire neighborhood wanted it? They'd hire a competent person or company at a competitive rate to do it for them. 
+</p>
+
+<p>
+  Access to a person or group of people of this caliber is normally out of reach due to wage requirements or just lack of needs (i.e., why would I hire someone to find the best house cleaner when I can just do it myself for a fraction of the cost and it takes the same amount of time?). Economies of scale is the key. An entire neighborhood of 100 households paying in at $4,000/year/househould allows a small company to operate at $400,000/year. Couple them with strong software to get a very productive group that knows everyone well. (The $2,000 is just the subscription fee and doesn't include the cost of the actual services.)
+</p>
+
+<p>
+  Further, the actual services would be substantially discounted, assuming there was minimal price discrimination, because only a handful of suppliers would be selected for things that encompass the entire neighborhood, and most services would be recurring or on a subscription model.
+</p>
+
+<p>
+  Now imagine this utopic neighborhood and the company running it. Need the lawn manicured? Already scheduled and taken care of by the time you're home from work. Need the house cleaned? Fill out a quick form with your needs and availability and they'll have a background-checked person come while you're out. Need the dog walked? Got you. Groceries picked up and stored. Meal prep made. Car gas tanks filled up. Oil changed. Errands completed. Pool cleaned and maintained. HVAC serviced regularly. IKEA furniture assembled. Want to get a project done? They'll find a few guys and get quotes for all of them. It's a communitized personal assistant for anything and everything that can be thought of, done with you simply making a phone call, sending a text, or filling out a form.
+</p>
+
+<hr>
+
+<h2 id="costbenefit">Cost-Benefit</h2>
+
+<p>
+  The costs and the counterfactuals aren't necessarily straightforward because having a personal assistant may entice new activities that were too costly to do before this neighborhood. The benefits are straightforward and in the form of both time and peace of mind.
+</p>
+
+<p>
+  I had Claude build a basic cost-benefit calculator with a bunch of inputs I gave him:
+</p>
+
+<div id="cb-calc" class="cb-calc">
+
+  <div class="cb-globals">
+    <label>Yearly subscription fee ($)
+      <input type="number" id="cb-fee" value="4000" min="0" step="50">
+    </label>
+    <label>Neighborhood discount on services (%)
+      <input type="number" id="cb-discount" value="20" min="0" max="100" step="1">
+    </label>
+    <label>Your free time ($/hr)
+      <input type="number" id="cb-rate" value="40" min="0" step="1">
+    </label>
+    <label>Peace of mind ($ per point, 1–5 scale)
+      <input type="number" id="cb-pom-mult" value="150" min="0" step="10">
+    </label>
+    <label>Company setup time/service (min, one-time)
+      <input type="number" id="cb-co-setup" value="5" min="0" step="1">
+    </label>
+    <label>Company time/instance (min)
+      <input type="number" id="cb-co-pay" value="0" min="0" step="1">
+    </label>
+  </div>
+
+  <table class="cb-table">
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Cost/instance ($)</th>
+        <th>Freq (per yr)</th>
+        <th>Doing it yourself (hrs/instance)</th>
+        <th>Your setup time (hrs, one-time)</th>
+        <th>Your pay/schedule time (hrs/instance)</th>
+        <th>Peace of mind (1–5)</th>
+        <th>Annual net ($)</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="cb-rows"></tbody>
+  </table>
+
+  <button id="cb-add-row" type="button">+ Add service</button>
+
+  <div class="cb-summary">
+    <span>Total annual cost: <strong id="cb-total-cost">$0</strong></span>
+    <span>Total annual benefit: <strong id="cb-total-benefit">$0</strong></span>
+    <span>Net: <strong id="cb-total-net">$0</strong></span>
+  </div>
+
+  <div id="cb-chart" class="cb-chart"></div>
+  <div class="cb-legend">
+    <span><i class="cb-swatch cb-cost"></i> Cost</span>
+    <span><i class="cb-swatch cb-time"></i> Time value (doing + admin)</span>
+    <span><i class="cb-swatch cb-pom"></i> Peace of mind</span>
+  </div>
+
+</div>
+
+<style>
+  .cb-calc { font-family: inherit; margin: 1.5em 0; }
+  .cb-globals { display: flex; flex-wrap: wrap; gap: 1em 2em; margin-bottom: 1em; }
+  .cb-globals label { display: flex; flex-direction: column; font-size: 0.85em; gap: 0.25em; }
+  .cb-globals input { width: 8em; padding: 0.3em; }
+  .cb-table { width: 100%; border-collapse: collapse; margin-bottom: 0.75em; font-size: 0.85em; }
+  .cb-table th, .cb-table td { border: 1px solid #999; padding: 0.4em 0.5em; text-align: center; }
+  .cb-table input[type="text"] { width: 8em; }
+  .cb-table input[type="number"] { width: 4.5em; }
+  .cb-table input[type="range"] { width: 4.5em; vertical-align: middle; }
+  .cb-net-pos { color: #1a7a3c; font-weight: bold; }
+  .cb-net-neg { color: #b0281c; font-weight: bold; }
+  .cb-summary { display: flex; gap: 2em; margin: 0.75em 0 1.5em; font-size: 0.95em; }
+  .cb-chart { display: flex; align-items: flex-end; gap: 1.2em; height: 240px; border-bottom: 1px solid #999; padding: 0 0.5em; overflow-x: auto; }
+  .cb-bar-group { display: flex; flex-direction: column; align-items: center; min-width: 70px; }
+  .cb-bars { display: flex; align-items: flex-end; gap: 4px; height: 200px; }
+  .cb-bar { width: 24px; display: flex; flex-direction: column-reverse; }
+  .cb-bar-label { font-size: 0.75em; margin-top: 0.4em; text-align: center; max-width: 80px; }
+  .cb-cost { background: #b0281c; }
+  .cb-time { background: #1a7a3c; }
+  .cb-pom { background: #2a6fb0; }
+  .cb-legend { display: flex; gap: 1.5em; font-size: 0.8em; margin-top: 0.5em; }
+  .cb-swatch { display: inline-block; width: 10px; height: 10px; margin-right: 0.3em; vertical-align: middle; }
+  .cb-remove { cursor: pointer; color: #b0281c; border: none; background: none; font-size: 1em; }
+
+  [data-theme="dark"] .cb-table th, [data-theme="dark"] .cb-table td { border-color: #555; }
+  [data-theme="dark"] .cb-chart { border-color: #555; }
+</style>
+
+<script>
+(function () {
+  var STARTER_ROWS = [
+    { name: "Lawn care",       cost: 60,  freq: 26, doTime: 0,   setupTime: 1,   payTime: 0.083, pom: 2 },
+    { name: "House cleaning",  cost: 150, freq: 12, doTime: 0,   setupTime: 0.75, payTime: 0.083, pom: 3 },
+    { name: "Dog walking",     cost: 20,  freq: 104, doTime: 0.5, setupTime: 0.5, payTime: 0.05,  pom: 3 },
+    { name: "Grocery pickup",  cost: 15,  freq: 52, doTime: 1.5, setupTime: 0.25, payTime: 0.1,   pom: 2 },
+    { name: "Meal prep",       cost: 80,  freq: 52, doTime: 2,   setupTime: 0.5, payTime: 0.083, pom: 3 },
+    { name: "HVAC servicing",  cost: 200, freq: 2,  doTime: 0,   setupTime: 1,   payTime: 0.083, pom: 2 }
+  ];
+
+  var rows = STARTER_ROWS.map(function (r, i) { return Object.assign({ id: i }, r); });
+  var nextId = rows.length;
+
+  var $rows = document.getElementById("cb-rows");
+  var $fee = document.getElementById("cb-fee");
+  var $discount = document.getElementById("cb-discount");
+  var $rate = document.getElementById("cb-rate");
+  var $pomMult = document.getElementById("cb-pom-mult");
+  var $coSetup = document.getElementById("cb-co-setup");
+  var $coPay = document.getElementById("cb-co-pay");
+  var $totalCost = document.getElementById("cb-total-cost");
+  var $totalBenefit = document.getElementById("cb-total-benefit");
+  var $totalNet = document.getElementById("cb-total-net");
+  var $chart = document.getElementById("cb-chart");
+
+  function fmt(n) {
+    return "$" + Math.round(n).toLocaleString();
+  }
+
+  function computeRow(r) {
+    var discount = Number($discount.value) / 100;
+    var rate = Number($rate.value);
+    var pomMult = Number($pomMult.value);
+    var coSetupHrs = Number($coSetup.value) / 60;
+    var coPayHrs = Number($coPay.value) / 60;
+
+    var annualCost = r.cost * r.freq * (1 - discount);
+
+    var doingHrs = r.freq * r.doTime;
+    var setupHrsSaved = r.setupTime - coSetupHrs;
+    var payHrsSaved = r.freq * (r.payTime - coPayHrs);
+    var totalHrsSaved = doingHrs + setupHrsSaved + payHrsSaved;
+    var annualTimeValue = totalHrsSaved * rate;
+
+    var annualPom = r.pom * pomMult;
+    var annualBenefit = annualTimeValue + annualPom;
+
+    return {
+      cost: annualCost,
+      timeValue: annualTimeValue,
+      pomValue: annualPom,
+      benefit: annualBenefit,
+      net: annualBenefit - annualCost
+    };
+  }
+
+  function renderTable() {
+    $rows.innerHTML = "";
+    rows.forEach(function (r) {
+      var c = computeRow(r);
+      var tr = document.createElement("tr");
+
+      tr.innerHTML =
+        '<td><input type="text" data-field="name" value="' + r.name + '"></td>' +
+        '<td><input type="number" data-field="cost" value="' + r.cost + '" min="0" step="1"></td>' +
+        '<td><input type="number" data-field="freq" value="' + r.freq + '" min="0" step="1"></td>' +
+        '<td><input type="number" data-field="doTime" value="' + r.doTime + '" min="0" step="0.25"></td>' +
+        '<td><input type="number" data-field="setupTime" value="' + r.setupTime + '" min="0" step="0.25"></td>' +
+        '<td><input type="number" data-field="payTime" value="' + r.payTime + '" min="0" step="0.01"></td>' +
+        '<td><input type="range" data-field="pom" value="' + r.pom + '" min="1" max="5" step="1"> <span class="cb-pom-val">' + r.pom + '</span></td>' +
+        '<td class="' + (c.net >= 0 ? "cb-net-pos" : "cb-net-neg") + '">' + fmt(c.net) + '</td>' +
+        '<td><button class="cb-remove" type="button" title="Remove">✕</button></td>';
+
+      tr.querySelectorAll("input").forEach(function (input) {
+        input.addEventListener("input", function () {
+          var field = input.getAttribute("data-field");
+          var val = field === "name" ? input.value : Number(input.value);
+          r[field] = val;
+          if (field === "pom") tr.querySelector(".cb-pom-val").textContent = val;
+          renderAll();
+        });
+      });
+
+      tr.querySelector(".cb-remove").addEventListener("click", function () {
+        rows = rows.filter(function (row) { return row.id !== r.id; });
+        renderAll();
+      });
+
+      $rows.appendChild(tr);
+    });
+  }
+
+  function renderChart() {
+    $chart.innerHTML = "";
+    var computed = rows.map(function (r) { return { name: r.name, c: computeRow(r) }; });
+    var maxVal = Math.max(1, ...computed.map(function (x) {
+      return Math.max(x.c.cost, x.c.benefit);
+    }));
+
+    computed.forEach(function (x) {
+      var group = document.createElement("div");
+      group.className = "cb-bar-group";
+
+      var costH = (x.c.cost / maxVal) * 200;
+      var timeH = Math.max(0, (x.c.timeValue / maxVal) * 200);
+      var pomH = (x.c.pomValue / maxVal) * 200;
+
+      group.innerHTML =
+        '<div class="cb-bars">' +
+          '<div class="cb-bar"><div class="cb-cost" style="height:' + costH + 'px"></div></div>' +
+          '<div class="cb-bar"><div class="cb-time" style="height:' + timeH + 'px"></div><div class="cb-pom" style="height:' + pomH + 'px"></div></div>' +
+        '</div>' +
+        '<div class="cb-bar-label">' + x.name + '</div>';
+
+      $chart.appendChild(group);
+    });
+  }
+
+  function renderTotals() {
+    var totalServiceCost = rows.reduce(function (sum, r) { return sum + computeRow(r).cost; }, 0);
+    var totalBenefit = rows.reduce(function (sum, r) { return sum + computeRow(r).benefit; }, 0);
+    var totalCost = totalServiceCost + Number($fee.value);
+    var net = totalBenefit - totalCost;
+
+    $totalCost.textContent = fmt(totalCost);
+    $totalBenefit.textContent = fmt(totalBenefit);
+    $totalNet.textContent = fmt(net);
+    $totalNet.className = net >= 0 ? "cb-net-pos" : "cb-net-neg";
+  }
+
+  function renderAll() {
+    renderTable();
+    renderChart();
+    renderTotals();
+  }
+
+  document.getElementById("cb-add-row").addEventListener("click", function () {
+    rows.push({ id: nextId++, name: "New service", cost: 0, freq: 12, doTime: 0, setupTime: 0, payTime: 0, pom: 1 });
+    renderAll();
+  });
+
+  [$fee, $discount, $rate, $pomMult, $coSetup, $coPay].forEach(function (el) {
+    el.addEventListener("input", renderAll);
+  });
+
+  renderAll();
+})();
+</script>
+
+
+
+
+
+
+
+
+
+<hr>
+
+<h2 id="exclusivity">The Exclusivity Mechanism</h2>
+
+<p>
+  Money is one of the few legal discriminators available. It's also the easiest to select for.
+</p>
+
+<p>
+  The homes or fees or both must be priced sufficiently high to ward off anybody who wouldn't be able to afford a traditional wealthy neighborhood. Remember that residents here still want to be surrounded by people of similar class, both in personality and net worth.
+</p>
+
+<p>
+  Thus, home prices would be artificially inflated to ensure 
+</p>
+
+
+
+<hr>
+
+
+
+
+
+
+<hr>
+
+<h2 id=""></h2>
+
+
+
+<hr>
+
+<h2 id="see_also">See Also</h2>
+
+
+
+
+<script src="../js/theme.js"></script>
+<script src="../js/toc.js"></script>
+</body>
+</html>
