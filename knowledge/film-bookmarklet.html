@@ -36,22 +36,20 @@
 <h1>Film bookmarklet</h1>
 
 <p>
-  Adds a film to <a href="../knowledge/film.html">film.html</a> from its Letterboxd page.
-  It grabs the title, the year, and the 600&times;900 poster, stamps today's date, and
-  leaves the rating and review blank for you to fill in later.
+  Adds a film to <a href="film.html">film.html</a> from its Letterboxd page. It grabs
+  the title, the year, and the 600&times;900 poster, stamps today's date, and leaves
+  the rating and review blank to fill in later.
 </p>
 
 <h2>Install</h2>
 
-<p>
-  Drag this to your bookmarks bar:
-</p>
+<p>Drag this to your bookmarks bar:</p>
 
 <p><a class="drag" id="bookmarklet" href="#">Add film</a></p>
 
 <p class="note">
-  If dragging doesn't work, right-click the link &rarr; Copy Link Address, then make a new
-  bookmark by hand and paste that as the URL.
+  If dragging doesn't work, right-click the link &rarr; Copy Link Address, then make a
+  new bookmark by hand and paste that as the URL.
 </p>
 
 <h2>Use</h2>
@@ -63,31 +61,32 @@
   <li>Later, open <code>knowledge/film.html</code> and fill in <code>data-rating</code> and the review.</li>
 </ol>
 
-<p>
-  The command it copies looks like:
-</p>
+<p>The command it copies looks like:</p>
 
-<pre><code>python3 .../nomagicpill.github.io/tools/add-film.py \
+<pre><code>python3 ~/Documents/nomagicpill.github.io/knowledge/add_film.py \
   --title "Sinners" --year 2025 --poster "https://a.ltrbxd.com/resized/&hellip;.jpg"</code></pre>
 
 <p>
   It runs from any directory, refuses to add a film that is already listed (pass
   <code>--force</code> to override), and takes <code>--date</code>, <code>--rating</code>,
-  and <code>--dry-run</code> if you want them.
+  and <code>--dry-run</code> if you want them. It is the film counterpart to
+  <code>knowledge/add_book.py</code>.
 </p>
 
 <h2>Source</h2>
 
 <p class="note">
-  This is the bookmarklet, verbatim. The page URL-encodes it into the link above on load,
-  so editing it here is enough &mdash; there is nothing to build. Re-drag the link after editing.
+  This is the bookmarklet, verbatim. The page URL-encodes it into the link above on
+  load, so editing it here is enough &mdash; there is nothing to build. Re-drag the
+  link after editing. If the repo lives somewhere other than
+  <code>~/Documents/nomagicpill.github.io</code>, change <code>REPO</code> on the first line.
 </p>
 
 <pre class="src"><code id="src-view"></code></pre>
 
 <script type="text/plain" id="bookmarklet-src">
 (function () {
-  var REPO = ".../nomagicpill.github.io";
+  var REPO = "~/Documents/nomagicpill.github.io";
 
   if (!/(^|\.)letterboxd\.com$/.test(location.hostname)) {
     alert("Add film: open a Letterboxd film page first.");
@@ -147,7 +146,7 @@
   var now = new Date();
   var date = now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
 
-  // mirrors slugify() in tools/add-film.py
+  // mirrors slugify() in knowledge/add_film.py
   function slug(s) {
     var t = s.normalize ? s.normalize("NFKD") : s;
     t = t.replace(/[\u0300-\u036f]/g, "");
@@ -155,14 +154,17 @@
   }
 
   function sh(s) { return '"' + String(s).replace(/(["\\$`])/g, "\\$1") + '"'; }
-  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;"); }
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
 
   var problems = [];
   if (!title) problems.push("title");
   if (!year) problems.push("year");
   if (!poster) problems.push("poster");
 
-  var cmd = "python3 " + REPO + "/tools/add-film.py --title " + sh(title) +
+  var cmd = "python3 " + REPO + "/knowledge/add_film.py --title " + sh(title) +
             " --year " + year + " --poster " + sh(poster);
 
   var entry =
@@ -211,14 +213,18 @@
   var status = el("div", "color:#9aa0a6;margin-bottom:6px", "Copying\u2026");
   box.appendChild(status);
 
-  var ta = el("textarea", "width:100%;height:82px;box-sizing:border-box;background:#0d0f12;color:#dfe3e6;border:1px solid #3a3f46;border-radius:6px;padding:8px;font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;resize:vertical");
+  var mono = "width:100%;box-sizing:border-box;background:#0d0f12;color:#dfe3e6;" +
+             "border:1px solid #3a3f46;border-radius:6px;padding:8px;" +
+             "font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;resize:vertical";
+
+  var ta = el("textarea", mono + ";height:82px");
   ta.value = cmd;
   ta.onclick = function () { ta.select(); };
   box.appendChild(ta);
 
   box.appendChild(el("div", "color:#9aa0a6;margin:10px 0 4px", "Paste that in a terminal. Or, to do it by hand:"));
 
-  var ta2 = el("textarea", "width:100%;height:150px;box-sizing:border-box;background:#0d0f12;color:#dfe3e6;border:1px solid #3a3f46;border-radius:6px;padding:8px;font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;resize:vertical");
+  var ta2 = el("textarea", mono + ";height:150px");
   ta2.value = entry + "\n\nposter: " + poster;
   ta2.onclick = function () { ta2.select(); };
   box.appendChild(ta2);

@@ -230,10 +230,11 @@ world; edits there don't generalize.
 - `knowledge/books.html`, `knowledge/film.html` — card grids with search/sort
   controls. Data lives inline as hidden `<article data-*>` elements that the
   page's script reads and renders. Both files carry a "HOW TO ADD" comment block
-  documenting the record format; follow it. `tools/film-bookmarklet.html` (not
-  linked from the site map) installs a bookmarklet that reads a Letterboxd film
-  page and copies a `tools/add-film.py` command; the script fetches the 600×900
-  poster and inserts the entry. Stdlib Python, run by hand — not a build step.
+  documenting the record format; follow it. `knowledge/add_book.py` and
+  `knowledge/add_film.py` append records to them; `knowledge/film-bookmarklet.html`
+  (not linked from the site map) installs a bookmarklet that reads a Letterboxd
+  film page and copies the matching `add_film.py` command, which fetches the
+  600×900 poster. Stdlib Python, run by hand — not a build step.
 - `knowledge/vibes.html`, `knowledge/nostalgicimages.html` — image galleries fed
   by a generated `image_widths_heights.json`.
 - `experiences/map.html` — interactive SVG travel map over `media/worldmap.svg`,
