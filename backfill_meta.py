@@ -29,6 +29,7 @@ script) that changed no prose.
 import argparse
 import os
 import re
+import subprocess
 import sys
 
 SECTIONS = ("thoughts", "research", "knowledge", "training", "experiences", "fiction")
@@ -117,6 +118,130 @@ def published_posts():
     return posts
 
 
+# ---------------------------------------------------------------------------
+# Working out a modified date from the commit history.
+#
+# The most recent commit touching a post is almost never a revision of it: this
+# site has been swept several times end to end (a viewport meta across 299
+# files, the flash-free theme script across 330, the auto-TOC migration across
+# 324, an empty-<p>-to-.gap pass). Taking `git log -1` would stamp most of the
+# archive as modified on the same two or three days in 2026.
+#
+# So each commit is judged on what it did to that one file: strip the markup off
+# the lines it changed and see whether any prose or any embedded media actually
+# differs. Boilerplate edits cancel out and score as mechanical.
+# ---------------------------------------------------------------------------
+
+BOILERPLATE = {
+    "<!DOCTYPE html>", "<html>", "</html>", "<head>", "</head>", "<body>", "</body>",
+    "<script>", "</script>", "(function () {", "try {",
+    "var t = localStorage.getItem('theme');",
+    "if (t === 'dark' || t === 'light') {",
+    "document.documentElement.setAttribute('data-theme', t);",
+    "}", "} catch (e) {}", "})();", "<hr>", "<ul>", "</ul>", "<li>", "</li>",
+    "<p>", "</p>", "<br>", "<div>", "</div>",
+}
+
+MECHANICAL = [
+    re.compile(r"^<!--.*-->$"), re.compile(r"^<!--$|^-->$"),
+    re.compile(r"^<meta\b"), re.compile(r"^<link\b"),
+    re.compile(r"^<title>.*</title>$"), re.compile(r"^<script\s+src="),
+    re.compile(r'^<h3 id="home">.*</h3>$'),
+    re.compile(r'^<a href="#[^"]*">'),          # manual-TOC entry
+    re.compile(r'^<p class="postmeta">$|^<span class="(pub|mod)">|^</p>$'),
+]
+
+TAG = re.compile(r"<[^>]+>")
+MEDIA_SRC = re.compile(r'<(?:img|iframe|video|source|audio)\b[^>]*src="([^"]+)"')
+TOC_INNER = re.compile(r"^<li>$|^</li>$|^<a [^>]*>")
+TOC_JS = '<script src="../js/toc.js"></script>'
+
+
+def git(*args):
+    return subprocess.check_output(["git"] + list(args), cwd=ROOT).decode("utf-8", "replace")
+
+
+def is_boilerplate(line):
+    stripped = line.strip()
+    if not stripped or stripped in BOILERPLATE:
+        return True
+    return any(rx.match(stripped) for rx in MECHANICAL)
+
+
+def prose(lines):
+    """The visible words a set of changed lines contributes."""
+    text = " ".join(TAG.sub(" ", l) for l in lines if not is_boilerplate(l))
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def media(lines):
+    """Embedded media, lowercased so a .jpg -> .JPG filename correction does not
+    read as a swapped image."""
+    return sorted(m.lower() for l in lines for m in MEDIA_SRC.findall(l))
+
+
+def strip_manual_toc(removed, added):
+    """Drop a hand-written Contents list deleted by the auto-TOC migration.
+
+    Those lists are <ul> blocks of nothing but <li>s and links, and their entry
+    text ("The Scout Mindset, Julia Galef") would otherwise read as lost prose.
+    Scoped to commits that hand the page to toc.js, so a real <ul> of links
+    removed by any other commit still counts as a content change.
+    """
+    if not any(l.strip() == TOC_JS for l in added):
+        return removed
+    out, block, inside = [], [], False
+    for line in removed:
+        stripped = line.strip()
+        if stripped == "<ul>" and not inside:
+            inside, block = True, [line]
+        elif inside and stripped == "</ul>":
+            inside, block = False, []
+        elif inside and (not stripped or TOC_INNER.match(stripped)):
+            block.append(line)
+        elif inside:
+            out.extend(block + [line])          # not a Contents list after all
+            inside, block = False, []
+        else:
+            out.append(line)
+    return out + block
+
+
+def is_content_edit(sha, path):
+    added, removed = [], []
+    for line in git("show", "--format=", "--no-color", sha, "--", path).splitlines():
+        if line[:3] in ("+++", "---") or line.startswith("@@"):
+            continue
+        if line.startswith("+"):
+            added.append(line[1:])
+        elif line.startswith("-"):
+            removed.append(line[1:])
+    kept = strip_manual_toc(removed, added)
+    return prose(added) != prose(kept) or media(added) != media(kept)
+
+
+def file_history(path):
+    """(sha, date, created) for one file, oldest first."""
+    out = git("log", "--reverse", "--date=short", "--format=%H %ad", "--name-status",
+              "--", path)
+    entries, cur = [], None
+    for line in out.splitlines():
+        head = re.match(r"^([0-9a-f]{40}) (\d{4}-\d{2}-\d{2})$", line)
+        if head:
+            cur = [head.group(1), head.group(2), False]
+            entries.append(cur)
+        elif line and cur is not None and line[0] in "AMDRC":
+            cur[2] = line[0] in "AR"
+    return [tuple(e) for e in entries]
+
+
+def git_modified(path, published):
+    """Date of the newest real revision after publication, or None."""
+    dates = [date for sha, date, created in file_history(path)
+             if not created and date > published and is_content_edit(sha, path)]
+    return max(dates) if dates else None
+
+
 def build_line(published, modified=None, rank=None):
     """The labels are real text, not CSS ::before content, so the line still
     reads correctly with no stylesheet. Dates render in the same ISO form the
@@ -164,6 +289,9 @@ def main():
     parser.add_argument("--rank", choices=list("12345"), help="importance 1-5 (single file)")
     parser.add_argument("--modified", metavar="YYYY-MM-DD",
                         help="date of the last substantive revision (single file)")
+    parser.add_argument("--modified-from-git", action="store_true",
+                        help="derive each Modified date from the commit history, "
+                             "counting only commits that changed prose or media")
     parser.add_argument("--restamp", action="store_true",
                         help="replace an existing meta line instead of skipping it")
     parser.add_argument("--published", metavar="YYYY-MM-DD",
@@ -202,21 +330,28 @@ def main():
         if path in changelog and path in feed and changelog[path] != feed[path]:
             conflicts.append((path, changelog[path], feed[path]))
 
-        result = splice(source, build_line(published, args.modified, args.rank))
+        modified = args.modified
+        if args.modified_from_git and not modified:
+            modified = git_modified(path, published)
+        result = splice(source, build_line(published, modified, args.rank))
         if result is None:
             skipped.append((path, "no single-line <h1> to anchor to"))
             continue
         if args.apply:
             with open(full, "w", encoding="utf-8") as fh:
                 fh.write(result)
-        stamped.append((path, published))
+        stamped.append((path, published, modified))
 
     verb = "stamped" if args.apply else "would stamp"
     print("%s %d post(s)" % (verb, len(stamped)))
+    if args.modified_from_git:
+        withmod = [r for r in stamped if r[2]]
+        print("  %d with a Modified date, %d never revised since publication"
+              % (len(withmod), len(stamped) - len(withmod)))
     if len(targets) <= 5:
-        for path, published in stamped:
+        for path, published, modified in stamped:
             print("\n--- %s ---" % path)
-            print(build_line(published, args.modified, args.rank).rstrip())
+            print(build_line(published, modified, args.rank).rstrip())
     if conflicts:
         print("\nchangelog/feed disagree (used the changelog's date):")
         for path, a, b in conflicts:
