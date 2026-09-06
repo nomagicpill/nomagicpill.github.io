@@ -51,9 +51,11 @@ def iso(day, month, year):
     return "%04d-%02d-%02d" % (year, month, day)
 
 
+# The changelog carries ISO dates now; the older "06 May 2021" spelling is still
+# accepted so the script keeps working against history and against feed.xml.
 ENTRY = re.compile(
     r'<a href="\.\./([^"#]+\.html)(#[^"]*)?"[^>]*>.*?</a>'
-    r'\s*\((\d{1,2})\s+([A-Za-z]+)\s+(\d{4})\)', re.S)
+    r'\s*\((?:(\d{4})-(\d{2})-(\d{2})|(\d{1,2})\s+([A-Za-z]+)\s+(\d{4}))\)', re.S)
 
 
 def changelog_dates():
@@ -73,10 +75,15 @@ def changelog_dates():
     first appeared rather than whichever entry the file happens to list first.
     """
     pages, sections = {}, {}
-    for path, fragment, day, month, year in ENTRY.findall(read("about/changelog.html")):
-        if month not in MONTHS:
-            continue
-        stamp = iso(int(day), MONTHS[month], int(year))
+    for match in ENTRY.finditer(read("about/changelog.html")):
+        path, fragment = match.group(1), match.group(2)
+        if match.group(3):                                  # 2021-05-06
+            stamp = iso(int(match.group(5)), int(match.group(4)), int(match.group(3)))
+        else:                                               # 06 May 2021
+            day, month, year = match.group(6), match.group(7), match.group(8)
+            if month not in MONTHS:
+                continue
+            stamp = iso(int(day), MONTHS[month], int(year))
         target = sections if fragment else pages
         if stamp < target.get(path, "9999-99-99"):
             target[path] = stamp
@@ -104,6 +111,30 @@ def feed_dates():
         if stamp < target.get(path, "9999-99-99"):
             target[path] = stamp
     return pages, sections
+
+
+# An unpublished draft gets the same line with the values left to fill in: the
+# publish date is not known yet, and the modified line is commented out because
+# a page that has never been published cannot have been revised.
+DRAFT_LINE = '''<p class="postmeta">
+  <span class="pub">Published <time datetime=""></time></span>
+  <!-- <span class="mod">Modified <time datetime=""></time></span> -->
+</p>
+'''
+
+
+def draft_pages():
+    """Drafts, plus about/draft.html -- the template every page starts from."""
+    pages = []
+    for section in SECTIONS:
+        directory = os.path.join(ROOT, section)
+        if not os.path.isdir(directory):
+            continue
+        pages += ["%s/%s" % (section, n) for n in sorted(os.listdir(directory))
+                  if n.startswith("draft") and n.endswith(".html")]
+    if os.path.isfile(os.path.join(ROOT, "about/draft.html")):
+        pages.append("about/draft.html")
+    return pages
 
 
 def published_posts():
@@ -289,6 +320,9 @@ def main():
     parser.add_argument("--rank", choices=list("12345"), help="importance 1-5 (single file)")
     parser.add_argument("--modified", metavar="YYYY-MM-DD",
                         help="date of the last substantive revision (single file)")
+    parser.add_argument("--draft", action="store_true",
+                        help="stamp the blank placeholder form on drafts and the "
+                             "about/draft.html template")
     parser.add_argument("--modified-from-git", action="store_true",
                         help="derive each Modified date from the commit history, "
                              "counting only commits that changed prose or media")
@@ -309,7 +343,8 @@ def main():
 
     changelog, changelog_sections = changelog_dates()
     feed, feed_sections = feed_dates()
-    targets = [f.strip("./") for f in args.files] or published_posts()
+    targets = ([f.strip("./") for f in args.files]
+               or (draft_pages() if args.draft else published_posts()))
 
     stamped, skipped, unresolved, conflicts = [], [], [], []
     for path in targets:
@@ -323,24 +358,29 @@ def main():
                 continue
             source = unstamp(source)
 
-        published = args.published or changelog.get(path) or feed.get(path)
-        if not published:
-            unresolved.append(path)
-            continue
-        if path in changelog and path in feed and changelog[path] != feed[path]:
-            conflicts.append((path, changelog[path], feed[path]))
+        modified = None
+        if args.draft:
+            line = DRAFT_LINE
+        else:
+            published = args.published or changelog.get(path) or feed.get(path)
+            if not published:
+                unresolved.append(path)
+                continue
+            if path in changelog and path in feed and changelog[path] != feed[path]:
+                conflicts.append((path, changelog[path], feed[path]))
+            modified = args.modified
+            if args.modified_from_git and not modified:
+                modified = git_modified(path, published)
+            line = build_line(published, modified, args.rank)
 
-        modified = args.modified
-        if args.modified_from_git and not modified:
-            modified = git_modified(path, published)
-        result = splice(source, build_line(published, modified, args.rank))
+        result = splice(source, line)
         if result is None:
             skipped.append((path, "no single-line <h1> to anchor to"))
             continue
         if args.apply:
             with open(full, "w", encoding="utf-8") as fh:
                 fh.write(result)
-        stamped.append((path, published, modified))
+        stamped.append((path, line, modified))
 
     verb = "stamped" if args.apply else "would stamp"
     print("%s %d post(s)" % (verb, len(stamped)))
@@ -349,9 +389,9 @@ def main():
         print("  %d with a Modified date, %d never revised since publication"
               % (len(withmod), len(stamped) - len(withmod)))
     if len(targets) <= 5:
-        for path, published, modified in stamped:
+        for path, line, _ in stamped:
             print("\n--- %s ---" % path)
-            print(build_line(published, modified, args.rank).rstrip())
+            print(line.rstrip())
     if conflicts:
         print("\nchangelog/feed disagree (used the changelog's date):")
         for path, a, b in conflicts:
