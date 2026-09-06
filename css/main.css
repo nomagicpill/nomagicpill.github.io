@@ -224,6 +224,39 @@ p {
   margin-bottom: 1.2em;
 }
 
+/* Post metadata line: published/modified dates and an importance rank, sitting
+   directly under the <h1>. The data lives in the page (a <time datetime> the
+   machines read, its text what people read); only the separators and the star
+   notation live here, so the whole site's meta line restyles from this block.
+   The "published" and "modified" labels stay as real text in the HTML so the
+   line still reads correctly with no stylesheet. */
+.postmeta {
+  display: flex;          /* flex ignores the whitespace between the children, so
+                             the separator spacing does not depend on how the
+                             HTML happens to be line-wrapped */
+  flex-wrap: wrap;
+  gap: 0 0.5em;
+  font-size: 0.85em;
+  opacity: 0.7;
+  margin: -0.6em 0 1.4em;
+}
+
+.postmeta > * + *::before {
+  content: "\00b7";
+  margin-right: 0.5em;
+}
+
+.postmeta .rank::after {
+  content: "\2606\2606\2606\2606\2606";
+  letter-spacing: 0.08em;
+}
+
+.postmeta .rank[data-rank="1"]::after { content: "\2605\2606\2606\2606\2606"; }
+.postmeta .rank[data-rank="2"]::after { content: "\2605\2605\2606\2606\2606"; }
+.postmeta .rank[data-rank="3"]::after { content: "\2605\2605\2605\2606\2606"; }
+.postmeta .rank[data-rank="4"]::after { content: "\2605\2605\2605\2605\2606"; }
+.postmeta .rank[data-rank="5"]::after { content: "\2605\2605\2605\2605\2605"; }
+
 /* Vertical separation between stacked blocks (images, iframes, collapsibles,
    rules, tables). Replaces the old empty-<p> spacer: the space belongs to the
    element that needs it, and is tunable from this one rule.

@@ -234,7 +234,10 @@ world; edits there don't generalize.
   `knowledge/add_film.py` append records to them; `knowledge/film-bookmarklet.html`
   (not linked from the site map) installs a bookmarklet that reads a Letterboxd
   film page and copies the matching `add_film.py` command, which fetches the
-  600×900 poster. Stdlib Python, run by hand — not a build step.
+  600×900 poster. The installed bookmark is only a loader; the logic lives in
+  `knowledge/film-bookmarklet.js`, which it pulls from the live site cache-busted
+  on each click, so editing that file updates the bookmarklet without
+  reinstalling it. Stdlib Python, run by hand — not a build step.
 - `knowledge/vibes.html`, `knowledge/nostalgicimages.html` — image galleries fed
   by a generated `image_widths_heights.json`.
 - `experiences/map.html` — interactive SVG travel map over `media/worldmap.svg`,
