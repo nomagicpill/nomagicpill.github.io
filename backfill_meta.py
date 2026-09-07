@@ -113,10 +113,12 @@ def feed_dates():
     return pages, sections
 
 
-# An unpublished draft gets the same line with the values left to fill in: the
-# publish date is not known yet, and the modified line is commented out because
-# a page that has never been published cannot have been revised.
-DRAFT_LINE = '''<p class="postmeta">
+# The placeholder form, for a page whose dates have to be filled in by hand: an
+# unpublished draft, or a post old enough that neither about/changelog.html nor
+# feed.xml ever announced it. The modified line is commented out rather than
+# left empty so a page carrying the placeholder does not render a bare
+# "Modified" with no date next to it.
+PLACEHOLDER = '''<p class="postmeta">
   <span class="pub">Published <time datetime=""></time></span>
   <!-- <span class="mod">Modified <time datetime=""></time></span> -->
 </p>
@@ -321,8 +323,11 @@ def main():
     parser.add_argument("--modified", metavar="YYYY-MM-DD",
                         help="date of the last substantive revision (single file)")
     parser.add_argument("--draft", action="store_true",
-                        help="stamp the blank placeholder form on drafts and the "
+                        help="stamp the placeholder form on every draft and the "
                              "about/draft.html template")
+    parser.add_argument("--blank", action="store_true",
+                        help="stamp the placeholder form on the named posts, for "
+                             "dates that have to come from your own records")
     parser.add_argument("--modified-from-git", action="store_true",
                         help="derive each Modified date from the commit history, "
                              "counting only commits that changed prose or media")
@@ -335,6 +340,8 @@ def main():
     per_post = (args.rank, args.modified, args.published)
     if any(per_post) and len(args.files) != 1:
         parser.error("--rank/--modified/--published describe one post; name exactly one file")
+    if args.blank and not args.files:
+        parser.error("--blank stamps named posts; say which ones")
     if args.restamp and len(args.files) != 1:
         parser.error("--restamp rewrites one post; name exactly one file")
     for stamp in (args.modified, args.published):
@@ -359,8 +366,8 @@ def main():
             source = unstamp(source)
 
         modified = None
-        if args.draft:
-            line = DRAFT_LINE
+        if args.draft or args.blank:
+            line = PLACEHOLDER
         else:
             published = args.published or changelog.get(path) or feed.get(path)
             if not published:
