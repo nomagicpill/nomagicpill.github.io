@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Apply saved theme before first paint to avoid a flash. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <!-- Hide the article while the 3D model loads so it doesn't flash first;
+       main.js reveals whichever version won, and this timer is the backstop. -->
+  <script>
+    if ('WebGLRenderingContext' in window) {
+      document.documentElement.classList.add('xp-booting');
+      setTimeout(function () { document.documentElement.classList.remove('xp-booting'); }, 8000);
+    }
+  </script>
+  <title>Blockchains and Cryptocurrency - No Magic Pill</title>
+  <meta name="description" content="An interactive model of a blockchain network: hashes, keys and elliptic curves, signatures, blocks and mining, proof of stake, fees and gas, recovery phrases, chain analysis and mixers, with real cryptography running in the page.">
+  <link rel="alternate" type="application/rss+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
+  <link rel="alternate" type="application/atom+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="stylesheet" type="text/css" href="../css/explainer.css">
+  <link rel="icon" href="../media/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <style>
+    /* Fee-rate colours: one hue, ordered cheap to urgent (light to dark here;
+       in dark mode cheap recedes toward the background), checked with an
+       ordinal-ramp validator in both themes. The 3D mempool reads the same
+       tokens. Plus two categorical accents (blue, orange). Mirrors main.css's
+       three theme blocks. */
+    :root {
+      --bc-fee1: #ef9a68;
+      --bc-fee2: #e67a3e;
+      --bc-fee3: #cf5d24;
+      --bc-fee4: #a2461b;
+      --bc-fee5: #733213;
+      --bc-mixed: #2a78d6;
+      --bc-cluster: #eb6834;
+      --bc-mono-bg: #f3f2ee;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bc-fee1: #9a441c;
+        --bc-fee2: #bd5622;
+        --bc-fee3: #de6c2e;
+        --bc-fee4: #f08d55;
+        --bc-fee5: #f7b691;
+        --bc-mixed: #3987e5;
+        --bc-cluster: #d95926;
+        --bc-mono-bg: #202020;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bc-fee1: #9a441c;
+      --bc-fee2: #bd5622;
+      --bc-fee3: #de6c2e;
+      --bc-fee4: #f08d55;
+      --bc-fee5: #f7b691;
+      --bc-mixed: #3987e5;
+      --bc-cluster: #d95926;
+      --bc-mono-bg: #202020;
+    }
+
+    /* ----- Readouts panel (top left) ----- */
+    .bc-hud {
+      position: fixed;
+      top: 108px;
+      left: 12px;
+      width: 300px;
+      padding: 8px 12px 10px;
+      z-index: 20;
+      font-size: 0.86em;
+      max-height: calc(100dvh - 250px);
+      overflow-y: auto;
+    }
+    .bc-hud-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .bc-hud-compact { display: none; font-variant-numeric: tabular-nums; font-weight: bold; }
+    .bc-iconbtn {
+      font: inherit; color: var(--xp-ink-2); background: none; border: 1px solid var(--xp-panel-border);
+      border-radius: 6px; padding: 0 7px; cursor: pointer; line-height: 1.6;
+    }
+    .bc-hud.collapsed .bc-hud-body { display: none; }
+    .bc-hud.collapsed .bc-hud-compact { display: block; margin-top: 2px; }
+    .bc-hud.collapsed .bc-iconbtn { transform: rotate(-90deg); }
+    .bc-tipline { margin-top: 6px; }
+    .bc-tipline > b { font-size: 1.35em; display: block; line-height: 1.15; }
+    .bc-tipline code { font-size: 0.86em; }
+    .bc-tipline small { color: var(--xp-ink-3); display: block; }
+    .bc-bars { display: block; width: 100%; height: 30px; margin: 6px 0 0; }
+    .bc-barcap { font-size: 0.78em; color: var(--xp-ink-3); margin: 1px 0 6px; }
+    .bc-kvhud { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; }
+    .bc-kvhud div { display: contents; }
+    .bc-kvhud dt { color: var(--xp-ink-3); }
+    .bc-kvhud dd { margin: 0; font-variant-numeric: tabular-nums; }
+    .bc-kvhud small { color: var(--xp-ink-2); display: block; font-size: 0.92em; }
+    .bc-pay { margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--xp-panel-border); }
+    .bc-pay small { display: block; color: var(--xp-ink-2); }
+
+    /* ----- Dock ----- */
+    /* The dock wraps rather than squeezing, whatever room the drawer leaves. */
+    .bc-dock { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 16px; }
+    .bc-dock .bc-f-mode { flex: 0 1 150px; }
+    .bc-dock .bc-f-scn { flex: 1 1 190px; max-width: 280px; }
+    .bc-dock .bc-dock-btns { margin-left: auto; }
+    .bc-speed { display: flex; gap: 3px; flex: none; align-self: end; padding-bottom: 2px; }
+    .bc-speed .xp-chip { padding: 3px 7px; font-size: 0.72em; }
+    .bc-paybox { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; align-self: end; }
+    .bc-paybox .xp-chip { padding: 3px 8px; font-size: 0.72em; }
+    .bc-dock-btns { display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end; align-items: center; align-self: end; }
+    .bc-dock-toggle { align-self: end; margin-bottom: 3px; }
+    .bc-more {
+      flex: 1 1 100%;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 18px; align-items: end;
+      border-top: 1px solid var(--xp-panel-border); padding-top: 10px;
+    }
+    .bc-more h4 { grid-column: 1 / -1; margin: 0; font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--xp-ink-3); }
+    .bc-dock.collapsed .bc-f-mode,
+    .bc-dock.collapsed .bc-dock-btns,
+    .bc-dock.collapsed .bc-more { display: none !important; }
+    .bc-dock.collapsed { padding: 6px 10px; }
+    .bc-dock.collapsed .bc-f-scn > label { display: none; }
+    .bc-dock.collapsed .bc-dock-toggle { transform: rotate(180deg); }
+    #xp-menu-btn { box-shadow: var(--xp-shadow); }
+
+    /* ----- Figures ----- */
+    .xp-figure { position: relative; }
+    .bc-canvas { display: block; width: 100%; }
+    .bc-tip {
+      position: absolute; z-index: 5; pointer-events: none; padding: 5px 8px; border-radius: 6px;
+      font-size: 0.78em; line-height: 1.35; background: var(--tooltip-bg); color: var(--tooltip-text); max-width: 220px;
+    }
+    .bc-drag { touch-action: none; cursor: grab; }
+    .bc-mono, .bc-input.bc-mono { font-family: Menlo, Consolas, "Liberation Mono", monospace; font-size: 0.8em; background: var(--bc-mono-bg); color: var(--text); padding: 1px 4px; border-radius: 4px; }
+    .bc-break { word-break: break-all; display: inline-block; max-width: 100%; }
+    .bc-small { font-size: 0.74em; }
+    .bc-zeros { color: var(--xp-good); }
+    .bc-goodtext { color: var(--xp-good); }
+    .bc-badtext { color: var(--xp-critical); }
+    .bc-label { font-size: 0.74em; text-transform: uppercase; letter-spacing: 0.04em; color: var(--xp-ink-3); margin: 8px 0 3px; }
+    .bc-input {
+      font: inherit; font-size: 0.9em; width: 100%; box-sizing: border-box; padding: 6px 8px; margin: 2px 0 4px;
+      color: var(--text); background: var(--xp-panel-solid); border: 1px solid var(--xp-panel-border); border-radius: 6px;
+    }
+    textarea.bc-input { resize: vertical; }
+    textarea.bc-keyin { word-break: break-all; resize: none; }
+    .bc-num { max-width: 9em; }
+    .bc-hashout { margin: 6px 0; }
+    .bc-readout { font-size: 0.84em; color: var(--xp-ink-2); margin: 6px 0 2px; font-variant-numeric: tabular-nums; }
+    .bc-step { border: 1px solid var(--xp-panel-border); border-radius: 8px; padding: 6px 8px; }
+    .bc-step-title { font-weight: bold; font-size: 0.86em; margin-bottom: 4px; }
+    .bc-step small { display: block; color: var(--xp-ink-2); font-size: 0.78em; margin-top: 3px; }
+    .bc-arrow { text-align: center; color: var(--xp-ink-3); font-size: 0.8em; margin: 3px 0; }
+    .xp-drawer-body table.bc-kv, .xp-drawer-body table.bc-table { font-size: 0.82em; margin: 6px 0; }
+    .bc-kv th { width: 30%; white-space: nowrap; }
+    .bc-table .bc-total td { font-weight: bold; }
+    .bc-check { font-size: 0.84em; margin: 4px 0; }
+    .bc-check small { display: block; color: var(--xp-ink-2); margin-left: 1.6em; }
+    .bc-report { margin-top: 6px; }
+    .bc-formula { font-family: Menlo, Consolas, monospace; font-size: 0.82em; background: var(--bc-mono-bg); padding: 6px 8px; border-radius: 6px; margin: 6px 0; }
+    .bc-game { margin-top: 4px; }
+    .bc-gasout { margin-top: 6px; }
+    .bc-form { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; align-items: end; }
+    .bc-form .xp-field:last-child { grid-column: 1 / -1; }
+    .bc-chain { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+    .bc-card { border: 1px solid var(--xp-panel-border); border-radius: 8px; padding: 6px 8px 8px; display: flex; flex-direction: column; gap: 2px; border-left: 4px solid var(--xp-good-mark); }
+    .bc-card.bc-invalid { border-left-color: var(--xp-critical-mark); }
+    .bc-card-head { font-weight: bold; font-size: 0.86em; }
+    .bc-card small { color: var(--xp-ink-3); font-size: 0.72em; }
+    .bc-card .bc-input { font-size: 0.82em; padding: 3px 6px; }
+    .bc-card button { margin-top: 4px; align-self: flex-start; }
+    .bc-words { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 5px; margin: 8px 0; }
+    .bc-word { display: flex; align-items: center; gap: 4px; font-size: 0.86em; }
+    .bc-word span { color: var(--xp-ink-3); min-width: 1.5em; text-align: right; font-size: 0.82em; }
+    .bc-word input { font: inherit; width: 100%; min-width: 0; padding: 3px 5px; color: var(--text); background: var(--xp-panel-solid); border: 1px solid var(--xp-panel-border); border-radius: 5px; }
+    .bc-bits { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 4px 6px; margin: 6px 0; }
+    .bc-bitword small { display: block; font-size: 0.72em; color: var(--xp-ink-3); }
+    .bc-cs { color: var(--bc-cluster); font-weight: bold; }
+    .bc-phrase { display: block; margin: 6px 0; padding: 6px 8px; }
+    .bc-tree { font-size: 0.84em; }
+    .bc-treerow { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; padding: 2px 0; border-bottom: 1px solid var(--xp-panel-border); }
+    .bc-treerow .bc-path { background: none; color: var(--xp-ink-3); }
+    .bc-svgwrap { overflow-x: auto; }
+    .bc-svg { width: 100%; height: auto; display: block; min-width: 360px; }
+    .bc-svgtext { fill: var(--text); font: 14px Menlo, Consolas, monospace; }
+    .bc-svgsmall { fill: var(--xp-ink-2); font: 13px Arial, sans-serif; }
+    .bc-txlist { columns: 2; font-size: 0.8em; margin: 6px 0; padding-left: 2.2em; }
+    .bc-strong { font: bold 14px Arial, sans-serif; fill: var(--text); }
+    .bc-node { fill: var(--xp-panel-solid); stroke: var(--xp-axis); stroke-width: 1.5; }
+    .bc-node.bc-bad { stroke: var(--xp-critical-mark); stroke-width: 2.5; }
+    .bc-node.bc-path { stroke: var(--link); stroke-width: 2.5; }
+    .bc-node.bc-sib { fill: var(--link); fill-opacity: 0.18; stroke: var(--link); stroke-dasharray: 3 2; }
+    .bc-edge { stroke: var(--xp-axis); stroke-width: 1.5; }
+    .bc-edge.bc-bad { stroke: var(--xp-critical-mark); stroke-width: 2.5; }
+    .bc-txnode { fill: var(--xp-track); stroke: var(--xp-axis); }
+    .bc-addr { fill: var(--xp-panel-solid); stroke: var(--xp-ink-3); stroke-width: 1.5; }
+    .bc-addr.bc-cluster { fill: var(--bc-cluster); fill-opacity: 0.35; stroke: var(--bc-cluster); stroke-width: 2.5; }
+    .bc-addr.bc-known { stroke: var(--text); stroke-width: 2.5; }
+    .bc-addr.bc-mixed { fill: var(--bc-mixed); fill-opacity: 0.3; stroke: var(--bc-mixed); }
+    .bc-link { fill: none; stroke-width: 2; stroke-dasharray: 5 3; }
+    .bc-link.bc-bad { stroke: var(--xp-critical-mark); }
+    .bc-line { display: inline-block; width: 16px; height: 2px; background: var(--text); }
+    .bc-line.bc-dash { background: repeating-linear-gradient(90deg, var(--text) 0 5px, transparent 5px 8px); }
+    .bc-zk { font-size: 0.84em; margin: 6px 0; }
+    .bc-zkrow { padding: 4px 6px; border-left: 3px solid var(--bc-mixed); margin: 3px 0; }
+    .bc-zkrow small { display: block; color: var(--xp-ink-2); }
+    .bc-zkwd { border-left-color: var(--xp-good-mark); }
+    .bc-runbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 1em 0; }
+    html:not(.xp-ready) .bc-runbar { display: none; }
+    .bc-cmp td:first-child { color: var(--xp-ink-3); }
+
+    /* ----- Narrow screens ----- */
+    @media (max-height: 640px) {
+      .xp-title p { display: none; }
+      .xp-story { font-size: 0.84em; padding: 8px 12px 8px; }
+      .bc-hud { top: 74px; max-height: calc(100dvh - 160px); }
+    }
+    @media (max-width: 900px) {
+      .bc-hud { top: 62px; left: 8px; width: min(300px, calc(100vw - 16px)); max-height: calc(100dvh - 260px); }
+      .bc-hud:not(.expanded-mobile) .bc-hud-body { display: none; }
+      .bc-hud:not(.expanded-mobile) .bc-hud-compact { display: block; }
+      .bc-hud.expanded-mobile .bc-hud-body { display: block; }
+      .bc-hud.expanded-mobile .bc-hud-compact { display: none; }
+      .bc-dock { gap: 6px 10px; }
+      .bc-dock .bc-f-scn { max-width: none; }
+      .bc-dock .bc-dock-btns { margin-left: 0; }
+      .bc-form { grid-template-columns: 1fr; }
+      html.xp-ready.xp-drawer-open .xp-labels { display: none; }
+    }
+    /* The title wraps to two lines on phones; keep the readouts below it. */
+    @media (max-width: 600px) {
+      .bc-hud { top: 92px; }
+      .xp-labels .xp-label { font-size: 0.62em; padding: 1px 5px 2px; }
+    }
+  </style>
+
+</head>
+
+<body>
+
+<!-- ===== App chrome (shown once js/explainer.js has started) ===== -->
+
+<div id="stage" class="xp-stage xp-only"></div>
+<div id="labels" class="xp-labels xp-only"></div>
+
+<header class="xp-topbar xp-only">
+  <div class="xp-panel xp-title">
+    <a class="xp-home" href="../index.html">&larr; Home</a>
+    <h1>Blockchains and Cryptocurrency</h1>
+    <p>A live model of a network that keeps a shared ledger with no one in charge.</p>
+  </div>
+  <button id="xp-menu-btn" class="xp-btn" type="button" aria-expanded="false" aria-controls="xp-menu">Explore &#9776;</button>
+</header>
+
+<nav id="xp-menu" class="xp-panel xp-menu xp-only" aria-label="Topics" hidden></nav>
+
+<section id="hud" class="xp-panel bc-hud xp-only" aria-label="Network readouts">
+  <div class="bc-hud-head">
+    <span id="hud-status" class="xp-status" data-level="0">In agreement</span>
+    <button id="hud-toggle" class="bc-iconbtn" type="button" aria-expanded="true" aria-label="Show or hide readouts">&#9662;</button>
+  </div>
+  <div id="hud-compact" class="bc-hud-compact"></div>
+  <div class="bc-hud-body">
+    <div class="bc-tipline">
+      <b id="hud-height">Block 0</b>
+      <code id="hud-hash" class="bc-mono"></code>
+      <small id="hud-ago"></small>
+    </div>
+    <canvas id="hud-bars" class="bc-bars" aria-hidden="true"></canvas>
+    <div id="hud-bars-cap" class="bc-barcap"></div>
+    <dl class="bc-kvhud">
+      <div><dt>Consensus</dt><dd id="hud-cons">Proof of work</dd></div>
+      <div><dt id="hud-target-l">Target</dt><dd id="hud-target"></dd></div>
+      <div><dt id="hud-rate-l">Hash rate</dt><dd><span id="hud-rate"></span><small id="hud-rate-sub"></small></dd></div>
+      <div><dt>Mempool</dt><dd><span id="hud-mempool"></span><small id="hud-fee"></small></dd></div>
+      <div><dt>Nodes</dt><dd id="hud-agree"></dd></div>
+    </dl>
+    <div id="hud-pay" class="bc-pay" hidden>
+      <small id="hud-pay-head"></small>
+      <span id="hud-pay-state" class="xp-status" data-level="1"></span>
+    </div>
+  </div>
+</section>
+
+<div id="story" class="xp-panel xp-story xp-only" role="status" aria-live="polite" hidden>
+  <div class="xp-story-head"><span id="story-head-l"></span><span id="story-head-r"></span></div>
+  <p id="story-text"></p>
+  <div class="xp-controls">
+    <button id="story-more" class="xp-chip" type="button">Read the story</button>
+    <button id="story-close" class="xp-chip" type="button">Dismiss</button>
+    <button id="story-continue" class="xp-btn xp-primary" type="button" hidden>Continue &#9654;</button>
+  </div>
+</div>
+
+<div id="dock" class="xp-panel xp-dock bc-dock xp-only" aria-label="Controls">
+  <div class="xp-field bc-f-mode">
+    <label for="k-mode">Consensus</label>
+    <select id="k-mode">
+      <option value="pow">Proof of work</option>
+      <option value="pos">Proof of stake</option>
+    </select>
+  </div>
+  <div class="xp-field bc-f-scn">
+    <label for="k-scenario">Scenario</label>
+    <select id="k-scenario"></select>
+  </div>
+  <div class="bc-speed" role="group" aria-label="Playback speed">
+    <button id="pause" class="xp-chip" type="button" aria-pressed="false" title="Pause (space bar)" aria-label="Pause">&#10074;&#10074;</button>
+    <button data-speed="1" class="xp-chip" type="button" aria-pressed="false" title="Half speed" aria-label="Play slowly">&#9654;</button>
+    <button data-speed="2" class="xp-chip" type="button" aria-pressed="true" title="Normal speed" aria-label="Play">&#9654;&#9654;</button>
+    <button data-speed="3" class="xp-chip" type="button" aria-pressed="false" title="Fast" aria-label="Play fast">&#9654;&#9654;&#9654;</button>
+  </div>
+  <div class="bc-paybox" role="group" aria-label="Send a payment">
+    <button id="pay" class="xp-btn xp-primary" type="button" title="Ana buys a coffee from the shop">Send a payment</button>
+    <button data-fee="low" class="xp-chip" type="button" aria-pressed="false" title="1 sat/vB">Low fee</button>
+    <button data-fee="normal" class="xp-chip" type="button" aria-pressed="true">Normal</button>
+    <button data-fee="high" class="xp-chip" type="button" aria-pressed="false">High</button>
+  </div>
+  <div class="bc-dock-btns">
+    <button id="tg-labels" class="xp-chip" type="button" aria-pressed="true">Labels</button>
+    <button id="tg-msgs" class="xp-chip" type="button" aria-pressed="true">Messages</button>
+    <button id="tg-views" class="xp-chip" type="button" aria-pressed="true" title="Lines from each node to the block it believes is newest">Who believes what</button>
+    <button id="more" class="xp-chip" type="button" aria-expanded="false" aria-controls="more-panel">More&hellip;</button>
+  </div>
+  <button id="dock-toggle" class="bc-iconbtn bc-dock-toggle" type="button" aria-expanded="true" aria-label="Show or hide the controls">&#9662;</button>
+  <div id="more-panel" class="bc-more" hidden>
+    <h4>The network</h4>
+    <div class="xp-field">
+      <label for="k-blocktime">Average time between blocks <output id="k-blocktime-out"></output></label>
+      <input type="range" id="k-blocktime" min="3" max="30" step="1">
+    </div>
+    <div class="xp-field">
+      <label for="k-latency">Delay per hop <output id="k-latency-out"></output></label>
+      <input type="range" id="k-latency" min="0.05" max="1.5" step="0.05">
+    </div>
+    <div class="xp-field">
+      <label for="k-zeros">Proof-of-work target <output id="k-zeros-out"></output></label>
+      <input type="range" id="k-zeros" min="8" max="20" step="1">
+    </div>
+    <div class="xp-field">
+      <label for="k-rate">Payments per second <output id="k-rate-out"></output></label>
+      <input type="range" id="k-rate" min="0.05" max="3" step="0.05">
+    </div>
+    <h4>The double-spend attack</h4>
+    <div class="xp-field">
+      <label for="k-attack">Mallory&rsquo;s share of hash rate <output id="k-attack-out"></output></label>
+      <input type="range" id="k-attack" min="0.05" max="0.8" step="0.05">
+    </div>
+    <div class="xp-field">
+      <label for="k-confs">Confirmations the shop waits for <output id="k-confs-out"></output></label>
+      <input type="range" id="k-confs" min="1" max="8" step="1">
+    </div>
+    <div class="bc-dock-btns" style="justify-content:flex-start">
+      <button id="tg-rotate" class="xp-chip" type="button" aria-pressed="false">Slow orbit</button>
+      <button id="reset-view" class="xp-chip" type="button">Reset view</button>
+    </div>
+  </div>
+</div>
+
+<div id="tip" class="xp-tip xp-only" hidden></div>
+
+<!-- ===== The explainer. Without JavaScript this is the whole page. ===== -->
+
+<aside id="xp-drawer" class="xp-drawer" aria-label="Explainer" aria-hidden="true">
+  <div class="xp-drawer-head xp-only">
+    <span class="xp-crumb"></span>
+    <button class="xp-btn xp-close" type="button" aria-label="Close the explainer">Close &#10005;</button>
+  </div>
+  <div class="xp-drawer-body">
+
+<header class="xp-article-only">
+  <h3 id="home"><a href="../index.html">Home</a></h3>
+  <h1 id="blockchain">Blockchains and Cryptocurrency</h1>
+  <p class="postmeta">
+  <span class="pub">Published <time datetime=""></time></span>
+  <!-- <span class="mod">Modified <time datetime=""></time></span> -->
+  </p>
+  <p>
+    How a network of strangers keeps one shared ledger with no one in charge: hashes, keys and elliptic curves, signatures, blocks and mining, proof of stake, fees and gas, recovery phrases, and privacy. This page is an interactive model; you are reading its text version, which appears when JavaScript or WebGL is unavailable.
+  </p>
+</header>
+
+<div id="xp-library">
+
+<!-- ================================================================== -->
+<!-- START                                                               -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="overview" data-title="Start here" data-group="Start" data-focus="overview" data-next="problem">
+  <h2>A ledger nobody owns</h2>
+  <p class="xp-lede">
+    A blockchain is a record of who owns what, kept in thousands of copies by computers that don't trust each other, with no one in charge, and still agreeing on every entry.
+  </p>
+  <p>
+    The model behind this page is a small version of that network, running live in your browser. Fourteen nodes sit on a ring: six people with wallets, a shop, an exchange, and five mining pools plus a home miner. The tubes between them are their peer-to-peer connections, and the dots flying along them are messages: small round ones are payments, coloured by the fee they pay, and cubes are new blocks.
+  </p>
+  <p>
+    The chain itself rises out of the middle, newest block at the top. Older blocks sink into the floor as new ones are stacked on, which is roughly how history works on a blockchain: the deeper a block is buried, the harder it is to dig out and change. Around its base is the mempool, a pool of payments waiting to get into a block.
+  </p>
+  <div class="xp-stats">
+    <div class="xp-stat"><b>2009</b><span>Bitcoin's first block, January 3</span></div>
+    <div class="xp-stat"><b>~20.1M</b><span>bitcoins of an eventual 21 million exist (October 2026)</span></div>
+    <div class="xp-stat"><b>~10<sup>21</sup></b><span>hashes a second: Bitcoin's mining, about 1 zettahash</span></div>
+    <div class="xp-stat"><b>~36%</b><span>of all ether is staked to secure Ethereum</span></div>
+  </div>
+  <h3>Real, but small</h3>
+  <p>
+    Everything cryptographic in the model is real. Each participant has a genuine secp256k1 key pair, the kind Bitcoin and Ethereum use; every payment is signed and every node checks the signature; every block header hashes, with the same double SHA-256 Bitcoin uses, to a value that really meets its target. What is shrunk is the scale. Blocks need about 65,000 tries to mine instead of about 10<sup>23</sup>; they come every ten seconds instead of ten minutes; and messages crawl between nodes slowly enough to watch.
+  </p>
+  <h3>How to use it</h3>
+  <ul>
+    <li><b>Look around:</b> drag to orbit, scroll or pinch to zoom, right-drag or two-finger drag to pan.</li>
+    <li><b>Click anything</b>: a node, a block, the mempool, to read about it here.</li>
+    <li><b>Send a payment</b> (bottom): Ana buys a coffee. Watch it spread, wait in the mempool, get mined, and collect confirmations in the readouts at top left.</li>
+    <li><b>Pick a scenario</b>: two blocks at once, a network split, an attempt to rewrite history, a double-spend attack, a fee spike, and two proof-of-stake failures.</li>
+    <li><b>Switch the consensus</b> from proof of work to proof of stake, the change Ethereum made in 2022.</li>
+    <li><b>Explore</b> (top right) lists every topic, and the <i>Next</i> link at the end of each one walks through them in order.</li>
+  </ul>
+  <p class="xp-note">The thin lines from each node to the chain show which block that node currently believes is the newest. Most of the time they all point at the same one. When they don't, the network is in a fork.</p>
+</section>
+
+<section class="xp-topic" id="problem" data-title="Why a blockchain?" data-group="Start" data-focus="network" data-next="hashing">
+  <h2>The problem it solves</h2>
+  <p class="xp-lede">Digital money is easy to copy. Stopping that has always meant trusting someone to keep the books.</p>
+  <p>
+    A photo can be sent to a thousand people and each gets the whole thing. Money can't work that way: if a digital coin is just data, what stops its owner from sending the same coin to two people? This is the <i>double-spend problem</i>, and the usual answer is a ledger kept by a trusted party. Your bank's database says what is in your account; when you pay, the bank debits you and credits someone else, and it won't let you spend the same dollar twice.
+  </p>
+  <p>
+    That works, but it means trusting the bank (and the card network, the central bank, the payment processor) to keep accurate records, to keep your money available, not to block or reverse your payments, and not to create more money than it should. In October 2008, in the depths of a banking crisis, a pseudonymous author called Satoshi Nakamoto published a nine-page paper proposing "a purely peer-to-peer version of electronic cash" that needed no such party. Bitcoin went live three months later.
+  </p>
+  <h3>Three ingredients</h3>
+  <ul>
+    <li><b>Signatures</b> so only a coin's owner can spend it. Ownership is knowing a secret key; spending is signing with it. See <a href="#keys">Private and public keys</a>.</li>
+    <li><b>Hash-linked blocks</b> so history can't be quietly edited. Each block includes a fingerprint of the one before it. See <a href="#immutability">Why history sticks</a>.</li>
+    <li><b>Consensus</b> so everyone agrees on one order of transactions, and therefore on which of two conflicting payments came first, without voting by identity (anyone could fake a thousand identities). Bitcoin makes adding a block expensive in electricity; Ethereum now makes it expensive in money put at risk. See <a href="#mining">Proof of work</a> and <a href="#pos">Proof of stake</a>.</li>
+  </ul>
+  <p>
+    Everyone keeps a full copy of the ledger and checks every entry against the rules. No single machine is trusted, so none has to be.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- THE CRYPTOGRAPHY                                                    -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="hashing" data-title="Hash functions" data-group="The cryptography" data-focus="chain" data-next="keys">
+  <h2>Hash functions: fingerprints for data</h2>
+  <p class="xp-lede">The workhorse of every blockchain: a function that turns any input into a short, unpredictable fingerprint.</p>
+  <p>
+    A cryptographic hash function takes data of any size, a word or a whole hard drive, and returns a fixed-size number. SHA-256, designed by the NSA and published in 2001, returns 256 bits, written as 64 hexadecimal characters. Bitcoin is built on it; Ethereum uses a close relative, Keccak-256.
+  </p>
+  <div class="xp-figure" data-widget="hash"></div>
+  <p>What makes it useful is a handful of properties:</p>
+  <ul>
+    <li><b>Deterministic:</b> the same input always gives the same output, on any computer.</li>
+    <li><b>Avalanche:</b> change a single character and about half the output bits flip, so similar inputs give completely different hashes.</li>
+    <li><b>One-way:</b> given a hash, there is no way to find an input that produces it except to guess, and there are 2<sup>256</sup>, about 10<sup>77</sup>, possible outputs.</li>
+    <li><b>Collision-resistant:</b> nobody has ever found two different inputs with the same SHA-256 hash.</li>
+  </ul>
+  <p>
+    A hash works like a fingerprint you can check but not forge. In a blockchain hashes name every transaction and block, link each block to the one before it, summarize a block's transactions (<a href="#merkle">Merkle trees</a>), turn public keys into addresses, and provide the puzzle that miners race to solve (<a href="#mining">proof of work</a>).
+  </p>
+</section>
+
+<section class="xp-topic" id="keys" data-title="Private and public keys" data-group="The cryptography" data-focus="node:ana" data-next="curves">
+  <h2>Private and public keys</h2>
+  <p class="xp-lede">On a blockchain, owning coins means knowing a number nobody else knows.</p>
+  <p>
+    A <b>private key</b> is just a random number between 1 and about 1.16 &times; 10<sup>77</sup>, roughly the number of atoms in the observable universe. Multiply a fixed starting point on an elliptic curve by it (see <a href="#curves">Elliptic curves</a>) and you get the <b>public key</b>, a point on that curve. Hash the public key and you get an <b>address</b>, the shorter string you give people so they can pay you.
+  </p>
+  <div class="xp-figure" data-widget="keys"></div>
+  <p>
+    Every step goes one way. Anyone can check that a public key belongs to an address, and that a signature was made by the matching private key, but nobody can work backwards from an address or public key to the private key. Think of the address as a mail slot anyone can drop coins into, and the private key as the only key that opens the box.
+  </p>
+  <h3>What this means</h3>
+  <ul>
+    <li><b>The key is the money.</b> Whoever knows the private key can spend the coins, and nobody else can. There is no account to reset and no help desk.</li>
+    <li><b>Keys are made, not issued.</b> A wallet makes its own by picking a random number; no one assigns them. With so many possible keys, two people picking the same one by chance is not a realistic worry, provided the random number generator is good (see <a href="#breaks">What could break it</a>).</li>
+    <li><b>One key, many chains.</b> Bitcoin and Ethereum use the same curve, so the same private key gives a Bitcoin address and an Ethereum address; only the final hashing and encoding differ.</li>
+  </ul>
+  <p>Every participant in the model has a real key pair like this, made fresh when the page loaded.</p>
+</section>
+
+<section class="xp-topic" id="curves" data-title="Elliptic curves" data-group="The cryptography" data-focus="overview" data-next="field">
+  <h2>Elliptic curves</h2>
+  <p class="xp-lede">A cubic equation with a strange kind of addition, and the reason a small private key can stand guard over a fortune.</p>
+  <p>
+    Bitcoin and Ethereum use the curve y<sup>2</sup> = x<sup>3</sup> + 7, a standard curve named <b>secp256k1</b> ("Standards for Efficient Cryptography, prime field, 256 bits, Koblitz curve 1"). Its constants are about as simple as possible, a = 0 and b = 7, which leaves little room for a hidden weakness to have been chosen on purpose; nobody knows exactly why Satoshi picked it over the more common NIST curves.
+  </p>
+  <div class="xp-figure" data-widget="curve"></div>
+  <h3>Adding points</h3>
+  <p>
+    Points on the curve can be "added" with a geometric rule. Draw a line through two points, P and Q. It always meets the curve at exactly one more point; reflect that point across the x-axis, and the result is P + Q. To add a point to itself, use the tangent line at P. The rule behaves like ordinary addition: the order doesn't matter, grouping doesn't matter, and there is a "zero" (a point at infinity, where vertical lines meet the curve).
+  </p>
+  <h3>Multiplying</h3>
+  <p>
+    Adding a point to itself k times gives k &times; P. That sounds slow for a 77-digit k, but there's a shortcut: doubling. 2P, 4P, 8P, and so on take one step each, and any k is a sum of powers of two, so k &times; G needs only about 256 doublings and 128 additions. Your public key is your private key times a fixed point G that everyone agrees on.
+  </p>
+  <p>
+    The reverse, from a public key back to k, has no such shortcut. Over the real numbers you could still estimate it, because the points move smoothly. The next topic shows what removes even that.
+  </p>
+</section>
+
+<section class="xp-topic" id="field" data-title="The hard problem" data-group="The cryptography" data-focus="overview" data-next="signatures">
+  <h2>Clock arithmetic and the hard problem</h2>
+  <p class="xp-lede">Do the same arithmetic modulo a prime, and the smooth curve shatters into scattered points.</p>
+  <p>
+    Real elliptic-curve cryptography doesn't use ordinary numbers. It uses whole numbers modulo a huge prime p, like a clock that wraps around after p hours; for secp256k1, p = 2<sup>256</sup> &minus; 2<sup>32</sup> &minus; 977. The equation is the same, and so are the addition formulas (division becomes multiplying by an inverse modulo p), but the "curve" is now a scattering of points with no visible shape.
+  </p>
+  <div class="xp-figure" data-widget="field"></div>
+  <p>
+    The figure uses a toy version: the same equation modulo 163, which has 139 points (counting the point at infinity). Slide k and watch k &times; G hop around. Each step is easy to compute, but the sequence follows no pattern you could use to run it backwards.
+  </p>
+  <h3>The discrete logarithm problem</h3>
+  <p>
+    Given Q = k &times; G, finding k is called the <b>elliptic-curve discrete logarithm problem</b>. On the toy curve, trying every k takes a fraction of a second. secp256k1 has about 1.16 &times; 10<sup>77</sup> points. The best known general attack (Pollard's rho) needs about the square root of that, 2<sup>128</sup> or 3.4 &times; 10<sup>38</sup> steps. At a billion billion steps a second, that is around 10<sup>13</sup> years.
+  </p>
+  <table>
+    <tr><th>Direction</th><th>Work</th><th>Time</th></tr>
+    <tr><td>Private key &rarr; public key</td><td>~400 point operations</td><td>about a millisecond</td></tr>
+    <tr><td>Public key &rarr; private key</td><td>~2<sup>128</sup> operations</td><td>longer than the universe has existed, many times over</td></tr>
+  </table>
+  <p>
+    That gap, easy one way and infeasible the other, is called a <i>trapdoor</i> or <i>one-way function</i>, and all of public-key cryptography rests on such gaps. Elliptic curves give a lot of gap per bit: a 256-bit curve key is about as strong as a 3,072-bit RSA key, which is why keys and signatures on blockchains are so compact.
+  </p>
+</section>
+
+<section class="xp-topic" id="signatures" data-title="Digital signatures" data-group="The cryptography" data-focus="node:ana" data-next="breaks">
+  <h2>Digital signatures</h2>
+  <p class="xp-lede">Proof that the owner of a key approved this exact message, checkable by anyone, forgeable by no one.</p>
+  <p>
+    To spend coins you sign a transaction with your private key. The signature is a pair of numbers that depends on both the key and every bit of the transaction. Anyone with your public key can check it, but the check reveals nothing about the private key, and the signature is useless for any other message.
+  </p>
+  <div class="xp-figure" data-widget="sign"></div>
+  <h3>How ECDSA works, in one paragraph</h3>
+  <p>
+    To sign a message hash z with private key d, pick a fresh secret number k, compute the point R = k &times; G, and let r be R's x-coordinate. Then s = (z + r&middot;d) &divide; k, all modulo the curve's order. The signature is (r, s). To verify with public key Q, compute (z &divide; s) &times; G + (r &divide; s) &times; Q: if the signature is genuine this lands exactly on R, because the algebra unwinds to k &times; G. Only someone who knew d could have made an s that works.
+  </p>
+  <h3>On real chains</h3>
+  <ul>
+    <li><b>Bitcoin</b> has used ECDSA since 2009; the Taproot upgrade (2021) added Schnorr signatures, which are simpler to prove secure and let several signers combine into one signature.</li>
+    <li><b>Ethereum</b> accounts sign transactions with ECDSA on the same curve. Its validators use a different scheme, BLS, because BLS signatures from hundreds of thousands of validators can be merged into one.</li>
+    <li>Every node checks every signature in every block. In the model each check takes a few milliseconds; real node software is far faster, verifying many thousands a second.</li>
+  </ul>
+</section>
+
+<section class="xp-topic" id="breaks" data-title="What could break it" data-group="The cryptography" data-focus="overview" data-next="transactions">
+  <h2>What could break it</h2>
+  <p class="xp-lede">The math has held up. The failures have come from how it's used, and one future threat looms.</p>
+  <h3>Bad random numbers</h3>
+  <p>
+    Every ECDSA signature needs a fresh secret k. Use the same k twice with one key and anyone can solve for the private key with a few lines of algebra.
+  </p>
+  <div class="xp-figure" data-widget="reuse"></div>
+  <p>
+    This has happened at scale. In 2010 the fail0verflow group showed that Sony had signed PlayStation 3 software with the same k every time, exposing the console's master signing key. In August 2013 a flaw in Android's random number generator made several Bitcoin wallets repeat k values, and coins were stolen from the affected addresses. Most wallets now derive k from the key and the message (a standard called RFC 6979), so it never depends on luck.
+  </p>
+  <h3>Weak keys</h3>
+  <p>
+    A private key is only safe if it was chosen at random from the whole huge range. "Brain wallets", keys made by hashing a phrase someone thought up, were a fad in Bitcoin's early years; automated programs hash dictionaries, quotations and leaked passwords around the clock, and coins sent to such keys are typically taken within seconds.
+  </p>
+  <h3>Quantum computers</h3>
+  <p>
+    A large enough quantum computer running Shor's algorithm (1994) could solve the elliptic-curve discrete log problem efficiently and derive private keys from public keys. None exists, but estimates of what one would need keep falling. In March 2026 a team from Google Quantum AI, the Ethereum Foundation and Stanford estimated that breaking secp256k1 would take fewer than 500,000 physical qubits; in September 2026 IonQ estimated about 19,000 trapped-ion qubits, at about 26 days per key. The largest machines today have hundreds to a few thousand qubits.
+  </p>
+  <p>
+    Coins whose public key is already visible on chain would be exposed first: very early outputs that paid a public key directly, addresses that have been reused, and Taproot outputs. An unused hashed address hides its public key until it is spent. Hashes themselves fare better: the best quantum attack on SHA-256 (Grover's algorithm) only halves its strength in bits, from 256 to an effective 128. Developers of both Bitcoin and Ethereum are working on quantum-resistant signature schemes, but as of late 2026 neither chain has switched.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- THE LEDGER                                                          -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="transactions" data-title="Transactions and coins" data-group="The ledger" data-focus="node:ana" data-next="network">
+  <h2>Transactions and coins</h2>
+  <p class="xp-lede">Bitcoin doesn't keep balances. It keeps a list of unspent coins, and a payment melts some down and casts new ones.</p>
+  <p>
+    Bitcoin tracks <b>unspent transaction outputs</b> (UTXOs), which work like banknotes of any denomination. If Ana holds a 0.6-coin output and wants to pay 0.5, her transaction spends the whole 0.6 as an input and creates two new outputs: 0.5 to the shop and about 0.1 back to herself as change. Whatever the inputs add up to beyond the outputs is the <b>fee</b>, which goes to the miner. Her balance is simply the sum of the outputs her keys can spend.
+  </p>
+  <div class="xp-figure" data-widget="utxo"></div>
+  <p>
+    Each input names an earlier output and carries a signature from the key that output was locked to, plus the public key to check it with. The signature covers the whole transaction, every input and output, so nobody can change the amount or the recipient after Ana signs. (Bitcoin locks outputs with small scripts, which can also require several signatures, or a time lock; in the model every output simply names the hash of one public key.)
+  </p>
+  <h3>A payment's life</h3>
+  <ol>
+    <li>The wallet picks coins to spend, builds the transaction and signs it.</li>
+    <li>It hands it to a node, which checks it and passes it to its peers (<a href="#network">gossip</a>).</li>
+    <li>It waits in every node's mempool until a miner includes it in a block (<a href="#fees">fees</a> decide the order).</li>
+    <li>Each further block on top adds a <a href="#forks">confirmation</a>.</li>
+  </ol>
+  <p>
+    Try it with <i>Send a payment</i> at the bottom; its progress shows in the readouts. Ethereum works differently: it keeps an account balance for every address, plus a counter (the "nonce") that numbers each account's transactions so none can be replayed.
+  </p>
+  <p class="xp-note">In the model each person uses a single address. Real wallets make a fresh address for every payment and every change output, which helps privacy (see <a href="#privacy">Pseudonymous, not anonymous</a>).</p>
+</section>
+
+<section class="xp-topic" id="network" data-title="Nodes and gossip" data-group="The ledger" data-focus="network" data-next="blocks">
+  <h2>Nodes and gossip</h2>
+  <p class="xp-lede">No central server: every node talks to a few others, and news spreads by word of mouth.</p>
+  <p>
+    A <b>full node</b> downloads every block from the very first and checks every rule itself: every signature, every amount, every proof of work. It trusts no other node. Bitcoin's reference software makes about ten outgoing connections to peers by default and accepts more incoming ones, and Bitcoin has roughly twenty thousand publicly reachable full nodes, plus many more that don't accept incoming connections.
+  </p>
+  <p>
+    When a node hears of a new, valid transaction or block, it tells its peers, who tell theirs. A message reaches the whole network in a few hops, typically a few seconds on Bitcoin. In the model each hop takes about a third of a second (adjust it under <i>More</i>) so you can follow the dots. Invalid data goes nowhere: the first honest node that receives it drops it.
+  </p>
+  <p>
+    Because messages take time to spread, nodes don't always agree on what's newest. At any moment some have heard of a payment and some haven't, and two miners can find blocks before hearing of each other's (<a href="#forks">Forks</a>). The lines from each node to the chain show what each one currently believes.
+  </p>
+  <h3>Light wallets</h3>
+  <p>
+    A phone wallet doesn't store the whole chain: Bitcoin's is now several hundred gigabytes. It asks full nodes about its own addresses and checks their answers using block headers and <a href="#merkle">Merkle proofs</a>, trusting that the chain with the most work behind it is valid. Running your own node removes even that trust.
+  </p>
+</section>
+
+<section class="xp-topic" id="blocks" data-title="Blocks" data-group="The ledger" data-focus="chain" data-next="merkle">
+  <h2>Blocks</h2>
+  <p class="xp-lede">A page in the ledger: a batch of transactions with a small header that seals it and ties it to the page before.</p>
+  <p>
+    A Bitcoin block header is just 80 bytes: a version number; the hash of the previous block; the <a href="#merkle">Merkle root</a>, a fingerprint of all the block's transactions; a timestamp; the current difficulty target; and the <b>nonce</b>, a number miners change while searching for a winning hash. The block's ID is the double SHA-256 hash of that header. The first transaction in every block, the <b>coinbase</b>, creates the new coins that pay the miner.
+  </p>
+  <p>
+    Click any block in the model to inspect it here. <i>Verify it yourself</i> repeats what every node does on receiving a block: rehash the header, check the target, rebuild the Merkle root, and verify every signature. <i>Tamper with it</i> changes a single payment and shows what breaks.
+  </p>
+  <div class="xp-figure" data-widget="inspector"></div>
+  <h3>The first block</h3>
+  <p>
+    Bitcoin's genesis block was mined on January 3, 2009. Its coinbase carries a newspaper headline, "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks", both proof that it wasn't made before that date and a comment on why Bitcoin was made. Its 50-bitcoin reward can never be spent, because of a quirk in how the original software stored it.
+  </p>
+  <div class="xp-figure" data-widget="genesis"></div>
+  <p>
+    A Bitcoin block can hold about 4 million "weight units", in practice a few thousand transactions. The model's blocks hold about a dozen payments.
+  </p>
+</section>
+
+<section class="xp-topic" id="merkle" data-title="Merkle trees" data-group="The ledger" data-focus="chain" data-next="immutability">
+  <h2>Merkle trees</h2>
+  <p class="xp-lede">How a 32-byte number in the header can vouch for thousands of transactions.</p>
+  <p>
+    Hash every transaction, then hash those hashes together in pairs, then the results in pairs, until one hash is left: the <b>Merkle root</b>, named after Ralph Merkle, who patented the idea in 1979. Change any transaction and its hash changes, and so does every hash above it up to the root. Since the root is in the header, and the header's hash is the block's ID, no transaction can be altered without changing the block.
+  </p>
+  <div class="xp-figure" data-widget="merkle"></div>
+  <p>
+    The tree also makes proofs small. To show that a transaction is in a block you need only the hashes beside its path to the root, one per level: 12 hashes for a block of 4,000 transactions. This is what lets a phone wallet confirm a payment without downloading the block, a method the Bitcoin white paper called simplified payment verification.
+  </p>
+</section>
+
+<section class="xp-topic" id="immutability" data-title="Why history sticks" data-group="The ledger" data-focus="chain" data-next="forks">
+  <h2>Why history sticks</h2>
+  <p class="xp-lede">"Immutable" really means: changing the past is detectable at once, and costs more the further back you go.</p>
+  <p>
+    Each block includes the hash of the block before it. Change anything in an old block, one digit of one payment, and its hash changes. Now the next block points to a hash that no longer exists, so the chain is broken from that point forward, and every node can see it.
+  </p>
+  <div class="xp-figure" data-widget="tamperchain"></div>
+  <p>
+    To repair the chain, a forger would have to redo the proof of work for the edited block and for every block after it, then catch up with and overtake the rest of the network, which keeps adding blocks the whole time. A payment buried six blocks deep on Bitcoin would need about an hour of the entire network's mining power to redo, while the network itself kept going. Unless the forger controls most of the mining power, they fall further behind every minute (see <a href="#attack51">51% attacks</a>).
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="tamper">Run: Mallory rewrites history</button></div>
+  <h3>Immutable to outsiders, not to everyone</h3>
+  <p>
+    History can change if the community chooses to change the rules. In August 2010 a bug let someone create 184 billion bitcoins in a single transaction; within hours developers released a fixed version, miners adopted it, and the chain without that block overtook the one with it. In 2016 an Ethereum fund called The DAO was drained of about 3.6 million ether through a flaw in its code; the community hard-forked to return the funds, and those who refused kept the original chain going as Ethereum Classic. Both were exceptions, made openly by the people who run the software, not by an attacker.
+  </p>
+</section>
+
+<section class="xp-topic" id="forks" data-title="Forks and confirmations" data-group="The ledger" data-focus="chain" data-next="trust">
+  <h2>Forks and confirmations</h2>
+  <p class="xp-lede">Sometimes two blocks appear at once. The network settles it by following the chain with the most work.</p>
+  <p>
+    If two miners find a block at nearly the same moment, the network briefly splits: nodes that heard of one first build on it, the rest build on the other. The tie breaks when the next block is found on one branch. That branch now has more accumulated work, so every node switches to it, and the other block becomes <b>stale</b> or "orphaned". Its transactions aren't lost; they return to the mempool and are mined again. Bitcoin's rule is often called "longest chain", but strictly it is the chain with the most total work.
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="fork">Run: two blocks at once</button> <button class="xp-btn" type="button" data-run="partition">Run: the network splits</button></div>
+  <h3>Confirmations</h3>
+  <p>
+    A transaction's <b>confirmations</b> are the number of blocks from the one that holds it to the tip, counting its own. With one confirmation a payment could still be undone by a natural fork; each extra block makes that far less likely. Six confirmations (about an hour) is the traditional rule of thumb for large Bitcoin payments; many services accept fewer for small ones. Ethereum's proof of stake gives a firmer answer, <a href="#finality">finality</a>, after about 13 minutes.
+  </p>
+  <h3>Forks on purpose</h3>
+  <p>
+    Rule changes are forks too. A <b>soft fork</b> tightens the rules, so blocks made under the new rules still look valid to old software: Bitcoin's SegWit (2017) and Taproot (2021) upgrades were soft forks. A <b>hard fork</b> loosens or changes the rules so old software rejects the new blocks; if not everyone upgrades, the chain splits for good, as when Bitcoin Cash split off in August 2017 over block size. And forks can be accidental: in March 2013 a software upgrade split Bitcoin for about six hours until miners agreed to fall back to the older version's chain.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- CONSENSUS                                                           -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="trust" data-title="Trust and decentralization" data-group="Agreeing without a boss" data-focus="network" data-next="mining">
+  <h2>Trust and decentralization</h2>
+  <p class="xp-lede">Money runs on trust. Blockchains try to replace trust in an institution with checking, and the question is how far that goes.</p>
+  <p>
+    Every money system asks you to trust someone: that the ledger is right, that the supply won't be inflated away, that payments go through and stay through. Bitcoin's approach is captured in the slogan "don't trust, verify": every full node checks every rule for itself, so no bank, government or company has to be believed.
+  </p>
+  <table>
+    <tr><th></th><th>Who keeps the ledger</th><th>Who can reverse a payment</th><th>Who can block one</th></tr>
+    <tr><td>Bank transfer</td><td>Your bank and theirs</td><td>Banks, courts</td><td>Banks, regulators</td></tr>
+    <tr><td>Credit card</td><td>Card network and banks</td><td>The card issuer (chargebacks)</td><td>Network, banks, merchant</td></tr>
+    <tr><td>Bitcoin</td><td>Every full node</td><td>Nobody, short of a majority of hash power</td><td>No one reliably; a majority of miners could delay it</td></tr>
+    <tr><td>Exchange account</td><td>The exchange's private database</td><td>The exchange</td><td>The exchange</td></tr>
+  </table>
+  <p>
+    Verifying doesn't remove trust entirely. You still rely on the mathematics; on open-source software reviewed by others; on no group controlling most of the mining power or stake; and on the institutions at the edges, the exchanges, wallet makers and stablecoin issuers, which bring back exactly the trust the chain removed. When Mt. Gox collapsed in 2014, about 850,000 bitcoins were missing; when FTX failed in November 2022, about $8 billion of customer money was. Coins held at an exchange are the exchange's promise, not your coins: "not your keys, not your coins".
+  </p>
+  <h3>The Byzantine generals</h3>
+  <p>
+    Computer scientists have long studied how machines can agree when some of them lie: the "Byzantine generals" problem (Lamport, Shostak and Pease, 1982). Classic solutions work when the participants are known and fewer than a third are traitors. An open network has neither property: anyone can join, and one person can run a thousand nodes. Nakamoto's insight was to make influence cost something real, electricity for proof of work, money at risk for proof of stake, so that faking a crowd of nodes gains nothing.
+  </p>
+  <h3>How decentralized is it?</h3>
+  <p>
+    It's a spectrum, and some of it is concentrated. Bitcoin miners join pools to smooth out their income, and a few pools find most blocks.
+  </p>
+  <div class="xp-figure" data-widget="pools"></div>
+  <p>
+    Individual miners can and do switch pools, so a pool isn't a single owner of its hash power, but the pool operator does choose which transactions go into its blocks. Ethereum's stake is concentrated too: Lido, a liquid-staking service, controls a little under a quarter of all staked ether, and large exchanges hold much of the rest. The model echoes both: Pool A finds 30% of blocks, and in proof-of-stake mode it holds 22% of the stake.
+  </p>
+</section>
+
+<section class="xp-topic" id="mining" data-title="Proof of work and mining" data-group="Agreeing without a boss" data-focus="node:poolA" data-next="difficulty">
+  <h2>Proof of work and mining</h2>
+  <p class="xp-lede">A lottery where every ticket costs electricity, and the prize is the right to add the next block.</p>
+  <p>
+    To add a block, a miner must find a header whose hash is below a target, that is, which starts with enough zeros. There is no way to aim for one: the only method is to change the nonce (or another field), hash, check, and repeat, trillions of times. Whoever finds a winning hash first broadcasts the block, and the others check it with a single hash. The winner collects the block reward, 3.125 new bitcoins since April 2024, plus the fees of every transaction in the block.
+  </p>
+  <div class="xp-figure" data-widget="mine"></div>
+  <p>
+    The puzzle is the point. Because each block embodies real, verifiable work, the chain with the most work behind it is the one that's hardest to fake, and rewriting history would mean spending all that energy again.
+  </p>
+  <h3>From laptops to warehouses</h3>
+  <ul>
+    <li><b>Hardware:</b> CPUs in 2009, graphics cards from 2010, then from 2013 ASICs, chips that do nothing but SHA-256. A current machine computes a few hundred trillion hashes a second.</li>
+    <li><b>Pools:</b> a lone miner might wait years for a block. Pools combine many miners and share the rewards by the work each contributes, measured by "shares", hashes that meet an easier target.</li>
+    <li><b>Scale:</b> the network as a whole passed about 10<sup>21</sup> hashes a second (a zettahash) in 2025&ndash;26.</li>
+  </ul>
+  <h3>Energy</h3>
+  <p>
+    A 2025 Cambridge survey of the industry put Bitcoin mining's electricity use at about 138 TWh a year, roughly 0.5% of the world's electricity, and found that 52.4% came from sustainable sources (42.6% renewables, 9.8% nuclear), with natural gas at 38.2% and coal at 8.9%. Cambridge's separate live model estimated more, around 175 TWh. Miners chase cheap power: stranded gas, curtailed wind and hydro, and grids like Texas's that pay them to switch off at peak times. Critics point to the emissions, the noise and the electronic waste, and argue the same security could be had far more cheaply (see <a href="#compare">Work versus stake</a>).
+  </p>
+</section>
+
+<section class="xp-topic" id="difficulty" data-title="Difficulty adjustment" data-group="Agreeing without a boss" data-focus="chain" data-next="attack51">
+  <h2>Difficulty adjustment</h2>
+  <p class="xp-lede">How Bitcoin keeps a ten-minute rhythm whether one machine is mining or millions are.</p>
+  <p>
+    Every 2,016 blocks, about two weeks, every node looks at how long those blocks actually took and adjusts the target so the next 2,016 should take two weeks. If blocks came too fast the target gets stricter; too slow, it gets easier, by at most a factor of four. Since everyone runs the same rule on the same data, they all arrive at the same new target without anyone announcing it.
+  </p>
+  <div class="xp-figure" data-widget="difficulty"></div>
+  <p>
+    So adding miners doesn't produce bitcoins any faster; it just raises the difficulty. Today's difficulty means a winning hash turns up roughly once in 6 &times; 10<sup>23</sup> tries. Between adjustments the network is at the mercy of its hash rate: when China banned mining in 2021, about half the network went dark and blocks slowed for weeks until the record downward adjustment, about 28%, on July 3, 2021.
+  </p>
+  <p>
+    The model keeps its own difficulty fixed (set it under <i>More</i>), and its miners' luck is simulated around a ten-second average. When luck says a miner has won, the model then searches for a nonce that really works, which is why the hash rate shown is "in the model" and the count of real hashes keeps climbing.
+  </p>
+</section>
+
+<section class="xp-topic" id="attack51" data-title="51% attacks" data-group="Agreeing without a boss" data-focus="node:mallory" data-next="pos">
+  <h2>51% attacks</h2>
+  <p class="xp-lede">What someone with most of the mining power could do, and, as important, what they couldn't.</p>
+  <p>
+    Whoever controls more than half the hash rate will, given time, out-mine everyone else, so their chain wins. That lets them:
+  </p>
+  <ul>
+    <li><b>Double-spend their own coins:</b> pay someone, wait until the goods are handed over, then publish a longer chain, mined in secret, in which the payment never happened.</li>
+    <li><b>Censor:</b> refuse to include certain transactions, and orphan any block that does.</li>
+    <li><b>Take all the block rewards</b> by orphaning everyone else's blocks.</li>
+  </ul>
+  <p>
+    They can't steal coins from anyone else's address, which would need a signature; can't create coins beyond the reward; and can't change the rules, because every node still rejects invalid blocks however much work is behind them. Mallory, the model's resident villain, can rent hash power and try it.
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="doublespend">Run: double-spend attack</button></div>
+  <p class="xp-note">Set Mallory's hash power and how many confirmations the shop waits for under <i>More</i>. With 45% he sometimes wins against one or two confirmations; with 70% he wins whatever the shop does.</p>
+  <h3>The odds</h3>
+  <p>
+    Below 50%, an attacker can still get lucky, but the chance shrinks exponentially with each confirmation. Section 11 of the Bitcoin white paper works out the probability:
+  </p>
+  <div class="xp-figure" data-widget="race"></div>
+  <h3>In practice</h3>
+  <p>
+    Bitcoin has never suffered one: buying or building half of a zettahash of ASICs, plus the power to run them, would cost many billions, and a successful attack would likely crash the price of the coin the attacker had just invested so much to mine. Smaller proof-of-work coins are another story, because hash power for their algorithms can be rented by the hour. Bitcoin Gold was attacked in May 2018, with about $18 million double-spent against exchanges, and again in 2020; Ethereum Classic was attacked at least twice in August 2020, each time reorganizing thousands of blocks.
+  </p>
+</section>
+
+<section class="xp-topic" id="pos" data-title="Proof of stake" data-group="Agreeing without a boss" data-focus="overview" data-next="finality">
+  <h2>Proof of stake</h2>
+  <p class="xp-lede">Replace burned electricity with money put at risk: the right to add blocks goes to those who lock up coins, and cheating forfeits them.</p>
+  <p>
+    On Ethereum, anyone can become a <b>validator</b> by depositing 32 ether (since May 2025 one validator can hold up to 2,048). Time is divided into 12-second <b>slots</b>. For each slot the protocol picks one validator at random, weighted by stake, to <b>propose</b> a block, using randomness the validators mix in together (called RANDAO). Every validator is also assigned to vote, or <b>attest</b>, once per epoch of 32 slots, for the block it thinks is the head of the chain. Proposers and voters earn newly issued ether and fees; misbehaving ones lose stake.
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="mode:pos">Switch the model to proof of stake</button> <button class="xp-btn" type="button" data-run="mode:pow">Back to proof of work</button></div>
+  <p>
+    In proof-of-stake mode the miners' fans stop, coin stacks show each node's stake, a beam marks each slot's proposer, and gold sparks are attestations flying to the block they vote for. Switching mid-chain is, in miniature, what Ethereum did in <b>The Merge</b> on September 15, 2022, when it moved from proof of work to proof of stake without stopping; its electricity use fell by an estimated 99.95% or more.
+  </p>
+  <div class="xp-figure" data-widget="lottery"></div>
+  <div class="xp-stats">
+    <div class="xp-stat"><b>~43.7M ETH</b><span>staked, about 36% of supply (early October 2026)</span></div>
+    <div class="xp-stat"><b>~865,000</b><span>validators, fewer than before as large stakers consolidate</span></div>
+    <div class="xp-stat"><b>12 s</b><span>per slot; 32 slots per 6.4-minute epoch</span></div>
+  </div>
+  <p>
+    Most people don't run validators themselves. They stake through exchanges or liquid-staking services such as Lido, which issue a token representing the staked ether, so stake is more concentrated than the validator count suggests.
+  </p>
+</section>
+
+<section class="xp-topic" id="finality" data-title="Finality and slashing" data-group="Agreeing without a boss" data-focus="chain" data-next="compare">
+  <h2>Finality and slashing</h2>
+  <p class="xp-lede">Proof of stake can do something proof of work can't: declare a block final, and make undoing it ruinously expensive.</p>
+  <p>
+    At the start of each epoch is a <b>checkpoint</b> block. When validators holding two-thirds of all stake have voted for a checkpoint, it is <b>justified</b>; when the next checkpoint is justified too, the first becomes <b>finalized</b>, about 13 minutes after it was made. In the model, justified blocks get a silver frame and finalized ones a gold frame.
+  </p>
+  <p>
+    Reverting a finalized block would require at least a third of all stake to sign contradictory votes, and contradictory votes are provable. So any such attack would destroy at least a third of all staked ether, tens of billions of dollars. Proof of work never reaches that kind of certainty: a block is just more and more expensive to undo.
+  </p>
+  <h3>Slashing</h3>
+  <p>
+    A validator that signs two different blocks for the same slot, or votes in contradictory ways, is <b>slashed</b>: it loses part of its stake immediately, is forced out of the validator set, and pays a further penalty proportional to how much other stake was slashed around the same time. Isolated mistakes, usually from running the same keys on two machines by accident, cost little; a coordinated attack by a third of all stake would lose all of it.
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="slashing">Run: a validator double-signs</button></div>
+  <h3>The inactivity leak</h3>
+  <p>
+    If more than a third of stake goes offline, nothing can be finalized, though blocks keep coming. Ethereum then slowly drains the stake of the validators that aren't voting until those that are hold two-thirds again, and finality resumes. The chain keeps working even if a big share of validators vanishes, say in a war or a widespread outage.
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="offline">Run: a third goes offline</button></div>
+  <p class="xp-note">The model shrinks Ethereum's timings: 3-second slots, 8-slot epochs, and a much faster leak. Its slashing penalty takes 1/32 of the stake at once, Ethereum's figure until 2025; since then the immediate penalty has been far smaller and the delayed, correlation-based one does most of the work.</p>
+</section>
+
+<section class="xp-topic" id="compare" data-title="Work versus stake" data-group="Agreeing without a boss" data-focus="overview" data-next="supply">
+  <h2>Work versus stake</h2>
+  <p class="xp-lede">Two ways to make influence expensive, with different costs and different weak points.</p>
+  <table class="bc-cmp">
+    <tr><th></th><th>Proof of work (Bitcoin)</th><th>Proof of stake (Ethereum)</th></tr>
+    <tr><td>Security comes from</td><td>Hardware and electricity spent</td><td>Capital locked up and at risk</td></tr>
+    <tr><td>To attack</td><td>Over half the hash rate</td><td>A third to stall finality; two-thirds to finalize a false history</td></tr>
+    <tr><td>If an attack fails</td><td>The attacker loses the energy spent</td><td>The attacker's stake is slashed</td></tr>
+    <tr><td>Finality</td><td>Probabilistic: deeper is safer</td><td>Final after about 13 minutes</td></tr>
+    <tr><td>Electricity</td><td>~138&ndash;175 TWh a year</td><td>A tiny fraction of that; well under 0.01% of Ethereum's old use</td></tr>
+    <tr><td>Joining</td><td>Buy machines and cheap power</td><td>Buy and lock coins</td></tr>
+    <tr><td>Concentration</td><td>Pools, cheap-power regions, a few ASIC makers</td><td>Exchanges and liquid-staking services</td></tr>
+  </table>
+  <p>
+    Proof-of-work advocates argue that its security is anchored in the physical world: an attacker needs real machines and real power, and the chain's history can be checked from the very first block without trusting anyone about which chain is right. Under proof of stake, someone joining after a long absence must get a recent checkpoint from a source they trust (this is called "weak subjectivity"), because old validators who have since withdrawn could cheaply sign a fake history. Proof-of-stake advocates answer that a slashable deposit makes attacks much costlier relative to the security budget, at a sliver of the energy.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- MONEY AND FEES                                                      -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="supply" data-title="New coins and the halving" data-group="Money and fees" data-focus="chain" data-next="fees">
+  <h2>New coins and the halving</h2>
+  <p class="xp-lede">Bitcoin's supply schedule was fixed in 2009 and is enforced by every node.</p>
+  <p>
+    The block reward started at 50 bitcoins and halves every 210,000 blocks, about every four years: to 25 in 2012, 12.5 in 2016, 6.25 in 2020 and 3.125 in April 2024. The next halving is expected around April 2028. The rewards add up to just under 21 million coins, and since a 20-millionth bitcoin was mined in March 2026, only about a million remain to be issued, over the next century or so.
+  </p>
+  <div class="xp-figure" data-widget="supply"></div>
+  <p>
+    As the subsidy shrinks, miners will depend more and more on <a href="#fees">fees</a>. Whether fees alone can pay for enough security is one of Bitcoin's long-term open questions.
+  </p>
+  <p>
+    Not all 21 million will ever be usable. Coins whose keys are lost are gone for good; estimates range from about 2.3 to 4 million bitcoins, including roughly a million mined in 2009&ndash;10 and widely attributed to Satoshi Nakamoto, which have never moved.
+  </p>
+  <h3>Ethereum's supply</h3>
+  <p>
+    Ether has no hard cap. Validators earn newly issued ether, about a million a year at today's level of staking, under 1% of supply, while the base fee on every transaction is destroyed (<a href="#basefee">the burn</a>). For about eighteen months after The Merge, burning outpaced issuance and the supply shrank; since fees fell in 2024 it has been growing slowly.
+  </p>
+</section>
+
+<section class="xp-topic" id="fees" data-title="Fees and the mempool" data-group="Money and fees" data-focus="mempool" data-next="contracts">
+  <h2>Fees and the mempool</h2>
+  <p class="xp-lede">Block space is scarce, so payments bid for it.</p>
+  <p>
+    Each node keeps a <b>mempool</b>, its pile of valid transactions waiting for a block. Miners fill each block with the transactions paying the most per unit of space, the <b>fee rate</b>, measured on Bitcoin in satoshis per virtual byte (a satoshi is a hundred-millionth of a bitcoin). A simple payment is about 140 virtual bytes, so at 5 sat/vB its fee is 700 satoshis. When demand is low, almost any fee gets in; when it spikes, the minimum climbs and cheap transactions wait, sometimes for days, until they're mined or dropped.
+  </p>
+  <div class="xp-figure" data-widget="feemarket"></div>
+  <p>
+    The colours in the 3D mempool are the same fee-rate scale. Wallets estimate the fee needed by looking at the mempool. A stuck payment can be bumped by re-sending it with a higher fee (replace-by-fee), or by spending its output in a new transaction that pays enough for both (child pays for parent).
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="feespike">Run: a fee spike</button></div>
+  <p>
+    Bitcoin's fees have swung from cents to tens of dollars: average fees passed $50 in December 2017, and spiked again around the April 2024 halving when a new token protocol launched. Through 2025 and 2026 they have mostly been low.
+  </p>
+  <h3>Who orders the queue</h3>
+  <p>
+    Whoever builds a block decides the order of the transactions in it, and on Ethereum, where trades with exchanges and lenders sit in the public mempool, order is worth money: a bot that sees your large trade coming can buy just ahead of you and sell just after. This is called <b>MEV</b> (maximal extractable value). Today most Ethereum blocks are assembled by specialized builders who bid to have validators propose them, and users who want to avoid being front-run send their transactions privately.
+  </p>
+</section>
+
+<section class="xp-topic" id="contracts" data-title="Smart contracts" data-group="Money and fees" data-focus="overview" data-next="gas">
+  <h2>Smart contracts</h2>
+  <p class="xp-lede">Ethereum's idea: put programs on the chain, and let every node run them.</p>
+  <p>
+    Bitcoin's scripts can express conditions such as "two of these three keys must sign" or "not before this date". Ethereum, launched in 2015, went further: its accounts can hold code, written for the Ethereum Virtual Machine, and anyone can call that code with a transaction. Every node runs every call and stores the result, so a contract does exactly what its code says, and nobody, including its author, can stop it unless the code allows that.
+  </p>
+  <p>
+    That is the basis of tokens (ERC-20), NFTs (ERC-721), exchanges that trade from pooled funds rather than an order book, lending markets, stablecoins and DAOs, collectively called decentralized finance, or DeFi.
+  </p>
+  <p>
+    The flip side: bugs are as final as everything else. The DAO lost 3.6 million ether to a flaw in 2016; the Ronin bridge lost about $625 million in 2022; and in February 2025 attackers attributed by the FBI to North Korea took about $1.5 billion in ether from the exchange Bybit by tampering with the interface its staff used to approve multisignature transfers. It was the largest theft in crypto's history.
+  </p>
+  <p>
+    Running arbitrary code on thousands of machines raises an obvious problem: what stops a program from looping forever? Computer science says you can't, in general, tell in advance whether a program will stop. Ethereum's answer is to charge for every step: <a href="#gas">gas</a>.
+  </p>
+</section>
+
+<section class="xp-topic" id="gas" data-title="Gas" data-group="Money and fees" data-focus="overview" data-next="basefee">
+  <h2>Gas</h2>
+  <p class="xp-lede">A meter on computation: every operation costs a fixed amount of gas, and you pay for every unit you use.</p>
+  <p>
+    Each instruction the Ethereum Virtual Machine runs has a gas cost: adding two numbers costs 3, reading from storage costs 2,100 the first time, and writing a new value to storage costs 20,000 or more, because every node must keep it forever. A plain transfer of ether costs exactly 21,000. A transaction states the most gas it will use; if it runs out, everything it did is undone but the gas is still paid, which is what stops endless loops and spam.
+  </p>
+  <div class="xp-figure" data-widget="gas"></div>
+  <p>
+    The fee is gas used times the price per unit, quoted in gwei (a billionth of an ether), and that price is the base fee plus an optional tip (next topic). Each block has a gas limit, which validators have raised from 30 million in early 2025 to 60 million in November 2025, so more fits in and fees have fallen. Through 2026 the base fee has usually been well under 1 gwei, so a plain transfer costs a fraction of a cent to a few cents. During the NFT boom of 2021 base fees of 100 gwei or more were common, and a simple trade could cost $50 or more.
+  </p>
+  <table>
+    <tr><th>Operation</th><th class="xp-num">Gas</th></tr>
+    <tr><td>Add or compare two numbers</td><td class="xp-num">3</td></tr>
+    <tr><td>Multiply</td><td class="xp-num">5</td></tr>
+    <tr><td>Hash 32 bytes (Keccak-256)</td><td class="xp-num">36</td></tr>
+    <tr><td>Read a storage slot (first time in the transaction)</td><td class="xp-num">2,100</td></tr>
+    <tr><td>Write a new value to storage</td><td class="xp-num">20,000+</td></tr>
+    <tr><td>Any transaction, before it does anything</td><td class="xp-num">21,000</td></tr>
+  </table>
+  <p>
+    Much of Ethereum's activity has moved to <b>rollups</b> (Arbitrum, Base, Optimism and others), which run transactions off the main chain and post compressed data back to it; their fees are often a hundredth of a cent (see <a href="#scaling">Scaling</a>).
+  </p>
+</section>
+
+<section class="xp-topic" id="basefee" data-title="The base fee and the burn" data-group="Money and fees" data-focus="overview" data-next="wallets">
+  <h2>The base fee and the burn</h2>
+  <p class="xp-lede">Ethereum's fee market has an automatic price that follows demand, and that price is destroyed rather than paid out.</p>
+  <p>
+    Since the London upgrade in August 2021 (proposal EIP-1559), every Ethereum block has a <b>base fee</b> per unit of gas, set by the protocol. Blocks target half of the gas limit. If a block is more than half full, the next block's base fee goes up, by as much as 12.5%; if it is less than half full, it goes down. Users add a small <b>tip</b> for the validator and set a maximum they're willing to pay. The base fee itself is <b>burned</b>: destroyed, not paid to anyone.
+  </p>
+  <div class="xp-figure" data-widget="basefee"></div>
+  <p>
+    The design makes fees predictable, since a wallet can see the base fee and quote it, and the burn means validators can't profit from stuffing blocks with their own transactions to drive up prices. Bitcoin has no equivalent: its fees are a pure auction for each block's space.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- WALLETS                                                             -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="wallets" data-title="Wallets hold keys, not coins" data-group="Wallets and keys" data-focus="node:exchange" data-next="seed">
+  <h2>Wallets hold keys, not coins</h2>
+  <p class="xp-lede">Coins never leave the chain. What a wallet keeps is the ability to sign for them.</p>
+  <p>
+    A "wallet" is software or a device that stores private keys, shows the coins those keys control, and signs transactions. The choices come down to who holds the keys:
+  </p>
+  <ul>
+    <li><b>Custodial:</b> an exchange or app holds the keys and owes you coins, like a bank. Convenient, and you can reset a password, but you depend on it staying solvent and honest. In the model the exchange holds coins for its customers in its own addresses; the chain shows what it has, but not what it owes.</li>
+    <li><b>Hot wallets:</b> apps on a phone or computer that hold your own keys. Easy to use, exposed to malware.</li>
+    <li><b>Hardware wallets:</b> small devices that keep the keys inside and only ever send out signatures; you approve each payment on the device's own screen.</li>
+    <li><b>Multisignature:</b> coins that need, say, two of three keys to move, so losing one key, or having one stolen, isn't fatal.</li>
+  </ul>
+  <h3>Mistakes are final</h3>
+  <p>
+    There are no chargebacks. A payment to a mistyped address, or to a scammer, is gone. The commonest frauds don't break any cryptography; they talk people into sending coins or revealing their recovery phrase: fake support agents, fake wallet apps, and long-running romance and investment scams. No legitimate company will ever ask for your recovery phrase.
+  </p>
+  <p>
+    Losing keys is just as final. A Welsh man has spent more than a decade trying to dig up a hard drive holding about 8,000 bitcoins that went to a landfill in 2013; a British court dismissed his case in January 2025. A programmer in San Francisco holds an encrypted drive with 7,002 bitcoins and two password guesses left. The usual safeguard is the recovery phrase.
+  </p>
+</section>
+
+<section class="xp-topic" id="seed" data-title="Recovery phrases" data-group="Wallets and keys" data-focus="node:ana" data-next="hd">
+  <h2>Recovery phrases</h2>
+  <p class="xp-lede">Twelve or twenty-four ordinary words that can rebuild an entire wallet on any device.</p>
+  <p>
+    Most wallets follow a standard called BIP-39 (2013). The wallet picks 128 random bits (or 256 for 24 words), adds a short checksum taken from their SHA-256 hash, and cuts the result into 11-bit pieces. Each piece is a number from 0 to 2,047, and each number picks a word from a fixed list of 2,048 English words. Write those words down, on paper or stamped in metal, and you can restore the wallet even if every device is lost.
+  </p>
+  <div class="xp-figure" data-widget="mnemonic"></div>
+  <ul>
+    <li><b>The checksum</b> catches nearly every typo or swapped word before any money moves.</li>
+    <li><b>The list</b> is chosen so the first four letters of each word are unique, so a wallet can autocomplete and nobody has to tell "build" from "built".</li>
+    <li><b>The seed:</b> the words are stretched with 2,048 rounds of HMAC-SHA512 (PBKDF2) into a 512-bit seed, from which every key is derived (next topic). The extra rounds make guessing slower.</li>
+    <li><b>An optional passphrase</b>, sometimes called the 25th word, is mixed in at that step. Every passphrase opens a different wallet, which protects a phrase someone finds in a drawer; forgetting it loses the coins for good.</li>
+  </ul>
+  <p>
+    The phrase is the wallet. Anyone who sees it, in a photo, a cloud backup or a password manager that's breached, can take everything. Ethereum wallets use the same standard and the same word list.
+  </p>
+</section>
+
+<section class="xp-topic" id="hd" data-title="One phrase, every address" data-group="Wallets and keys" data-focus="node:ana" data-next="privacy">
+  <h2>One phrase, every address</h2>
+  <p class="xp-lede">A wallet can have thousands of addresses on several blockchains, and the phrase restores them all, because they all grow from the same seed.</p>
+  <p>
+    BIP-32 (2012) describes a <b>hierarchical deterministic</b> wallet: from the seed comes a master key, and from any key, children, by hashing the parent key with an index number. The result is a tree of keys, each found by a path. BIP-44 and its successors fix the layout: m / purpose / coin / account / change / index. Bitcoin's native SegWit addresses live at m/84'/0'/0'/0/<i>n</i>; Ethereum accounts at m/44'/60'/0'/0/<i>n</i>. (The apostrophe marks a "hardened" step, which can only be taken with the private key.)
+  </p>
+  <div class="xp-figure" data-widget="hd"></div>
+  <p>
+    When you restore a phrase, the wallet re-derives the tree and checks the chain for each address in order until it finds twenty unused in a row. This is also why wallets can hand out a fresh address for every payment at no cost: they're all backed up by the same words. And because a "watch-only" wallet can derive the public half of the tree without any private key, a shop's server can generate payment addresses that only an offline machine can spend from.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- PRIVACY                                                             -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="privacy" data-title="Pseudonymous, not anonymous" data-group="Privacy and mixing" data-focus="network" data-next="mixers">
+  <h2>Pseudonymous, not anonymous</h2>
+  <p class="xp-lede">Every Bitcoin payment ever made is public, forever. Addresses carry no names, but patterns give them away.</p>
+  <p>
+    Anyone can read the whole chain. What hides people is that addresses are random-looking strings, but a few simple rules link addresses to each other, and a single link to an identity, such as an exchange that verifies its customers, can then name a whole cluster.
+  </p>
+  <div class="xp-figure" data-widget="graph"></div>
+  <p>
+    Chain-analysis firms such as Chainalysis, Elliptic and TRM Labs apply rules like these to the whole chain, and law enforcement has used them in some of its largest cases: tracing the 2016 Bitfinex hack (about 120,000 bitcoins, mostly recovered in 2022), and dismantling the Welcome to Video child-abuse site in 2019 by following its users' payments. Mistakes that help an analyst include reusing addresses, merging coins from different sources, round amounts, and moving coins at revealing times.
+  </p>
+  <p>
+    Some coins build privacy in. Monero hides senders among decoys, uses one-time addresses and conceals amounts, all by default; Zcash offers optional shielded transactions using zero-knowledge proofs. Many exchanges have delisted them under regulatory pressure.
+  </p>
+</section>
+
+<section class="xp-topic" id="mixers" data-title="Tumblers and mixers" data-group="Privacy and mixing" data-focus="mempool" data-next="zk">
+  <h2>Tumblers and mixers</h2>
+  <p class="xp-lede">Tools to break the trail between where coins came from and where they go, used both for ordinary privacy and for laundering.</p>
+  <h3>Custodial tumblers</h3>
+  <p>
+    The oldest kind is a service that takes in coins from many people and, after a delay, pays out different coins, minus a fee of a few percent, to fresh addresses each customer supplies. The chain shows coins going into the service and other coins coming out, with no link between a particular deposit and withdrawal. But the customer must trust the operator not to keep the coins, and not to keep records. Several have been shut down and their operators prosecuted: Helix, Bitcoin Fog (whose operator was convicted in 2024), and ChipMixer (seized in 2023).
+  </p>
+  <h3>CoinJoin</h3>
+  <p>
+    CoinJoin, proposed by Bitcoin developer Greg Maxwell in 2013, needs no one to hold the coins. Several people build one transaction together: each puts in their own inputs and receives an output of the same standard size, plus their own change, and each signs only their own part, so nobody can steal.
+  </p>
+  <div class="xp-figure" data-widget="coinjoin"></div>
+  <p>
+    The equal outputs are indistinguishable, so each could belong to any participant; that group is the <b>anonymity set</b>, and real rounds use dozens or hundreds of people. Wallets including Wasabi, JoinMarket and Samourai automated it. The operators of Samourai Wallet pleaded guilty in 2025 to running an unlicensed money-transmitting business, after prosecutors said it had moved over $237 million in criminal proceeds, and were sentenced to five and four years in prison. Wasabi's company stopped coordinating CoinJoins in 2024.
+  </p>
+  <p>
+    People mix for many reasons: to keep a salary or donations from being public, to avoid becoming a target for theft (thieves have been known to read the chain), or to keep a business's suppliers and customers private. They are also a standard step in laundering hacks and ransom payments, which is why regulators treat them as they do.
+  </p>
+</section>
+
+<section class="xp-topic" id="zk" data-title="Zero-knowledge pools" data-group="Privacy and mixing" data-focus="mempool" data-next="scaling">
+  <h2>Zero-knowledge pools</h2>
+  <p class="xp-lede">A mixer that is only code: deposits and withdrawals that a mathematical proof connects without revealing which goes with which.</p>
+  <p>
+    Tornado Cash, launched on Ethereum in 2019, takes deposits in fixed sizes (such as 1 or 10 ether). A depositor makes up two secret random numbers, a <i>nullifier</i> and a <i>secret</i>, and deposits their hash, the <b>commitment</b>, which joins a Merkle tree of all commitments. Later, from a fresh address, they withdraw by publishing a <b>zero-knowledge proof</b>: proof that they know the secrets behind one of the commitments in the tree, without revealing which. They also publish the hash of the nullifier, so the same deposit can't be withdrawn twice. A relayer can pay the gas, so the new address doesn't need funding from the old one.
+  </p>
+  <div class="xp-figure" data-widget="zkpool"></div>
+  <p>
+    The anonymity set is every deposit of that size made before the withdrawal. The mathematics doesn't leak, but users do: withdrawing right after depositing, using unusual timing, or sending the money back to a known address undoes the mixing, and analysts exploit exactly those habits.
+  </p>
+  <h3>The law</h3>
+  <p>
+    In August 2022 the U.S. Treasury sanctioned Tornado Cash, saying it had laundered over $7 billion, including hundreds of millions stolen by North Korean hackers. Users challenged the sanctions, and in November 2024 a federal appeals court ruled that Tornado Cash's immutable contracts, which nobody owns or can change, weren't "property" that could be sanctioned; the Treasury lifted the sanctions in March 2025. Its developers were prosecuted separately. Alexey Pertsev was convicted of money laundering in the Netherlands in 2024. In the U.S., a jury convicted Roman Storm in August 2025 of conspiring to run an unlicensed money-transmitting business but deadlocked on the laundering and sanctions charges; a retrial on those is scheduled for April 2027. Whether writing privacy software is speech or facilitation is one of the field's live legal questions.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- SCENARIOS                                                           -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="sc-normal" data-title="An ordinary day" data-group="Scenarios" data-focus="overview" data-next="sc-fork">
+  <h2>An ordinary day</h2>
+  <p>
+    People pay each other at random: coffee from the shop, transfers to and from the exchange, pools paying out to people. Payments spread over the network, wait in the mempool, and get mined about every ten seconds by whichever pool wins the lottery. Send one yourself and follow it in the readouts.
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="normal">Run an ordinary day</button> <button class="xp-btn" type="button" data-run="pay">Send a payment</button></div>
+</section>
+
+<section class="xp-topic" id="sc-fork" data-title="Two blocks at once" data-group="Scenarios" data-focus="chain" data-next="sc-partition">
+  <h2>Two blocks at once</h2>
+  <p>
+    Pool A and Pool D, on opposite sides of the network, each find a block at almost the same moment. Each half of the network sees a different block first and keeps it, so for a few seconds there are two versions of the newest block; the lines from each node show the split. The next block found settles it, and the losing block is orphaned. Natural forks like this are why a single confirmation isn't final. See <a href="#forks">Forks and confirmations</a>.
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="fork">Run it</button></div>
+</section>
+
+<section class="xp-topic" id="sc-partition" data-title="The network splits" data-group="Scenarios" data-focus="overview" data-next="sc-tamper">
+  <h2>The network splits</h2>
+  <p>
+    A broken cable cuts the network into a western half, with 69% of the hash rate, and an eastern half with 31%. Both keep mining, unaware of each other, and build separate chains. When the cable is repaired, the eastern nodes find a chain with more work than theirs and switch to it, undoing every block they mined in the meantime. Payments that were "confirmed" only in the east go back to the mempool.
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="partition">Run it</button></div>
+</section>
+
+<section class="xp-topic" id="sc-tamper" data-title="Rewriting history" data-group="Scenarios" data-focus="chain" data-next="sc-doublespend">
+  <h2>Rewriting history</h2>
+  <p>
+    Mallory pays the shop, waits until the payment is four blocks deep, then edits the block to send the coins back to himself. His naive edit is rejected instantly, shown as a red block beside the original: it breaks his signature, its hash misses the target, and the next block no longer links to it. Done properly, re-signed and re-mined, it becomes a valid block on a branch that is four blocks behind, and with 10% of the hash rate he can only fall further back. See <a href="#immutability">Why history sticks</a>.
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="tamper">Run it</button></div>
+</section>
+
+<section class="xp-topic" id="sc-doublespend" data-title="Double-spend attack" data-group="Scenarios" data-focus="node:mallory" data-next="sc-feespike">
+  <h2>A double-spend attack</h2>
+  <p>
+    Mallory rents hash power and starts mining a secret chain (the faint purple blocks). He pays the shop for a used car and, in his secret chain, sends the same coins to himself instead. Once the shop sees enough confirmations it hands over the car. If Mallory's secret chain is then longer, he publishes it, every node switches, and the shop's payment vanishes. Set his share of the hash rate and the shop's patience under <i>More</i>; the odds are in <a href="#attack51">51% attacks</a>.
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="doublespend">Run it</button></div>
+</section>
+
+<section class="xp-topic" id="sc-feespike" data-title="A fee spike" data-group="Scenarios" data-focus="mempool" data-next="sc-slashing">
+  <h2>A fee spike</h2>
+  <p>
+    Demand jumps sixfold for about forty seconds. Blocks fill up, the mempool swells, and wallets bid higher fee rates to get into the next block: watch the pool's colours warm up. Send a low-fee payment during the rush and see how long it waits. See <a href="#fees">Fees and the mempool</a>.
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="feespike">Run it</button></div>
+</section>
+
+<section class="xp-topic" id="sc-slashing" data-title="A validator double-signs" data-group="Scenarios" data-focus="node:mallory" data-next="sc-offline">
+  <h2>A validator double-signs</h2>
+  <p>
+    The model switches to proof of stake. When Mallory is picked to propose a block, he signs two different ones for the same slot and sends one to each half of the network. The two signatures are proof of cheating; the next proposer includes it, and Mallory is slashed and ejected. See <a href="#finality">Finality and slashing</a>.
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="slashing">Run it</button></div>
+</section>
+
+<section class="xp-topic" id="sc-offline" data-title="A third goes offline" data-group="Scenarios" data-focus="overview" data-next="scaling">
+  <h2>A third goes offline</h2>
+  <p>
+    Pool A and the exchange, 38% of all stake, drop offline. Blocks keep coming, but no checkpoint can gather two-thirds of the votes, so finality stops. The inactivity leak drains the offline validators' stake until those still voting hold two-thirds, and finality resumes. (It takes a couple of minutes; the fast-forward button helps.)
+  </p>
+  <div class="bc-runbar"><button class="xp-btn xp-primary" type="button" data-run="offline">Run it</button></div>
+</section>
+
+<!-- ================================================================== -->
+<!-- BEYOND THE BASE LAYER                                               -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="scaling" data-title="Scaling: Lightning and rollups" data-group="Beyond the chain" data-focus="overview" data-next="model">
+  <h2>Scaling: Lightning and rollups</h2>
+  <p class="xp-lede">A ledger that everyone checks can't also handle everyone's coffee. The answer has been to build layers on top.</p>
+  <p>
+    Every full node processes every transaction, which caps throughput: Bitcoin handles about seven simple payments a second, and Ethereum's main chain a few dozen, against thousands a second on card networks. Raising the limits makes nodes more expensive to run, which means fewer people verify, which undercuts the reason for having a blockchain. This tension is often called the scalability trilemma.
+  </p>
+  <ul>
+    <li><b>Lightning</b> (Bitcoin): two parties lock coins into a shared address on chain, then pay each other by exchanging signed, updated balance sheets off chain, as often as they like; only the opening and closing hit the chain. Channels link into a network, so payments can hop through intermediaries without trusting them.</li>
+    <li><b>Rollups</b> (Ethereum): separate chains that execute transactions off the main chain and post compressed transaction data back to it, along with either a cryptographic proof that the results are correct (zero-knowledge rollups) or a window in which anyone can challenge them (optimistic rollups). Since 2024 Ethereum has offered cheap data "blobs" for them, and the Fusaka upgrade (December 2025) added more room.</li>
+    <li><b>Stablecoins</b>, tokens that a company backs one-for-one with dollars, have become the most used application of all, with a total value in the hundreds of billions of dollars. They are as trustworthy as their issuer, and the United States passed its first law regulating them, the GENIUS Act, in July 2025.</li>
+  </ul>
+</section>
+
+<!-- ================================================================== -->
+<!-- ABOUT                                                               -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="model" data-title="About the model" data-group="About" data-focus="overview" data-next="sources">
+  <h2>About the model</h2>
+  <p>
+    A teaching model, not a working cryptocurrency. Everything runs in your browser (<code>media/blockchain/</code>), with no libraries beyond the 3D view.
+  </p>
+  <ul>
+    <li><b>Cryptography (real):</b> SHA-256, SHA-512, RIPEMD-160, Keccak-256, HMAC and PBKDF2; secp256k1 with ECDSA signatures (deterministic, RFC 6979); Base58Check and Bech32 addresses; BIP-39 phrases and BIP-32 derivation. It was checked against standard test vectors and node's own crypto library, but it has not been audited and is not constant-time. Don't use anything made here to hold real money.</li>
+    <li><b>Network:</b> 14 full nodes on a ring, each linked to its two neighbours on either side, plus four long-distance links. Messages take about 0.35 seconds per hop, far slower relative to block times than on Bitcoin, which makes forks much more common than in reality.</li>
+    <li><b>Transactions:</b> a simplified Bitcoin-like format (inputs referencing earlier outputs, each with a public key and an ECDSA signature over the whole transaction; outputs paying the hash of a public key). Sizes and fee rates follow Bitcoin's for a one-input, two-output payment, about 141 virtual bytes. Each block holds up to 1,800 virtual bytes, about a dozen payments.</li>
+    <li><b>Proof of work:</b> real Bitcoin-style 80-byte headers and double SHA-256 against a target of 16 leading zero bits by default (about 65,000 tries). When a miner's block is due, chosen at random in proportion to its hash share so blocks average ten seconds, the model searches for a nonce for real, a few milliseconds a frame. Fork choice is most total work; ties go to the block a node saw first.</li>
+    <li><b>Proof of stake:</b> modelled on Ethereum but much simplified: 3-second slots, 8-slot epochs; proposers drawn by stake; each validator attests once per epoch; checkpoints justified at two-thirds of stake and finalized by the next justified checkpoint; fork choice is a simplified GHOST; slashing for double proposals; an accelerated inactivity leak. Proposers sign with ECDSA (Ethereum uses BLS).</li>
+    <li><b>Starting point:</b> the model mines its own genesis block, which gives everyone a starting balance, and a short history before you see it. The block reward is 3.125 coins, today's Bitcoin subsidy. Block timestamps run sixty times fast, so ten seconds of the model reads as ten minutes.</li>
+    <li><b>Left out:</b> Bitcoin's scripting language, SegWit's separate witness data, difficulty adjustment in the live model, coinbase maturity, transaction expiry, real peer discovery, Ethereum's account model and virtual machine, MEV, and much else.</li>
+  </ul>
+</section>
+
+<section class="xp-topic" id="sources" data-title="Sources" data-group="About" data-focus="overview">
+  <h2>Sources</h2>
+  <ul>
+    <li>Satoshi Nakamoto, <a href="https://bitcoin.org/bitcoin.pdf">Bitcoin: A Peer-to-Peer Electronic Cash System</a> (2008).</li>
+    <li>Bitcoin Improvement Proposals: <a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki">BIP-32</a>, <a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP-39</a> and its <a href="https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt">English word list</a>, <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">BIP-44</a>, <a href="https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki">BIP-84</a>, <a href="https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki">BIP-50</a> (the March 2013 fork), <a href="https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki">BIP-340</a> (Schnorr signatures).</li>
+    <li>Certicom Research, <a href="https://www.secg.org/sec2-v2.pdf">SEC 2: Recommended Elliptic Curve Domain Parameters</a> (secp256k1); <a href="https://www.rfc-editor.org/rfc/rfc6979">RFC 6979</a>, deterministic ECDSA.</li>
+    <li>Bitcoin Wiki, <a href="https://en.bitcoin.it/wiki/Value_overflow_incident">Value overflow incident</a> (2010).</li>
+    <li>Ethereum: <a href="https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/">proof of stake</a>, <a href="https://ethereum.org/en/developers/docs/gas/">gas and fees</a>, <a href="https://ethereum.org/en/energy-consumption/">energy consumption</a>, <a href="https://ethereum.org/en/history/">history</a>; <a href="https://eips.ethereum.org/EIPS/eip-1559">EIP-1559</a>; <a href="https://eips.ethereum.org/EIPS/eip-7251">EIP-7251</a> (larger validators); opcode costs from <a href="https://www.evm.codes/">evm.codes</a>.</li>
+    <li>Cambridge Judge Business School, <a href="https://jbs.cam.ac.uk/2025/cambridge-study-sustainable-energy-rising-in-bitcoin-mining/">Cambridge study: sustainable energy rising in bitcoin mining</a> (2025); <a href="https://ccaf.io/cbnsi/cbeci">Cambridge Bitcoin Electricity Consumption Index</a>.</li>
+    <li>Ethereum's post-Merge energy, CCRI for ConsenSys, via <a href="https://decrypt.co/109848/ethereum-energy-carbon-footprint-down-99-percent-merge">Decrypt</a> (2022).</li>
+    <li>Mining pools: <a href="https://www.gncrypto.news/news/four-pools-control-over-70-percent-bitcoin-hashrate">GN Crypto</a> (mempool.space data, July 2026); <a href="https://hashrateindex.com/blog/top-10-bitcoin-mining-pools-of-2026/">Hashrate Index</a>. Live data: <a href="https://mempool.space/mining">mempool.space</a>.</li>
+    <li>Staking: The Block, <a href="https://www.theblock.co/post/385541/ethereum-staking-all-time-high">staking at an all-time high</a> and <a href="https://www.theblock.co/post/409780/lido-begins-consolidating-16-billion-worth-of-staked-eth-as-curated-module-v2-rolls-out">Lido's consolidation</a>; <a href="https://cryptobriefing.com/ethereum-validator-count-falls-staked-eth-rises/">Crypto Briefing</a> (October 2026 validator count).</li>
+    <li>The Block, <a href="https://www.theblock.co/post/380687/ethereum-block-gas-limit-fusaka">Ethereum raises block gas limit to 60M</a> (November 2025). Live fees: <a href="https://etherscan.io/gastracker">Etherscan</a>.</li>
+    <li>Difficulty: The Block, <a href="https://www.theblock.co/news/ecosystems/2021-07-19-bitcoin-mining-difficulty-lowest-january-2020-111816">July 2021</a>; <a href="https://hashrateindex.com/blog/the-hashrace-begins-bitcoins-largest/">Hashrate Index</a>.</li>
+    <li>51% attacks: <a href="https://www.bleepingcomputer.com/news/security/hacker-makes-over-18-million-in-double-spend-attack-on-bitcoin-gold-network/">Bitcoin Gold, 2018</a> (Bleeping Computer); <a href="https://www.theblock.co/news/ecosystems/2020-08-06-ethereum-classic-another-51-attack-74130">Ethereum Classic, 2020</a> (The Block).</li>
+    <li>Quantum: Babbush et al., <a href="https://arxiv.org/abs/2603.28846">Securing Elliptic Curve Cryptocurrencies against Quantum Vulnerabilities</a> (2026); The Quantum Insider, <a href="https://thequantuminsider.com/2026/09/08/ionq-estimates-20000-qubit-machine-could-break-bitcoin-secp256k1-26-days/">IonQ's estimate</a> (September 2026).</li>
+    <li>Lost coins: Chainalysis via <a href="https://fortune.com/crypto/2017/11/25/lost-bitcoins">Fortune</a> (2017).</li>
+    <li>Bybit: The Block, <a href="https://www.theblock.co/post/343855/bybit-hackers-half-the-stolen-eth-bitcoin-fbi-confirms-lazarus">FBI confirms North Korea</a> (2025).</li>
+    <li>Mixers: U.S. Attorney's Office, SDNY, <a href="https://www.justice.gov/usao-sdny/pr/founders-samourai-wallet-cryptocurrency-mixing-service-sentenced-five-and-four-years">Samourai Wallet sentencing</a> (2025); Steptoe, <a href="https://www.steptoe.com/en/news-publications/international-compliance-blog/treasury-department-delists-tornado-cash-following-the-fifth-circuits-decision.html">Treasury delists Tornado Cash</a> (2025); The Block, <a href="https://theblock.co/news/regulation/2026-08-26-tornado-cash-roman-storm-retrial-april-2027-412761">Roman Storm's retrial moved to April 2027</a>.</li>
+  </ul>
+</section>
+
+</div><!-- #xp-library -->
+
+<hr class="xp-article-only">
+<h2 id="see_also" class="xp-article-only">See Also</h2>
+<ul class="xp-article-only">
+  <li><a href="powergrid.html">The U.S. Power Grid</a></li>
+</ul>
+
+  </div><!-- .xp-drawer-body -->
+</aside>
+
+<!-- Classic scripts, so the page also works opened straight from disk.
+     main.js loads three.js and the 3D scene itself, once WebGL checks out. -->
+<script src="../js/theme.js"></script>
+<script src="../js/explainer.js"></script>
+<script src="media/blockchain/wordlist.js"></script>
+<script src="media/blockchain/crypto.js"></script>
+<script src="media/blockchain/model.js"></script>
+<script src="media/blockchain/widgets.js"></script>
+<script src="media/blockchain/main.js"></script>
+</body>
+</html>

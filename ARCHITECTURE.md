@@ -397,6 +397,37 @@ generation mix to within about a point.
 - **New topic:** add a section; give it `data-focus` (a key in `scene.js`'s
   `VIEWS`) to aim the camera.
 
+### blockchain specifics (draft: `knowledge/draftblockchain.html`)
+
+A live peer-to-peer network keeping a real, tiny blockchain. Its scripts live in
+`knowledge/media/blockchain/` (named without the `draft` prefix, so publishing
+is only the usual `git mv` of the page):
+
+- `wordlist.js`: the 2,048-word BIP-39 English list as a classic script (a
+  `.txt` can't be fetched from `file://`). Its header records the SHA-256 of
+  the original file.
+- `crypto.js`: SHA-256/512, RIPEMD-160, Keccak-256, HMAC, PBKDF2, secp256k1
+  and ECDSA (RFC 6979), Base58Check and Bech32 addresses, BIP-39 and BIP-32,
+  and Bitcoin-style 80-byte headers with a midstate nonce search. Written for
+  teaching: not audited, not constant-time.
+- `model.js`: 14 nodes, gossip with per-hop delays, UTXO transactions with real
+  signatures, proof-of-work mining (a miner's turn is drawn from its hash share,
+  then a valid nonce is found for real), a simplified Ethereum-style proof of
+  stake, and the scenarios, written as generator scripts that `yield` story
+  beats and waits. Exports to node.
+- `scene.js`, `widgets.js`, `main.js`: as in powergrid. `main.js` sets
+  `Blockchain.app = { model, scene, ctx }` for poking at from the console.
+
+Check it from the command line by `require`-ing `crypto.js` and `model.js`:
+compare hashes, keys and signatures against node's `crypto` module and the
+BIP-39/BIP-32 test vectors (Bitcoin's genesis header must hash to
+`000000000019d668…`), and run the model with a fixed `seed` through every
+scenario, asserting that canonical blocks stay valid and that the coin supply
+equals the genesis allocation plus one block reward per block. Facts and
+figures in the prose (hash rate, staking totals, gas limit, court cases) are
+dated October 2026 and cited in its Sources topic; the mining-pool shares are
+also hard-coded in `widgets.js` (`REG.pools`).
+
 ## Third-party services
 
 Kept to a minimum, and deliberately so:
