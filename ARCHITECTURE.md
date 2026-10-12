@@ -69,15 +69,15 @@ a new page. Every content page follows this shape:
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">                                <!-- always first -->
   <!-- inline flash-free theme script (see below) -->
   <title>Post Title - No Magic Pill</title>
   <link rel="alternate" type="application/rss+xml" ... href="/feed.xml">
   <link rel="stylesheet" type="text/css" href="../css/main.css">
   <link rel="icon" href="../media/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="utf-8">
 </head>
 <body>
 <h3 id="home"><a href="../index.html">Home</a></h3>   <!-- the only nav -->
@@ -188,6 +188,8 @@ run manually; nothing runs them automatically.
 | [knowledge/to_kobo.py](knowledge/to_kobo.py) | Bundles article URLs into one EPUB via `percollate` (external tool). Reads `knowledge/to_read.txt`, which is gitignored. |
 | [knowledge/from_kobo.py](knowledge/from_kobo.py) | The return trip: turns a Kobo `.annot` highlight file into `<blockquote>` blocks to paste into a book's notes on `knowledge/books.html`. Keeps every `<text>` element and discards the rest. |
 | [experiences/add_place.py](experiences/add_place.py) | Geocodes a place via OpenStreetMap Nominatim and writes an entry into the `PLACES` block of `experiences/map.html` (delimited by `PLACES:START` / `PLACES:END` comments). |
+| [charset_first.py](charset_first.py) | Moves `<meta charset>` to be the first thing in `<head>` on every page (or inserts one), leaving the rest of the file byte-for-byte alone. Dry run by default; `--apply` writes. Re-run it after starting pages from an old copy; it lists pages it can't fix (no `<head>`, two `<head>`s). |
+| [lang_and_feed.py](lang_and_feed.py) | Adds `lang="en"` to every `<html>` that declares no language, and removes the `application/atom+xml` feed link (`feed.xml` is RSS 2.0; the `rss+xml` link beside it stays). Dry run by default; `--apply` writes. |
 | `knowledge/media/*/lister.py` | Regenerates `image_widths_heights.json` for the image-gallery pages (`vibes.html`, `nostalgicimages.html`). Needs `pillow` + `pillow-heif`. |
 
 Note: despite the helper, `knowledge/books.html` is currently maintained by hand.
@@ -244,9 +246,7 @@ world; edits there don't generalize.
 - `knowledge/vibes.html`, `knowledge/nostalgicimages.html` — image galleries fed
   by a generated `image_widths_heights.json`.
 - `experiences/map.html` — interactive SVG travel map over `media/worldmap.svg`,
-  with place data in a delimited template literal. (Heads up: this file has a
-  stray duplicated `<!DOCTYPE>`/`<head>` at the top, left over from a copy-paste,
-  with a wrong `<title>`. Browsers ignore it.)
+  with place data in a delimited template literal.
 - `research/media/fabs*/` — small standalone games and simulations (LOTO,
   interlocks, valve, lot prioritization, robot) that posts link out to rather
   than embed.
