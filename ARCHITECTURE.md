@@ -36,13 +36,16 @@ wrangler.toml       Cloudflare static-asset config.
 
 css/main.css        The stylesheet for ~all content pages.
 css/index.css       Homepage-only: two-column layout + hover tooltips.
+css/explainer.css   Explainer shell: app layout + extra tokens (see "Explainers").
 js/theme.js         Dark-mode toggle button.
 js/toc.js           Scroll progress bar, collapsible sections, auto-TOC.
+js/explainer.js     Explainer shell: topic drawer, Explore menu, #hash routing.
+js/vendor/three/    three.js, vendored for explainers. The site's only JS library.
 media/              Site-wide assets (favicons, world map SVG).
 
 thoughts/           Essays and opinion pieces.      (~109 posts, 33 drafts)
 research/           Deep-dive research writeups.    (~23 posts, 24 drafts)
-knowledge/          Reference pages and archives.   (~40 posts, 16 drafts)
+knowledge/          Reference pages, archives, explainers. (~40 posts, 16 drafts)
 training/           Endurance training / fitness.   (~32 posts, 6 drafts)
 experiences/        Travel and event writeups.      (~39 posts, 9 drafts)
 about/              About, Now, Praise, Changelog, and the page template.
@@ -249,6 +252,150 @@ world; edits there don't generalize.
   than embed.
 - `knowledge/links.html` (~844 KB) — the largest page; a flat reverse-chronological
   archive grouped by `<h2 id="month_year">`.
+- Explainers (`knowledge/powergrid.html`, …) — full-screen interactive models.
+  Unlike the pages above they share a shell; see the next section.
+
+## Explainers
+
+Explainers are the interactive subsection of Knowledge: a full-screen live model
+(usually 3D) with the prose in a drawer beside it, where clicking something in
+the model opens the topic that explains it. The first is
+[knowledge/powergrid.html](knowledge/powergrid.html), an interactive U.S. power
+grid. On the site map they are listed in their own group under Knowledge,
+`<h3 id="knowledge_explainers">Explainers</h3>`; publishing one is the usual
+four-file change with its `<li>` added there.
+
+They break the article mold on purpose, but every explainer is built from the
+same pieces, so a new one starts from a known shape rather than from scratch:
+
+```
+knowledge/<name>.html      The page: app chrome, every topic as hand-written HTML, page CSS.
+knowledge/media/<name>/    Its scripts: model, 3D scene, widgets, main (wiring + clock).
+css/explainer.css          Shared shell styles and --xp-* tokens; loaded after main.css.
+js/explainer.js            Shared shell behavior (global Explainer, no dependencies).
+js/vendor/three/           three.js as a classic script, if the explainer is 3D.
+```
+
+**Every explainer works opened straight from disk** (`file://`), like the rest
+of the site: no server, no build. That is why everything is a classic
+`<script>`, never an ES module: browsers refuse to load modules from `file://`.
+Each file wraps itself in a function and publishes what it shares on a global
+(`Explainer`, `THREE`, and one namespace per explainer, e.g. `PowerGrid.sim`).
+
+### The page format
+
+- **Head:** the usual inline flash-free theme script, then a second small
+  inline script that adds `html.xp-booting` (which hides the article while the
+  model loads, with an 8-second backstop that reveals it anyway), `main.css` then
+  `explainer.css`, and any page-specific tokens in an inline `<style>`.
+- **Body ends** with plain `<script src>` tags: `theme.js` (the D/L toggle),
+  `js/explainer.js`, then the explainer's own files with `main.js` last. No
+  `toc.js`: there is no long scroll to track, and the Explore menu replaces the
+  Contents list. `main.js` loads three.js and the 3D scene itself, by inserting
+  script tags, and only once it has seen that WebGL works.
+- **Prose** lives in the page, not in JavaScript, so it stays hand-editable and
+  readable without scripts: one `<section class="xp-topic" id="…">` per topic
+  inside `#xp-library`, which sits in the drawer, `<aside id="xp-drawer">`.
+  Section attributes the shell understands:
+  - `id`: the topic's anchor; `#id` deep-links to it and the back button works.
+  - `data-title`: its name in the menu and breadcrumb.
+  - `data-group`: its menu group; groups appear in order of first use.
+  - `data-next`: the topic suggested at the end. Chaining these gives a guided
+    tour (in powergrid, the "From plant to plug" group follows electricity from
+    generator to outlet).
+
+  A page can add its own `data-*` hooks. powergrid uses `data-focus` (where the
+  camera flies), `data-voltage="on"` (colour the wires by voltage while open),
+  and `data-run` on buttons (start a scenario).
+- **Interactive figures** are empty placeholders, `<div class="xp-figure"
+  data-widget="name">`, that the page's script mounts when the topic opens and
+  destroys when it closes, so only what is on screen runs.
+- **App-only chrome** (stage, HUD, controls) carries `.xp-only`; anything meant
+  only for the plain article carries `.xp-article-only`.
+
+### Progressive enhancement
+
+Without JavaScript or WebGL an explainer is an ordinary main.css article: every
+topic in order under a normal Home / title / postmeta header. `explainer.css`
+hides `.xp-only`, `[data-widget]` and `[data-run]` until `js/explainer.js` stamps
+`html.xp-ready`. The page's boot code loads three.js and builds its 3D scene
+*before* calling `Explainer.init()`, and removes `xp-booting` whichever way it
+goes, so a failure anywhere leaves the article readable. Keep that order. To check the fallback, load the page in an `<iframe sandbox="allow-same-origin">`,
+which blocks its scripts.
+
+### The shell API (`js/explainer.js`, global `Explainer`)
+
+- `Explainer.init({ onOpen(id, section, prevId), onClose(id) })` returns
+  `{ open(id), close(), current, sections, byId }`. It builds the Explore menu
+  (with a filter box) from the sections, shows one topic at a time, keeps
+  `location.hash` and history in sync, opens topics from any `<a href="#id">`
+  or `[data-open="id"]`, and closes on Escape.
+- `Explainer.cssVar(name)`, `.onThemeChange(cb)` and `.isDark()` help canvas
+  drawing follow the theme.
+
+On screens 900px and narrower the drawer becomes a bottom sheet.
+`#theme-toggle` is moved into the top bar, and the drawer header leaves room for
+it.
+
+### Tokens, charts and colour
+
+The site-wide rule holds: no hard-coded colours in the UI. `explainer.css` adds
+`--xp-*` tokens (panels, secondary ink, chart grid and axis, status colours) in
+the same three theme blocks as `main.css`, and a page adds its own the same way
+(powergrid's `--pg-*` technology colours). Canvas widgets read tokens at draw
+time with `cssVar()`; DOM swatches use `var(--…)` so they follow the toggle for
+free. Categorical chart colours were chosen with a colour-blindness validator,
+and the *order* of neighbors in a stack matters as much as the hues. Keep to
+eight hues plus a grey "Other", one y-axis per chart, and status colours (good,
+warning, critical) paired with an icon and a word. A 3D scene may use its own
+naturalistic colours and day/night lighting; the panels around it follow the
+theme.
+
+### three.js (vendored)
+
+The one deliberate exception to "no JS libraries on content pages".
+`js/vendor/three/` holds three.js r186 (npm `three@0.186.1`) as classic scripts
+that define a global `THREE`: `three.global.js`, `OrbitControls.global.js` and
+`BufferGeometryUtils.global.js` (which attach `THREE.OrbitControls` and
+`THREE.BufferGeometryUtils`), plus `LICENSE` (MIT). Nothing loads from a CDN.
+
+three.js stopped publishing a classic build in r160, so
+[js/vendor/three/to_global.py](js/vendor/three/to_global.py) makes one from the
+npm package: it wraps each ES module in a function and turns its import line
+and export list into plain variables, leaving the library code itself
+unchanged. It is a stdlib helper run by hand when upgrading, not a build step;
+its docstring has the steps (download the tarball, check its sha512 against the
+registry's `integrity`, extract, run). Re-test every explainer after an
+upgrade: recent releases removed `PCFSoftShadowMap` and deprecated `Clock`, for
+example. three.js no longer ships minified builds either; the ~2.1 MB file
+compresses to ~420 KB over the wire.
+
+### Checking
+
+Open the `.html` file in a browser; that's all an explainer needs. Keep each
+explainer's model free of the DOM and three.js (powergrid's `sim.js`) and let it
+also export itself to node (`module.exports` when `module` exists), so it can be
+`require`d and sanity-checked from the command line. powergrid's fleet was
+calibrated that way, until a representative year reproduced the real 2025 U.S.
+generation mix to within about a point.
+
+### powergrid specifics
+
+- `sim.js`: the model (an island grid about an eighth of the lower 48, with the
+  national fleet mix), market clearing, frequency dynamics, the scenario recipes
+  with their timed captions ("beats"), and the sourced reference numbers behind
+  the charts. Its numbers also appear in the prose, so when EIA, Lazard or PJM
+  publish a new year, update both places and the Sources topic.
+- `scene.js`: the diorama: terrain, plants, lines and towers, flow particles,
+  weather, labels, picking and camera framings (`VIEWS`). Loaded by `main.js`
+  after three.js.
+- `widgets.js`: every chart and calculator, registered by `data-widget` name.
+- `main.js`: the clock, the HUD and controls, scenario playback, and the wiring
+  between topics, scene and widgets.
+- **New scenario:** append to `SCENARIOS` in `sim.js` (weather, outages, beats),
+  then add an `sc-<id>` topic with a `data-run="<id>"` button.
+- **New topic:** add a section; give it `data-focus` (a key in `scene.js`'s
+  `VIEWS`) to aim the camera.
 
 ## Third-party services
 
@@ -260,3 +407,5 @@ Kept to a minimum, and deliberately so:
 - No fonts, CDNs, analytics, or JS libraries are loaded on content pages. Keep it
   that way; images are downloaded into `media/` rather than hot-linked (see
   `add_book.py`'s comment about having no runtime dependency on Open Library).
+  The one exception is explainers, which load three.js, and only from the copy
+  committed in `js/vendor/three/`, never from a CDN.
