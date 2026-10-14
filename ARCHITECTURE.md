@@ -300,8 +300,9 @@ Each file wraps itself in a function and publishes what it shares on a global
   - `id`: the topic's anchor; `#id` deep-links to it and the back button works.
   - `data-title`: its name in the menu and breadcrumb.
   - `data-group`: its menu group; groups appear in order of first use.
-  - `data-next`: the topic suggested at the end. Chaining these gives a guided
-    tour (in powergrid, the "From plant to plug" group follows electricity from
+  - `data-next`: the topic suggested at the end, and in reverse the
+    "Previous" link of the topic it names (a topic nobody names gets the one
+    before it on the page). Chaining these gives a guided tour (in powergrid, the "From plant to plug" group follows electricity from
     generator to outlet).
 
   A page can add its own `data-*` hooks. powergrid uses `data-focus` (where the
@@ -327,7 +328,8 @@ which blocks its scripts.
 
 - `Explainer.init({ onOpen(id, section, prevId), onClose(id) })` returns
   `{ open(id), close(), current, sections, byId }`. It builds the Explore menu
-  (with a filter box) from the sections, shows one topic at a time, keeps
+  (with a filter box) from the sections, adds a "← Contents" button to the
+  drawer header that reopens it, shows one topic at a time, keeps
   `location.hash` and history in sync, opens topics from any `<a href="#id">`
   or `[data-open="id"]`, and closes on Escape.
 - `Explainer.cssVar(name)`, `.onThemeChange(cb)` and `.isDark()` help canvas
@@ -427,6 +429,51 @@ equals the genesis allocation plus one block reward per block. Facts and
 figures in the prose (hash rate, staking totals, gas limit, court cases) are
 dated October 2026 and cited in its Sources topic; the mining-pool shares are
 also hard-coded in `widgets.js` (`REG.pools`).
+
+### transistors specifics (draft: `knowledge/drafttransistors.html`)
+
+How a MOSFET is made, step by step from sand to a tested package, with the
+cross-section after every step; the device physics; measurement; scaling; and a
+lab. Its scripts live in `knowledge/media/transistors/`. Unlike the other explainers
+its main stage is 2D, so the app runs without WebGL: the head script stamps
+`xp-booting` unconditionally, and only the 3D scenes fall back to a note.
+
+- `physics.js`: the model. `mosCap` solves 1D Poisson–Boltzmann exactly for
+  a MOS capacitor (surface potential, band diagram, charges, LF/HF C–V);
+  `device` is an EKV-style compact model with mobility, velocity saturation,
+  series resistance and short-channel effects from the natural length of
+  planar, FinFET and GAA bodies; plus gate leakage, implant profiles,
+  Deal–Grove, lithography, yield, and the scaling data (`CHIPS`, `NODES`,
+  `CLOCKS`). `PRESETS` are one NMOS per era; their doping or work function was
+  tuned to each era's off current, after which drive currents land within about
+  15% of Intel's published 90, 45 and 22 nm figures. `asType(params, 'p')`
+  makes the matching PMOS. Exports to node.
+- `process.js`: the flow. `STEPS` (54) each carry the tool, conditions, the
+  inline check, a caption, the drawer `topic` that explains it, and either
+  `set` (flags for the cross-section) or `station` (a 3D scene). `geometry()`
+  turns the flags into polygons in nanometres from one table of dimensions,
+  `DIMS.schematic` or `DIMS.true` (a 90 nm-class process), which is how the
+  *True scale* toggle works. Exports to node.
+- `xsection.js`: the SVG stage. Process view (shapes in nm under one
+  transform, labels and annotations in screen pixels, pan/zoom) and device view
+  (a biased transistor or MOS capacitor with depletion, inversion and moving
+  carriers from `physics.js`).
+- `scene.js`: three.js stations for the wafer, test and packaging steps, and
+  one model per transistor generation (`arch-*`). *Cut open* rebuilds each
+  model as its back half, so cut faces are real capped solids.
+- `widgets.js`: every chart and calculator; `main.js`: modes, step card, dock,
+  and the wiring between topics and stage.
+- **Topic attributes:** `data-step` (process mode at that step), `data-device`
+  (`mosfet` or `moscap`, with optional `data-preset` and `data-bias`, e.g.
+  `vg:vdd,vd:0.05`; `vt`, `vdd` and `vfb` are understood), or `data-arch`.
+  The same `data-step`, `data-bias` and `data-arch` on links or buttons inside
+  a topic move the stage without changing topic.
+- **New step:** add it to `STEPS` with its flags, teach `geometry()` to draw
+  them, and name its topic. Check from node that every step builds at both
+  scales with no NaNs (`geometry(stateAt(i), DIMS[k], STEPS[i])`).
+
+Recent facts in the prose (TSMC N2 and A16, Intel 18A, high-NA EUV, Nvidia
+Rubin) are dated October 2026 and cited in its Sources topic.
 
 ## Third-party services
 

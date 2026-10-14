@@ -14,7 +14,9 @@
  *   id           the topic's anchor (#id opens it)
  *   data-title   menu and breadcrumb title (defaults to the first heading)
  *   data-group   menu group; groups appear in order of first use
- *   data-next    id of the topic to suggest next, rendered as a link at the end
+ *   data-next    id of the topic to suggest next, rendered as a link at the end;
+ *                the topic that names a section this way is that section's
+ *                "Previous" link
  *
  * Any <a href="#id"> or [data-open="id"] anywhere on the page opens a topic.
  */
@@ -39,16 +41,36 @@ function initExplainer({ onOpen, onClose } = {}) {
   root.classList.add('xp-ready');
   sections.forEach((s) => { s.hidden = true; });
 
-  // "Next" links at the foot of each topic that names one.
+  // "Previous" and "Next" links at the foot of each topic. Next is the topic
+  // it names; previous is the first topic that names it, so both follow the
+  // same guided tour. A topic that starts a tour falls back to the topic just
+  // before it on the page, so only the first topic has no Previous.
+  const prevOf = new Map();
+  sections.forEach((s) => {
+    const n = s.dataset.next;
+    if (n && byId.has(n) && !prevOf.has(n)) prevOf.set(n, s);
+  });
+  sections.forEach((s, i) => { if (i > 0 && !prevOf.has(s.id)) prevOf.set(s.id, sections[i - 1]); });
   sections.forEach((s) => {
     const next = s.dataset.next && byId.get(s.dataset.next);
-    if (!next) return;
+    const prev = prevOf.get(s.id);
+    if (!next && !prev) return;
     const nav = document.createElement('p');
     nav.className = 'xp-next';
-    nav.innerHTML = '<span></span><a></a>';
-    const link = nav.querySelector('a');
-    link.href = '#' + next.id;
-    link.textContent = 'Next: ' + titleOf(next) + ' →';
+    const left = document.createElement(prev ? 'a' : 'span');
+    if (prev) {
+      left.href = '#' + prev.id;
+      left.className = 'xp-prev-link';
+      left.textContent = '← Previous: ' + titleOf(prev);
+    }
+    nav.appendChild(left);
+    if (next) {
+      const link = document.createElement('a');
+      link.href = '#' + next.id;
+      link.className = 'xp-next-link';
+      link.textContent = 'Next: ' + titleOf(next) + ' →';
+      nav.appendChild(link);
+    }
     s.appendChild(nav);
   });
 
@@ -100,10 +122,26 @@ function initExplainer({ onOpen, onClose } = {}) {
     });
   }
 
+  // "Contents" in the drawer header reopens the Explore menu without leaving
+  // the topic (on wide screens the menu sits beside the drawer).
+  let contentsBtn = null;
+  const head = drawer.querySelector('.xp-drawer-head');
+  if (menu && head) {
+    contentsBtn = document.createElement('button');
+    contentsBtn.type = 'button';
+    contentsBtn.className = 'xp-chip xp-contents';
+    contentsBtn.textContent = '← Contents';
+    contentsBtn.setAttribute('aria-controls', menu.id);
+    contentsBtn.setAttribute('aria-expanded', 'false');
+    head.insertBefore(contentsBtn, head.firstChild);
+    contentsBtn.addEventListener('click', () => setMenu(menu.hidden));
+  }
+
   function setMenu(openState) {
     if (!menu) return;
     menu.hidden = !openState;
     if (menuBtn) menuBtn.setAttribute('aria-expanded', String(openState));
+    if (contentsBtn) contentsBtn.setAttribute('aria-expanded', String(openState));
     if (openState) {
       const s = menu.querySelector('input');
       if (s && window.matchMedia('(pointer: fine)').matches) s.focus();
@@ -159,7 +197,7 @@ function initExplainer({ onOpen, onClose } = {}) {
       if (byId.has(id)) { e.preventDefault(); open(id); }
       return;
     }
-    if (menu && !menu.hidden && !e.target.closest('#xp-menu, #xp-menu-btn')) setMenu(false);
+    if (menu && !menu.hidden && !e.target.closest('#xp-menu, #xp-menu-btn, .xp-contents')) setMenu(false);
   });
 
   // Some browsers refuse pushState on file:// pages; a plain hash change

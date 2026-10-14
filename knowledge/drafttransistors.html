@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Apply saved theme before first paint to avoid a flash. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <!-- Hide the article while the app starts so it doesn't flash first;
+       main.js reveals whichever version won, and this timer is the backstop.
+       The 2D stage needs no WebGL, so this runs for any browser with scripts. -->
+  <script>
+    document.documentElement.classList.add('xp-booting');
+    setTimeout(function () { document.documentElement.classList.remove('xp-booting'); }, 8000);
+  </script>
+  <title>Transistors - No Magic Pill</title>
+  <meta name="description" content="An interactive explainer on the MOSFET: every step of making one, from sand to a packaged chip, with the cross-section after each; the physics of bands, depletion, inversion and threshold; how transistors are measured; how they shrank; and a lab to change one and watch what happens.">
+  <link rel="alternate" type="application/rss+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="stylesheet" type="text/css" href="../css/explainer.css">
+  <link rel="icon" href="../media/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <style>
+    /* Material and chart colours. Cross-section colours follow loose
+       textbook convention (oxide blue, nitride green, poly tan, copper,
+       n-type blue, p-type red); every shape also has a name in its label and
+       tooltip, so colour is never the only cue. Chart series reuse the
+       power-grid explainer's checked palette. Mirrors main.css's three
+       theme blocks. */
+    :root {
+      --tx-si: #c9ccd2; --tx-pw: #e3899a; --tx-nw: #79a9da; --tx-np: #2f6db5; --tx-pp: #c2455c;
+      --tx-ox: #9fd3ea; --tx-ox2: #c3e2ef; --tx-nit: #86c793; --tx-poly: #e3c07f; --tx-npoly: #dc9850; --tx-ppoly: #e9b766;
+      --tx-resist: #b07cc6; --tx-ni: #9aa3ad; --tx-sil: #6e5c80; --tx-tin: #7f8c66; --tx-w: #5d7089;
+      --tx-pmd: #d5e4ee; --tx-lowk: #e6e0c4; --tx-sicn: #6fae8c; --tx-ta: #8b8074; --tx-cu: #d4803f; --tx-al: #b6bec7;
+      --tx-pass: #9fcfa8; --tx-void: #ffffff; --tx-hk: #d8b13e; --tx-mg: #7c8698; --tx-sige: #a1b383;
+      --tx-edge: rgba(0, 0, 0, 0.32); --tx-dep: rgba(40, 40, 40, 0.55); --tx-dep-bg: rgba(255, 255, 255, 0.12);
+      --tx-elec: #1f5fd1; --tx-hole: #d1392f; --tx-ion: #b52f78; --tx-heat: #ff7a1a; --tx-plasma: #8c4fe6; --tx-wet: #2f86d1;
+      --tx-c1: #2a78d6; --tx-c2: #eb6834; --tx-c3: #1baf7a; --tx-c4: #4a3aa7; --tx-c5: #eda100; --tx-c6: #e87ba4;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --tx-si: #5d636c; --tx-pw: #b85468; --tx-nw: #4c84c2; --tx-np: #5e9be6; --tx-pp: #e0677d;
+        --tx-ox: #3e8eae; --tx-ox2: #35667c; --tx-nit: #4f9a5e; --tx-poly: #b48a45; --tx-npoly: #c47a35; --tx-ppoly: #cf9f48;
+        --tx-resist: #9a63b3; --tx-ni: #8a939c; --tx-sil: #9d89b3; --tx-tin: #93a37c; --tx-w: #8098b4;
+        --tx-pmd: #3b5466; --tx-lowk: #67614b; --tx-sicn: #4f8f70; --tx-ta: #8e8378; --tx-cu: #e08d52; --tx-al: #a8b0b8;
+        --tx-pass: #4f9a5e; --tx-void: #121212; --tx-hk: #c9a23a; --tx-mg: #8d97a8; --tx-sige: #8a9d6b;
+        --tx-edge: rgba(255, 255, 255, 0.3); --tx-dep: rgba(235, 235, 235, 0.6); --tx-dep-bg: rgba(0, 0, 0, 0.1);
+        --tx-elec: #6ea8fe; --tx-hole: #ff7d70; --tx-ion: #ff6fae; --tx-heat: #ff8c3a; --tx-plasma: #b388ff; --tx-wet: #5fb0f0;
+        --tx-c1: #3987e5; --tx-c2: #d95926; --tx-c3: #199e70; --tx-c4: #9085e9; --tx-c5: #c98500; --tx-c6: #d55181;
+      }
+    }
+    :root[data-theme="dark"] {
+      --tx-si: #5d636c; --tx-pw: #b85468; --tx-nw: #4c84c2; --tx-np: #5e9be6; --tx-pp: #e0677d;
+      --tx-ox: #3e8eae; --tx-ox2: #35667c; --tx-nit: #4f9a5e; --tx-poly: #b48a45; --tx-npoly: #c47a35; --tx-ppoly: #cf9f48;
+      --tx-resist: #9a63b3; --tx-ni: #8a939c; --tx-sil: #9d89b3; --tx-tin: #93a37c; --tx-w: #8098b4;
+      --tx-pmd: #3b5466; --tx-lowk: #67614b; --tx-sicn: #4f8f70; --tx-ta: #8e8378; --tx-cu: #e08d52; --tx-al: #a8b0b8;
+      --tx-pass: #4f9a5e; --tx-void: #121212; --tx-hk: #c9a23a; --tx-mg: #8d97a8; --tx-sige: #8a9d6b;
+      --tx-edge: rgba(255, 255, 255, 0.3); --tx-dep: rgba(235, 235, 235, 0.6); --tx-dep-bg: rgba(0, 0, 0, 0.1);
+      --tx-elec: #6ea8fe; --tx-hole: #ff7d70; --tx-ion: #ff6fae; --tx-heat: #ff8c3a; --tx-plasma: #b388ff; --tx-wet: #5fb0f0;
+      --tx-c1: #3987e5; --tx-c2: #d95926; --tx-c3: #199e70; --tx-c4: #9085e9; --tx-c5: #c98500; --tx-c6: #d55181;
+    }
+
+    /* ----- Stage ----- */
+    .tx-host, #scene-host { position: absolute; inset: 0; }
+    #scene-host canvas { display: block; width: 100%; height: 100%; }
+    .tx-svg { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+    .tx-svg:active { cursor: grabbing; }
+    .tx-shape { stroke: var(--tx-edge); stroke-width: 0.7; stroke-linejoin: round; }
+    .tx-shape.tx-new { stroke: var(--link); stroke-width: 2.2; }
+    .tx-shape.tx-dash { stroke-dasharray: 5 3; }
+    .tx-shape:hover { stroke: var(--text); stroke-width: 1.6; }
+    .tx-tear { fill: none; stroke: var(--xp-axis); stroke-width: 1.2; }
+    .tx-ion { stroke: var(--tx-ion); stroke-width: 1.4; stroke-dasharray: 7 5; animation: tx-fall 0.55s linear infinite; }
+    .tx-ion.tx-blocked { opacity: 0.45; }
+    .tx-plasma-ion { stroke: var(--tx-plasma); stroke-width: 1.3; stroke-dasharray: 5 4; animation: tx-fall 0.4s linear infinite; opacity: 0.8; }
+    @keyframes tx-fall { to { stroke-dashoffset: -12; } }
+    .tx-heat { animation: tx-pulse 1.6s ease-in-out infinite alternate; }
+    @keyframes tx-pulse { from { opacity: 0.55; } to { opacity: 1; } }
+    .tx-plasma { fill: var(--tx-plasma); opacity: 0.13; }
+    .tx-wet { fill: var(--tx-wet); opacity: 0.2; }
+    .tx-cmpline { stroke: var(--link); stroke-width: 1.6; stroke-dasharray: 7 4; }
+    .tx-pad { fill: var(--xp-ink-3); opacity: 0.45; }
+    .tx-pill rect { fill: var(--xp-panel-solid); stroke: var(--xp-panel-border); }
+    .tx-pill text { font: bold 12px Arial, sans-serif; fill: var(--text); }
+    .tx-pill-ion rect { stroke: var(--tx-ion); }
+    .tx-pill-heat rect { stroke: var(--tx-heat); }
+    .tx-pill-plasma rect { stroke: var(--tx-plasma); }
+    .tx-pill-wet rect { stroke: var(--tx-wet); }
+    .tx-pill-cmp rect, .tx-pill-state rect { stroke: var(--link); }
+    .tx-pill-current rect { stroke: var(--tx-elec); }
+    .tx-label line { stroke: var(--xp-ink-2); stroke-width: 1; }
+    .tx-label circle { fill: var(--xp-ink-2); }
+    .tx-label rect { fill: var(--xp-panel); stroke: var(--xp-panel-border); }
+    .tx-label text { font: 12px Arial, sans-serif; fill: var(--text); }
+    .tx-label-new rect { stroke: var(--link); }
+    .tx-label-new text { font-weight: bold; }
+    .tx-scalebar { stroke: var(--text); stroke-width: 2; }
+    .tx-scaletext { font: 12px Arial, sans-serif; fill: var(--xp-ink-2); }
+    .tx-dep { fill: url(#tx-hatch); stroke: var(--tx-dep); stroke-dasharray: 5 4; stroke-width: 1.1; }
+    .tx-inv-e { fill: var(--tx-elec); opacity: 0.8; }
+    .tx-inv-h { fill: var(--tx-hole); opacity: 0.8; }
+    .tx-carriers-e circle { fill: var(--tx-elec); }
+    .tx-carriers-h circle { fill: var(--tx-hole); }
+    .tx-wire { stroke: var(--xp-ink-2); stroke-width: 1.5; }
+    .tx-term { fill: var(--xp-panel-solid); stroke: var(--text); stroke-width: 1.5; }
+    .tx-termtext { font: bold 12px Arial, sans-serif; fill: var(--text); }
+    .tx-fallback { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0 24px; color: var(--xp-ink-2); text-align: center; }
+    .tx3d-label { pointer-events: none; }
+
+    /* ----- Step card (top left) ----- */
+    .tx-card {
+      position: fixed; top: 102px; left: 12px; width: 300px; z-index: 20;
+      padding: 9px 13px 11px; font-size: 0.86em; line-height: 1.4;
+      max-height: calc(100dvh - 102px - 150px); overflow-y: auto;
+    }
+    .tx-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.85em; color: var(--xp-ink-3); text-transform: uppercase; letter-spacing: 0.05em; }
+    .tx-card-head span:first-child { color: var(--link); font-weight: bold; }
+    .tx-card h2 { font-size: 1.12em; line-height: 1.25; margin: 4px 0 4px; }
+    .tx-card p { margin: 0 0 7px; }
+    .tx-card dl { margin: 0 0 6px; }
+    .tx-card dt { color: var(--xp-ink-3); font-size: 0.86em; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 5px; }
+    .tx-card dd { margin: 0; color: var(--xp-ink-2); }
+    .tx-iconbtn { font: inherit; color: var(--xp-ink-2); background: none; border: 1px solid var(--xp-panel-border); border-radius: 6px; padding: 0 7px; cursor: pointer; line-height: 1.6; }
+    .tx-card.collapsed .tx-card-body { display: none; }
+    .tx-card.collapsed .tx-iconbtn { transform: rotate(-90deg); }
+
+    /* ----- Dock ----- */
+    .tx-dock { display: block; }
+    .tx-dock-row { display: flex; align-items: flex-end; gap: 10px 16px; flex-wrap: wrap; }
+    .tx-transport { display: flex; align-items: center; gap: 5px; flex: none; }
+    .tx-transport output { font-variant-numeric: tabular-nums; font-size: 0.8em; color: var(--xp-ink-2); min-width: 46px; text-align: center; }
+    .tx-transport .xp-chip, .tx-transport .xp-btn { min-width: 34px; }
+    .tx-timeline { flex: 1 1 320px; display: flex; gap: 4px; min-width: 0; }
+    .tx-seg { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .tx-seg-name { font-size: 0.68em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--xp-ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tx-ticks { display: flex; gap: 2px; height: 20px; }
+    .tx-tick { flex: 1; min-width: 3px; border: none; padding: 0; border-radius: 3px; background: var(--xp-track); cursor: pointer; }
+    .tx-tick.done { background: var(--xp-axis); }
+    .tx-tick[aria-current="true"] { background: var(--link); }
+    .tx-tick:hover { outline: 2px solid var(--link); outline-offset: 0; }
+    .tx-viewbtns { display: flex; gap: 5px; flex: none; flex-wrap: wrap; }
+    .tx-devname { display: flex; flex-direction: column; gap: 4px; flex: none; }
+    .tx-devname b { font-size: 0.86em; }
+    .tx-dock-row .xp-field { flex: 1 1 180px; }
+    .tx-devkv { display: flex; gap: 14px; margin: 0; font-size: 0.82em; flex: none; }
+    .tx-devkv div { display: flex; flex-direction: column; }
+    .tx-devkv dt { color: var(--xp-ink-3); font-size: 0.9em; }
+    .tx-devkv dd { margin: 0; font-weight: bold; font-variant-numeric: tabular-nums; }
+    .tx-dock .xp-controls { margin: 0; }
+
+    /* ----- Topic furniture ----- */
+    .tx-eq { font-family: Georgia, 'Times New Roman', serif; font-size: 1.08em; text-align: center; margin: 0.8em 0; padding: 6px 4px; background: var(--muted-bg); border-radius: 6px; overflow-x: auto; }
+    .tx-eq i { font-style: italic; }
+    details.tx-deep { border: 1px solid var(--xp-panel-border); border-radius: 8px; padding: 6px 12px; margin: 1em 0; }
+    details.tx-deep > summary { cursor: pointer; font-weight: bold; color: var(--link); }
+    details.tx-deep[open] > summary { margin-bottom: 6px; }
+    .tx-steps { padding-left: 1.4em; }
+    .tx-steps li { margin: 3px 0; }
+    .tx-steps a { cursor: pointer; }
+    .tx-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin: 8px 0; }
+    .tx-grid-tight { gap: 8px; }
+    .tx-readouts { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px 14px; margin: 10px 0 4px; font-size: 0.84em; }
+    .tx-readouts dt { color: var(--xp-ink-3); font-size: 0.9em; }
+    .tx-readouts dd { margin: 0; font-weight: bold; font-variant-numeric: tabular-nums; }
+    .tx-table { font-size: 0.84em; }
+    .tx-table td.tx-bad { color: var(--xp-critical); font-weight: bold; }
+    .tx-table .tx-dim { color: var(--xp-ink-3); }
+    .tx-lsw { display: inline-block; width: 16px; height: 3px; border-radius: 2px; background: var(--sw); }
+    .tx-lsw-dash { background: repeating-linear-gradient(90deg, var(--sw) 0 5px, transparent 5px 8px); }
+    .tx-lab-head { margin-bottom: 4px; }
+    .tx-details summary { cursor: pointer; font-size: 0.82em; color: var(--xp-ink-2); }
+    .tx-warn { border-left-color: var(--xp-warn-mark); }
+    .tx-runbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 0.8em 0; }
+    html:not(.xp-ready) .tx-runbar { display: none; }
+    .xp-figure .xp-field { margin: 4px 0; }
+
+    /* ----- Narrow screens ----- */
+    @media (max-width: 900px) {
+      .tx-card { top: 58px; left: 8px; right: 8px; width: auto; max-height: 34dvh; padding: 6px 10px 8px; }
+      .tx-card:not(.expanded-mobile) .tx-card-body { display: none; }
+      .tx-card.expanded-mobile .tx-card-body { display: block; }
+      .tx-timeline { flex-basis: 100%; order: 3; }
+      .tx-seg-name { font-size: 0.6em; }
+      .tx-grid2 { grid-template-columns: 1fr; }
+      html.xp-ready.xp-drawer-open .xp-labels { display: none; }
+    }
+    @media (max-height: 640px) {
+      .xp-title p { display: none; }
+      .tx-card { top: 74px; }
+    }
+  </style>
+
+</head>
+
+<body>
+
+<!-- ===== App chrome (shown once js/explainer.js has started) ===== -->
+
+<div id="stage" class="xp-stage xp-only">
+  <div id="xs-host" class="tx-host"></div>
+  <div id="scene-host" hidden></div>
+</div>
+<div id="scene-fallback" class="tx-fallback xp-only" hidden><p id="scene-fallback-text"></p></div>
+<div id="labels3d" class="xp-labels xp-only"></div>
+
+<header class="xp-topbar xp-only">
+  <div class="xp-panel xp-title">
+    <a class="xp-home" href="../index.html">&larr; Home</a>
+    <h1>Transistors</h1>
+    <p>How a MOSFET is made, how it works, how it is tested, and how it shrank.</p>
+  </div>
+  <button id="xp-menu-btn" class="xp-btn" type="button" aria-expanded="false" aria-controls="xp-menu">Explore &#9776;</button>
+</header>
+
+<nav id="xp-menu" class="xp-panel xp-menu xp-only" aria-label="Topics" hidden></nav>
+
+<section id="card" class="xp-panel tx-card xp-only" aria-label="Process step" aria-live="polite">
+  <div class="tx-card-head">
+    <span id="card-phase"></span>
+    <span id="card-count"></span>
+    <button id="card-toggle" class="tx-iconbtn" type="button" aria-expanded="true" aria-label="Show or hide step details">&#9662;</button>
+  </div>
+  <h2 id="card-title"></h2>
+  <div class="tx-card-body">
+    <p id="card-text"></p>
+    <dl>
+      <dt>Done with</dt><dd id="card-tool"></dd>
+      <dt>Conditions</dt><dd id="card-cond"></dd>
+      <dt>Checked by</dt><dd id="card-check"></dd>
+    </dl>
+    <button id="card-more" class="xp-chip" type="button"></button>
+  </div>
+</section>
+
+<div id="dock" class="xp-panel xp-dock tx-dock xp-only" aria-label="Controls">
+  <div id="dock-process" class="tx-dock-row">
+    <div class="tx-transport" role="group" aria-label="Process steps">
+      <button id="prev" class="xp-chip" type="button" aria-label="Previous step" title="Previous step (left arrow)">&#9664;</button>
+      <button id="play" class="xp-btn xp-primary" type="button" aria-label="Play through the steps">&#9654;</button>
+      <button id="next" class="xp-chip" type="button" aria-label="Next step" title="Next step (right arrow)">&#9654;</button>
+      <output id="step-out"></output>
+    </div>
+    <div id="timeline" class="tx-timeline" aria-label="All steps"></div>
+    <div id="dock-view" class="tx-viewbtns">
+      <button id="tg-labels" class="xp-chip" type="button" title="Which labels to show">Labels: all</button>
+      <button id="tg-scale" class="xp-chip" type="button" aria-pressed="false" title="Draw every film at its real thickness">True scale</button>
+      <button id="tg-fit" class="xp-chip" type="button" title="Zoom to fit (or double-click the drawing)">Fit</button>
+    </div>
+  </div>
+  <div id="dock-device" class="tx-dock-row" hidden>
+    <div class="tx-devname">
+      <b id="dev-name"></b>
+      <div class="xp-controls">
+        <button class="xp-chip" type="button" data-dtype="n" aria-pressed="true">NMOS</button>
+        <button class="xp-chip" type="button" data-dtype="p" aria-pressed="false">PMOS</button>
+        <button class="xp-chip" type="button" data-dvariant="mosfet" aria-pressed="true">Transistor</button>
+        <button class="xp-chip" type="button" data-dvariant="moscap" aria-pressed="false">MOS capacitor</button>
+      </div>
+    </div>
+    <div class="xp-field" id="f-vg">
+      <label for="k-vg"><span>Gate voltage V<sub>G</sub></span> <output id="k-vg-out">0 V</output></label>
+      <input type="range" id="k-vg" min="-2" max="2" step="0.01" value="1">
+    </div>
+    <div class="xp-field" id="f-vd">
+      <label for="k-vd"><span>Drain voltage V<sub>D</sub></span> <output id="k-vd-out">0 V</output></label>
+      <input type="range" id="k-vd" min="0" max="1.5" step="0.01" value="0.5">
+    </div>
+    <dl class="tx-devkv">
+      <div><dt>Threshold</dt><dd id="dev-vt"></dd></div>
+      <div><dt>Flat band</dt><dd id="dev-vfb"></dd></div>
+      <div><dt>Surface ψ<sub>s</sub></dt><dd id="dev-psi"></dd></div>
+    </dl>
+  </div>
+  <div id="dock-arch" class="tx-dock-row" hidden>
+    <div class="xp-controls" role="group" aria-label="Transistor generation">
+      <button class="xp-chip" type="button" data-archbtn="planar">Planar</button>
+      <button class="xp-chip" type="button" data-archbtn="strain">Strained</button>
+      <button class="xp-chip" type="button" data-archbtn="hkmg">High-k metal gate</button>
+      <button class="xp-chip" type="button" data-archbtn="finfet">FinFET</button>
+      <button class="xp-chip" type="button" data-archbtn="gaa">Gate-all-around</button>
+      <button class="xp-chip" type="button" data-archbtn="bspdn">Backside power</button>
+      <button class="xp-chip" type="button" data-archbtn="cfet">CFET</button>
+    </div>
+    <button id="tg-cut" class="xp-chip" type="button" aria-pressed="false">Cut open</button>
+  </div>
+</div>
+
+<div id="tip" class="xp-tip xp-only" hidden></div>
+
+<!-- ===== The explainer. Without JavaScript this is the whole page. ===== -->
+
+<aside id="xp-drawer" class="xp-drawer" aria-label="Explainer" aria-hidden="true">
+  <div class="xp-drawer-head xp-only">
+    <span class="xp-crumb"></span>
+    <button class="xp-btn xp-close" type="button" aria-label="Close the explainer">Close &#10005;</button>
+  </div>
+  <div class="xp-drawer-body">
+
+<header class="xp-article-only">
+  <h3 id="home"><a href="../index.html">Home</a></h3>
+  <h1 id="transistors">Transistors</h1>
+  <p class="postmeta">
+    <span class="pub">Published <time datetime=""></time></span>
+  </p>
+  <p>
+    How a MOSFET is made, how it works, how it is tested, and how it shrank. This page is an interactive model with a live cross-section and 3D scenes; you are reading its text version, which appears when JavaScript is unavailable.
+  </p>
+</header>
+
+<div id="xp-library">
+
+<!-- ================================================================== -->
+<!-- START                                                               -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="overview" data-title="Start here" data-group="Start" data-step="wcmp" data-next="what">
+  <h2>A transistor, from sand to socket</h2>
+  <p class="xp-lede">
+    A switch with no moving parts, made by the trillion, each one built in a few hundred steps on a slice of the purest crystal people make.
+  </p>
+  <p>
+    The drawing beside this text is a cross-section through two transistors, as if the chip had been sawn in half and looked at edge-on under an electron microscope. On the left is an <b>NMOS</b> transistor, which conducts with electrons; on the right a <b>PMOS</b>, which conducts with holes. Wired together they make an inverter, the simplest logic gate and the building block of CMOS, the technology in essentially every processor and memory chip made today.
+  </p>
+  <div class="xp-stats">
+    <div class="xp-stat"><b>10<sup>21</sup>+</b><span>transistors made every year, mostly in memory: the most-produced manufactured object by far</span></div>
+    <div class="xp-stat"><b>336 billion</b><span>in one Nvidia Rubin GPU (two dies, 2026)</span></div>
+    <div class="xp-stat"><b>~1,000</b><span>process steps for a leading-edge chip, over about three months</span></div>
+    <div class="xp-stat"><b>1.6 nm</b><span>gate oxide in the process drawn here: about eight atoms</span></div>
+  </div>
+  <h3>How to use it</h3>
+  <ul>
+    <li><b>Step through the process</b> with the arrows at the bottom (or your arrow keys), or press play. The timeline is split into making the wafer, the front end (the transistors), contacts, the back end (the wiring), and test and packaging. Steps that happen at the scale of a whole crystal or package switch to a 3D scene.</li>
+    <li><b>After every step</b> the cross-section redraws, and whatever that step added or changed is outlined. The card at the top left says what tool did it, under what conditions, and what is measured afterwards to check it.</li>
+    <li><b>Hover</b> any layer for its name and real size. <b>Drag</b> to pan, <b>scroll or pinch</b> to zoom, <b>double-click</b> to fit. <i>True scale</i> redraws every film at its real thickness: the gate oxide nearly vanishes.</li>
+    <li><b>Explore</b> (top right) lists every topic: the process, the physics of how a transistor switches, how transistors are measured, the toolbox of unit processes, how they shrank over sixty years, and a <a href="#lab">lab</a> where you can build your own and watch it misbehave.</li>
+  </ul>
+  <p class="xp-note">The process drawn is a planar CMOS flow of the 130–90 nm era (around 2001–2004): shallow trench isolation, twin wells, a polysilicon gate on 1.6 nm of oxynitride, nickel silicide, tungsten contacts and copper wiring. It is the last generation that can be drawn honestly in two dimensions, and nearly every later trick (strain, high-k, FinFETs, nanosheets) is a modification of it, covered under <a href="#moore">Scaling</a>.</p>
+</section>
+
+<section class="xp-topic" id="what" data-title="What a transistor does" data-group="Start" data-device="mosfet" data-preset="nm130" data-bias="vg:vdd,vd:vdd" data-next="polysilicon">
+  <h2>What a transistor does</h2>
+  <p class="xp-lede">A voltage on one terminal decides whether current can flow between the other two.</p>
+  <p>
+    A MOSFET (metal–oxide–semiconductor field-effect transistor) has four terminals. Current flows between the <b>source</b> and the <b>drain</b> through a thin layer at the silicon surface called the <b>channel</b>. Above the channel, separated from it by an insulator a few atoms thick, sits the <b>gate</b>. The fourth terminal, the <b>body</b>, is the silicon underneath.
+  </p>
+  <p>
+    In an NMOS transistor the body is p-type silicon, full of positive "holes" and nearly empty of free electrons, while the source and drain are n-type, full of electrons. With the gate at zero volts, an electron leaving the source meets a wall of p-type silicon and goes nowhere: the switch is off. Put a positive voltage on the gate and its electric field reaches through the oxide, pushes holes away from the surface and pulls electrons in. Past a certain gate voltage, the <b>threshold voltage</b>, the surface holds more electrons than holes. It has been turned into n-type silicon, an <i>inversion layer</i>, and the source and drain are joined by a conducting channel. The switch is on.
+  </p>
+  <p>
+    The stage now shows one NMOS transistor, live. Drag the gate and drain voltages at the bottom: below threshold the channel disappears and only a trickle of electrons crosses; above it, electrons stream from source to drain. Raise the drain voltage and the channel thins toward the drain until it <i>pinches off</i> and the current stops growing: saturation.
+  </p>
+  <div class="tx-runbar">
+    <button class="xp-chip" type="button" data-bias="vg:0,vd:vdd">Gate at 0 V: off</button>
+    <button class="xp-chip" type="button" data-bias="vg:vdd,vd:0.1">Gate on, drain low: linear</button>
+    <button class="xp-chip" type="button" data-bias="vg:vdd,vd:vdd">Gate on, drain high: saturated</button>
+  </div>
+  <p>
+    Billions of these switches, wired so that each one's output drives others' gates, are a processor. The rest of this page is how they are made and why they behave the way they do.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- MAKING THE WAFER                                                    -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="polysilicon" data-title="Sand to polysilicon" data-group="Making the wafer" data-step="sand" data-next="czochralski">
+  <h2>Sand to polysilicon</h2>
+  <p class="xp-lede">Silicon is the second most common element in the Earth's crust. Getting it pure enough is the hard part.</p>
+  <p>
+    The starting point is quartz, silicon dioxide. In a submerged-arc furnace, quartz and carbon (coke, coal, wood chips) are heated to about 2,000 °C and the carbon pulls the oxygen off as CO, leaving <b>metallurgical-grade silicon</b> about 98–99% pure. Most of it goes into aluminium alloys and silicones. For chips, one part per hundred of iron and aluminium is a disaster: a single metal atom in a million can ruin a transistor.
+  </p>
+  <p>
+    So the silicon is turned into a liquid that can be distilled. Ground and reacted with hydrogen chloride, it becomes <b>trichlorosilane</b> (SiHCl<sub>3</sub>), which boils at 32 °C. Distillation columns strip out the impurities, each of which forms a chloride with a different boiling point. In the <b>Siemens process</b>, the purified gas flows with hydrogen into a bell-jar reactor over thin silicon rods heated electrically to about 1,100 °C, and silicon deposits back onto them:
+  </p>
+  <p class="tx-eq">SiHCl<sub>3</sub> + H<sub>2</sub> → Si + 3 HCl</p>
+  <p>
+    Over several days the rods grow to the thickness of a forearm. Broken up, they are <b>electronic-grade polysilicon</b>: 99.999999999% pure, "eleven nines," with impurities in parts per trillion. It is polycrystalline, though: a jumble of tiny crystals. A transistor needs one perfect crystal.
+  </p>
+  <div class="xp-stats">
+    <div class="xp-stat"><b>~98–99%</b><span>metallurgical-grade silicon from the arc furnace</span></div>
+    <div class="xp-stat"><b>9–11 nines</b><span>electronic-grade polysilicon</span></div>
+    <div class="xp-stat"><b>~10<sup>15</sup></b><span>boron atoms per cm³ deliberately added later, about one per 50 million silicon atoms</span></div>
+  </div>
+</section>
+
+<section class="xp-topic" id="czochralski" data-title="Growing the crystal" data-group="Making the wafer" data-step="cz" data-next="slicing">
+  <h2>Growing the crystal: the Czochralski method</h2>
+  <p class="xp-lede">Dip a seed into the melt and pull it out slowly enough, and the melt freezes onto it as one crystal.</p>
+  <p>
+    Jan Czochralski found the method by accident in 1916, dipping his pen into a crucible of molten tin instead of his inkwell. Gordon Teal and John Little at Bell Labs used it in 1950 to grow single crystals of germanium and then silicon, and it now makes over 90% of the world's silicon wafers.
+  </p>
+  <p>
+    Chunks of polysilicon, plus a measured pinch of boron to make the crystal p-type, are melted at 1,414 °C in a quartz crucible held in a graphite susceptor, under argon. A small seed crystal, cut so its atomic planes face a chosen direction (usually ⟨100⟩), is lowered until it touches the melt, then drawn upward while seed and crucible rotate in opposite directions. Atoms in the melt freeze onto the seed in its exact lattice positions. The steps, which you can play on the stage:
+  </p>
+  <div class="xp-figure" data-widget="czphases"></div>
+  <p>
+    The trick that made large crystals perfect is the <b>neck</b>. The thermal shock of touching the seed to the melt creates dislocations, lines of misplaced atoms that would otherwise run the whole length of the crystal. William Dash at General Electric showed in 1959 that pulling a thin neck, only a few millimetres across, lets those dislocations grow out sideways and vanish at the surface. Every crystal since starts with one.
+  </p>
+  <h3>What the melt leaves behind</h3>
+  <p>
+    A dopant does not freeze into the crystal at the concentration it has in the melt. Each has a <i>segregation coefficient</i> <i>k</i>, the ratio of the two: boron's is about 0.8, phosphorus's 0.35. Because most of the dopant stays behind, the melt gets richer as the crystal grows, and so does the crystal. Boron's coefficient is closest to 1, which makes boron-doped wafers the most uniform.
+  </p>
+  <div class="xp-figure" data-widget="segregation"></div>
+  <p>
+    The quartz crucible also slowly dissolves, so Czochralski silicon holds around 10<sup>17</sup>–10<sup>18</sup> oxygen atoms per cm³. That is not all bad: oxygen stiffens the wafer against warping in hot furnaces, and when it clumps into precipitates deep in the wafer they trap stray metal atoms away from the surface, a trick called internal gettering. Crystals for power devices that cannot tolerate oxygen are grown crucible-free by the <i>float-zone</i> method instead.
+  </p>
+  <details class="tx-deep"><summary>Deeper: pull rate, defects, and magnets</summary>
+    <p>A growing crystal traps a few of the atomic vacancies and self-interstitials that exist in hot silicon. Which kind wins depends on Voronkov's ratio of pull speed <i>v</i> to the temperature gradient <i>G</i> at the interface: too fast and vacancies cluster into tiny voids (crystal-originated particles, "COPs") that pit the polished surface; too slow and interstitials form dislocation loops. Modern pullers hold <i>v</i>/<i>G</i> in a narrow window to grow "perfect" silicon with neither. For 300 mm crystals, a strong magnetic field (MCZ) also damps convection in the conducting melt, steadying temperature and oxygen.</p>
+    <p>A 300 mm crystal is about two metres long and weighs a few hundred kilograms; at roughly 0.5–1 mm per minute, the body alone takes a day or two to grow.</p>
+  </details>
+</section>
+
+<section class="xp-topic" id="slicing" data-title="Shaping and slicing" data-group="Making the wafer" data-step="shape" data-next="polishing">
+  <h2>Shaping and slicing</h2>
+  <p class="xp-lede">A cylinder, a notch, and a saw that cuts a crystal into hundreds of slices at once.</p>
+  <ol class="tx-steps">
+    <li><a data-step="shape">Crop, grind and notch.</a> The cone-shaped crown and tail are cut off, and the body, grown slightly oversize and a little wavy, is ground to exactly 300 mm. The resistivity is checked along its length, because of the dopant segregation above. An X-ray diffractometer finds the crystal planes, and a small notch is ground along the side to mark one direction (⟨110⟩ on a ⟨100⟩ wafer). Every lithography and wafer-handling tool will later line up to that notch; older, smaller wafers used a flat instead.</li>
+    <li><a data-step="slice">Slice.</a> A multi-wire saw winds a single steel wire, thinner than a hair, hundreds of times around grooved rollers to make a web of parallel strands. The wire runs at about 10 m/s, carrying abrasive slurry or coated with diamond grit, while the ingot, glued to a beam, is pressed slowly down through it. One pass cuts the whole ingot into slices a little under a millimetre thick.</li>
+  </ol>
+  <p>
+    Every cut costs a <b>kerf</b> about as wide as the wire plus its abrasive, roughly 150–200 µm, so about a sixth of the crystal becomes sludge. Grinding and polishing will take more.
+  </p>
+</section>
+
+<section class="xp-topic" id="polishing" data-title="The finished wafer" data-group="Making the wafer" data-step="polish" data-next="cleaning">
+  <h2>The finished wafer</h2>
+  <p class="xp-lede">Flat, clean, and almost perfect, before a single transistor is made.</p>
+  <p>
+    Sawn slices are rough and damaged a few tens of micrometres deep. The edges are ground to a rounded profile (sharp edges chip, and chips become particles). Both faces are ground or lapped flat, the damaged layer is etched away chemically, and both faces are polished. A final chemical-mechanical polish leaves the front surface smooth to a few atoms.
+  </p>
+  <div class="xp-stats">
+    <div class="xp-stat"><b>300 mm</b><span>diameter, the standard since about 2001 (before that 200 mm)</span></div>
+    <div class="xp-stat"><b>775 µm</b><span>thick: enough to survive a thousand handling steps</span></div>
+    <div class="xp-stat"><b>~10s of nm</b><span>height variation across a chip-sized patch of the surface</span></div>
+    <div class="xp-stat"><b>~10 Ω·cm</b><span>a typical p-type logic substrate: about 10<sup>15</sup> boron/cm³</span></div>
+  </div>
+  <p>
+    Scaled up so the wafer was ten kilometres across, its surface would vary by about a centimetre over any stretch the size of a city block. It has to be: the lithography tools focus to within a few tens of nanometres. Each wafer is measured for flatness with capacitance gauges, scanned with a laser for particles down to a few tens of nanometres, and sampled for metal contamination. Many logic wafers then get a thin <b>epitaxial</b> layer, a few micrometres of fresh crystal grown on top, which is cleaner than the bulk crystal and can be doped differently from it.
+  </p>
+  <p>A laser writes an ID near the notch, and the wafer goes into a sealed carrier (a FOUP) with 24 others. It will not see open cleanroom air again until it is diced.</p>
+</section>
+
+<!-- ================================================================== -->
+<!-- FRONT END                                                           -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="cleaning" data-title="Cleaning" data-group="Front end of line" data-step="start" data-next="isolation">
+  <h2>Cleaning, and the starting wafer</h2>
+  <p class="xp-lede">The most frequent step in a fab is washing.</p>
+  <p>
+    The cross-section starts as plain p-type silicon. Before almost every high-temperature step it is cleaned, usually with some descendant of the sequence Werner Kern and David Puotinen published at RCA in 1970:
+  </p>
+  <ul>
+    <li><b>SC-1</b>, ammonia and hydrogen peroxide in water at about 70 °C. The peroxide oxidizes the surface and the ammonia slowly etches that oxide, undercutting particles and organic films so they lift off.</li>
+    <li><b>SC-2</b>, hydrochloric acid and peroxide, which dissolves metal contamination: iron, copper, sodium.</li>
+    <li><b>Dilute HF</b>, which strips the thin oxide and leaves bare silicon with its surface bonds capped by hydrogen.</li>
+  </ul>
+  <p>
+    Modern fabs use more dilute chemistries, megasonic agitation and single-wafer spin cleaners, but the logic is the same. The stakes were learned the hard way. In the early 1960s, MOS transistors drifted unpredictably until researchers traced it to <b>sodium</b> ions from handling and furnace parts, which wander through oxide under an electric field and shift the threshold. Cleanrooms, gloves and ultra-pure chemicals made the MOS transistor manufacturable.
+  </p>
+  <div class="xp-stats">
+    <div class="xp-stat"><b>ISO class 1–3</b><span>air near the wafer: at most 10 to 1,000 particles of 0.1 µm or larger per m³</span></div>
+    <div class="xp-stat"><b>18.2 MΩ·cm</b><span>resistivity of the ultra-pure water used to rinse, the theoretical limit</span></div>
+  </div>
+</section>
+
+<section class="xp-topic" id="isolation" data-title="Isolation (STI)" data-group="Front end of line" data-step="padnit" data-next="wells">
+  <h2>Shallow trench isolation</h2>
+  <p class="xp-lede">First, fence off where the transistors will go.</p>
+  <p>
+    Neighbouring transistors share one piece of silicon, so they must be electrically separated, or current would leak sideways between them. Since the late 1990s this is done with <b>shallow trench isolation</b> (STI): trenches about 300 nm deep, filled with oxide, surrounding every "active area" where a transistor will sit. Step through it:
+  </p>
+  <ol class="tx-steps">
+    <li><a data-step="padnit">Pad oxide and nitride.</a> A thin oxide cushions the silicon from the stress of a silicon nitride film, which will serve as a polish stop.</li>
+    <li><a data-step="stilitho">Lithography.</a> Photoresist is patterned to cover the active areas.</li>
+    <li><a data-step="stietch">Trench etch.</a> A plasma etches through the nitride, the oxide and ~300 nm of silicon. The walls are sloped a few degrees so they can be filled without gaps.</li>
+    <li><a data-step="liner">Liner oxidation.</a> A thin grown oxide repairs the etched walls and rounds the top corners. A sharp corner concentrates the gate's field there, forming a parasitic transistor that turns on early.</li>
+    <li><a data-step="stifill">Fill.</a> High-density-plasma CVD deposits oxide and sputters it at the same time, so it fills the trenches from the bottom without trapping voids.</li>
+    <li><a data-step="sticmp">Chemical-mechanical polishing.</a> The excess oxide is polished away. Nitride polishes much more slowly than oxide, so the polish stops on it, leaving oxide only in the trenches.</li>
+    <li><a data-step="nitstrip">Nitride strip.</a> Hot phosphoric acid removes the nitride. The oxide stands a little proud of the silicon, which is deliberate: later wet cleans eat it back.</li>
+  </ol>
+  <h3>Before trenches: LOCOS and the bird's beak</h3>
+  <p>
+    From the 1970s to the mid-1990s, isolation was grown, not etched: <b>LOCOS</b> (local oxidation of silicon, developed at Philips around 1970). Nitride masked the active areas and a long oxidation grew thick "field oxide" everywhere else. But oxygen diffuses sideways under the nitride edge, growing a tapered wedge of oxide, the <i>bird's beak</i>, that ate into the active area. At sub-micron dimensions the beaks from two sides nearly met. STI, made practical by chemical-mechanical polishing, replaced it around the 250 nm generation.
+  </p>
+</section>
+
+<section class="xp-topic" id="wells" data-title="Wells" data-group="Front end of line" data-step="pwell" data-next="gatestack">
+  <h2>Wells: two kinds of silicon on one wafer</h2>
+  <p class="xp-lede">NMOS needs a p-type body and PMOS needs an n-type one, side by side.</p>
+  <p>
+    CMOS needs both transistor types, so the wafer is given regions of each doping, called wells. Each is made by <a href="#implant">ion implantation</a>: resist covers one side while the other is bombarded with dopant ions, then the roles swap.
+  </p>
+  <ol class="tx-steps">
+    <li><a data-step="pwell">p-well:</a> boron, at several energies. A deep, high-energy implant (hundreds of keV) sets the well; a medium one under the trenches is a <i>channel stop</i>, so no parasitic channel can form beneath the isolation; a shallow one near the surface sets the threshold voltage.</li>
+    <li><a data-step="nwell">n-well:</a> phosphorus, the same way, with arsenic or phosphorus near the surface.</li>
+    <li><a data-step="wellanneal">Anneal:</a> heat moves the implanted atoms into lattice sites, where they become electrically active, and repairs the damage the ions did.</li>
+  </ol>
+  <p>
+    Modern wells are <b>retrograde</b>: the implant puts the most dopant deep, not at the surface. That keeps the channel lightly doped (good for mobility) while a heavily doped layer below stops the source and drain depletion regions from reaching each other (<i>punch-through</i>).
+  </p>
+  <h3>Latch-up</h3>
+  <p>
+    Side-by-side wells hide a trap. The n<sup>+</sup> source in the p-well, the p-well, the n-well and the p<sup>+</sup> source in the n-well form a four-layer pnpn structure: a thyristor. A voltage spike can trigger it, and then it latches into a short circuit from the supply to ground, which can melt the chip. Designs prevent it with frequent well contacts (taps), guard rings, retrograde wells, and heavily doped substrates under epitaxial layers. The taps sit just outside the slice drawn here.
+  </p>
+</section>
+
+<section class="xp-topic" id="gatestack" data-title="The gate" data-group="Front end of line" data-step="gox" data-next="extensions">
+  <h2>The gate stack</h2>
+  <p class="xp-lede">The film that matters most, and the line whose width named the generation.</p>
+  <ol class="tx-steps">
+    <li><a data-step="gox">Gate oxide.</a> The sacrificial oxide is stripped and a new one grown, in this generation about 1.6 nm: some eight atomic layers. Nitrogen is then added by a plasma, making silicon oxynitride (SiON). The nitrogen stops boron from the p<sup>+</sup> gate diffusing through into the channel, and raises the dielectric constant a little.</li>
+    <li><a data-step="polydep">Polysilicon.</a> About 100 nm of polycrystalline silicon, deposited from silane at ~620 °C, will be the gate electrode.</li>
+    <li><a data-step="gatelitho">Gate lithography.</a> The most demanding pattern on the chip. Lines are usually printed wider than wanted and narrowed by a trim etch, because the scanner can make a narrow line more reliably than it can print one.</li>
+    <li><a data-step="gateetch">Gate etch.</a> The plasma must cut 100 nm of polysilicon straight down and then stop dead on 1.6 nm of oxide: a selectivity of more than 100 to 1. An optical sensor watches the plasma's glow change colour as the polysilicon clears.</li>
+    <li><a data-step="reox">Re-oxidation.</a> A few nanometres on the sidewalls repair etch damage and set how far the next implant lands from the gate.</li>
+  </ol>
+  <p>
+    Why so thin? The gate controls the channel through the capacitance of the oxide, <i>C</i><sub>ox</sub> = ε<sub>ox</sub>/<i>t</i><sub>ox</sub>. Halve the thickness and the same gate voltage induces twice the charge in the channel: more current, and a tighter grip that keeps the drain from interfering (see <a href="#shortchannel">short-channel effects</a>). The limit is quantum tunnelling: below about 1.2 nm, electrons leak straight through. That is the story of <a href="#hkmg">high-k dielectrics</a>.
+  </p>
+  <details class="tx-deep"><summary>Deeper: why polysilicon, and why it had to go</summary>
+    <p>The first MOS gates were aluminium, put down after the source and drain were diffused, which needed a separate, imperfectly aligned mask and left the gate overlapping the junctions. Silicon gates, developed at Fairchild in 1968 (Federico Faggin), could survive the high-temperature steps that come after, so the gate itself could be the mask for the source and drain: the <b>self-aligned gate</b>. Every MOSFET since is self-aligned.</p>
+    <p>Polysilicon is a semiconductor, though. Under bias the bottom of the gate itself depletes slightly, adding about 0.3–0.4 nm of effective oxide thickness ("poly depletion"), and it interacts badly with hafnium-based dielectrics. From the 45 nm generation, leading-edge gates went back to metal.</p>
+  </details>
+</section>
+
+<section class="xp-topic" id="extensions" data-title="Extensions and halos" data-group="Front end of line" data-step="nldd" data-next="spacers">
+  <h2>Extensions and halos</h2>
+  <p class="xp-lede">The gate is the mask: implants land on both sides of it and never under it.</p>
+  <p>
+    With the gates in place, the source and drain are added in two stages. First, shallow <b>extensions</b> that reach right up to the gate edge. For the <a data-step="nldd">NMOS</a>, arsenic at a couple of keV puts the junction only ~20 nm deep; for the <a data-step="pldd">PMOS</a>, boron or BF<sub>2</sub> below 1 keV. Resist covers the other transistor type each time.
+  </p>
+  <p>
+    Each extension implant comes with a <b>halo</b> (or pocket): a dose of the <i>opposite</i> dopant fired at a steep tilt (around 30°) from four directions, so it tucks in under the gate edges. Halos locally raise the body doping right where the source and drain depletion regions would otherwise reach toward each other, which holds the threshold voltage up as gates get shorter. They are one of the main tools against <a href="#shortchannel">short-channel effects</a> in planar transistors.
+  </p>
+  <h3>Why "lightly doped drain"</h3>
+  <p>
+    The extensions began life around 1980 as the <i>lightly doped drain</i> (LDD), a fix for hot carriers. A sharp, heavily doped drain junction concentrates the electric field, and electrons crossing it gain enough energy to be injected into the gate oxide, where they slowly degrade the transistor. Grading the junction with a lighter extension spread the field out. As transistors shrank, the extensions became heavier and shallower, and their job changed to keeping the junctions shallow near the channel.
+  </p>
+</section>
+
+<section class="xp-topic" id="spacers" data-title="Spacers" data-group="Front end of line" data-step="spdep" data-next="sourcedrain">
+  <h2>Spacers: a mask that makes itself</h2>
+  <p class="xp-lede">Coat everything evenly, then etch straight down.</p>
+  <ol class="tx-steps">
+    <li><a data-step="spdep">Deposit</a> about 50 nm of silicon nitride that coats tops and vertical sidewalls equally (it is <i>conformal</i>).</li>
+    <li><a data-step="spetch">Etch back</a> with a strongly directional plasma that removes material straight down. It clears the flat surfaces in the time it takes to remove 50 nm, but next to each gate the film is as tall as the gate, so a sliver survives on each sidewall.</li>
+  </ol>
+  <p>
+    The result is a spacer of precise width on both sides of every gate, made with no mask and no alignment. It holds the heavy source/drain implant back from the channel, and later keeps the silicide on the gate from shorting to the silicide on the source and drain. The same trick, done twice, is behind <a href="#lithoscale">self-aligned double and quadruple patterning</a>, which printed the finest lines of the 2010s.
+  </p>
+</section>
+
+<section class="xp-topic" id="sourcedrain" data-title="Source and drain" data-group="Front end of line" data-step="nsd" data-next="silicide">
+  <h2>Source, drain, and the activation anneal</h2>
+  <p class="xp-lede">A heavy implant, then a second of intense heat.</p>
+  <ol class="tx-steps">
+    <li><a data-step="nsd">NMOS source/drain:</a> arsenic, a few times 10<sup>15</sup> ions per cm², outside the spacers. The same implant dopes the NMOS gate n<sup>+</sup>.</li>
+    <li><a data-step="psd">PMOS source/drain:</a> boron, likewise, making the PMOS gate p<sup>+</sup>. Doping each gate to match its transistor ("dual poly") puts both thresholds where they should be.</li>
+    <li><a data-step="spike">Spike anneal.</a> A rapid thermal processor ramps the wafer with lamps to about 1,050 °C and straight back down, spending about a second above 1,000 °C.</li>
+  </ol>
+  <p>
+    The anneal has two jobs that pull against each other. Implanted atoms come to rest at random positions, mostly not on lattice sites, where they do nothing electrically; the implant also wrecks the crystal, sometimes turning the surface amorphous. Heat moves dopants onto lattice sites (<i>activation</i>) and regrows the crystal. But heat also makes them diffuse, and a junction that diffuses a few nanometres too far ruins a 50 nm transistor. Each generation's anneals have got shorter: furnace hours, then rapid-thermal seconds, then spikes, then millisecond flash lamps and lasers.
+  </p>
+  <p>
+    After annealing, a <a href="#fourpoint">four-point probe</a> on a monitor wafer measures the sheet resistance of the implanted layer, which shows at once whether dose, energy and anneal all landed where they should.
+  </p>
+</section>
+
+<section class="xp-topic" id="silicide" data-title="Silicide" data-group="Front end of line" data-step="ni" data-next="contacts">
+  <h2>Salicide: metal where silicon is exposed, and nowhere else</h2>
+  <p class="xp-lede">Another self-aligned trick, this one chemical.</p>
+  <p>
+    Doped silicon conducts, but not well: a heavily doped source has a sheet resistance of about 100 Ω per square. Too much of that sits between the wiring and the channel. The fix is to turn the top of every exposed silicon surface into a metal compound.
+  </p>
+  <ol class="tx-steps">
+    <li><a data-step="ni">Pre-clean and deposit</a> about 10 nm of nickel (with a few percent platinum for stability) over the whole wafer.</li>
+    <li><a data-step="salicide">Anneal, strip, anneal.</a> At about 300 °C nickel reacts with silicon wherever they touch: the sources, drains and gate tops. On the oxide and nitride it does nothing. A wet etch then dissolves the unreacted metal, and a second anneal converts the compound to low-resistance nickel monosilicide (NiSi).</li>
+  </ol>
+  <p>
+    The silicide forms exactly where it is needed, with no mask: a self-aligned silicide, or <i>salicide</i>. It cuts the sheet resistance about tenfold. The metal changed with the generations: titanium silicide in the early 1990s, until narrow lines would not transform into its low-resistance phase; cobalt silicide around 180–130 nm; nickel silicide from 90 nm, because it forms at a low temperature and consumes less silicon.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- CONTACTS AND WIRING                                                 -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="contacts" data-title="Contacts (middle of line)" data-group="Contacts and wiring" data-step="cesl" data-next="damascene">
+  <h2>Contacts: the middle of the line</h2>
+  <p class="xp-lede">Bury the transistors in glass, then drill down to each terminal.</p>
+  <ol class="tx-steps">
+    <li><a data-step="cesl">Contact etch stop layer.</a> About 50 nm of silicon nitride over everything. It gives the contact etch something to stop on, so a hole that lands partly on the isolation does not dig into it. From the 90 nm generation it also does a second job: deposited under tension over the NMOS and under compression over the PMOS, it strains their channels and speeds up both (see <a href="#strain">strain</a>).</li>
+    <li><a data-step="pmd">Pre-metal dielectric.</a> Phosphorus-doped oxide fills the spaces between gates and is polished flat. The phosphorus traps sodium.</li>
+    <li><a data-step="colitho">Contact holes.</a> Holes about 100 nm across and five times as deep, etched through the glass, stopped on the nitride, then punched through it onto the silicide.</li>
+    <li><a data-step="coliner">Liner.</a> Titanium reacts with any last oxide at the bottom; titanium nitride is the glue layer, and a barrier against the fluorine in the next step.</li>
+    <li><a data-step="wfill">Tungsten fill.</a> Tungsten hexafluoride, reduced by silane and then hydrogen at ~400 °C, grows tungsten inward from the walls until each hole is full.</li>
+    <li><a data-step="wcmp">Polish.</a> CMP removes the tungsten and liner from the top, leaving a tungsten plug in every hole.</li>
+  </ol>
+  <p>
+    Contacts are now a major part of a transistor's resistance, and a single contact that fails to open kills a circuit. They are checked electrically with chains of thousands of contacts in series and with <a href="#contactres">Kelvin structures</a>, and on product wafers with electron-beam inspection, where an unopened contact charges up and shows dark.
+  </p>
+</section>
+
+<section class="xp-topic" id="damascene" data-title="Copper damascene" data-group="Contacts and wiring" data-step="m1ild" data-next="dualdamascene">
+  <h2>Copper wires, made backwards</h2>
+  <p class="xp-lede">Copper cannot be etched into wires, so the wires are carved into the insulator and filled.</p>
+  <p>
+    Until the late 1990s, chip wiring was aluminium: deposit a film, pattern it, etch away what is not wire, fill around it with oxide. Copper conducts about 40% better and resists electromigration far better, but it has no chlorides volatile enough to etch away in a plasma. IBM's answer, announced in September 1997, was to work in reverse, borrowing the ancient inlay technique called damascening:
+  </p>
+  <ol class="tx-steps">
+    <li><a data-step="m1ild">Deposit the insulator</a>: an etch stop, then a low-k film (carbon-doped oxide, k ≈ 3.0 against glass's 3.9). Lower k means less capacitance between neighbouring wires, so signals move faster and use less power.</li>
+    <li><a data-step="m1litho">Pattern</a> openings where the wires should be.</li>
+    <li><a data-step="m1etch">Etch trenches</a> down to the tungsten plugs.</li>
+    <li><a data-step="m1barrier">Barrier and seed.</a> Copper diffuses fast through oxide and silicon and kills transistors, so a 5–10 nm tantalum nitride and tantalum barrier lines every trench, followed by a thin copper seed layer that carries the plating current.</li>
+    <li><a data-step="m1plate">Electroplate.</a> In a copper sulfate bath, organic additives slow plating on the top surface and speed it at the bottom of trenches, so they fill from the bottom up without voids ("superfill").</li>
+    <li><a data-step="m1cmp">Polish and cap.</a> CMP removes the copper and barrier everywhere except the trenches, leaving inlaid wires, and a SiCN cap seals their top surface.</li>
+  </ol>
+  <p>
+    In the slice drawn here, metal 1 makes the inverter. One wire ties the NMOS source to ground, one ties the PMOS source to the supply, and a long wire joins the two drains: that is the output. The two gates are joined by polysilicon just out of the plane of the drawing; that is the input.
+  </p>
+</section>
+
+<section class="xp-topic" id="dualdamascene" data-title="Dual damascene" data-group="Contacts and wiring" data-step="v1ild" data-next="stack">
+  <h2>Dual damascene: hole and wire in one fill</h2>
+  <p class="xp-lede">From metal 2 up, each level is a via and a wire made together.</p>
+  <ol class="tx-steps">
+    <li><a data-step="v1ild">Deposit</a> enough low-k film for both a via and a wire.</li>
+    <li><a data-step="ddetch">Etch twice:</a> narrow via holes down to metal 1, then wider trenches over them (via-first), or the other way round.</li>
+    <li><a data-step="m2metal">Barrier, seed, plate, polish</a>, exactly as for metal 1, filling via and trench at once.</li>
+  </ol>
+  <p>
+    Wiring levels alternate direction. Here metal 2 runs into the page, so its wires appear as squares, and metal 3 runs across the page again. Some metal 2 squares carry the inverter's signals up; the others are simply other wires passing through.
+  </p>
+</section>
+
+<section class="xp-topic" id="stack" data-title="The wiring stack" data-group="Contacts and wiring" data-step="upper" data-next="wat">
+  <h2>The whole stack</h2>
+  <p class="xp-lede">The transistors are a thin skin; most of a chip's height is wiring.</p>
+  <p>
+    A logic chip of this era had six to nine copper levels; leading-edge chips now have fifteen or more. The <a data-step="upper">lower levels</a> are thin and dense, for connections between neighbouring transistors. Higher levels are progressively thicker and wider, because long wires need low resistance: the top levels distribute power and clocks across the chip.
+  </p>
+  <p>
+    Finally the <a data-step="bond">top surface</a> is sealed: aluminium bond pads are deposited on the top copper, a passivation of oxide and silicon nitride covers everything to keep out moisture and sodium, and openings are etched over the pads. Often a polyimide layer goes on top to cushion against the stress of the package.
+  </p>
+  <p>
+    Wiring got harder as transistors shrank. Shrinking a transistor makes it faster, but shrinking a wire raises its resistance while its capacitance barely falls, so the delay of a fixed length of wire gets <i>worse</i> each generation. By the late 1990s wire delay, not transistor delay, limited clock speed. That drove copper, low-k, and much else (see <a href="#interconnect">wires at the limit</a>).
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- TEST AND PACKAGING                                                  -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="wat" data-title="Parametric test (WAT)" data-group="Test and packaging" data-step="wat" data-next="sort">
+  <h2>Wafer acceptance test</h2>
+  <p class="xp-lede">Before anyone tests a chip, the process is tested.</p>
+  <p>
+    The narrow lanes between chips, the <b>scribe lines</b>, which the dicing saw will later destroy, are not empty. They hold test structures: single transistors of several sizes, long resistors of each layer, chains of thousands of contacts and vias in series, comb-shaped patterns to catch shorts, capacitors, and ring oscillators. After the wafer is finished, a prober lands needles on their pads at a handful of sites on every wafer (or a sample of wafers), and a parametric analyzer measures dozens of parameters:
+  </p>
+  <ul>
+    <li><b>Transistors</b>: <a href="#ivtest">threshold voltage, drive current, leakage</a>, subthreshold swing, DIBL, for NMOS and PMOS at several gate lengths.</li>
+    <li><b>Resistance</b>: sheet resistance of each implant, silicide and metal layer; <a href="#contactres">contact and via resistance</a> from chains and Kelvin structures.</li>
+    <li><b>Capacitance and oxides</b>: <a href="#cv">gate oxide thickness from C–V</a>, breakdown voltage, leakage between neighbouring wires.</li>
+    <li><b>Speed</b>: ring oscillator frequency, the delay of one gate.</li>
+  </ul>
+  <p>
+    Each is checked against spec limits and tracked on statistical process control charts. A wafer outside the limits may be scrapped before a cent is spent testing its chips, and a drift tells engineers which step to look at. The map below simulates one parameter across a wafer for the device chosen in the <a href="#lab">lab</a>, with a few percent of gate-length variation:
+  </p>
+  <div class="xp-figure" data-widget="watmap"></div>
+</section>
+
+<section class="xp-topic" id="sort" data-title="Wafer sort and yield" data-group="Test and packaging" data-step="sort" data-next="dicing">
+  <h2>Wafer sort and yield</h2>
+  <p class="xp-lede">Every chip on the wafer gets its first test while the wafer is still whole.</p>
+  <p>
+    A <b>probe card</b>, a board carrying hundreds to tens of thousands of fine needles or MEMS springs laid out to match one chip's pads, touches down on each die in turn while automatic test equipment runs it: checks for opens and shorts, supply current (a defect often shows up as extra leakage), scan patterns that exercise every flip-flop, built-in self-test of the memories, and often speed. Failing memory rows and columns can be swapped for spares on the spot by blowing fuses. Each die gets a pass or a failure bin, and the wafer gets a map.
+  </p>
+  <p>
+    The fraction that passes is the <b>yield</b>, and it is where a fab's money is made or lost. Random killer defects (a particle, a missing via) land roughly at random, so bigger chips are much more likely to catch one:
+  </p>
+  <div class="xp-figure" data-widget="yield"></div>
+  <p class="tx-eq">Poisson: <i>Y</i> = e<sup>−<i>A D</i><sub>0</sub></sup> &nbsp;&nbsp; Murphy: <i>Y</i> = [(1 − e<sup>−<i>A D</i><sub>0</sub></sup>) / <i>A D</i><sub>0</sub>]<sup>2</sup></p>
+  <p>
+    <i>A</i> is the die area and <i>D</i><sub>0</sub> the density of killer defects. A mature process runs near 0.1 per cm² or below; a new one starts several times higher. The steep penalty for large dies is one reason big processors are now split into several smaller <a href="#packaging">chiplets</a>.
+  </p>
+</section>
+
+<section class="xp-topic" id="dicing" data-title="Backgrind and dicing" data-group="Test and packaging" data-step="grind" data-next="packaging">
+  <h2>Backgrinding and dicing</h2>
+  <p class="xp-lede">Thin the wafer, then cut it apart.</p>
+  <ol class="tx-steps">
+    <li><a data-step="grind">Backgrind.</a> The front is protected with tape and the wafer is ground from the back, from 775 µm down to around 100–300 µm, or under 50 µm for chips that will be stacked. The extra thickness only ever existed to survive handling. A final dry polish removes the grinding damage, which would otherwise make the thin wafer crack.</li>
+    <li><a data-step="dice">Dice.</a> The wafer is mounted on stretchy tape in a metal frame and cut along the scribe lines by a diamond blade a few tens of micrometres thick, spinning at tens of thousands of rpm under a stream of water.</li>
+  </ol>
+  <p>
+    Low-k dielectrics are fragile and delaminate under a saw, so a laser often grooves the wiring layers first. In <b>stealth dicing</b>, a laser focused inside the silicon writes a line of damage without touching the surface; stretching the tape then cracks the wafer cleanly along it, with no kerf and no debris.
+  </p>
+</section>
+
+<section class="xp-topic" id="packaging" data-title="Packaging" data-group="Test and packaging" data-step="attach" data-next="finaltest">
+  <h2>Packaging</h2>
+  <p class="xp-lede">The package carries power in, signals out, and heat away, and protects a chip that would otherwise crack at a touch.</p>
+  <ol class="tx-steps">
+    <li><a data-step="attach">Die attach and wire bond.</a> The die is glued or soldered onto a leadframe or substrate. A wire bonder then stitches each pad to the package: a gold or copper wire 15–25 µm across is melted into a ball, pressed and ultrasonically welded to the pad, looped over, and wedge-bonded to a lead, more than ten times a second.</li>
+    <li><a data-step="mold">Mold, mark, singulate.</a> Epoxy compound is forced around die and wires at ~175 °C and cured, the package is laser-marked, and the strip is cut into individual parts.</li>
+  </ol>
+  <h3>Beyond wire bonds</h3>
+  <p>
+    Large, fast chips are <b>flip-chip</b> mounted instead: solder bumps or copper pillars on the pads (an IBM idea from the 1960s), and the die flipped face-down onto a substrate, so connections can cover the whole area and not just the edge. Since the late 2010s packaging has become a front line of scaling:
+  </p>
+  <ul>
+    <li><b>Chiplets</b>: several smaller dies, each in the best process for its job, in one package. Small dies yield far better (see <a href="#sort">yield</a>).</li>
+    <li><b>2.5D</b>: chiplets side by side on a silicon interposer with very fine wiring, the way AI processors sit next to their stacks of high-bandwidth memory.</li>
+    <li><b>3D stacking</b>: dies stacked and connected by through-silicon vias, as in high-bandwidth memory, or by <b>hybrid bonding</b>, where copper pads on two dies fuse directly at pitches under 10 µm.</li>
+  </ul>
+</section>
+
+<section class="xp-topic" id="finaltest" data-title="Final test" data-group="Test and packaging" data-step="final" data-next="reliability">
+  <h2>Final test, burn-in, and binning</h2>
+  <p class="xp-lede">Test again, sort by speed, ship.</p>
+  <p>
+    Packaging can damage a good die, and some defects only show at temperature, so every packaged part is tested again. A handler carries parts from trays into a socket on the tester, often at both hot and cold temperatures, and runs functional and speed tests. Parts are sorted into bins: identical dies that run at different maximum clocks or voltages become different products, which is why one chip design is sold as several models.
+  </p>
+  <p>
+    <b>Burn-in</b> runs parts at raised temperature and voltage for hours to flush out "infant mortality," weak parts that would otherwise fail in a customer's first weeks. Failure rate over a product's life follows the <i>bathtub curve</i>: high at first, low and flat through its working life, rising again at wear-out. Burn-in moves the steep early part into the factory.
+  </p>
+</section>
+
+<section class="xp-topic" id="reliability" data-title="Reliability" data-group="Test and packaging" data-step="final" data-next="semiconductors">
+  <h2>How transistors wear out</h2>
+  <p class="xp-lede">Every transistor degrades a little each time it switches. Reliability engineering keeps that under ten years' worth.</p>
+  <ul>
+    <li><b>Dielectric breakdown (TDDB).</b> The gate oxide slowly accumulates defects under its electric field, until they line up into a conducting path and it breaks down. It is tested by stressing capacitors at high voltage and extrapolating to operating conditions.</li>
+    <li><b>Bias temperature instability (BTI).</b> Under gate bias at high temperature, charge trapped at and near the interface shifts the threshold voltage, especially in PMOS (NBTI). It partly recovers when the bias is removed, which makes it notoriously hard to measure.</li>
+    <li><b>Hot carriers (HCI).</b> Electrons accelerated by the high field near the drain gain enough energy to damage the interface, degrading drive current over time. Graded junctions (the <a href="#extensions">extensions</a>) and lower voltages tamed it.</li>
+    <li><b>Electromigration (EM).</b> At current densities of millions of amps per cm², the flowing electrons push metal atoms along, opening voids in wires and vias. Lifetime follows Black's equation, falling with the square of current density and exponentially with temperature: copper and its caps were chosen largely for this.</li>
+  </ul>
+  <p>
+    New processes are qualified by stressing hundreds of parts, typically for a thousand hours at 125 °C and above-nominal voltage, and showing that the projected failure rate over the product's life is acceptable.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- HOW A TRANSISTOR WORKS                                              -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="semiconductors" data-title="Bands and doping" data-group="How a transistor works" data-device="mosfet" data-preset="nm130" data-bias="vg:0,vd:0" data-next="pn">
+  <h2>Semiconductors: bands, band gaps and doping</h2>
+  <p class="xp-lede">Silicon is an insulator that is easy to bribe.</p>
+  <p>
+    In a crystal, the electrons' allowed energies merge into <b>bands</b>. In silicon, the <b>valence band</b> holds the electrons that bind the atoms together, and it is full. Above it, across a forbidden <b>band gap</b> of 1.12 eV, lies the empty <b>conduction band</b>. Electrons in a full band cannot carry current (there is nowhere for them to move to), so pure silicon at absolute zero is an insulator.
+  </p>
+  <p>
+    At room temperature, heat kicks a few electrons across the gap: about 10<sup>10</sup> per cm³, against 5 × 10<sup>22</sup> atoms. Each leaves behind a <b>hole</b>, a missing electron in the valence band that moves like a positive charge. That is intrinsic silicon: a poor conductor whose conductivity rises steeply with temperature.
+  </p>
+  <p>
+    <b>Doping</b> changes everything. A phosphorus or arsenic atom has five outer electrons to silicon's four; the extra one is bound so loosely (a few hundredths of an eV) that it is free at room temperature. That makes <b>n-type</b> silicon. Boron has three, and grabs an electron from the lattice, making a hole: <b>p-type</b>. One dopant atom per million silicon atoms multiplies the conductivity about a million times.
+  </p>
+  <div class="xp-figure" data-widget="bandsi"></div>
+  <p>
+    The dashed line is the <b>Fermi level</b> <i>E</i><sub>F</sub>, the energy at which a state has even odds of holding an electron. In intrinsic silicon it sits mid-gap at <i>E</i><sub>i</sub>; n-type doping pulls it toward the conduction band, p-type toward the valence band. Electron and hole densities follow it exponentially:
+  </p>
+  <p class="tx-eq"><i>n</i> = <i>n</i><sub>i</sub> e<sup>(<i>E</i><sub>F</sub> − <i>E</i><sub>i</sub>)/<i>kT</i></sup> &nbsp;&nbsp; <i>p</i> = <i>n</i><sub>i</sub> e<sup>(<i>E</i><sub>i</sub> − <i>E</i><sub>F</sub>)/<i>kT</i></sup> &nbsp;&nbsp; <i>np</i> = <i>n</i><sub>i</sub><sup>2</sup></p>
+  <p>
+    <i>kT</i> is the thermal energy, 25.9 meV at room temperature. Every factor of <i>e</i> in carrier density is one <i>kT</i> of energy. That exponential is the source of the transistor's sharp switching, and of its <a href="#subthreshold">most stubborn limit</a>.
+  </p>
+</section>
+
+<section class="xp-topic" id="pn" data-title="The pn junction" data-group="How a transistor works" data-device="mosfet" data-preset="nm130" data-bias="vg:0,vd:vdd" data-next="mosbands">
+  <h2>The pn junction and the depletion layer</h2>
+  <p class="xp-lede">Where n-type meets p-type, the free carriers clear out and leave a field behind.</p>
+  <p>
+    Join n-type and p-type silicon and electrons diffuse from the n side into the p side, holes the other way, and they annihilate. That leaves a thin <b>depletion region</b> stripped of free carriers. What remains there are the fixed, ionised dopant atoms: positive on the n side, negative on the p side. Their charge creates an electric field that pushes back against further diffusion, until the two balance. The bands bend by the <b>built-in potential</b> <i>V</i><sub>bi</sub>, typically 0.7–1 V, which is exactly what it takes to line up the Fermi levels on both sides.
+  </p>
+  <div class="xp-figure" data-widget="pn"></div>
+  <p>
+    A reverse bias adds to the barrier and widens the depletion region; almost no current flows. A forward bias lowers the barrier, and the current rises exponentially, tenfold for every 60 mV. Every MOSFET contains two junctions, source-to-body and drain-to-body, both normally reverse biased. On the stage, the hatched regions around the source and drain are their depletion layers; the drain's widens as the drain voltage rises.
+  </p>
+  <p class="tx-eq"><i>W</i> = √[ 2ε<sub>Si</sub>(<i>V</i><sub>bi</sub> − <i>V</i>)/<i>q</i> · (<i>N</i><sub>A</sub> + <i>N</i><sub>D</sub>)/(<i>N</i><sub>A</sub><i>N</i><sub>D</sub>) ]</p>
+</section>
+
+<section class="xp-topic" id="mosbands" data-title="MOS band alignment" data-group="How a transistor works" data-device="moscap" data-preset="nm130" data-bias="vg:0" data-next="regimes">
+  <h2>How the bands of metal, oxide and silicon line up</h2>
+  <p class="xp-lede">Put three materials together and their Fermi levels must agree. Something has to give.</p>
+  <p>
+    Each material has a <b>work function</b> Φ, the energy needed to lift an electron from its Fermi level out to the vacuum. For silicon it is the electron affinity χ = 4.05 eV (vacuum to the conduction band) plus the distance from there down to the Fermi level, so it depends on doping. Silicon dioxide is an excellent insulator because its gap is huge, about 9 eV, and its conduction band sits 3.1 eV above silicon's: a tall wall for electrons.
+  </p>
+  <div class="xp-figure" data-widget="mosalign"></div>
+  <p>
+    Apart, the three materials share a vacuum level. Joined (with the gate wired to the body), their Fermi levels must align. The work-function difference Φ<sub>MS</sub> = Φ<sub>M</sub> − Φ<sub>S</sub> has to be taken up somewhere: partly as a voltage across the oxide, and partly as bending of the silicon's bands near the surface. For an n<sup>+</sup> polysilicon gate on p-type silicon, Φ<sub>MS</sub> is about −1 V, so even at zero gate voltage the p-type surface is pushed toward depletion.
+  </p>
+  <p>
+    The gate voltage that exactly cancels the difference and flattens the bands is the <b>flat-band voltage</b>:
+  </p>
+  <p class="tx-eq"><i>V</i><sub>FB</sub> = Φ<sub>MS</sub> − <i>Q</i><sub>f</sub> / <i>C</i><sub>ox</sub></p>
+  <p>
+    <i>Q</i><sub>f</sub> is any fixed charge sitting in the oxide near the interface, which shifts everything. The stage shows the MOS capacitor: a gate, an oxide, and a body, with no source or drain. It is the heart of the transistor, and the simplest thing to <a href="#cv">measure</a>.
+  </p>
+</section>
+
+<section class="xp-topic" id="regimes" data-title="Accumulation, depletion, inversion" data-group="How a transistor works" data-device="moscap" data-preset="nm130" data-bias="vg:0.6" data-next="threshold">
+  <h2>Accumulation, depletion, inversion</h2>
+  <p class="xp-lede">One gate voltage, three completely different surfaces.</p>
+  <p>
+    Drag the gate voltage and watch the bands bend. The model below solves Poisson's equation for the real device (not a cartoon), and the stage shows the same bias. For the NMOS case, a p-type body:
+  </p>
+  <div class="xp-figure" data-widget="mosbias"></div>
+  <ul>
+    <li><b>Accumulation</b> (gate below flat band). The negative gate attracts holes, which pile up in a thin layer at the surface. The bands bend up.</li>
+    <li><b>Depletion</b>. A positive gate pushes the holes away, uncovering the negative boron ions they had neutralised. The surface becomes a <b>depletion layer</b>, as in a pn junction, and widens as the gate voltage rises. The bands bend down by the surface potential ψ<sub>s</sub>.</li>
+    <li><b>Weak inversion</b>. Once the bands bend by more than φ<sub>F</sub> (the distance from <i>E</i><sub>i</sub> to <i>E</i><sub>F</sub> in the bulk), the surface has more electrons than holes. It has been inverted to n-type, though there are still few electrons, rising exponentially with ψ<sub>s</sub>.</li>
+    <li><b>Strong inversion</b>. At ψ<sub>s</sub> = 2φ<sub>F</sub>, the surface is as strongly n-type as the bulk is p-type. Beyond this, almost all the extra gate charge is matched by electrons in a layer only a few nanometres thick, the <b>inversion layer</b>, and the depletion region stops growing. This electron layer is the transistor's channel.</li>
+  </ul>
+  <p>
+    The electrons come from the source and drain in a transistor. In an isolated MOS capacitor they must be generated thermally, which takes time, a fact the <a href="#cv">C–V measurement</a> exploits.
+  </p>
+</section>
+
+<section class="xp-topic" id="threshold" data-title="Threshold voltage" data-group="How a transistor works" data-device="mosfet" data-preset="nm130" data-bias="vg:vt,vd:0.05" data-next="ivcurves">
+  <h2>The threshold voltage</h2>
+  <p class="xp-lede">The gate voltage at which the channel appears: the most important number a transistor has.</p>
+  <p>
+    The threshold is the gate voltage that brings the surface to strong inversion. Add up what the gate has to do: overcome the flat-band offset, bend the bands by 2φ<sub>F</sub>, and support the charge of the depletion region it has uncovered:
+  </p>
+  <p class="tx-eq"><i>V</i><sub>T</sub> = <i>V</i><sub>FB</sub> + 2φ<sub>F</sub> + √(2<i>q</i>ε<sub>Si</sub><i>N</i><sub>A</sub>·2φ<sub>F</sub>) / <i>C</i><sub>ox</sub> &nbsp;&nbsp; with φ<sub>F</sub> = (<i>kT</i>/<i>q</i>) ln(<i>N</i><sub>A</sub>/<i>n</i><sub>i</sub>)</p>
+  <div class="xp-figure" data-widget="vt"></div>
+  <p>
+    The process engineer's levers are all in that formula: the body doping <i>N</i><sub>A</sub> (the threshold-adjust implant in the <a href="#wells">wells</a>), the oxide thickness through <i>C</i><sub>ox</sub>, and the gate material through <i>V</i><sub>FB</sub>. A thinner oxide shrinks the depletion term, which is why thresholds fell as oxides thinned. Chips usually offer several thresholds side by side, low-<i>V</i><sub>T</sub> transistors for speed and high-<i>V</i><sub>T</sub> ones for low leakage, made with extra implants or different gate metals.
+  </p>
+  <p>
+    The <b>body effect</b>: biasing the source above the body (<i>V</i><sub>SB</sub>) widens the depletion region and raises the threshold, as the dashed curve shows. It matters in stacked transistors, where a source does not sit at ground.
+  </p>
+</section>
+
+<section class="xp-topic" id="ivcurves" data-title="I–V curves" data-group="How a transistor works" data-device="mosfet" data-preset="nm130" data-bias="vg:vdd,vd:vdd" data-next="subthreshold">
+  <h2>Current versus voltage</h2>
+  <p class="xp-lede">The transistor's whole personality, in two plots.</p>
+  <p>
+    Above threshold, the inversion layer holds a charge of about <i>C</i><sub>ox</sub>(<i>V</i><sub>GS</sub> − <i>V</i><sub>T</sub>) per unit area. A drain voltage makes it drift toward the drain. At small <i>V</i><sub>DS</sub> the channel is a resistor whose conductance the gate sets: the <b>linear</b> (or triode) region. As <i>V</i><sub>DS</sub> rises, the voltage between gate and channel shrinks toward the drain end, so the channel thins there, until at <i>V</i><sub>DS</sub> = <i>V</i><sub>GS</sub> − <i>V</i><sub>T</sub> it <b>pinches off</b>. Beyond that, extra drain voltage drops across a short depleted stretch near the drain and the current barely rises: <b>saturation</b>.
+  </p>
+  <p class="tx-eq">linear: <i>I</i><sub>D</sub> = μ<i>C</i><sub>ox</sub>(<i>W</i>/<i>L</i>)[(<i>V</i><sub>GS</sub> − <i>V</i><sub>T</sub>)<i>V</i><sub>DS</sub> − <i>V</i><sub>DS</sub><sup>2</sup>/2] &nbsp;&nbsp; saturation: <i>I</i><sub>D</sub> = ½μ<i>C</i><sub>ox</sub>(<i>W</i>/<i>L</i>)(<i>V</i><sub>GS</sub> − <i>V</i><sub>T</sub>)<sup>2</sup></p>
+  <div class="xp-figure" data-widget="iv"></div>
+  <p>
+    That square law is the textbook, long-channel transistor. Real short transistors fall short of it. Electrons cannot go faster than about 10<sup>7</sup> cm/s however hard they are pushed (<b>velocity saturation</b>), so the current grows more like linearly with overdrive and saturates early. The vertical field from the gate presses electrons against the rough interface and lowers their mobility. And the source and drain resistance steals some of the applied voltage. The model behind these curves includes all three; the label at the end of each curve gives its gate voltage, and the dot is the stage's bias.
+  </p>
+</section>
+
+<section class="xp-topic" id="subthreshold" data-title="Subthreshold and 60 mV/decade" data-group="How a transistor works" data-device="mosfet" data-preset="nm130" data-bias="vg:0,vd:vdd" data-next="shortchannel">
+  <h2>Below threshold: 60 millivolts per decade</h2>
+  <p class="xp-lede">A transistor never quite turns off, and physics sets how sharply it can try.</p>
+  <p>
+    Below threshold the channel has few electrons, but not none. They cross from the source by diffusing over an energy barrier that the gate raises and lowers, and the number with enough thermal energy to make it falls off exponentially with the barrier height, by a factor of <i>e</i> per <i>kT</i>. So the current falls exponentially as the gate voltage drops. On a log scale it is a straight line, with a slope called the <b>subthreshold swing</b>:
+  </p>
+  <p class="tx-eq"><i>SS</i> = <i>n</i> (<i>kT</i>/<i>q</i>) ln 10 &nbsp;≥&nbsp; 59.6 mV per decade at 300 K, &nbsp;&nbsp; <i>n</i> = 1 + <i>C</i><sub>dep</sub>/<i>C</i><sub>ox</sub></p>
+  <div class="xp-figure" data-widget="subvt"></div>
+  <p>
+    This is sometimes called the <i>Boltzmann tyranny</i>. To cut leakage tenfold, the threshold must rise by at least 60 mV, and more like 70–90 mV in real transistors (<i>n</i> > 1, because the gate shares control of the surface with the body). A transistor that must switch between on and off with a good <i>I</i><sub>on</sub>/<i>I</i><sub>off</sub> ratio of 10<sup>4</sup>–10<sup>6</sup> therefore needs several hundred millivolts of headroom between its threshold and its supply. That is why supply voltages stopped falling at around 0.7–1 V (see <a href="#dennard">the end of Dennard scaling</a>). Heat makes it worse: the swing grows with temperature, and leakage climbs steeply in a hot chip.
+  </p>
+  <details class="tx-deep"><summary>Deeper: ways around 60 mV</summary>
+    <p>The limit holds for any switch that works by lifting a barrier over thermally distributed carriers. Research devices try to cheat it: tunnel FETs, where carriers tunnel through a band edge instead of hopping over it; negative-capacitance FETs, with a ferroelectric layer that amplifies the gate voltage; and nano-mechanical relays. None has yet matched silicon's drive current at a steep slope.</p>
+  </details>
+</section>
+
+<section class="xp-topic" id="shortchannel" data-title="Short-channel effects" data-group="How a transistor works" data-device="mosfet" data-preset="hkmg45" data-bias="vg:0,vd:vdd" data-next="cmos">
+  <h2>Short-channel effects: when the drain takes over</h2>
+  <p class="xp-lede">Shrink the gate far enough and the drain starts controlling the channel too.</p>
+  <p>
+    In a long transistor, the gate alone decides the height of the barrier between source and channel. As the gate shortens, the drain's depletion region reaches a larger fraction of the way across, and the drain's field starts to lower the barrier itself:
+  </p>
+  <ul>
+    <li><b>Threshold roll-off</b>: the threshold falls as the gate gets shorter, so small variations in gate length become large variations in leakage.</li>
+    <li><b>DIBL</b> (drain-induced barrier lowering): the threshold falls as the drain voltage rises. Measured in mV of threshold shift per volt on the drain.</li>
+    <li><b>Degraded swing</b>: the gate's grip weakens, so the subthreshold slope steepens past 60 mV/decade toward 100 and beyond.</li>
+    <li><b>Punch-through</b>: in the limit, the source and drain depletion regions merge below the surface and current flows where the gate has no control at all.</li>
+  </ul>
+  <div class="xp-figure" data-widget="sce"></div>
+  <p>
+    A useful rule: the gate keeps control when the channel is longer than about five to six <b>natural lengths</b> λ, a length set by how thick the oxide is and how deep the silicon under the gate reaches. For a planar transistor λ grows with the oxide thickness and the depletion depth; for a thin body gated on several sides it shrinks with the body thickness and the number of gates:
+  </p>
+  <p class="tx-eq">planar: λ ≈ √(ε<sub>Si</sub>/ε<sub>ox</sub> · <i>t</i><sub>ox</sub> · <i>W</i><sub>dep</sub>) &nbsp;&nbsp; double gate: λ ≈ √(ε<sub>Si</sub>/(2ε<sub>ox</sub>) · <i>t</i><sub>ox</sub> · <i>t</i><sub>Si</sub>)</p>
+  <p>
+    Planar transistors fought back with thinner oxides, shallower junctions, heavier channel doping and <a href="#extensions">halos</a>, but heavy doping costs mobility and adds junction leakage. At around 22 nm the only good move left was to make the silicon body itself thin and wrap the gate around it: the <a href="#finfet">FinFET</a>, and later <a href="#gaa">gate-all-around</a>. The chart shows why, using the same model for all three.
+  </p>
+  <p>
+    Two more short-channel troubles: <b>GIDL</b> (gate-induced drain leakage), where the strong field where gate overlaps drain lets electrons tunnel straight across the band gap, adding leakage in the off state; and <a href="#reliability">hot carriers</a>.
+  </p>
+</section>
+
+<section class="xp-topic" id="cmos" data-title="CMOS: why both kinds" data-group="How a transistor works" data-step="m1cmp" data-next="fourpoint">
+  <h2>CMOS: why every chip uses both kinds</h2>
+  <p class="xp-lede">Pair an NMOS with a PMOS and, except while switching, no current flows.</p>
+  <p>
+    The cross-section is an inverter. The PMOS connects the output to the supply and the NMOS connects it to ground, and the same input drives both gates. Input high: the NMOS is on and the PMOS off, so the output is pulled to ground. Input low: the reverse. In either steady state one transistor is off, so no current flows from supply to ground. Power is spent only while switching, charging and discharging the capacitance of the wires and gates:
+  </p>
+  <p class="tx-eq"><i>P</i><sub>dynamic</sub> = α <i>C</i> <i>V</i><sub>DD</sub><sup>2</sup> <i>f</i> &nbsp;&nbsp; plus leakage</p>
+  <div class="xp-figure" data-widget="inverter"></div>
+  <p>
+    Frank Wanlass invented complementary MOS at Fairchild in 1963. It was slower and more complicated to make than single-type NMOS, and for two decades it was used mainly where power mattered most, such as watches. As chips grew to hundreds of thousands of transistors, NMOS logic, which burns current whenever its output is low, became too hot, and CMOS took over in the mid-1980s. Holes are slower than electrons, so a PMOS is usually made wider than its NMOS partner to balance them; try the width ratio above.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- MEASURING TRANSISTORS                                               -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="fourpoint" data-title="Four-point probe" data-group="Measuring transistors" data-step="spike" data-next="ivtest">
+  <h2>The four-point probe</h2>
+  <p class="xp-lede">The workhorse measurement of a doped or metal layer: push current through two needles, read voltage on two others.</p>
+  <p>
+    Four spring-loaded needles in a line, about a millimetre apart, press onto the wafer. A known current passes between the outer two. The inner two measure the voltage drop, drawing essentially no current themselves, so the resistance of the needles and their contacts drops out. For a layer much thinner than the probe spacing on a wafer much wider than it, the geometry works out to a constant (Valdes, 1954; Smits, 1958):
+  </p>
+  <p class="tx-eq"><i>R</i><sub>s</sub> = (π / ln 2) · <i>V</i>/<i>I</i> ≈ 4.532 · <i>V</i>/<i>I</i> &nbsp;&nbsp; (ohms per square) &nbsp;&nbsp;&nbsp; for a thick sample: ρ = 2π<i>s</i> · <i>V</i>/<i>I</i></p>
+  <p>
+    <b>Sheet resistance</b> <i>R</i><sub>s</sub> is the resistance of any square of a film, whatever its size, and for a doped layer it is roughly 1/(<i>q</i>μ × dose), so it is a sensitive check on implant dose, energy and anneal all at once. Fabs run monitor wafers through implanters and furnaces and map them at 49 sites in rings, looking at the mean and the uniformity:
+  </p>
+  <div class="xp-figure" data-widget="fourpoint"></div>
+  <p>
+    The same tool measures metal films (thickness = resistivity / <i>R</i><sub>s</sub>) and silicide. Related techniques: <b>eddy-current</b> gauges for metals without touching; <b>thermal-wave</b> tools that sense implant damage on product wafers before annealing; <b>van der Pauw</b> and Greek-cross test structures for sheet resistance in the scribe line; and spreading resistance or SIMS for profiles with depth.
+  </p>
+</section>
+
+<section class="xp-topic" id="ivtest" data-title="Measuring a transistor" data-group="Measuring transistors" data-device="mosfet" data-preset="nm130" data-bias="vg:vdd,vd:0.05" data-next="cv">
+  <h2>Measuring a transistor: I–V parameters</h2>
+  <p class="xp-lede">Sweep the gate, sweep the drain, extract a dozen numbers.</p>
+  <p>
+    A parametric analyzer with four source-measure units (one per terminal) sweeps the gate at a low drain voltage (50 mV, the linear region) and again at the supply voltage, and sweeps the drain at a few gate voltages. Each measures current down to femtoamps. Kelvin connections (separate force and sense wires) keep cable resistance out of the result. From those curves:
+  </p>
+  <div class="xp-figure" data-widget="extract"></div>
+  <ul>
+    <li><b>Threshold voltage</b>, two common ways: the <i>constant-current</i> method (the gate voltage where the current reaches, say, 100 nA × <i>W</i>/<i>L</i>), fast and used in production; and <i>linear extrapolation</i> (the tangent at peak transconductance extended to zero current, minus <i>V</i><sub>DS</sub>/2), closer to the textbook definition. They differ by tens of millivolts, so a spec must say which.</li>
+    <li><b>Transconductance</b> <i>g</i><sub>m</sub> = ∂<i>I</i><sub>D</sub>/∂<i>V</i><sub>GS</sub>: gain, and, through <i>g</i><sub>m</sub> = μ<i>C</i><sub>ox</sub>(<i>W</i>/<i>L</i>)<i>V</i><sub>DS</sub>, a window on mobility.</li>
+    <li><b>Subthreshold swing</b>, from the slope of log <i>I</i><sub>D</sub>.</li>
+    <li><b>DIBL</b>: the difference between linear and saturated thresholds divided by the difference in drain voltage.</li>
+    <li><b><i>I</i><sub>on</sub></b> (both terminals at the supply) and <b><i>I</i><sub>off</sub></b> (gate at zero, drain at the supply), the pair every technology is judged by.</li>
+    <li><b>Series resistance</b>: by measuring transistors of several gate lengths and extrapolating the total resistance to zero length.</li>
+  </ul>
+</section>
+
+<section class="xp-topic" id="cv" data-title="C–V measurement" data-group="Measuring transistors" data-device="moscap" data-preset="nm130" data-bias="vg:-1" data-next="contactres">
+  <h2>Capacitance–voltage: reading an oxide without seeing it</h2>
+  <p class="xp-lede">Sweep a MOS capacitor's gate voltage and its capacitance traces out the oxide, the doping and the interface.</p>
+  <p>
+    Measure a MOS capacitor's capacitance with a small AC signal while sweeping its DC gate voltage. In <b>accumulation</b> the charges sit right at both faces of the oxide, and the capacitance is just the oxide's, <i>C</i><sub>ox</sub> = ε<sub>ox</sub>/<i>t</i><sub>ox</sub>, which gives the thickness directly. In <b>depletion</b> the depletion layer adds a second capacitor in series and the total falls. In <b>inversion</b> the curve depends on frequency. At low frequency, electrons in the inversion layer can follow the signal and the capacitance climbs back to <i>C</i><sub>ox</sub>. At 1 MHz they cannot be generated fast enough, the depletion layer is stuck at its maximum width, and the capacitance stays at a minimum that reveals the doping.
+  </p>
+  <div class="xp-figure" data-widget="cv"></div>
+  <ul>
+    <li><b>Oxide thickness</b> from <i>C</i><sub>max</sub>; <b>doping</b> from <i>C</i><sub>min</sub> (or from the slope of 1/<i>C</i><sup>2</sup> in depletion); <b>flat-band voltage</b> from where the curve sits, which gives the work-function difference and any <b>fixed charge</b> (slide it above and watch the curve shift sideways).</li>
+    <li><b>Interface traps</b> stretch the curve out and separate the low- and high-frequency curves; comparing them gives their density.</li>
+    <li><b>Mobile ions</b> (sodium again): heat the capacitor under bias, measure again, and any ions that drifted shift the curve.</li>
+  </ul>
+  <p>
+    At 1–2 nm, C–V gets harder. Tunnelling current swamps the capacitance signal, and the measured maximum is smaller than the oxide's own, because the inversion charge sits about a nanometre below the interface (a quantum effect) and poly gates deplete. That is why a thin oxide has two thicknesses: the physical one, and a slightly larger <i>electrical</i> one (CET) that sets the drive current. Production fabs also measure oxides without contacts, by spraying a known charge onto the surface with a corona discharge and reading the surface voltage with a Kelvin probe.
+  </p>
+</section>
+
+<section class="xp-topic" id="contactres" data-title="Contact resistance" data-group="Measuring transistors" data-step="wcmp" data-next="metrology">
+  <h2>Contact resistance, TLM and Kelvin structures</h2>
+  <p class="xp-lede">Every current that enters a transistor squeezes through a contact a hundred nanometres wide.</p>
+  <p>
+    A contact's resistance depends on its area and on the <b>specific contact resistivity</b> ρ<sub>c</sub> (Ω·cm²) of the metal–silicon interface, which falls steeply with doping, because heavily doped junctions are thin enough for electrons to tunnel through. Modern silicide-to-silicon contacts reach 10<sup>−9</sup> Ω·cm² and below. Three standard test structures measure it:
+  </p>
+  <ul>
+    <li><b>Kelvin structure</b>: a single contact with four connections, two forcing current through it and two sensing the voltage right at it, so only the contact itself is measured.</li>
+    <li><b>Contact chain</b>: thousands of contacts in series through alternating strips of silicon and metal. The average gives resistance per contact, and one unopened contact makes the whole chain open, which makes chains a sensitive yield monitor.</li>
+    <li><b>Transfer length method</b> (TLM): identical pads at increasing spacings on one strip of doped silicon. Plot resistance against spacing: the slope is the layer's sheet resistance and the intercept is twice the contact resistance.</li>
+  </ul>
+  <div class="xp-figure" data-widget="tlm"></div>
+</section>
+
+<section class="xp-topic" id="metrology" data-title="Inline metrology" data-group="Measuring transistors" data-step="gatelitho" data-next="litho">
+  <h2>Inline metrology: measuring as you go</h2>
+  <p class="xp-lede">Most of a fab's tools exist to make things; a large minority exist only to check them.</p>
+  <p>
+    Electrical tests come at the end. During the three months before, wafers are measured after nearly every important step, usually on a sample of wafers and sites, with results fed into statistical process control and often straight back into the tools (run-to-run control).
+  </p>
+  <table>
+    <tr><th>What</th><th>How</th><th>After</th></tr>
+    <tr><td>Film thickness</td><td>Spectroscopic ellipsometry and reflectometry (how a film changes reflected light's polarisation and colour); X-ray reflectometry and XPS for the thinnest films</td><td>Every deposition, oxidation, CMP</td></tr>
+    <tr><td>Line width (CD)</td><td>CD-SEM, a scanning electron microscope that measures from above; scatterometry (fitting the diffraction of light from gratings to a model of their profile)</td><td>Lithography and etch</td></tr>
+    <tr><td>Overlay</td><td>Optical measurement of how far one layer's marks sit from the last's, to a nanometre or two</td><td>Every lithography step</td></tr>
+    <tr><td>Defects</td><td>Bright- and dark-field optical inspection compares each die with its neighbours; e-beam inspection finds electrical defects by voltage contrast; review SEMs image and classify what was found</td><td>Most steps, sampled</td></tr>
+    <tr><td>Sheet resistance</td><td><a href="#fourpoint">Four-point probe</a>, eddy current</td><td>Implant, anneal, metal, silicide</td></tr>
+    <tr><td>Dose</td><td>Thermal-wave (modulated reflectance), on product wafers</td><td>Implant</td></tr>
+    <tr><td>Stress, flatness</td><td>Wafer bow by interferometry</td><td>Films, CMP</td></tr>
+    <tr><td>Composition</td><td>X-ray fluorescence; SIMS on monitors</td><td>Silicide, high-k, doping</td></tr>
+  </table>
+  <p>
+    And when something looks wrong, a focused ion beam cuts a cross-section and a transmission electron microscope images it atom by atom: the real version of the drawing on this page.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- THE TOOLBOX                                                         -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="litho" data-title="Lithography" data-group="The toolbox" data-step="gatelitho" data-next="etch">
+  <h2>Lithography</h2>
+  <p class="xp-lede">Printing with light, at a resolution well below the light's own wavelength.</p>
+  <p>
+    Every pattern on the chip starts as photoresist. A track coats the wafer with a few hundred nanometres of resist (over an anti-reflective layer), bakes it, and hands it to a <b>scanner</b>, which projects the pattern of a mask (reticle) onto it, shrunk four times through a lens of extraordinary precision. The scanner exposes one field (up to 26 × 33 mm, a few chips) by sweeping mask and wafer past a slit in opposite directions, then steps to the next. Modern resists are <i>chemically amplified</i>: each absorbed photon releases an acid that, during a post-exposure bake, catalyses hundreds of reactions that make the resist soluble. A developer then washes the exposed resist away.
+  </p>
+  <p>The smallest half-pitch one exposure can print follows the Rayleigh criterion:</p>
+  <p class="tx-eq"><i>R</i> = <i>k</i><sub>1</sub> λ / NA &nbsp;&nbsp; depth of focus ≈ <i>k</i><sub>2</sub> λ / NA<sup>2</sup></p>
+  <p>
+    λ is the wavelength, NA the numerical aperture of the lens (how wide a cone of light it collects), and <i>k</i><sub>1</sub> a measure of how cleverly the process squeezes out resolution: phase-shifting masks, off-axis illumination, and optical proximity correction, which pre-distorts mask shapes so that they print as intended. The physical floor for one exposure is <i>k</i><sub>1</sub> = 0.25. Each lever has its own <a href="#lithoscale">history</a>.
+  </p>
+  <p>
+    Two numbers are checked after every lithography step: the width of the printed lines (CD, by CD-SEM), and <b>overlay</b>, how well this layer lines up with the ones below. A leading-edge scanner aligns layers to within a nanometre or two across a 300 mm wafer.
+  </p>
+</section>
+
+<section class="xp-topic" id="etch" data-title="Etching" data-group="The toolbox" data-step="gateetch" data-next="deposition">
+  <h2>Etching</h2>
+  <p class="xp-lede">Removing exactly what the resist does not cover, straight down, and stopping in time.</p>
+  <p>
+    <b>Wet etching</b> dissolves material in a liquid: hydrofluoric acid for oxide, hot phosphoric acid for nitride. It is cheap, gentle and highly selective, but <i>isotropic</i>: it eats sideways as fast as down, undercutting the mask. That is fine for stripping whole films, useless for 50 nm lines.
+  </p>
+  <p>
+    <b>Plasma (dry) etching</b> puts the wafer in a low-pressure gas lit by radio-frequency power. The plasma makes reactive radicals, which form volatile compounds with the surface (silicon + chlorine → SiCl<sub>4</sub>; oxide + fluorocarbons → SiF<sub>4</sub> and CO), and ions, which a bias voltage accelerates straight down onto the wafer. The ions drive the reaction where they hit, on the floors of features, while the sidewalls, struck only glancingly and coated with a thin protective polymer, barely etch. The result is <i>anisotropic</i> etching: vertical walls. This is reactive ion etching.
+  </p>
+  <ul>
+    <li><b>Selectivity</b>: how much faster the target etches than the layer beneath. The gate etch must stop on 1.6 nm of oxide after cutting 100 nm of poly.</li>
+    <li><b>Endpoint</b>: optical emission spectroscopy watches the plasma's glow change as one material clears and the next appears.</li>
+    <li><b>Loading and aspect ratio</b>: dense areas, open areas and deep, narrow holes all etch at different rates, which recipes must balance.</li>
+    <li><b>Atomic layer etching</b>: alternating a self-limiting surface reaction with a gentle ion pulse removes one atomic layer per cycle, for the most critical modern steps.</li>
+  </ul>
+</section>
+
+<section class="xp-topic" id="deposition" data-title="Deposition" data-group="The toolbox" data-step="spdep" data-next="implant">
+  <h2>Growing and depositing films</h2>
+  <p class="xp-lede">Every layer on the chip is grown from the silicon or laid down on it, a few atoms to a few micrometres at a time.</p>
+  <ul>
+    <li><b>Thermal oxidation</b> grows oxide from the silicon itself, consuming it. It makes the best interfaces in the business, so gate oxides and liners are grown (see <a href="#thermal">thermal processing</a>).</li>
+    <li><b>Chemical vapour deposition</b> (CVD) reacts gases on a hot surface: silane for polysilicon, dichlorosilane and ammonia for nitride, TEOS for oxide. Low-pressure furnaces (LPCVD) coat a hundred wafers at once, uniformly; plasma-enhanced CVD (PECVD) works at 300–400 °C, cool enough for after the metal is in; high-density-plasma CVD deposits and sputters at once to fill gaps.</li>
+    <li><b>Atomic layer deposition</b> (ALD) alternates two gases, each of which reacts with the surface until it is covered and then stops. One cycle lays down a fraction of a nanometre, perfectly evenly over any topography. High-k gate dielectrics are made this way (HfCl<sub>4</sub> and water for HfO<sub>2</sub>).</li>
+    <li><b>Physical vapour deposition</b> (PVD, sputtering) knocks atoms off a metal target with argon ions; they fly in straight lines onto the wafer. Directional, so it coats tops better than deep sidewalls; ionised PVD steers the metal ions down into trenches. Used for barriers, seeds, nickel and aluminium.</li>
+    <li><b>Epitaxy</b> grows new single crystal on a crystal: the epi layer on starting wafers, and the SiGe and doped-silicon source/drains of <a href="#strain">strained</a> and <a href="#finfet">FinFET</a> transistors.</li>
+    <li><b>Electroplating</b> for copper wiring (see <a href="#damascene">damascene</a>).</li>
+  </ul>
+  <p>
+    The key property of a deposited film, beside thickness and composition, is <b>conformality</b>: does it coat a vertical wall as thickly as a flat top? The spacer process on the stage depends on a fully conformal film.
+  </p>
+</section>
+
+<section class="xp-topic" id="implant" data-title="Ion implantation" data-group="The toolbox" data-step="nsd" data-next="thermal">
+  <h2>Ion implantation</h2>
+  <p class="xp-lede">Doping by firing atoms into the wafer, counted one by one.</p>
+  <p>
+    An implanter ionises a dopant gas (BF<sub>3</sub>, PH<sub>3</sub>, AsH<sub>3</sub>), extracts the ions, and sends the beam through a magnet that bends each mass by a different amount, so only the wanted species gets through. The ions are accelerated to between a few hundred eV and several MeV and scanned across the wafer. The <b>dose</b> (ions per cm²) is counted exactly by measuring the beam's charge in Faraday cups, which is why implantation replaced furnace diffusion for nearly all doping in the 1970s. The <b>energy</b> sets the depth.
+  </p>
+  <div class="xp-figure" data-widget="implant"></div>
+  <p>
+    Each ion slows by collisions with nuclei and electrons and comes to rest at a random depth, roughly Gaussian about a projected range <i>R</i><sub>p</sub> with a spread Δ<i>R</i><sub>p</sub>. Light boron goes deep; heavy arsenic stops shallow. Two details matter in practice. Along the open directions of the crystal lattice, ions can <i>channel</i> deep before they hit anything, so wafers are tilted about 7° off axis, or the surface is pre-amorphised. And the collisions leave the lattice badly damaged, so every implant is followed by an <a href="#thermal">anneal</a>, which also spreads the profile, as the curve shows.
+  </p>
+  <p>
+    Fabs run three families of implanters: high-current, for source/drain doses of 10<sup>15</sup>/cm² and up; medium-current, for precise lower doses, including the tilted halo implants; and high-energy, up to several MeV, for deep wells.
+  </p>
+</section>
+
+<section class="xp-topic" id="thermal" data-title="Oxidation and annealing" data-group="The toolbox" data-step="gox" data-next="cmp">
+  <h2>Oxidation and annealing</h2>
+  <p class="xp-lede">Heat grows oxides, activates dopants and heals damage, and every second of it moves the dopants.</p>
+  <p>
+    Silicon's great advantage over every other semiconductor is its oxide: SiO<sub>2</sub> grows on it simply by heating in oxygen or steam, and the interface between them is nearly perfect, with fewer than one defect per hundred thousand surface atoms after a hydrogen anneal. Bruce Deal and Andrew Grove (later Intel's CEO) worked out the kinetics in 1965:
+  </p>
+  <div class="xp-figure" data-widget="dealgrove"></div>
+  <p class="tx-eq"><i>x</i><sup>2</sup> + <i>A x</i> = <i>B</i>(<i>t</i> + τ)</p>
+  <p>
+    Thin oxides grow linearly, limited by the reaction at the interface (rate <i>B</i>/<i>A</i>); thick ones parabolically, limited by oxygen diffusing through the oxide already there (<i>B</i>). Steam oxidises several times faster than dry oxygen, so thick oxides are grown wet and gate oxides dry. Deal–Grove underestimates the very first few nanometres, which grow faster than it predicts, so thin gate oxides are tuned empirically in rapid thermal tools.
+  </p>
+  <p>
+    <b>Annealing</b> heats without growing anything, to activate implants, repair damage, densify films or form silicides. The tools have moved to ever shorter times: tube furnaces (100+ wafers, minutes to hours), rapid thermal processors (one wafer, lamps, seconds, and "spikes" with no time at peak), flash lamps (milliseconds) and lasers (microseconds). The <i>thermal budget</i>, roughly the sum of every step's diffusion length squared, √(<i>D t</i>), had to shrink with the junctions.
+  </p>
+</section>
+
+<section class="xp-topic" id="cmp" data-title="Chemical-mechanical polishing" data-group="The toolbox" data-step="sticmp" data-next="moore">
+  <h2>Chemical-mechanical polishing</h2>
+  <p class="xp-lede">The step that made modern chips possible by making each layer flat again.</p>
+  <p>
+    A wafer, face down in a carrier, is pressed against a rotating polyurethane pad flooded with slurry: abrasive particles of silica, ceria or alumina in a chemistry that softens the surface (oxidisers for metals, a high pH for oxide). Chemistry weakens the top layer, abrasion carries it off. Removal follows Preston's 1927 law for polishing glass: rate ∝ pressure × speed. Because high points feel more pressure, they polish faster, and the surface flattens.
+  </p>
+  <p>
+    IBM brought CMP into chipmaking in the late 1980s. Without it, every layer's topography would pile onto the last, the lithography would lose focus, and copper damascene and trench isolation would not work at all. Its quirks:
+  </p>
+  <ul>
+    <li><b>Dishing</b>: soft material in a wide feature (copper in a broad wire, oxide in a wide trench) polishes into a shallow dish.</li>
+    <li><b>Erosion</b>: dense arrays of features thin out as a whole.</li>
+    <li>Both depend on the local pattern density, so designs are filled with electrically useless <b>dummy shapes</b> to even it out.</li>
+    <li><b>Endpoint</b> is detected through windows in the pad (reflected light) or from the motor current changing as one material clears.</li>
+  </ul>
+</section>
+
+<!-- ================================================================== -->
+<!-- SCALING                                                             -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="moore" data-title="Moore's law" data-group="Scaling" data-arch="planar" data-next="dennard">
+  <h2>Moore's law</h2>
+  <p class="xp-lede">An observation from 1965 that became a fifty-year industrial plan.</p>
+  <p>
+    In April 1965 Gordon Moore, then at Fairchild, noted in <i>Electronics</i> that the number of components on the most cost-effective chip had doubled every year since the integrated circuit's invention, and predicted it would continue for a decade. In 1975 he revised the pace to a doubling every two years. The industry then organised itself around the prediction: equipment makers, chip designers and fabs planned their generations to land on it, in the form of a roadmap (ITRS, now IRDS).
+  </p>
+  <div class="xp-figure" data-widget="moore"></div>
+  <p>
+    The 4004 of 1971 had 2,300 transistors; Nvidia's Rubin GPU of 2026 has 336 billion across two dies, a factor of about 10<sup>8</sup> in 55 years, close to a doubling every two years. The stage shows the planar transistor that carried most of that journey. The rest of this group is how it kept shrinking: what each generation changed, and why the transistor eventually had to change shape.
+  </p>
+</section>
+
+<section class="xp-topic" id="dennard" data-title="Dennard scaling and its end" data-group="Scaling" data-arch="planar" data-next="nodes">
+  <h2>Dennard scaling, and the day it stopped</h2>
+  <p class="xp-lede">For thirty years, shrinking made transistors faster and cheaper with no penalty in power. Then it didn't.</p>
+  <p>
+    In 1974 Robert Dennard and colleagues at IBM (Dennard had also invented the one-transistor DRAM cell) showed how to shrink a MOSFET properly. Scale every dimension, including the oxide, by 1/κ; scale the voltage by 1/κ; raise the doping by κ. Then the fields inside stay the same, each transistor gets κ times faster and uses κ² times less power, and κ² times more fit in the same area, so <b>power per area stays constant</b>. Each generation (κ ≈ 1.4) gave twice the transistors, 40% more speed and the same power density. Free performance.
+  </p>
+  <div class="xp-figure" data-widget="dennard"></div>
+  <p>
+    It held, roughly, until about 2005. The weak link is <a href="#subthreshold">the 60 mV/decade limit</a>. Voltage can only fall if the threshold falls with it, and every 60–90 mV off the threshold multiplies the leakage tenfold. By the 90 nm generation, leakage was a large share of chip power, and the gate oxide, at 1.2 nm, was <a href="#hkmg">leaking</a> as well. Supply voltages stalled near 1 V. With voltage stuck, power density rose with every shrink, until processors hit the roughly 100 W per chip that air cooling can remove. Clock speeds stopped near 3–4 GHz, and the industry turned to multiple cores, specialised accelerators, and power-gating of whatever is idle ("dark silicon").
+  </p>
+  <p>
+    Shrinking continued; what ended was shrinking for free. Since then each generation has needed a new material or structure to deliver its gains.
+  </p>
+</section>
+
+<section class="xp-topic" id="nodes" data-title="What a node name means" data-group="Scaling" data-arch="planar" data-next="strain">
+  <h2>What "7 nm" means (not much)</h2>
+  <p class="xp-lede">Node names once measured something. Now they are brand names on a schedule.</p>
+  <p>
+    Through the 1990s a process "node" named a real feature: roughly the gate length, or half the pitch of the densest lines. Then gate lengths shrank faster than the node names (a 130 nm process had 60–70 nm gates), and from the FinFET era onward the opposite: names kept falling by about 0.7× per generation while the physical dimensions slowed. A "3 nm" transistor has a gate about 16 nm long and its gates sit about 48 nm apart. In 2021 Intel renamed its 10 nm process "Intel 7" to match competitors' naming.
+  </p>
+  <div class="xp-figure" data-widget="nodes"></div>
+  <p>
+    More honest measures are the <b>contacted gate pitch</b> (centre-to-centre spacing of transistors) and the <b>minimum metal pitch</b>, whose product sets the size of a logic cell, or simply transistors per mm². Those have kept shrinking, now more slowly, and increasingly helped by design tricks (fewer fins per transistor, stacking, backside power) rather than by smaller features alone.
+  </p>
+</section>
+
+<section class="xp-topic" id="strain" data-title="Strained silicon (90 nm)" data-group="Scaling" data-arch="strain" data-next="hkmg">
+  <h2>Strained silicon, 2003</h2>
+  <p class="xp-lede">Squeeze or stretch the crystal, and electrons and holes move faster.</p>
+  <p>
+    Mobility depends on the shape of silicon's bands, and mechanical strain reshapes them: it splits apart energy valleys that are normally equal, so carriers sit in the ones with lighter effective mass and scatter less. Compressing a PMOS channel along the current flow speeds up holes; stretching an NMOS channel speeds up electrons.
+  </p>
+  <p>
+    Intel's 90 nm process (2003) was the first to do it deliberately in volume. For PMOS, the source and drain were etched out and regrown epitaxially as <b>silicon-germanium</b>; germanium atoms are about 4% larger than silicon's, so the SiGe pushes in on the channel from both sides, as the 3D model shows. For NMOS, a silicon nitride capping layer deposited under tension pulls the channel along. Others used <b>dual stress liners</b> (the contact etch stop layer, deposited tensile over NMOS and compressive over PMOS). Hole mobility rose by around half, and drive currents by 10–25%, at almost no cost in area.
+  </p>
+  <p>
+    Strain engineering has been in every leading-edge process since: embedded SiGe got richer in germanium, stress was "memorised" into gates, and FinFET and nanosheet source/drains are strained epitaxy by design. The <a href="#lab">lab</a> has a strain switch.
+  </p>
+</section>
+
+<section class="xp-topic" id="hkmg" data-title="High-k / metal gate (45 nm)" data-group="Scaling" data-arch="hkmg" data-next="lithoscale">
+  <h2>High-k dielectrics and metal gates, 2007</h2>
+  <p class="xp-lede">The gate oxide could not get any thinner, so it was replaced with something that could be thicker.</p>
+  <p>
+    By the 65 nm generation, SiO<sub>2</sub> gate oxides were about 1.2 nm thick, five atomic layers, and electrons were tunnelling straight through them. Tunnelling current rises about tenfold for every 0.2 nm thinner, so another shrink was impossible.
+  </p>
+  <p>
+    What the transistor needs is not a thin oxide but a large capacitance, <i>C</i> = <i>k</i>ε<sub>0</sub>/<i>t</i>. A material with a higher dielectric constant <i>k</i> gives the same capacitance at a greater physical thickness. Thickness is quoted as <b>equivalent oxide thickness</b>, EOT = <i>t</i> × 3.9/<i>k</i>: hafnium oxide (<i>k</i> ≈ 20–25) can be about five times thicker than SiO<sub>2</sub> at the same EOT, and a thicker barrier leaks exponentially less:
+  </p>
+  <div class="xp-figure" data-widget="gateleak"></div>
+  <p>
+    Making it work took a decade of research. Hafnium oxide on silicon traps charge and scatters electrons, so a thin SiO<sub>2</sub> interface layer (~0.5 nm) stays underneath. Polysilicon gates pin their Fermi level on high-k and push the thresholds out of range, so the gates became <b>metals</b> with tuned work functions, one for NMOS and one for PMOS, which also ended poly depletion. Intel chose <b>gate-last</b>, or replacement metal gate: build the transistor with a dummy polysilicon gate, finish the hot steps, then pull the dummy out and fill the trench with high-k and metals. That is why the high-k in the model lines a U-shaped trench. Intel's 45 nm process (Penryn, late 2007) cut gate leakage more than 25-fold for NMOS against its 65 nm process; Gordon Moore called it the biggest change in transistor technology since polysilicon gates arrived in the late 1960s.
+  </p>
+</section>
+
+<section class="xp-topic" id="lithoscale" data-title="From 248 nm to EUV" data-group="Scaling" data-step="gatelitho" data-next="interconnect">
+  <h2>Lithography: from mercury lamps to tin plasma</h2>
+  <p class="xp-lede">Every lever in <i>R</i> = <i>k</i><sub>1</sub>λ/NA was pulled, one after another.</p>
+  <div class="xp-figure" data-widget="litho"></div>
+  <ul>
+    <li><b>Shorter wavelengths.</b> Mercury lamp lines g (436 nm) and i (365 nm) through the 1980s and early 1990s, then excimer lasers: KrF at 248 nm from the mid-1990s, ArF at 193 nm from about 2003.</li>
+    <li><b>Higher NA.</b> Lenses grew to collect wider cones of light, approaching NA 0.93 in air. Then <b>immersion</b> (around 2006–7): a film of water between lens and wafer, with refractive index 1.44, pushed NA to 1.35.</li>
+    <li><b>Lower <i>k</i><sub>1</sub>.</b> Resolution-enhancement tricks pushed toward the 0.25 floor. Below it, <b>multiple patterning</b>: print every other line, then the ones between (litho-etch-litho-etch), or use <a href="#spacers">spacers</a> grown on printed lines as the pattern itself (self-aligned double and quadruple patterning). 7 nm-class chips were printed with 193 nm light in four passes for their tightest layers.</li>
+    <li><b>EUV</b>, 13.5 nm. No lens transmits it and air absorbs it, so everything runs in vacuum with mirrors of alternating molybdenum and silicon layers, each reflecting about 70%. The light comes from droplets of molten tin, about 50,000 a second, each hit by a high-power CO<sub>2</sub> laser to make a plasma. After two decades of development it entered volume production in 2019, at Samsung and TSMC's 7 nm-class processes.</li>
+    <li><b>High-NA EUV</b>, NA 0.55, uses anamorphic optics that shrink one direction more than the other. Intel finished acceptance testing of ASML's production high-NA scanner (EXE:5200B) in December 2025, for its 14A process, with volume production expected around 2028.</li>
+  </ul>
+  <p>
+    ASML in the Netherlands is the only maker of EUV scanners; each costs hundreds of millions of dollars and ships in several cargo planes.
+  </p>
+</section>
+
+<section class="xp-topic" id="interconnect" data-title="Wires at the limit" data-group="Scaling" data-step="m2metal" data-next="finfet">
+  <h2>Wires at the limit</h2>
+  <p class="xp-lede">Transistors get better as they shrink. Wires get worse.</p>
+  <p>
+    A wire's delay scales with its resistance times its capacitance. Shrink a wire's width and height together and its resistance per length rises with the square of the shrink, while its capacitance to its neighbours stays about the same. So the RC delay of a millimetre of wire grows each generation, even as transistors speed up.
+  </p>
+  <div class="xp-figure" data-widget="rc"></div>
+  <p>
+    The industry answered with materials: copper for aluminium in 1997–98, then low-k and porous ultra-low-k dielectrics, and air gaps between the tightest wires. But at widths of a few tens of nanometres copper itself runs into trouble. Its electrons travel about 40 nm between collisions in bulk metal, so in thinner wires they scatter off surfaces and grain boundaries and the resistivity climbs. And the barrier, which cannot shrink much below 2–3 nm, takes up a growing share of the trench. Cobalt (used by Intel at 10 nm for the lowest levels) and ruthenium and molybdenum, which have short electron paths and need little or no barrier, are taking over the tightest levels. <a href="#bspdn">Backside power</a> attacks the same problem from another side.
+  </p>
+</section>
+
+<section class="xp-topic" id="finfet" data-title="FinFET (22 nm)" data-group="Scaling" data-arch="finfet" data-next="gaa">
+  <h2>The FinFET, 2011</h2>
+  <p class="xp-lede">Stand the channel on its edge and wrap the gate over it.</p>
+  <p>
+    A planar transistor's gate sits on top of a channel that sits on a deep slab of silicon. Below the surface the gate's grip weakens, and the drain's field leaks in underneath (see <a href="#shortchannel">short-channel effects</a>). The cure is a body so thin that no part of it is far from the gate. In a FinFET, the channel is a thin vertical fin of silicon, about 8 nm wide at Intel's 22 nm, with the gate wrapped over its top and both sides.
+  </p>
+  <ul>
+    <li><b>Electrostatics.</b> Gated on three sides, the natural length shrinks with the fin width, so subthreshold swing returns to 65–70 mV/decade and DIBL drops severalfold. Thresholds and supply voltages could fall again: Intel's 22 nm ran at 0.8 V.</li>
+    <li><b>No heavy doping.</b> The fin needs almost none, so mobility improves, and transistors vary less, since there are no random dopant atoms to be unevenly scattered.</li>
+    <li><b>Width in fins.</b> Drive current is set by the fin's height and the number of fins, which come in whole numbers. Taller fins (from ~34 nm at 22 nm to over 50 nm later) bought current without area.</li>
+  </ul>
+  <div class="xp-figure" data-widget="sce"></div>
+  <p>
+    The idea came from Hitachi's "DELTA" transistor (1989) and Chenming Hu, Tsu-Jae King and Jeffrey Bokor's group at Berkeley, who named it FinFET in 1999. Intel shipped it first, as "tri-gate," in Ivy Bridge processors in 2012; TSMC and Samsung followed in 2015. Turn on <i>Cut open</i> at the bottom: the cut runs through the gate, across the fins, so you see each fin wrapped in high-k and metal.
+  </p>
+</section>
+
+<section class="xp-topic" id="gaa" data-title="Gate-all-around nanosheets" data-group="Scaling" data-arch="gaa" data-next="bspdn">
+  <h2>Gate-all-around nanosheets, 2022–2025</h2>
+  <p class="xp-lede">Lay the fin down, slice it into sheets, and wrap the gate all the way around each one.</p>
+  <p>
+    Fins could not get much thinner or taller. The next step puts gate on the fourth side: a stack of horizontal silicon <b>nanosheets</b>, each about 5 nm thick, every one completely surrounded by gate. Electrostatic control is the best possible, so gates can be shorter, and unlike fins the sheets' width can be chosen freely, wide for drive or narrow for density.
+  </p>
+  <p>
+    Making it is a feat of selective chemistry. The wafer starts with an epitaxial stack of alternating silicon and silicon-germanium layers, patterned into fins. A dummy gate is formed over them, spacers and source/drain epitaxy follow, and the dummy gate is removed. An etch that dissolves SiGe but not silicon then hollows out the gate region, leaving the silicon sheets suspended like the rungs of a ladder (the <i>channel release</i>). ALD coats every surface of every sheet with high-k and metal. Before that, the SiGe ends under the spacers are recessed and refilled with dielectric <b>inner spacers</b>, so the gate does not short to the source and drain.
+  </p>
+  <p>
+    Samsung shipped the first, which it calls MBCFET, at 3 nm in 2022. TSMC's N2 entered volume production in the fourth quarter of 2025, and Intel's 18A ("RibbonFET") launched in Core Ultra series 3 laptop processors in January 2026. With <i>Cut open</i>, the model shows three sheets ringed by gate.
+  </p>
+</section>
+
+<section class="xp-topic" id="bspdn" data-title="Backside power" data-group="Scaling" data-arch="bspdn" data-next="future">
+  <h2>Backside power delivery</h2>
+  <p class="xp-lede">Power and signals had shared one side of the wafer for sixty years. Now power comes in from the back.</p>
+  <p>
+    Every transistor needs power from the thick top metal, carried down through every wiring level, losing voltage along the way (IR drop), and taking up routing tracks that signals need. Backside power moves the power network underneath. The front side is built as usual, then bonded face-down onto a carrier wafer; the original substrate is ground and polished away until the transistors are reached from behind; and power wires and contacts are built on what used to be the bottom. Signal wiring keeps the whole front side.
+  </p>
+  <ul>
+    <li>Intel's <b>PowerVia</b>, in its 18A process, reached products in 2026.</li>
+    <li>TSMC's <b>Super Power Rail</b>, contacting the source and drain directly from the back, is in its A16 process, scheduled for volume production in the fourth quarter of 2026, with products expected in 2027. TSMC projects 8–10% more speed or 15–20% less power than N2P.</li>
+  </ul>
+  <p>
+    The model shows a nanosheet transistor with signal wiring above, a bonded carrier wafer on top, the substrate gone, and thick power wiring below.
+  </p>
+</section>
+
+<section class="xp-topic" id="future" data-title="What comes next" data-group="Scaling" data-arch="cfet" data-next="lab">
+  <h2>What comes next</h2>
+  <p class="xp-lede">Stack the transistors themselves.</p>
+  <ul>
+    <li><b>CFET</b> (complementary FET), shown on the stage: the NMOS nanosheets built directly on top of the PMOS ones, sharing a gate, so an inverter takes the footprint of one transistor. Imec, Intel, TSMC and Samsung have shown working stacks; imec's roadmap puts them in production in the early 2030s. A <i>forksheet</i>, with NMOS and PMOS sheets on either side of a thin dielectric wall, is a possible step before.</li>
+    <li><b>2D-material channels</b>: single-molecule-thick semiconductors such as MoS<sub>2</sub> or WSe<sub>2</sub>, thin enough to keep gate control at gate lengths below 10 nm, where silicon sheets lose mobility.</li>
+    <li><b>3D integration</b>: logic and memory stacked by <a href="#packaging">hybrid bonding</a> at ever finer pitch, and transistor layers built sequentially on top of one another.</li>
+    <li><b>New wires</b>: ruthenium, molybdenum, and wires etched again rather than inlaid, now that the metals can be.</li>
+  </ul>
+  <p>
+    And beyond the transistor: spintronics, photonics, and the steep-slope switches that would beat <a href="#subthreshold">60 mV/decade</a>. Each has been the future for a while. The MOSFET, at sixty-odd years old, remains the present.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- LAB                                                                 -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="lab" data-title="Transistor lab" data-group="Lab" data-device="mosfet" data-bias="vg:vdd,vd:vdd" data-next="model">
+  <h2>Transistor lab</h2>
+  <p class="xp-lede">Build a transistor from any era, change one thing at a time, and watch the numbers move.</p>
+  <p>
+    Start from a preset, then turn the knobs. Everything recomputes from the device physics: the threshold from the doping, oxide and gate; the current from mobility, velocity saturation and series resistance; the short-channel effects from the natural length; the gate leakage from tunnelling through the stack. The stage shows the same device, and the sliders at the bottom set its bias.
+  </p>
+  <div class="xp-figure" data-widget="lab"></div>
+  <h3>Things to try</h3>
+  <ul>
+    <li><b>Shrink the gate</b> on the 130 nm preset to 25 nm and watch the threshold collapse and the off current climb: short-channel effects. Then switch to FinFET at the same length.</li>
+    <li><b>Thin the oxide</b> below 1.2 nm of SiO<sub>2</sub> and watch the gate leakage overtake the off current. Then switch the dielectric to HfO<sub>2</sub> at the same EOT.</li>
+    <li><b>Heat it</b> to 400 K (127 °C). The swing worsens, the threshold drops, leakage rises about twentyfold, and the drive current falls with the mobility.</li>
+    <li><b>Compare eras</b>: pin the 1985 preset, then load the 2025 one. Drive current per micrometre has risen about tenfold at a seventh of the voltage.</li>
+    <li><b>Flip to PMOS</b> and see what slower holes cost, then add strain.</li>
+  </ul>
+</section>
+
+<!-- ================================================================== -->
+<!-- ABOUT                                                               -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="model" data-title="About the models" data-group="About" data-step="wcmp" data-next="sources">
+  <h2>About the models</h2>
+  <p>A teaching model, not a process simulator. Everything runs in your browser.</p>
+  <ul>
+    <li><b>The process</b> (<code>media/transistors/process.js</code>) is a representative planar CMOS flow of the 130–90 nm era, simplified: one slice through an inverter, no well taps, gate contacts out of the plane, one pass of each lithography step shown as its developed result, and seven or so of the hundreds of real steps per module. Each step only sets flags; the drawing is computed from one table of dimensions, schematic or true to a 90 nm-class process. The steps, tools, conditions and checks are typical published values, not one company's recipe.</li>
+    <li><b>The MOS capacitor</b> (<code>physics.js</code>, <code>mosCap</code>) solves 1D Poisson–Boltzmann exactly for a uniformly doped body: surface potential, band diagram, charges, and low- and high-frequency C–V. No quantum confinement, interface traps or incomplete ionisation. Band offsets and dielectric constants follow Robertson's compilations; <i>n</i><sub>i</sub> follows Misiakos and Tsamakis (9.7 × 10<sup>9</sup> cm<sup>−3</sup> at 300 K).</li>
+    <li><b>The transistor</b> is a compact model in the EKV style, smooth from subthreshold to saturation, with a universal mobility curve fitted to Takagi et al. (1994), Coulomb scattering, uniaxial strain and fin-sidewall orientation as multipliers, velocity saturation with modest overshoot at short lengths, series resistance, and short-channel effects (threshold roll-off, DIBL, swing degradation) from the natural length of planar, double-gate and gate-all-around geometries (after Liu et al., 1993, and Colinge). Planar doping stands in for real halo and retrograde profiles. The presets' channel doping or work function was tuned to each era's typical off-state leakage; drive currents then land within about 15% of Intel's published 90, 45 and 22 nm figures.</li>
+    <li><b>Gate leakage</b> is a WKB-style tunnelling estimate through each layer of the stack, normalised to about 100 A/cm² for 1 nm of SiO<sub>2</sub> at 1 V. It reproduces the familiar tenfold rise per 2 Å, but the absolute values are rough.</li>
+    <li><b>Implant profiles</b> are Gaussians with LSS-type ranges (Gibbons' tables), broadened by intrinsic diffusion; sheet resistance uses Caughey–Thomas mobility and a crude activation model. <b>Oxidation</b> uses the Deal–Grove constants. <b>Yield</b> uses the standard Poisson and Murphy models.</li>
+    <li><b>The 3D scenes</b> are illustrative. Proportions are compressed (the ingot is drawn shorter, the wafer thicker, wires wider), and the transistor models show structure, not exact dimensions.</li>
+  </ul>
+  <p>
+    The physics and process files load in node, so the numbers can be checked from the command line: <code>require('./knowledge/media/transistors/physics.js').device(...).metrics()</code>.
+  </p>
+</section>
+
+<section class="xp-topic" id="sources" data-title="Sources" data-group="About" data-step="wcmp">
+  <h2>Sources</h2>
+  <h3>Books</h3>
+  <ul>
+    <li>S. M. Sze and K. K. Ng, <i>Physics of Semiconductor Devices</i>, 3rd ed. (Wiley, 2007).</li>
+    <li>Y. Taur and T. H. Ning, <i>Fundamentals of Modern VLSI Devices</i>, 2nd ed. (Cambridge, 2009).</li>
+    <li>J. D. Plummer, M. D. Deal and P. B. Griffin, <i>Silicon VLSI Technology: Fundamentals, Practice and Modeling</i> (Prentice Hall, 2000).</li>
+    <li>D. K. Schroder, <i>Semiconductor Material and Device Characterization</i>, 3rd ed. (Wiley, 2006): four-point probe, C–V, contact resistance, threshold extraction.</li>
+    <li>J.-P. Colinge, ed., <i>FinFETs and Other Multi-Gate Transistors</i> (Springer, 2008): natural length.</li>
+  </ul>
+  <h3>Papers</h3>
+  <ul>
+    <li>G. E. Moore, "Cramming more components onto integrated circuits," <i>Electronics</i> 38(8), 1965; "Progress in digital integrated electronics," IEDM 1975.</li>
+    <li>R. H. Dennard et al., "Design of ion-implanted MOSFET's with very small physical dimensions," <i>IEEE J. Solid-State Circuits</i> 9(5), 1974.</li>
+    <li>B. E. Deal and A. S. Grove, "General relationship for the thermal oxidation of silicon," <i>J. Appl. Phys.</i> 36, 3770 (1965).</li>
+    <li>W. Kern and D. A. Puotinen, "Cleaning solutions based on hydrogen peroxide for use in silicon semiconductor technology," <i>RCA Review</i> 31, 187 (1970).</li>
+    <li>W. C. Dash, "Growth of silicon crystals free from dislocations," <i>J. Appl. Phys.</i> 30, 459 (1959).</li>
+    <li>L. B. Valdes, "Resistivity measurements on germanium for transistors," <i>Proc. IRE</i> 42, 420 (1954); F. M. Smits, "Measurement of sheet resistivities with the four-point probe," <i>Bell Syst. Tech. J.</i> 37, 711 (1958).</li>
+    <li>Z.-H. Liu et al., "Threshold voltage model for deep-submicrometer MOSFETs," <i>IEEE Trans. Electron Devices</i> 40(1), 1993.</li>
+    <li>S. Takagi et al., "On the universality of inversion layer mobility in Si MOSFET's," <i>IEEE Trans. Electron Devices</i> 41(12), 1994.</li>
+    <li>K. Misiakos and D. Tsamakis, "Accurate measurements of the silicon intrinsic carrier density from 78 to 340 K," <i>J. Appl. Phys.</i> 74, 3293 (1993).</li>
+    <li>J. Robertson, "Band offsets of wide-band-gap oxides and implications for future electronic devices," <i>J. Vac. Sci. Technol. B</i> 18, 1785 (2000); "High dielectric constant oxides," <i>Eur. Phys. J. Appl. Phys.</i> 28, 265 (2004).</li>
+    <li>S. E. Thompson et al., "A 90-nm logic technology featuring strained-silicon," <i>IEEE Trans. Electron Devices</i> 51(11), 2004.</li>
+    <li>K. Mistry et al., "A 45nm logic technology with high-k + metal gate transistors, strained silicon, 9 Cu interconnect layers, 193nm dry patterning, and 100% Pb-free packaging," IEDM 2007.</li>
+    <li>C. Auth et al., "A 22nm high performance and low-power CMOS technology featuring fully-depleted tri-gate transistors, self-aligned contacts and high density MIM capacitors," VLSI Symposium 2012.</li>
+    <li>D. Hisamoto et al., "A fully depleted lean-channel transistor (DELTA)," IEDM 1989; X. Huang et al., "Sub 50-nm FinFET: PMOS," IEDM 1999.</li>
+    <li>J. R. Black, "Electromigration: a brief survey and some recent results," <i>IEEE Trans. Electron Devices</i> 16(4), 1969.</li>
+  </ul>
+  <h3>Recent milestones (checked October 2026)</h3>
+  <ul>
+    <li>TSMC N2 in volume production, 4Q 2025: <a href="https://www.eenewseurope.com/en/2nm-chip-ramp-tsmc-volume-production/">eeNews Europe</a>.</li>
+    <li>TSMC A16 and Super Power Rail: <a href="https://tomshardware.com/tech-industry/tsmc-unveils-16nm-process-technology-with-backside-power-delivery-rivals-intels-competing-design">Tom's Hardware</a> (2024 announcement); mass production targeted for 4Q 2026, <a href="https://www.trendforce.com/news/?p=19205">TrendForce</a>.</li>
+    <li>Intel 18A and Panther Lake (RibbonFET, PowerVia): <a href="https://www.phoronix.com/news/Intel-CES-2026-Keynote">Phoronix, CES 2026</a>.</li>
+    <li>High-NA EUV acceptance at Intel: <a href="https://bits-chips.com/article/intel-begins-acceptance-testing-of-asmls-exe5200b-high-na-euv-scanner/">Bits&amp;Chips</a>.</li>
+    <li>Nvidia Rubin, 336 billion transistors: <a href="https://siliconangle.com/2026/01/05/nvidia-debuts-rubin-chip-336b-transistors-50-petaflops-ai-performance/">SiliconANGLE</a>.</li>
+    <li>Transistor counts of historical chips: <a href="https://en.wikipedia.org/wiki/Transistor_count">Wikipedia, "Transistor count"</a>.</li>
+  </ul>
+</section>
+
+
+</div><!-- #xp-library -->
+
+<hr class="xp-article-only">
+<h2 id="see_also" class="xp-article-only">See Also</h2>
+<ul class="xp-article-only">
+  <li><a href="../research/implant.html">Ion implantation</a></li>
+  <li><a href="../research/fabs.html">Fabs</a></li>
+  <li><a href="powergrid.html">The U.S. Power Grid</a></li>
+</ul>
+
+  </div><!-- .xp-drawer-body -->
+</aside>
+
+<!-- Classic scripts, so the page also works opened straight from disk.
+     main.js loads three.js and the 3D scenes itself, once WebGL checks out. -->
+<script src="../js/theme.js"></script>
+<script src="../js/explainer.js"></script>
+<script src="media/transistors/physics.js"></script>
+<script src="media/transistors/process.js"></script>
+<script src="media/transistors/widgets.js"></script>
+<script src="media/transistors/xsection.js"></script>
+<script src="media/transistors/main.js"></script>
+</body>
+</html>

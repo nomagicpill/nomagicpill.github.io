@@ -54,7 +54,7 @@
 </p>
 
 <p>
-
+  If you thought they were addicting now, just wait.
 </p>
 
 <hr>
@@ -164,7 +164,7 @@
 <h3 id="cost">Cost Considerations</h3>
 
 <p>
-  <a href="https://jyn.dev/tokens-too-cheap-to-meter/">LLMs have been getting much cheaper <i>and</i> much better</a>:
+  LLMs have been getting much <a href="https://jyn.dev/tokens-too-cheap-to-meter/">cheaper <i>and</i> much better</a>:
 </p>
 
 <img class="img-large" src="media/internetvideos/intelligencecost.png">
@@ -173,8 +173,328 @@
 </figcaption>
 
 <p>
-  
+  I'm unable to find an equivalent chart for video generation, but had Claude Opus 5.5 help out with modeling based on LLM performance and cost metrics and what the overall cost will look like for a per-video basis.
 </p>
+
+<img class="img-large" src="media/internetvideos/costtrajectory.png">
+<figcaption>
+  Top: what a second of AI video costs and where it's headed. Bottom: what it would cost YouTube to personalize an hour of watching, compared with what that hour earns.
+</figcaption>
+ 
+<p>
+  Play with the assumptions yourself:
+</p>
+ 
+<!-- Personalized-video cost model. Self-contained: no external files. -->
+<div class="ivc" id="ivc">
+<style>
+  .ivc {
+    --ivc-gen: #7a2e8f; --ivc-edit: #1f6f8b; --ivc-coh: #2e8b57; --ivc-ref: #b23a3a;
+    --ivc-rule: color-mix(in srgb, currentColor 18%, transparent);
+    --ivc-faint: color-mix(in srgb, currentColor 6%, transparent);
+    --ivc-muted: color-mix(in srgb, currentColor 65%, transparent);
+    font: inherit; color: inherit; margin: 1.5em 0; max-width: 100%;
+  }
+  :root[data-theme="dark"] .ivc { --ivc-gen: #c58ad6; --ivc-edit: #6cb8d4; --ivc-coh: #6fcf97; --ivc-ref: #ef8a8a; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .ivc { --ivc-gen: #c58ad6; --ivc-edit: #6cb8d4; --ivc-coh: #6fcf97; --ivc-ref: #ef8a8a; }
+  }
+  .ivc * { box-sizing: border-box; }
+  .ivc-top { display: flex; flex-wrap: wrap; gap: .75em 1.5em; align-items: center; margin-bottom: 1em; }
+  .ivc-seg { display: inline-flex; border: 1px solid var(--ivc-rule); border-radius: 999px; padding: 2px; }
+  .ivc-seg button {
+    font: inherit; color: inherit; background: none; border: 0; border-radius: 999px;
+    padding: .3em .9em; cursor: pointer;
+  }
+  .ivc-seg button[aria-pressed="true"] { background: color-mix(in srgb, currentColor 14%, transparent); font-weight: 700; }
+  .ivc .ivc-year { flex: 1 1 14em; display: flex; align-items: center; gap: .75em; }
+  .ivc .ivc-year output { font-size: 1.17em; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 3ch; }
+  .ivc .ivc-year input { flex: 1; }
+  .ivc input[type=range] { accent-color: var(--ivc-gen); width: 100%; margin: .2em 0; }
+  .ivc button:focus-visible, .ivc input:focus-visible { outline: 2px solid var(--ivc-gen); outline-offset: 2px; }
+  .ivc-verdict { margin: 0 0 1em; }
+  .ivc-verdict b { font-variant-numeric: tabular-nums; }
+  .ivc-verdict .ok { color: var(--ivc-coh); } .ivc-verdict .bad { color: var(--ivc-ref); }
+  .ivc-chart { width: 100%; height: auto; display: block; margin: .25em 0 .5em; overflow: visible; }
+  .ivc-chart text { fill: currentColor; font-size: .85em; }
+  .ivc-key { display: flex; flex-wrap: wrap; gap: .3em 1.2em; font-size: .85em; color: var(--ivc-muted); margin-bottom: 1.2em; }
+  .ivc-key i { display: inline-block; width: 1.4em; height: 0; border-top: 2.5px solid; vertical-align: middle; margin-right: .35em; }
+  .ivc-out { display: grid; grid-template-columns: repeat(auto-fit, minmax(15em, 1fr)); gap: 0 1.5em; margin: 0 0 1.5em; }
+  .ivc-out div { display: flex; justify-content: space-between; gap: 1em; padding: .45em 0; border-bottom: 1px solid var(--ivc-rule); }
+  .ivc-out dt { color: var(--ivc-muted); } .ivc-out dd { margin: 0; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .ivc-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(16em, 1fr)); gap: 1em 1.5em; }
+  .ivc fieldset { border: 0; border-top: 1px solid var(--ivc-rule); margin: 0; padding: .6em 0 0; min-width: 0; }
+  .ivc legend { font-weight: 700; padding: 0 .4em 0 0; }
+  .ivc label { display: block; margin: .55em 0 0; }
+  .ivc label span { display: flex; justify-content: space-between; gap: .5em; }
+  .ivc label output { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .ivc small { display: block; color: var(--ivc-muted); font-size: .85em; line-height: 1.4; }
+  .ivc-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5em 1em; align-items: baseline; margin-top: 1.2em; }
+  .ivc-foot p { margin: 0; flex: 1 1 22em; font-size: .85em; color: var(--ivc-muted); }
+  .ivc-reset { font: inherit; font-size: .85em; color: inherit; background: none; border: 1px solid var(--ivc-rule); border-radius: 6px; padding: .3em .8em; cursor: pointer; }
+  .ivc-reset:hover, .ivc-seg button:hover { background: var(--ivc-faint); }
+</style>
+ 
+  <div class="ivc-top">
+    <div class="ivc-seg" role="group" aria-label="Platform">
+      <button type="button" data-plat="YouTube" aria-pressed="true"><span>YouTube</span></button>
+      <button type="button" data-plat="TikTok" aria-pressed="false"><span>TikTok</span></button>
+    </div>
+    <label class="ivc-year" style="margin:0">
+      <output data-o="year">2030</output>
+      <input type="range" data-k="year" min="2026" max="2035" step="1" value="2030" aria-label="Year">
+    </label>
+  </div>
+ 
+  <p class="ivc-verdict" data-o="verdict" aria-live="polite"></p>
+ 
+  <svg class="ivc-chart" viewBox="0 0 640 230" role="img" aria-label="Daily cost of personalization by year compared with what it earns"></svg>
+  <div class="ivc-key">
+    <span><i style="border-color:var(--ivc-coh)"></i>Cost per day, your variant count</span>
+    <span><i style="border-color:var(--ivc-gen);border-top-style:dashed"></i>Cost per day, unique video per viewer</span>
+    <span><i style="border-color:var(--ivc-ref)"></i>Extra ads + subscriptions</span>
+    <span><i style="border-color:var(--ivc-ref);border-top-style:dotted"></i>…plus subsidy budget</span>
+  </div>
+ 
+  <dl class="ivc-out">
+    <div><dt>Video rendered per day</dt><dd data-o="rendered"></dd></div>
+    <div><dt>Cost per personalized hour watched</dt><dd data-o="perhr"></dd></div>
+    <div><dt>Most video the money could render</dt><dd data-o="maxh"></dd></div>
+    <div><dt>Viewers who could get fully unique video</dt><dd data-o="maxusers"></dd></div>
+    <div><dt>Fully generating one 45-second short</dt><dd data-o="short"></dd></div>
+    <div><dt>Fully generating one 20-minute video</dt><dd data-o="long"></dd></div>
+    <div><dt>Pays for itself from, your variant count</dt><dd data-o="cross"></dd></div>
+    <div><dt>Pays for itself from, unique per viewer</dt><dd data-o="crosspv"></dd></div>
+  </dl>
+ 
+  <div class="ivc-controls">
+    <fieldset>
+      <legend>Prices</legend>
+      <label><span>Price drop per year, near term <output data-o="d0"></output></span>
+        <input type="range" data-k="d0" min="1.5" max="20" step="0.5" value="5">
+        <small>Fades toward the 1.37×/yr hardware trend over a few years. LLMs at fixed quality: ~13×/yr.</small></label>
+      <label><span>Platform's cost vs. API list price <output data-o="inhouse"></output></span>
+        <input type="range" data-k="inhouse" min="0.1" max="1" step="0.05" value="0.5">
+        <small>Google and ByteDance own their models and don't pay the markup.</small></label>
+      <label><span>Editing footage vs. generating it <output data-o="editRatio"></output></span>
+        <input type="range" data-k="editRatio" min="0.1" max="1.5" step="0.05" value="0.5">
+        <small>Cost of a generative edit per second, relative to full generation.</small></label>
+    </fieldset>
+    <fieldset>
+      <legend>What gets personalized</legend>
+      <label><span>Seconds fully generated <output data-o="genShare"></output></span>
+        <input type="range" data-k="genShare" min="0" max="1" step="0.05" value="0"></label>
+      <label><span>Remaining seconds with generative edits <output data-o="editShare"></output></span>
+        <input type="range" data-k="editShare" min="0" max="1" step="0.05" value="0.25">
+        <small>Share of the seconds not fully generated. Swapped products, outfits, voice tweaks. Color and beauty filters are treated as free.</small></label>
+      <label><span>Variants per video <output data-o="variants"></output></span>
+        <input type="range" data-k="variants" min="0" max="6" step="0.25" value="2">
+        <small>Viewers are grouped by taste and each group gets a cached version. Far right: every view rendered fresh.</small></label>
+      <label><span>Share of watch time covered <output data-o="coverage"></output></span>
+        <input type="range" data-k="coverage" min="0.5" max="1" step="0.01" value="0.8">
+        <small>Personalize only the most-watched videos. 80% of watch time ≈ the top 11% of uploads (rough).</small></label>
+    </fieldset>
+    <fieldset>
+      <legend>Who pays</legend>
+      <label><span>Viewers who opt in <output data-o="optin"></output></span>
+        <input type="range" data-k="optin" min="0" max="1" step="0.05" value="0.3"></label>
+      <label><span>Opted-in viewers who pay extra <output data-o="payShare"></output></span>
+        <input type="range" data-k="payShare" min="0" max="0.5" step="0.01" value="0.1"></label>
+      <label><span>Price per month <output data-o="priceMo"></output></span>
+        <input type="range" data-k="priceMo" min="0" max="20" step="0.5" value="5"></label>
+      <label><span>Extra watch time from personalization <output data-o="uplift"></output></span>
+        <input type="range" data-k="uplift" min="0" max="0.5" step="0.01" value="0.1"></label>
+      <label><span>Subsidy budget, share of ad revenue <output data-o="budget"></output></span>
+        <input type="range" data-k="budget" min="0" max="0.25" step="0.01" value="0.05"></label>
+    </fieldset>
+  </div>
+ 
+  <div class="ivc-foot">
+    <p>Anchored to ~$0.04 per second for cheap, decent full generation via API in October 2026. Ad revenue, users and watch time are held at 2025 levels. YouTube: ~2B hours watched and ~720k hours uploaded per day (rough), $40.4B ad revenue. TikTok: ~1B hours watched, ~330k hours uploaded, ~$33B ad revenue.</p>
+    <button type="button" class="ivc-reset">Reset</button>
+  </div>
+ 
+<script>
+(function () {
+  var root = document.getElementById("ivc");
+  if (!root) return;
+  var PLAT = {
+    YouTube: { watch: 2.0e9, upload: 7.2e5, dau: 1.5e9, ad: 40.4e9 },
+    TikTok:  { watch: 1.0e9, upload: 3.3e5, dau: 1.0e9, ad: 33.0e9 }
+  };
+  var ANCHOR_T = 2026.75, ANCHOR_P = 0.04, HW = 1.37, TAU = 4, LORENZ = 0.10;
+  var plat = "YouTube";
+  var inputs = {};
+  root.querySelectorAll("input[data-k]").forEach(function (el) { inputs[el.dataset.k] = el; el.dataset.def = el.value; });
+  function out(k) { return root.querySelector('[data-o="' + k + '"]'); }
+ 
+  function genPrice(yMid, d0) {
+    var t = yMid - ANCHOR_T, ex = Math.log(d0) - Math.log(HW);
+    var L = Math.log(HW) * t + ex * TAU * (1 - Math.exp(-t / TAU));
+    return ANCHOR_P * Math.exp(-L);
+  }
+  function variantsVal(v) { return v >= 6 ? Infinity : Math.round(Math.pow(10, v)); }
+ 
+  function params() {
+    var p = {};
+    for (var k in inputs) p[k] = parseFloat(inputs[k].value);
+    p.V = variantsVal(p.variants);
+    return p;
+  }
+ 
+  function model(year, p, V) {
+    var P = PLAT[plat];
+    var c3 = genPrice(year + 0.5, p.d0) * p.inhouse;
+    var cSec = p.genShare * c3 + (1 - p.genShare) * p.editShare * c3 * p.editRatio;
+    var cHr = cSec * 3600;
+    var f = Math.pow(p.coverage, 1 / LORENZ);
+    var W = p.optin * p.coverage * P.watch;
+    var k = W / (f * P.upload);
+    var R = f * P.upload * Math.min(V, k);
+    var cost = R * cHr;
+    var adDay = P.ad / 365, a = adDay / P.watch;
+    var offset = W * p.uplift * a + P.dau * p.optin * p.payShare * p.priceMo / 30.4;
+    var budget = p.budget * adDay;
+    var spend = offset + budget;
+    var maxH = cHr > 0 ? spend / cHr : Infinity;
+    var perUser = P.watch / P.dau;
+    return { c3: c3, cHr: cHr, f: f, W: W, k: k, R: R, cost: cost, adDay: adDay, offset: offset,
+             budget: budget, maxH: maxH, maxUsers: Math.min(maxH / perUser, P.dau), dau: P.dau,
+             perWatchHr: W > 0 ? cost / W : 0 };
+  }
+ 
+  function sig(v) {
+    if (v === 0) return "0";
+    var d = Math.max(0, 1 - Math.floor(Math.log10(v)));
+    return v.toFixed(Math.min(d, 8));
+  }
+  function money(v) {
+    if (!isFinite(v)) return "∞";
+    // Thresholds sit just below each unit boundary so rounding never shows "$1000k" or "$1000.0M".
+    if (v >= 999.95e9) return "$" + (v / 1e12).toFixed(1) + "T";
+    if (v >= 999.95e6) return "$" + (v / 1e9).toFixed(1) + "B";
+    if (v >= 999.5e3) return "$" + (v / 1e6).toFixed(1) + "M";
+    if (v >= 9999.5) return "$" + Math.round(v / 1e3) + "k";
+    if (v >= 99.995) return "$" + Math.round(v).toLocaleString();
+    if (v >= 1) return "$" + v.toFixed(2);
+    return "$" + sig(v);
+  }
+  function count(v) {
+    if (!isFinite(v)) return "unlimited";
+    if (v >= 999.95e9) return (v / 1e12).toFixed(1) + "T";
+    if (v >= 999.95e6) return (v / 1e9).toFixed(1) + "B";
+    if (v >= 999.5e3) return (v / 1e6).toFixed(1) + "M";
+    if (v >= 999.5) return Math.round(v / 1e3) + "k";
+    return Math.round(v).toString();
+  }
+  function axisMoney(v) {
+    if (v < 1) return "$" + v.toFixed(Math.min(-Math.round(Math.log10(v)), 10));
+    if (v < 1e4) return "$" + v.toLocaleString();
+    return money(v).replace(/\.0(?=[kMBT])/, "");
+  }
+  function pct(v) { return v < 0.001 && v > 0 ? "<0.1%" : (v * 100 < 10 ? (v * 100).toFixed(1) : Math.round(v * 100)) + "%"; }
+ 
+  function crossYear(p, V) {
+    for (var y = 2026; y <= 2035; y++) { var m = model(y, p, V); if (m.cost <= m.offset) return y; }
+    return "after 2035";
+  }
+ 
+  function drawChart(p) {
+    var svg = root.querySelector(".ivc-chart");
+    var W = Math.round(Math.max(300, svg.getBoundingClientRect().width || 640)), H = W < 500 ? 200 : 230, L = 56, Rm = 14, T = 22, B = 26;
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    var ys = [], i, y;
+    for (y = 2026; y <= 2035; y++) ys.push({ y: y, c: model(y, p, p.V), v: model(y, p, Infinity) });
+    var vals = [];
+    ys.forEach(function (d) { [d.c.cost, d.v.cost, d.c.offset, d.c.offset + d.c.budget].forEach(function (x) { if (x > 0 && isFinite(x)) vals.push(x); }); });
+    if (!vals.length) vals = [1, 10];
+    var lo = Math.floor(Math.log10(Math.min.apply(null, vals))), hi = Math.ceil(Math.log10(Math.max.apply(null, vals)));
+    if (hi - lo < 2) { lo -= 1; hi += 1; }
+    function X(yr) { return L + (yr - 2026) / 9 * (W - L - Rm); }
+    function Y(v) { v = Math.max(v, Math.pow(10, lo)); return T + (hi - Math.log10(v)) / (hi - lo) * (H - T - B); }
+    var s = "";
+    var step = Math.ceil((hi - lo) / 6);
+    for (i = lo; i <= hi; i += step) {
+      s += '<line x1="' + L + '" x2="' + (W - Rm) + '" y1="' + Y(Math.pow(10, i)) + '" y2="' + Y(Math.pow(10, i)) + '" stroke="currentColor" stroke-opacity=".12"/>';
+      s += '<text x="' + (L - 6) + '" y="' + (Y(Math.pow(10, i)) + 4) + '" text-anchor="end" opacity=".7">' + axisMoney(Math.pow(10, i)) + '</text>';
+    }
+    for (y = 2026; y <= 2035; y++) {
+      if ((y - 2026) % (W < 500 ? 3 : 1) === 0 || y === 2035) s += '<text x="' + X(y) + '" y="' + (H - 6) + '" text-anchor="middle" opacity=".7">' + y + '</text>';
+    }
+    function path(fn) { return ys.map(function (d, j) { return (j ? "L" : "M") + X(d.y).toFixed(1) + "," + Y(fn(d)).toFixed(1); }).join(""); }
+    s += '<path d="' + path(function (d) { return d.c.offset + d.c.budget; }) + '" fill="none" stroke="var(--ivc-ref)" stroke-width="1.5" stroke-dasharray="2 4"/>';
+    s += '<path d="' + path(function (d) { return d.c.offset; }) + '" fill="none" stroke="var(--ivc-ref)" stroke-width="1.8"/>';
+    s += '<path d="' + path(function (d) { return d.v.cost; }) + '" fill="none" stroke="var(--ivc-gen)" stroke-width="2" stroke-dasharray="6 4"/>';
+    s += '<path d="' + path(function (d) { return d.c.cost; }) + '" fill="none" stroke="var(--ivc-coh)" stroke-width="2.6"/>';
+    var yr = parseInt(inputs.year.value, 10), cur = model(yr, p, p.V);
+    s += '<line x1="' + X(yr) + '" x2="' + X(yr) + '" y1="' + T + '" y2="' + (H - B) + '" stroke="currentColor" stroke-opacity=".35"/>';
+    s += '<circle cx="' + X(yr) + '" cy="' + Y(cur.cost) + '" r="4.5" fill="var(--ivc-coh)"/>';
+    s += '<text x="' + L + '" y="' + (T - 10) + '" opacity=".7">$ per day, log scale</text>';
+    svg.innerHTML = s;
+  }
+ 
+  function render() {
+    var p = params(), yr = parseInt(inputs.year.value, 10), m = model(yr, p, p.V);
+    out("year").textContent = yr;
+    out("d0").textContent = p.d0 + "×";
+    out("inhouse").textContent = Math.round(p.inhouse * 100) + "%";
+    out("editRatio").textContent = Math.round(p.editRatio * 100) + "%";
+    out("editShare").textContent = Math.round(p.editShare * 100) + "%";
+    out("genShare").textContent = Math.round(p.genShare * 100) + "%";
+    out("variants").textContent = isFinite(p.V) ? p.V.toLocaleString() : "Every view";
+    out("coverage").textContent = Math.round(p.coverage * 100) + "%";
+    out("optin").textContent = Math.round(p.optin * 100) + "%";
+    out("payShare").textContent = Math.round(p.payShare * 100) + "%";
+    out("priceMo").textContent = "$" + p.priceMo.toFixed(p.priceMo % 1 ? 2 : 0);
+    out("uplift").textContent = Math.round(p.uplift * 100) + "%";
+    out("budget").textContent = Math.round(p.budget * 100) + "%";
+ 
+    var net = m.cost - m.offset, verdict;
+    if (m.cost === 0) {
+      verdict = "nothing is being generated, so it costs nothing.";
+    } else if (net <= 0) {
+      verdict = '<span class="ok">it pays for itself</span>, netting ' + money(-net) + " a day.";
+    } else if (net <= m.budget) {
+      verdict = "the platform covers the remaining <b>" + money(net) + "</b> a day, inside its subsidy budget.";
+    } else {
+      verdict = '<span class="bad">it doesn\'t fit</span>: the gap is <b>' + money(net) + "</b> a day, " +
+        (m.budget > 0 ? (net / m.budget).toFixed(net / m.budget < 10 ? 1 : 0) + "× the subsidy budget." : "with no subsidy budget.");
+    }
+    out("verdict").innerHTML = "In " + yr + ", personalizing " + plat + " costs about <b>" + money(m.cost) +
+      "</b> a day, or " + pct(m.cost / m.adDay) + " of its ad revenue. Extra watch time and subscriptions bring in <b>" +
+      money(m.offset) + "</b> a day, so " + verdict;
+ 
+    out("rendered").textContent = count(m.R) + " hours";
+    out("perhr").textContent = money(m.perWatchHr);
+    out("maxh").textContent = isFinite(m.maxH) ? count(m.maxH) + " hours" : "unlimited";
+    out("maxusers").textContent = m.maxUsers >= m.dau ? "all " + count(m.dau) : count(m.maxUsers);
+    var full = genPrice(yr + 0.5, p.d0) * p.inhouse;
+    out("short").textContent = money(full * 45);
+    out("long").textContent = money(full * 1200);
+    out("cross").textContent = crossYear(p, p.V);
+    out("crosspv").textContent = crossYear(p, Infinity);
+    drawChart(p);
+  }
+ 
+  root.querySelectorAll("input[data-k]").forEach(function (el) { el.addEventListener("input", render); });
+  root.querySelectorAll(".ivc-seg button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      plat = b.dataset.plat;
+      root.querySelectorAll(".ivc-seg button").forEach(function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+      render();
+    });
+  });
+  root.querySelector(".ivc-reset").addEventListener("click", function () {
+    for (var k in inputs) inputs[k].value = inputs[k].dataset.def;
+    plat = "YouTube";
+    root.querySelectorAll(".ivc-seg button").forEach(function (o) { o.setAttribute("aria-pressed", o.dataset.plat === "YouTube" ? "true" : "false"); });
+    render();
+  });
+  var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(render, 150); });
+  render();
+})();
+</script>
+</div>
 
 <hr>
 
