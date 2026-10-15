@@ -1,5 +1,5 @@
 /*
- * Charts and calculators for knowledge/drafttransistors.html.
+ * Charts and calculators for knowledge/transistors.html.
  *
  * Each widget mounts into a <div data-widget="name"> inside a topic when the
  * topic opens and is destroyed when it closes, so only what is on screen

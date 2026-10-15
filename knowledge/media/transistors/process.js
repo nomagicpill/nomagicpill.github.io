@@ -1,5 +1,5 @@
 /*
- * knowledge/drafttransistors.html: the process flow. Every step, what it is
+ * knowledge/transistors.html: the process flow. Every step, what it is
  * done with, what is checked afterwards, and the cross-section it leaves
  * behind. No DOM, so it also loads in node:
  *

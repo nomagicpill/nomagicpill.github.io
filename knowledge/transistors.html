@@ -68,6 +68,9 @@
       --tx-c1: #3987e5; --tx-c2: #d95926; --tx-c3: #199e70; --tx-c4: #9085e9; --tx-c5: #c98500; --tx-c6: #d55181;
     }
 
+    /* ----- Top bar: just Home, set like the Home on every other page ----- */
+    .xp-title .xp-home { font-size: 1.17em; font-weight: bold; margin: 0; }
+
     /* ----- Stage ----- */
     .tx-host, #scene-host { position: absolute; inset: 0; }
     #scene-host canvas { display: block; width: 100%; height: 100%; }
@@ -117,9 +120,9 @@
 
     /* ----- Step card (top left) ----- */
     .tx-card {
-      position: fixed; top: 102px; left: 12px; width: 300px; z-index: 20;
+      position: fixed; top: 67px; left: 12px; width: 300px; z-index: 20;
       padding: 9px 13px 11px; font-size: 0.86em; line-height: 1.4;
-      max-height: calc(100dvh - 102px - 150px); overflow-y: auto;
+      max-height: calc(100dvh - 67px - 150px); overflow-y: auto;
     }
     .tx-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.85em; color: var(--xp-ink-3); text-transform: uppercase; letter-spacing: 0.05em; }
     .tx-card-head span:first-child { color: var(--link); font-weight: bold; }
@@ -164,7 +167,8 @@
     details.tx-deep[open] > summary { margin-bottom: 6px; }
     .tx-steps { padding-left: 1.4em; }
     .tx-steps li { margin: 3px 0; }
-    .tx-steps a { cursor: pointer; }
+    html.xp-ready a[data-step] { cursor: pointer; }
+    a[data-step]:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
     .tx-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin: 8px 0; }
     .tx-grid-tight { gap: 8px; }
     .tx-readouts { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px 14px; margin: 10px 0 4px; font-size: 0.84em; }
@@ -192,10 +196,6 @@
       .tx-grid2 { grid-template-columns: 1fr; }
       html.xp-ready.xp-drawer-open .xp-labels { display: none; }
     }
-    @media (max-height: 640px) {
-      .xp-title p { display: none; }
-      .tx-card { top: 74px; }
-    }
   </style>
 
 </head>
@@ -213,9 +213,7 @@
 
 <header class="xp-topbar xp-only">
   <div class="xp-panel xp-title">
-    <a class="xp-home" href="../index.html">&larr; Home</a>
-    <h1>Transistors</h1>
-    <p>How a MOSFET is made, how it works, how it is tested, and how it shrank.</p>
+    <a class="xp-home" href="../index.html">Home</a>
   </div>
   <button id="xp-menu-btn" class="xp-btn" type="button" aria-expanded="false" aria-controls="xp-menu">Explore &#9776;</button>
 </header>
@@ -308,7 +306,7 @@
   <h3 id="home"><a href="../index.html">Home</a></h3>
   <h1 id="transistors">Transistors</h1>
   <p class="postmeta">
-    <span class="pub">Published <time datetime=""></time></span>
+    <span class="pub">Published <time datetime="2026-10-15">2026-10-15</time></span>
   </p>
   <p>
     How a MOSFET is made, how it works, how it is tested, and how it shrank. This page is an interactive model with a live cross-section and 3D scenes; you are reading its text version, which appears when JavaScript is unavailable.
@@ -321,13 +319,13 @@
 <!-- START                                                               -->
 <!-- ================================================================== -->
 
-<section class="xp-topic" id="overview" data-title="Start here" data-group="Start" data-step="wcmp" data-next="what">
+<section class="xp-topic" id="overview" data-title="Start here" data-group="Start" data-step="sand" data-next="what">
   <h2>A transistor, from sand to socket</h2>
   <p class="xp-lede">
     A switch with no moving parts, made by the trillion, each one built in a few hundred steps on a slice of the purest crystal people make.
   </p>
   <p>
-    The drawing beside this text is a cross-section through two transistors, as if the chip had been sawn in half and looked at edge-on under an electron microscope. On the left is an <b>NMOS</b> transistor, which conducts with electrons; on the right a <b>PMOS</b>, which conducts with holes. Wired together they make an inverter, the simplest logic gate and the building block of CMOS, the technology in essentially every processor and memory chip made today.
+    The stage follows one chip from step 1, sand, to a tested part in a package. The first few steps, which make the wafer, are 3D scenes. From step 6 the drawing is a cross-section through two transistors, as if the chip had been sawn in half and looked at edge-on under an electron microscope. On the left is an <b>NMOS</b> transistor, which conducts with electrons; on the right a <b>PMOS</b>, which conducts with holes. Wired together they make an inverter, the simplest logic gate and the building block of CMOS, the technology in essentially every processor and memory chip made today. <a class="xp-only" data-step="wcmp">Skip ahead to the finished pair.</a>
   </p>
   <div class="xp-stats">
     <div class="xp-stat"><b>10<sup>21</sup>+</b><span>transistors made every year, mostly in memory: the most-produced manufactured object by far</span></div>

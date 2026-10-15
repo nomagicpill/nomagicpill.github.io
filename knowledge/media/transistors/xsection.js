@@ -1,5 +1,5 @@
 /*
- * knowledge/drafttransistors.html: the 2D stage. Two views share one SVG:
+ * knowledge/transistors.html: the 2D stage. Two views share one SVG:
  *
  *  - process: the cross-section after any step of the flow (process.js),
  *    with what the step changed outlined, labels with leader lines, and a

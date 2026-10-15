@@ -1,5 +1,5 @@
 /*
- * knowledge/drafttransistors.html: the device physics behind every chart and
+ * knowledge/transistors.html: the device physics behind every chart and
  * the parameter playground. No DOM and no three.js, so it also loads in node:
  *
  *   const P = require('./knowledge/media/transistors/physics.js');

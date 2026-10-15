@@ -1,5 +1,5 @@
 /*
- * The 3D scenes for knowledge/drafttransistors.html, built from three.js
+ * The 3D scenes for knowledge/transistors.html, built from three.js
  * primitives (the classic build vendored in js/vendor/three, global THREE).
  * main.js loads this only once WebGL is known to work.
  *

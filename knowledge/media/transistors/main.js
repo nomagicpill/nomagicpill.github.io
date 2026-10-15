@@ -1,5 +1,5 @@
 /*
- * knowledge/drafttransistors.html: wires the process flow (process.js), the
+ * knowledge/transistors.html: wires the process flow (process.js), the
  * device physics (physics.js), the 2D stage (xsection.js), the 3D scenes
  * (scene.js, loaded only if WebGL works), the charts (widgets.js) and the
  * explainer shell (js/explainer.js) together.
@@ -29,7 +29,7 @@ const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 
 const S = {
   mode: 'process',
-  step: F.indexOf('wcmp'),
+  step: 0,
   playing: false,
   scale: 'schematic',
   labels: 'all',
@@ -103,16 +103,15 @@ function goStep(i, { fromTopic = false, animate = true } = {}) {
   renderCard();
   renderDockProcess();
   W.emit('step', i);
-  // Follow along in the drawer if a process topic is open.
-  if (!fromTopic && EXP && EXP.current && st.topic && st.topic !== EXP.current) {
-    const cur = EXP.byId.get(EXP.current);
-    if (cur && cur.dataset.step) {
-      topicDriving = true;
-      EXP.open(st.topic);
-      topicDriving = false;
-    }
+  // Follow along in the drawer if a process topic is open. A topic that only
+  // borrows a step for its picture (the overview, the toolbox) stays put.
+  if (!fromTopic && EXP && EXP.current && st.topic && st.topic !== EXP.current && STEP_TOPICS.has(EXP.current)) {
+    topicDriving = true;
+    EXP.open(st.topic);
+    topicDriving = false;
   }
 }
+const STEP_TOPICS = new Set(F.STEPS.map((s) => s.topic));
 
 function showDevice() {
   S.station = null;
@@ -353,8 +352,16 @@ function wireDock() {
     layoutStage();
   });
 
+  // Step links in the prose have no href (there is nowhere to go without the
+  // app), so the browser skips them when tabbing. Make them buttons.
+  document.querySelectorAll('#xp-library a[data-step]:not([href])').forEach((a) => {
+    a.tabIndex = 0;
+    a.setAttribute('role', 'button');
+  });
+
   document.addEventListener('keydown', (e) => {
     if (e.target.closest('input, select, textarea')) return;
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('a[role="button"]')) { e.preventDefault(); e.target.click(); return; }
     if (e.key === 'ArrowRight' && (S.mode === 'process' || S.station)) { stopPlay(); goStep(S.step + 1); e.preventDefault(); }
     else if (e.key === 'ArrowLeft' && (S.mode === 'process' || S.station)) { stopPlay(); goStep(S.step - 1); e.preventDefault(); }
   });
@@ -517,6 +524,12 @@ async function boot() {
   window.addEventListener('resize', layoutStage);
   new MutationObserver(() => requestAnimationFrame(layoutStage)).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
+  // With no topic in the URL, open the overview so a first visit starts with
+  // how to use the page. Stamping its hash keeps the back button coming here.
+  if (!EXP.byId.has(decodeURIComponent(location.hash.slice(1)))) {
+    try { history.replaceState(null, '', '#overview'); } catch (e) {}
+    EXP.open('overview', { push: false });
+  }
   if (!EXP.current) goStep(S.step, { animate: false, fromTopic: true });
   setMode(S.mode);
   renderCard();

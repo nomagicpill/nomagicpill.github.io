@@ -430,7 +430,7 @@ figures in the prose (hash rate, staking totals, gas limit, court cases) are
 dated October 2026 and cited in its Sources topic; the mining-pool shares are
 also hard-coded in `widgets.js` (`REG.pools`).
 
-### transistors specifics (draft: `knowledge/drafttransistors.html`)
+### transistors specifics
 
 How a MOSFET is made, step by step from sand to a tested package, with the
 cross-section after every step; the device physics; measurement; scaling; and a
@@ -462,12 +462,20 @@ its main stage is 2D, so the app runs without WebGL: the head script stamps
   one model per transistor generation (`arch-*`). *Cut open* rebuilds each
   model as its back half, so cut faces are real capped solids.
 - `widgets.js`: every chart and calculator; `main.js`: modes, step card, dock,
-  and the wiring between topics and stage.
+  and the wiring between topics and stage. A visit with no topic in the URL
+  opens `#overview` (stamped with `replaceState`, so the back button returns
+  there) with the stage on step 1.
 - **Topic attributes:** `data-step` (process mode at that step), `data-device`
   (`mosfet` or `moscap`, with optional `data-preset` and `data-bias`, e.g.
   `vg:vdd,vd:0.05`; `vt`, `vdd` and `vfb` are understood), or `data-arch`.
   The same `data-step`, `data-bias` and `data-arch` on links or buttons inside
-  a topic move the stage without changing topic.
+  a topic move the stage without changing topic. Step links are written
+  `<a data-step="…">` with no `href`; `main.js` gives them `tabindex` and
+  `role="button"` so they work from the keyboard.
+- **Stepping with a topic open:** the arrows, play and timeline take the
+  drawer along to each step's own topic only when the open topic is one of
+  those (`STEP_TOPICS`). A topic that just borrows a step for its picture
+  (the overview, the toolbox, CMOS) stays open while the stage moves.
 - **New step:** add it to `STEPS` with its flags, teach `geometry()` to draw
   them, and name its topic. Check from node that every step builds at both
   scales with no NaNs (`geometry(stateAt(i), DIMS[k], STEPS[i])`).
