@@ -2,12 +2,12 @@
  * Lightweight reading enhancements, no dependencies:
  *   1. A scroll progress bar across the top of the page (left to right).
  *   2. Collapsible sections that open themselves when linked to.
- *   3. An auto-generated table of contents built from the page's
+ *   3. A previous/next bar at the end of series posts.
+ *   4. An auto-generated table of contents built from the page's
  *      <h2> (main bullets) and <h3> (sub-bullets) headings.
  *
  * The TOC replaces the manual list that follows a `<h2 id="contents">`
- * heading. If there's no Contents heading, only the progress bar and the
- * collapsible handling run.
+ * heading. If there's no Contents heading, everything but the TOC runs.
  */
 (function () {
   // ----- Scroll progress bar (top, left to right) -----
@@ -105,6 +105,68 @@
         if (reveal(landing)) landing.scrollIntoView({ behavior: 'instant' });
       });
     }
+  }
+
+  // ----- Series previous/next -----
+  // A series post lists every part in <ol class="series"> near the top,
+  // with the part being read marked aria-current="page". A reader who
+  // finishes it would have to scroll back up to find the next one, so the
+  // current part's neighbors are repeated as a bar at the end of the post,
+  // just above See Also. It is built from that list, so there is nothing
+  // else to keep in sync when a new part is published.
+  var currentPart = document.querySelector('ol.series > li[aria-current]');
+  if (currentPart) {
+    var seriesNav = document.createElement('nav');
+    seriesNav.className = 'series-nav';
+    seriesNav.setAttribute('aria-label', 'Series');
+    seriesNav.appendChild(seriesSide(currentPart.previousElementSibling, 'prev'));
+    seriesNav.appendChild(seriesSide(currentPart.nextElementSibling, 'next'));
+
+    // The bar goes after the post's last section: just above See Also, or,
+    // without one, after the last element before the scripts at the bottom
+    // of the body and what they append (the theme toggle, the progress
+    // bar). This runs before the TOC below mints ids for unnamed headings,
+    // so a note's own nested <h3>See Also</h3> (notes.html) isn't mistaken
+    // for the page's.
+    var seeAlso = document.getElementById('see_also');
+    var last = seeAlso ? seeAlso.previousElementSibling
+                       : document.body.lastElementChild;
+    while (!seeAlso && last && (last.tagName === 'SCRIPT' || last === bar ||
+                                last.id === 'theme-toggle')) {
+      last = last.previousElementSibling;
+    }
+    if (last) {
+      last.parentNode.insertBefore(seriesNav, last.nextSibling);
+      // Sections end on an <hr>, but not every post closes its last one.
+      if (last.tagName !== 'HR') {
+        last.parentNode.insertBefore(document.createElement('hr'), seriesNav);
+      }
+      if (seeAlso) {
+        seeAlso.parentNode.insertBefore(document.createElement('hr'), seeAlso);
+      }
+    }
+  }
+
+  // One half of the bar: a small label over a link to the neighboring part.
+  // Part I gets an empty left half; the newest part says so on the right.
+  function seriesSide(li, rel) {
+    var side = document.createElement('div');
+    side.className = rel;
+    var link = li && li.querySelector('a[href]');
+    var label = document.createElement('span');
+    if (link) {
+      label.textContent = rel === 'prev' ? '← Previous' : 'Next →';
+      var a = document.createElement('a');
+      a.href = link.getAttribute('href');
+      a.rel = rel;
+      a.textContent = link.textContent;
+      side.appendChild(label);
+      side.appendChild(a);
+    } else if (rel === 'next') {
+      label.textContent = 'Latest in the series';
+      side.appendChild(label);
+    }
+    return side;
   }
 
   // ----- Auto table of contents -----

@@ -127,6 +127,29 @@ whole series, placed *above* the Contents heading. `toc.js` deliberately skips
 headings that precede `#contents`, which is what keeps series links out of the
 generated TOC.
 
+The block is a compact list (every published series uses it; some drafts
+still have the older one-`<p>`-per-part form):
+
+```html
+<h2 id="series">Discipline Series</h2>
+
+<ol class="series">
+  <li><a href="discipline.html">Momentum</a></li>
+  <li aria-current="page">By Force</li>
+  <li><a href="discipline3.html">Ebb and Flow</a></li>
+</ol>
+```
+
+The list numbers itself in roman to match the titles, so each item carries only
+the subtitle. The part being read is the one `<li aria-current="page">`, with
+no link. CSS bolds it and adds "(this post)". From that same list, `toc.js`
+builds a previous/next bar at the end of the post. Publishing a new part means
+adding its `<li>` to every earlier part; nothing else needs to change.
+
+Where there's no subtitle to number (Destruction I, II, …) or the parts aren't
+numbered at all (LessOnline 2025, 2026), use `<ol class="series plain">`: no
+numerals, and each item carries the full title.
+
 **Commit messages** in this repo are all literally `a`. Match the surrounding
 convention or write something real — but don't be surprised by the history.
 
@@ -151,9 +174,14 @@ live in [css/main.css](css/main.css:254) keyed on `[data-transition]`).
 
 ### 2. Reading enhancements (`js/toc.js`)
 
-Three unrelated things in one file:
+Four unrelated things in one file:
 
 - A scroll progress bar (`#scroll-progress`) appended to every page.
+- **Series previous/next**: on a page with an `<ol class="series">` whose
+  current part is marked `aria-current`, a `<nav class="series-nav">` with links
+  to the parts before and after it is inserted just above See Also (or at the
+  end of the body if there's no See Also). On the newest part, the right side
+  reads "Latest in the series". Pages without a series list are unaffected.
 - **Collapsible sections**: `<button class="collapsible">` followed by
   `<div class="content">` (hidden by default). Pages that use these carry their
   own small inline toggle script; `toc.js` additionally opens a collapsed

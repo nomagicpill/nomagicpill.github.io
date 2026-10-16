@@ -271,6 +271,51 @@ p {
   margin-bottom: calc(1.2 * 0.95rem);
 }
 
+/* Series posts. Each part lists the whole series in <ol class="series">
+   above the Contents, numbered in roman to match the post titles, so the
+   items carry only the subtitle. The part being read is the one
+   <li aria-current="page">, with no link. toc.js repeats its neighbors as
+   a .series-nav previous/next bar at the end of the post.
+   .plain is for series whose titles have no subtitle to number (Destruction
+   I, II...) or aren't numbered at all (LessOnline 2025): no numerals, and
+   the items carry the full title. */
+ol.series {
+  list-style-type: upper-roman;
+}
+
+ol.series.plain {
+  list-style-type: none;
+}
+
+ol.series [aria-current] {
+  font-weight: bold;
+}
+
+ol.series [aria-current]::after {
+  content: " (this post)";
+  font-weight: normal;
+  opacity: 0.7;
+}
+
+.series-nav {
+  display: flex;
+  gap: 1em;
+}
+
+.series-nav > div {
+  flex: 1 1 0;   /* equal halves, so "Next" stays on the right on part I */
+}
+
+.series-nav .next {
+  text-align: right;
+}
+
+.series-nav span {
+  display: block;
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
