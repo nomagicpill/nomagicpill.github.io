@@ -1,0 +1,28 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//nomagicpill//Outage Kit Check//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:outage-kit-check@nomagicpill.site
+DTSTAMP:20261031T000000Z
+DTSTART;VALUE=DATE:20261101
+DTEND;VALUE=DATE:20261102
+RRULE:FREQ=MONTHLY;INTERVAL=6
+SUMMARY:Check your outage kit
+DESCRIPTION:Every six months:\n- Water: refill tap-filled containers\, repl
+ ace old bottles\n- Food: eat and replace anything near its date\n- Batteri
+ es and power banks: test and recharge\n- Medicine: replace anything expire
+ d\n- Paper: update phone numbers\, medications\, and map\n- CO detector an
+ d fire extinguisher\n- Starlink: power on\, check Standby mode\n- Family p
+ lan: contact and meeting place\n- Bleach: replace yearly\n\nFull list: htt
+ ps://nomagicpill.site/thoughts/internetdown.html#upkeep
+URL:https://nomagicpill.site/thoughts/internetdown.html#upkeep
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Check your outage kit
+TRIGGER:PT9H
+END:VALARM
+END:VEVENT
+END:VCALENDAR

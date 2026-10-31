@@ -219,6 +219,107 @@ a:hover {
   border-bottom-color: var(--link);
 }
 
+/* A link shown as a button on its own row, e.g. a download:
+   <p class="download"><a href="...">Label</a><small>Caption</small></p> */
+.download {
+  text-align: center;
+}
+
+.download a,
+.download button {
+  display: inline-block;
+  margin: 4px;
+  padding: 12px 24px;
+  background-color: var(--link);
+  color: var(--bg);
+  font: inherit;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.download a:hover,
+.download button:hover {
+  background-color: var(--link-hover);
+}
+
+.download small {
+  display: block;
+  margin-top: 8px;
+}
+
+/* Labeled number inputs for an in-page calculator:
+   <div class="calculator"><label>People <input type="number"></label></div> */
+.calculator {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 24px;
+  margin-bottom: 1.2em;
+}
+
+.calculator input {
+  width: 5em;
+  margin-left: 6px;
+  padding: 4px 6px;
+  font: inherit;
+  color: var(--text);
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+/* Quick-pick buttons under a calculator; the chosen one is aria-pressed. */
+.presets {
+  text-align: center;
+}
+
+.presets button {
+  margin: 4px;
+  padding: 4px 12px;
+  font: inherit;
+  color: var(--text);
+  background-color: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.presets button[aria-pressed="true"] {
+  color: var(--bg);
+  background-color: var(--link);
+  border-color: var(--link);
+}
+
+.household-summary {
+  text-align: center;
+  font-weight: bold;
+}
+
+/* An item's amount tag, which js/household.js fills with household totals. */
+.qty {
+  padding: 0 6px;
+  border-radius: 4px;
+  background-color: var(--code-bg);
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* Check-off boxes added by js/household.js take the bullet's place. */
+li.checkable {
+  list-style: none;
+}
+
+li.checkable > input.have {
+  margin: 0 8px 0 -22px;
+  vertical-align: middle;
+}
+
+li.done {
+  opacity: 0.6;
+}
+
 /* Better spacing for content sections */
 p {
   margin-bottom: 1.2em;

@@ -41,6 +41,7 @@ css/explainer.css   Explainer shell: app layout + extra tokens (see "Explainers"
 js/theme.js         Dark-mode toggle button.
 js/toc.js           Scroll progress bar, collapsible sections, auto-TOC.
 js/explainer.js     Explainer shell: topic drawer, Explore menu, #hash routing.
+js/household.js     Household quantities on checklist posts (see "Household checklists").
 js/vendor/three/    three.js, vendored for explainers. The site's only JS library.
 media/              Site-wide assets (favicons, world map SVG).
 
@@ -205,10 +206,36 @@ tap-to-reveal (`:focus`) under 768px. `index.html` also ends with an inline
 "random post" script that collects every internal `.html` link on the page and
 jumps to one at random.
 
+## Household checklists (`js/household.js`)
+
+A post can scale its list amounts to the reader's household (people, babies,
+pets, number of days); the internet-down post is the first. Each item carries
+its amount in a tag after its name, and the tag's own text is the static amount
+(one person or one household, 30-day plan) that shows without JavaScript and in
+the PDF:
+
+```html
+<b>Headlamps</b> <span class="qty" data-qty="1" data-per="person" data-price="35">1 per person</span>: ...
+```
+
+`data-per` says what the amount multiplies by, `data-scale` (`fixed`, `linear`,
+`sqrt`) how it grows with days, and `data-window` limits it to the first two
+weeks or the days after; the full list is in the script's header comment. The
+script hides items that come to zero and groups left empty. When the page also
+has the `#household-panel` inputs, it keeps the household in the URL and
+`localStorage`, fills `<span data-cost-for="h3-id">` with section costs, adds
+check-off boxes under `<h3 data-have>`, copies a shopping list from
+`<h3 data-shop>` sections, and shares a pre-filled link. Check-offs and the
+household live only in that reader's browser.
+
+`checklist_pdf.py` writes an HTML twin of each checklist PDF that loads this
+script, so "Print my list" opens the same layout with the reader's totals.
+
 ## Utility scripts
 
 Standard-library Python helpers that splice HTML into existing pages. All are
-run manually except `bump_modified.py`, which git runs on every commit.
+run manually except `bump_modified.py` and `checklist_pdf.py`, which git runs
+on every commit.
 
 | Script | What it does |
 | --- | --- |
@@ -221,6 +248,7 @@ run manually except `bump_modified.py`, which git runs on every commit.
 | [lang_and_feed.py](lang_and_feed.py) | Adds `lang="en"` to every `<html>` that declares no language, and removes the `application/atom+xml` feed link (`feed.xml` is RSS 2.0; the `rss+xml` link beside it stays). Dry run by default; `--apply` writes. |
 | [check_links.py](check_links.py) | Checks the links on every published page (`--drafts` adds drafts; or name pages) and prints three lists: dead external links (404/410, host gone), each with the newest Wayback Machine copy to swap in; links it couldn't judge (403s, timeouts, redirects to a front page; mostly sites that block scripts); and links inside the site to files that don't exist, matched case-sensitively as the servers do. `--save` also has the Wayback Machine capture live links it has no copy of. That is paced to stay under the Archive's rate limit, so run it on one post at publish time rather than the whole site. Changes no files. |
 | [bump_modified.py](bump_modified.py) | Not run by hand: [.githooks/pre-commit](.githooks/pre-commit) runs it on every commit, once turned on per clone with `git config core.hooksPath .githooks`. Sets the Modified date to today on each published page the commit really changes, and stages that into the same commit. "Really" means more than three words touched in one spot, counting visible text and `alt`/`title`/`data-*` values (film and book entries live in `data-*`). So typo fixes, markup and `<head>` edits never bump a date. Drafts, the publishing commit, pages published today, and a date set by hand are left alone too. A page that also has unstaged edits is named and skipped, since re-staging it would commit those edits. More than ten qualifying pages in one commit looks like a site-wide edit, so none are dated; `MODIFIED_BULK_OK=1 git commit` dates them anyway. `git commit --no-verify` skips it. It never blocks a commit. |
+| [checklist_pdf.py](checklist_pdf.py) | Turns a post's lists into a printable two-column PDF checklist. A page opts in with `data-checklist="media/…/name.pdf"` on the `<h2>` whose section becomes the checklist (path relative to the page). Each `<h3>` becomes a section, an `<li>` holding its own list becomes a group heading, and every other `<li>` becomes a checkbox showing its `<b>` name plus the first sentence after it, so write the specifics first and the why after. `<li data-no-checklist>` (advice, not something to get or do), notes (an `<li>` starting with `<i>`) and anything outside a list are left out. `<h3 data-checklist-write-in>` gives each item in that section two blank lines to write on (the nearest pharmacy's name and address, say). Amount tags (`<span class="qty">`, see "Household checklists") are kept. Beside the PDF it writes the same checklist as `name.html`, which loads `js/household.js` for personalized printing; the PDF itself is printed without the script, so it keeps the static amounts. [.githooks/pre-commit](.githooks/pre-commit) runs it with `--staged`: when a staged page's checklist differs from `HEAD`, it rebuilds the PDF and HTML from the staged copy and stages both into the same commit. By hand: `python3 checklist_pdf.py thoughts/foo.html`. Prints with headless Google Chrome or Chromium (external tool); without one the commit goes through and the old PDF stays. It never blocks a commit. |
 | `knowledge/media/*/lister.py` | Regenerates `image_widths_heights.json` for the image-gallery pages (`vibes.html`, `nostalgicimages.html`). Needs `pillow` + `pillow-heif`. |
 
 Note: despite the helper, `knowledge/books.html` is currently maintained by hand.
