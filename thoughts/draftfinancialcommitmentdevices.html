@@ -44,6 +44,16 @@
 </table>
 
 
+5. “Most people don’t use them” (line 100) has good evidence behind it; cite it. In Halpern et al. (NEJM, 2015), only 13.7% of smokers accepted a deposit-based quit program, against about 90% for reward-based ones. Among people who would accept, though, the deposit programs did better: about 13 percentage points more were still abstinent at six months. That one study supports both halves of your thesis: they work, and people avoid them.
+
+6. The lying section has two problems.
+
+Line 132 asks “So how to make this happen?” about tamper-proof verification, and the next paragraph falls back to the honor system. Answer the question: Beeminder’s automatic data integrations, Spondeo’s photo proof, or a referee who holds the money.
+The essay says not to rely on willpower, but its answer to lying is “be a grown-up,” which is willpower. There’s a good fix that turns this into a point in your favor. A contract turns a vague lapse (“I’ll do it tomorrow”) into a clear, deliberate lie, and most people find that much harder to do. That’s why the honor system works better than it sounds.
+Minor: “the Most Common Objection” in the heading isn’t backed up. The second-person “Don’t you feel guilty lying like that?” also scolds readers who haven’t lied. That may be the “Damn It!” voice you want; just make sure it’s deliberate.
+
+7. Bullet 3 (line 92) doesn’t support its own claim. It says the types and number of contracts are unlimited, but the example is about how penalties escalate. Also, “Want to make it exponential instead?” doesn’t work: Beeminder’s schedule already is exponential (×3 after $10), so 5ⁿ is just steeper. Your numbers are right; Beeminder’s levels do go up to $7,290.
+
 -->
 
 <h1 id="financialcommitmentdevices">Use Financial Commitment Devices, Damn It!</h1>
@@ -70,7 +80,7 @@
 </p>
 
 <p>
-  I used to believe these things, using brute force on everything thinking that hard work was the universal solvent, the panacea for all my goals and woes.
+  I used to believe these things, using brute force on everything and thinking that hard work was the universal solvent, the panacea for all my goals and woes. But the willpower well is finite and should be used sparingly lest it empties before the point where it's really needed.
 </p>
 
 <hr>
@@ -78,19 +88,38 @@
 <h2 id="fire">Money as a Fire Under Your Ass</h2>
 
 <p>
-  Money continues to be the ultimate commitment device: the likelihood that the task gets done scales proportionally with the amount of money on the line; the amount of money to stake is effectively infinite; the types of contracts and amount of them one can enter is infinite; proof can be required to eliminate lying.
+  Money is the ultimate <a href="https://en.wikipedia.org/wiki/Commitment_device">commitment device</a>:
 </p>
+
+<ul>
+  <li>
+    The likelihood that the task gets done scales with the amount of money on the line. Staking $5 to do something increases the chances by a lot; staking $500 to do something increases the chances enough to effectively guarantee it gets done barring some emergency or disaster.
+  </li>
+  <li>
+    The amount of money to stake is effectively infinite (up to net worth). It can be cents, dollars, or some not-small percentage of one's net worth. Decide how important or dreadful/inconvenient/ugh-y the task is to get done, then decide the appropriate dollar amount. A task that will defintiely get done, like eating, is $0; a task that is a massive pain gets a lot more.
+  </li>
+  <li>
+    The types of contracts and amount of them one can enter is infinite. The typical Beeminder derail penalty increments go $5 &rarr; $10 &rarr; $30 &rarr; $90 &rarr; $270 (&rarr; $810 &rarr; $2430 &rarr; $7290 are optional). Want to make it exponential instead and have the commitment be $5<sup><i>n</i></sup>, where <i>n</i> is the number of failures? Go for it!
+  </li>
+  <li>
+    Proof can be required to eliminate lying or weaseling out of it. Get a friend or family member to require proof.
+  </li>
+</ul>
 
 <p>
   And yet most people, even the ones who know about them, don't use them enough or at all. Why?
 </p>
 
+<hr>
+
+<h2 id="dontuse">(Poor) Reasons for Not Using FCDs</h2>
+
 <p>
-  It can feel weird to say "I'll give up $20 if I don't call my mom by Saturday" because it implies the phone call is worth $20, and if the bettor doesn't call, then she definitely isn't worth $20–sorry, Mom! That feels especially shitty, so avoiding the commitment avoids the chance of that happening altogether.
+  It can feel weird to say "I'll give up $20 if I don't call my mom by Saturday" because it implies the phone call is worth $20, and if the bettor doesn't call, then she definitely isn't worth $20—sorry, Mom! That feels especially shitty, so avoiding the commitment avoids the chance of feeling crappy about a preference being revealed altogether.
 </p>
 
 <p>
-  Or it makes the person feel weak, like they have to threaten themselves in order to do something, regardless of whether or not they actually want to do it. I often want to call my mom and know it's the right thing to do, but my life can get busy and to-do list long, so staking some money on it ensures I prioritize it the appropriate amount, else it may fall by the wayside via excuses or forgetfulness or exhaustion.
+  Or it makes the person feel weak, like they have to threaten themselves in order to do something, regardless of whether or not they actually want to do it. I often want to call my mom and know it's the right thing to do, but my life can get busy and to-do list long, so staking some money on it ensures I prioritize it the appropriate amount; otherwise it may fall by the wayside via excuses or forgetfulness or exhaustion.
 </p>
 
 <p>
@@ -98,15 +127,31 @@
 </p>
 
 <p>
- While these are all understandable reasons, they are still blockers to the goal being achieved in a more likely-to-be-successful and efficient manner and should be resolved.
+  Or they're afraid that some emergency will come up and they won't be able to fulfill their action. 
+</p>
+
+<p>
+  Or the stakes are so high that they cause anxiety and they just don't want to think about it because of how badly it'll hurt if they lose so they just avoid committing to anything altogether to avoid potential pain. The solution is simple: lower the stake! Make the commitment more achievable (but not trivial)!
+</p>
+
+<p>
+  Or the commitment isn't dependent on others and it's not <i>their</i> money that's on the line! 
+</p>
+
+<p>
+  While these are all understandable reasons, they are still blockers to the goal being achieved more reliably and efficiently and should be resolved.
 </p>
 
 <hr>
 
-<h2 id=""></h2>
+<h2 id="evidence">Is There Evidence for FCDs Actually Working?</h2>
+
+<hr>
+
+<h2 id="lying">Lying, A Common Objection to FCDs</h2>
 
 <p>
-  Automatic, can't-tamper-with-or-fake verification is important, with the honor system coming up close behind it. As <a href="https://help.beeminder.com/article/34-cant-you-just-lie-about-your-data">Beeminder/dreev aptly puts it</a> when being asked about lying about data:
+  Automatic, can't-tamper-with-or-fake verification is important, with the honor system a close second. As <a href="https://help.beeminder.com/article/34-cant-you-just-lie-about-your-data">Beeminder/dreev aptly puts it</a> when asked about whether you can just lie about data:
 </p>
 
 <blockquote>
@@ -114,35 +159,40 @@
 </blockquote>
 
 <p>
-  Right! But tamperproof verification is still helpful to keep the person honest from lying, fibbing, or mental gymnasticing.
+  Right! But tamperproof verification is still helpful to keep people honest from lying, fibbing, or mental gymnasticing. So how do you make this happen?
 </p>
 
-
+<p>
+  Again, the honor system and being <i>that</i> type of person do a lot of work here. Don't you feel guilty lying like that? Don't you <i>know</i> that marking that commitment—the one that didn't actually get done—as complete is wrong? The solution is a) accountability in the form of a person, and b) being a grown-up and owning up to shortcomings. Seriously. A commitment was made. Now honor it.
+</p>
 
 <hr>
 
 <h2 id="methods">Methods</h2>
 
 <p>
-  List of financial commitment apps:
+  Here's a list of financial commitment apps:
 </p>
 
 <ul>
   <li>
-    <a href="https://www.beeminder.com/">Beeminder</a>
+    <a href="https://www.beeminder.com/">Beeminder</a>: Used for building habits. They are constantly adding new features.
   </li>
   <li>
-    <a href="https://www.taskratchet.com/">TaskRatchet</a>
+    <a href="https://spondeo.app/">Spondeo</a>: Used for one-off tasks. Requires proof of completion.
   </li>
   <li>
-    <a href="https://spondeo.app/">Spondeo</a>
+    <a href="https://www.taskratchet.com/">TaskRatchet</a>: Used for one-off tasks. Does not require proof of completion.
   </li>
 </ul>
+
+<p>
+  You can also just make commitments offline and do many things with the forfeited money, such as destroy it, donate it to a good cause, or donate it to a bad cause.
+</p>
 
 <hr>
 
 <h2 id="see_also">See Also</h2>
-
 
 
 

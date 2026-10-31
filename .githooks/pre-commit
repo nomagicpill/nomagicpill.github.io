@@ -1,0 +1,13 @@
+#!/bin/sh
+# Sets the Modified date on posts a commit really changes; see bump_modified.py.
+# Turn on once per clone with: git config core.hooksPath .githooks
+#
+# A GUI git client's PATH can lead to a python3 that doesn't run, so try each
+# until one does. Never block the commit if none works.
+for py in python3 /usr/local/bin/python3 /opt/homebrew/bin/python3 /usr/bin/python3; do
+  if "$py" -c '' >/dev/null 2>&1; then
+    exec "$py" bump_modified.py
+  fi
+done
+echo "Modified: no working python3 found; dates not updated." >&2
+exit 0

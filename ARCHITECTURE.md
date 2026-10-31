@@ -33,6 +33,7 @@ feed.xml            RSS 2.0 feed, hand-edited.
 404.html            Not-found page. Self-contained; see "Pages that break the mold".
 CNAME               Custom domain for GitHub Pages.
 wrangler.toml       Cloudflare static-asset config.
+.githooks/          Git hooks: pre-commit runs bump_modified.py (see "Utility scripts").
 
 css/main.css        The stylesheet for ~all content pages.
 css/index.css       Homepage-only: two-column layout + hover tooltips.
@@ -207,7 +208,7 @@ jumps to one at random.
 ## Utility scripts
 
 Standard-library Python helpers that splice HTML into existing pages. All are
-run manually; nothing runs them automatically.
+run manually except `bump_modified.py`, which git runs on every commit.
 
 | Script | What it does |
 | --- | --- |
@@ -219,6 +220,7 @@ run manually; nothing runs them automatically.
 | [charset_first.py](charset_first.py) | Moves `<meta charset>` to be the first thing in `<head>` on every page (or inserts one), leaving the rest of the file byte-for-byte alone. Dry run by default; `--apply` writes. Re-run it after starting pages from an old copy; it lists pages it can't fix (no `<head>`, two `<head>`s). |
 | [lang_and_feed.py](lang_and_feed.py) | Adds `lang="en"` to every `<html>` that declares no language, and removes the `application/atom+xml` feed link (`feed.xml` is RSS 2.0; the `rss+xml` link beside it stays). Dry run by default; `--apply` writes. |
 | [check_links.py](check_links.py) | Checks the links on every published page (`--drafts` adds drafts; or name pages) and prints three lists: dead external links (404/410, host gone), each with the newest Wayback Machine copy to swap in; links it couldn't judge (403s, timeouts, redirects to a front page; mostly sites that block scripts); and links inside the site to files that don't exist, matched case-sensitively as the servers do. `--save` also has the Wayback Machine capture live links it has no copy of. That is paced to stay under the Archive's rate limit, so run it on one post at publish time rather than the whole site. Changes no files. |
+| [bump_modified.py](bump_modified.py) | Not run by hand: [.githooks/pre-commit](.githooks/pre-commit) runs it on every commit, once turned on per clone with `git config core.hooksPath .githooks`. Sets the Modified date to today on each published page the commit really changes, and stages that into the same commit. "Really" means more than three words touched in one spot, counting visible text and `alt`/`title`/`data-*` values (film and book entries live in `data-*`). So typo fixes, markup and `<head>` edits never bump a date. Drafts, the publishing commit, pages published today, and a date set by hand are left alone too. A page that also has unstaged edits is named and skipped, since re-staging it would commit those edits. More than ten qualifying pages in one commit looks like a site-wide edit, so none are dated; `MODIFIED_BULK_OK=1 git commit` dates them anyway. `git commit --no-verify` skips it. It never blocks a commit. |
 | `knowledge/media/*/lister.py` | Regenerates `image_widths_heights.json` for the image-gallery pages (`vibes.html`, `nostalgicimages.html`). Needs `pillow` + `pillow-heif`. |
 
 Note: despite the helper, `knowledge/books.html` is currently maintained by hand.
