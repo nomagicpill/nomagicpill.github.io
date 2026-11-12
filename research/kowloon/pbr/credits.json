@@ -1,0 +1,209 @@
+[
+ {
+  "id": "painted_plaster_wall",
+  "type": "texture",
+  "name": "Painted Plaster Wall",
+  "authors": [
+   "Amal Kumar"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/painted_plaster_wall"
+ },
+ {
+  "id": "concrete_floor_worn_001",
+  "type": "texture",
+  "name": "Concrete Floor Worn 001",
+  "authors": [
+   "Dimitrios Savva",
+   "Rico Cilliers"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/concrete_floor_worn_001"
+ },
+ {
+  "id": "terrazzo_tiles",
+  "type": "texture",
+  "name": "Terrazzo Tiles",
+  "authors": [
+   "Amal Kumar"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/terrazzo_tiles"
+ },
+ {
+  "id": "square_tiles",
+  "type": "texture",
+  "name": "Square Tiles",
+  "authors": [
+   "Charlotte Baglioni"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/square_tiles"
+ },
+ {
+  "id": "oak_veneer_01",
+  "type": "texture",
+  "name": "Oak Veneer 01",
+  "authors": [
+   "Jenelle van Heerden"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/oak_veneer_01"
+ },
+ {
+  "id": "black_walnut_veneer_01",
+  "type": "texture",
+  "name": "Black Walnut Veneer 01",
+  "authors": [
+   "Jenelle van Heerden"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/black_walnut_veneer_01"
+ },
+ {
+  "id": "brown_planks_09",
+  "type": "texture",
+  "name": "Brown Planks 09",
+  "authors": [
+   "Rob Tuytel"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/brown_planks_09"
+ },
+ {
+  "id": "rough_linen",
+  "type": "texture",
+  "name": "Rough Linen",
+  "authors": [
+   "colormass",
+   "Rico Cilliers"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/rough_linen"
+ },
+ {
+  "id": "metal_plate",
+  "type": "texture",
+  "name": "Metal Plate",
+  "authors": [
+   "Rob Tuytel"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/metal_plate"
+ },
+ {
+  "id": "rusty_metal_02",
+  "type": "texture",
+  "name": "Rusty Metal 02",
+  "authors": [
+   "Rob Tuytel"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/rusty_metal_02"
+ },
+ {
+  "id": "corrugated_iron_02",
+  "type": "texture",
+  "name": "Corrugated Iron 02",
+  "authors": [
+   "Jenelle van Heerden",
+   "Sergej Majboroda"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/corrugated_iron_02"
+ },
+ {
+  "id": "brick_wall_02",
+  "type": "texture",
+  "name": "Brick Wall 02",
+  "authors": [
+   "Dimitrios Savva"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/brick_wall_02"
+ },
+ {
+  "id": "granite_tile",
+  "type": "texture",
+  "name": "Granite Tile",
+  "authors": [
+   "Charlotte Baglioni"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/granite_tile"
+ },
+ {
+  "id": "grey_roof_tiles",
+  "type": "texture",
+  "name": "Grey Roof Tiles",
+  "authors": [
+   "Rob Tuytel"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/grey_roof_tiles"
+ },
+ {
+  "id": "asphalt_02",
+  "type": "texture",
+  "name": "Asphalt 02",
+  "authors": [
+   "Rob Tuytel"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/asphalt_02"
+ },
+ {
+  "id": "concrete_wall_008",
+  "type": "texture",
+  "name": "Concrete Wall 008",
+  "authors": [
+   "Dario Barresi",
+   "Charlotte Baglioni"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/concrete_wall_008"
+ },
+ {
+  "id": "small_workshop",
+  "type": "hdri",
+  "name": "Small Workshop",
+  "authors": [
+   "Dimitrios Savva",
+   "Jarod Guest"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/small_workshop"
+ },
+ {
+  "id": "braustuble_alley",
+  "type": "hdri",
+  "name": "Braustuble Alley",
+  "authors": [
+   "Elvis Posa"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/braustuble_alley"
+ },
+ {
+  "id": "kloofendal_48d_partly_cloudy_puresky",
+  "type": "hdri",
+  "name": "Kloofendal 48d Partly Cloudy (Pure Sky)",
+  "authors": [
+   "Greg Zaal",
+   "Jarod Guest"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky"
+ },
+ {
+  "id": "kloppenheim_02_puresky",
+  "type": "hdri",
+  "name": "Kloppenheim 02 (Pure Sky)",
+  "authors": [
+   "Greg Zaal",
+   "Jarod Guest"
+  ],
+  "license": "CC0",
+  "page": "https://polyhaven.com/a/kloppenheim_02_puresky"
+ }
+]

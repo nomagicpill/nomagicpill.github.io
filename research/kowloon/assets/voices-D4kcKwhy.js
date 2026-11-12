@@ -1,0 +1,15 @@
+import{t as e}from"./a11y-2XVoxmNu.js";/* empty css              */e();var t=e=>document.querySelector(e),n=e=>String(e??``).replace(/[&<>"]/g,e=>({"&":`&amp;`,"<":`&lt;`,">":`&gt;`,'"':`&quot;`})[e]),[r,i]=await Promise.all([fetch(`./data/voices.json`).then(e=>{if(!e.ok)throw Error(e.status);return e.json()}),fetch(`./data/places.json`).then(e=>e.json()).catch(()=>({places:[]}))]).catch(e=>{throw t(`#status`).textContent=`The voices could not be loaded. Reload the page to try again.`,e}),a=Object.fromEntries(i.places.map(e=>[e.id,e.title])),o=(e,t)=>(i.places.find(t=>t.id===e)?.items.find(e=>e.id===t)||{}).title||t;if(t(`#main`).innerHTML=`
+<section class="period"><ul class="vgrid">${r.voices.map(e=>`<li class="vcard" id="${n(e.id)}">
+  ${e.quote_zh?`<blockquote><p lang="zh-Hant" class="vzh">「${n(e.quote_zh)}」</p><p class="ven">“${n(e.quote_en)}”</p></blockquote>`:``}
+  <p class="vwho"><b>${n(e.name)}</b>, ${n(e.role)}${e.when?` <span class="vwhen">${n(e.when)}</span>`:``}</p>
+  <p class="vsum">${n(e.summary)}</p>
+  ${e.places.length?`<p class="vin">In the model: ${e.places.map(e=>`<a href="./flat.html?place=${n(e.place)}&item=${n(e.item)}">${n(o(e.place,e.item))}</a> <span class="vplace">(${n(a[e.place]||e.place)})</span>`).join(`, `)}</p>`:``}
+  <p class="vsrc"><a href="${n(e.url)}" target="_blank" rel="noopener">${n(e.source)}</a></p></li>`).join(``)}</ul></section>
+<section class="period" id="film"><h2>On film</h2>
+  <p class="period-text">Public recordings, embedded from YouTube. Nothing loads from YouTube until you press play.</p>
+  <ul class="videos">${r.videos.map(e=>`<li><div class="vframe" data-id="${n(e.id)}" data-start="${e.start||0}">
+    <button class="vplay" aria-label="Play: ${n(e.title)}"><svg viewBox="0 0 68 48" aria-hidden="true"><rect width="68" height="48" rx="12" fill="#b5432c"/><path d="M27 15l18 9-18 9z" fill="#fff"/></svg>
+      <span><b>${n(e.title)}</b><small>${n(e.channel)} · YouTube</small></span></button></div>
+    <p class="vsum">${n(e.text)}</p></li>`).join(``)}</ul></section>
+<section class="period"><h2>Read and watch more</h2><ul class="more">${r.more.map(e=>`<li>${e.href?`<a href="${n(e.href)}" target="_blank" rel="noopener">${n(e.label)}</a>`:n(e.label)}</li>`).join(``)}</ul></section>`,document.querySelectorAll(`.vframe`).forEach(e=>e.querySelector(`.vplay`).addEventListener(`click`,()=>{let t=encodeURIComponent(e.dataset.id),r=+e.dataset.start||0;e.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${t}?autoplay=1&rel=0${r?`&start=${r}`:``}" title="${n(e.querySelector(`b`)?.textContent||`Video`)}"
+    allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>`})),location.hash){let e=document.querySelector(location.hash);e&&(e.scrollIntoView(),e.classList.add(`hl`))}

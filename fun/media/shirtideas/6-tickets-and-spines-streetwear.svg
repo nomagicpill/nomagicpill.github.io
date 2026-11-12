@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 740" width="1160" height="740">
+  <defs>
+    <linearGradient id="cotton" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1d1d1d"/>
+      <stop offset="1" stop-color="#121212"/>
+    </linearGradient>
+    <!-- worn screen-print: knock tiny holes out of the ink -->
+    <filter id="ink" x="-2%" y="-2%" width="104%" height="104%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix"
+        values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -4 0 0 0 3.35" result="holes"/>
+      <feComposite in="SourceGraphic" in2="holes" operator="in"/>
+    </filter>
+  </defs>
+  <rect width="1160" height="740" fill="#e9e7e2"/>
+  <g transform="translate(20 20)">
+  <ellipse cx="280" cy="652" rx="200" ry="10" fill="#000" opacity="0.08"/>
+  <path d="M200 52 C222 92 338 92 360 52 L455 70 Q480 76 492 96 L548 228 L470 262 L462 238 L462 640 Q280 648 98 640 L98 238 L90 262 L12 228 L68 96 Q80 76 105 70 Z" fill="url(#cotton)" stroke="#050505" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M206 55 C228 100 332 100 354 55" fill="none" stroke="#252525" stroke-width="9"/>
+  <path d="M100 96 Q96 170 98 238 M460 96 Q464 170 462 238 M90 262 L12 228 M470 262 L548 228"
+        fill="none" stroke="#262626" stroke-width="1.5"/>
+  <path d="M98 600 Q280 610 462 600" fill="none" stroke="#222" stroke-width="1.2"/>
+  <text transform="translate(57 232) rotate(23.5)" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7" letter-spacing="2" fill="#efe8d8" filter="url(#ink)">★ ADMIT ONE ★</text>
+  <g transform="translate(129 116)" filter="url(#ink)">
+    <text x="0" y="9" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7.5" letter-spacing="2.5"
+          fill="#efe8d8">VOL. 01</text>
+    <text x="302" y="9" text-anchor="end" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7.5"
+          letter-spacing="2.5" fill="#efe8d8">4 BOOKS / 4 FILMS</text>
+    <line x1="0" x2="302" y1="16" y2="16" stroke="#efe8d8" stroke-width="1.2"/>
+    <g transform="rotate(13 196 184) translate(132 163.0)">
+      <path d="M0 0 H170 V16.0 A5 5 0 0 0 170 26.0 V42 H0 V26.0 A5 5 0 0 0 0 16.0 Z" fill="#efe8d8" stroke="#171717" stroke-width="2"/>
+      <g fill="#171717"><rect x="9.0" y="8" width="0.7" height="26"/><rect x="10.8" y="8" width="0.7" height="26"/><rect x="13.1" y="8" width="2.0" height="26"/><rect x="16.2" y="8" width="0.7" height="26"/><rect x="17.6" y="8" width="0.7" height="26"/><rect x="19.0" y="8" width="2.0" height="26"/><rect x="22.6" y="8" width="1.2" height="26"/><rect x="24.5" y="8" width="0.7" height="26"/><rect x="26.8" y="8" width="2.6" height="26"/><rect x="30.5" y="8" width="1.2" height="26"/><rect x="32.4" y="8" width="0.7" height="26"/><rect x="34.2" y="8" width="0.7" height="26"/><rect x="35.6" y="8" width="1.2" height="26"/><rect x="37.9" y="8" width="0.7" height="26"/><rect x="39.3" y="8" width="1.2" height="26"/><rect x="41.6" y="8" width="1.2" height="26"/><rect x="43.5" y="8" width="2.6" height="26"/><rect x="47.2" y="8" width="2.0" height="26"/><rect x="50.8" y="8" width="0.7" height="26"/><rect x="52.2" y="8" width="0.7" height="26"/><rect x="54.0" y="8" width="1.2" height="26"/><rect x="55.9" y="8" width="1.1" height="26"/></g>
+      <text x="102" y="11" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="5"
+            letter-spacing="1" fill="#171717">ADMIT ONE · 2022</text>
+      <text x="102" y="28.5" text-anchor="middle" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="16.0"
+            fill="#171717">AFTERSUN</text>
+      <text x="102" y="36.5" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="5"
+            letter-spacing="0.5" fill="#171717">DIR. WELLS</text>
+      <line x1="142" x2="142" y1="3" y2="39" stroke="#171717" stroke-width="1" stroke-dasharray="2 2"/>
+      <text transform="translate(156 21.0) rotate(-90)" text-anchor="middle" dominant-baseline="central"
+            font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="5.5" letter-spacing="1"
+            fill="#171717">ADMIT ONE</text>
+    </g><g transform="rotate(0 191 150) translate(127 129.0)">
+      <path d="M0 0 H170 V16.0 A5 5 0 0 0 170 26.0 V42 H0 V26.0 A5 5 0 0 0 0 16.0 Z" fill="#e0402e" stroke="#171717" stroke-width="2"/>
+      <g fill="#171717"><rect x="9.0" y="8" width="0.7" height="26"/><rect x="11.3" y="8" width="2.6" height="26"/><rect x="14.6" y="8" width="1.2" height="26"/><rect x="17.4" y="8" width="2.0" height="26"/><rect x="21.0" y="8" width="2.6" height="26"/><rect x="24.3" y="8" width="2.6" height="26"/><rect x="27.6" y="8" width="2.0" height="26"/><rect x="30.7" y="8" width="2.6" height="26"/><rect x="34.0" y="8" width="0.7" height="26"/><rect x="36.3" y="8" width="2.0" height="26"/><rect x="39.9" y="8" width="2.6" height="26"/><rect x="43.6" y="8" width="2.0" height="26"/><rect x="47.2" y="8" width="0.7" height="26"/><rect x="48.6" y="8" width="0.7" height="26"/><rect x="50.9" y="8" width="2.0" height="26"/><rect x="54.5" y="8" width="0.7" height="26"/><rect x="56.8" y="8" width="0.2" height="26"/></g>
+      <text x="102" y="11" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="5"
+            letter-spacing="1" fill="#171717">ADMIT ONE · 1992</text>
+      <text x="102" y="28.5" text-anchor="middle" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="16.0"
+            fill="#171717">BARAKA</text>
+      <text x="102" y="36.5" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="5"
+            letter-spacing="0.5" fill="#171717">DIR. FRICKE</text>
+      <line x1="142" x2="142" y1="3" y2="39" stroke="#171717" stroke-width="1" stroke-dasharray="2 2"/>
+      <text transform="translate(156 21.0) rotate(-90)" text-anchor="middle" dominant-baseline="central"
+            font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="5.5" letter-spacing="1"
+            fill="#171717">ADMIT ONE</text>
+    </g><g transform="rotate(-10 191 112) translate(127 91.0)">
+      <path d="M0 0 H170 V16.0 A5 5 0 0 0 170 26.0 V42 H0 V26.0 A5 5 0 0 0 0 16.0 Z" fill="#efe8d8" stroke="#171717" stroke-width="2"/>
+      <g fill="#171717"><rect x="9.0" y="8" width="0.7" height="26"/><rect x="10.4" y="8" width="0.7" height="26"/><rect x="12.2" y="8" width="0.7" height="26"/><rect x="14.5" y="8" width="1.2" height="26"/><rect x="16.8" y="8" width="2.6" height="26"/><rect x="20.1" y="8" width="2.6" height="26"/><rect x="23.4" y="8" width="2.6" height="26"/><rect x="27.6" y="8" width="0.7" height="26"/><rect x="29.4" y="8" width="2.0" height="26"/><rect x="33.0" y="8" width="2.6" height="26"/><rect x="36.7" y="8" width="2.6" height="26"/><rect x="40.4" y="8" width="2.6" height="26"/><rect x="44.1" y="8" width="0.7" height="26"/><rect x="45.5" y="8" width="1.2" height="26"/><rect x="47.8" y="8" width="1.2" height="26"/><rect x="50.1" y="8" width="2.0" height="26"/><rect x="53.7" y="8" width="0.7" height="26"/><rect x="56.0" y="8" width="0.7" height="26"/></g>
+      <text x="102" y="11" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="5"
+            letter-spacing="1" fill="#171717">ADMIT ONE · 2020</text>
+      <text x="102" y="28.5" text-anchor="middle" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="11.5"
+            fill="#171717" textLength="70.0" lengthAdjust="spacingAndGlyphs">SOUND OF METAL</text>
+      <text x="102" y="36.5" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="5"
+            letter-spacing="0.5" fill="#171717">DIR. MARDER</text>
+      <line x1="142" x2="142" y1="3" y2="39" stroke="#171717" stroke-width="1" stroke-dasharray="2 2"/>
+      <text transform="translate(156 21.0) rotate(-90)" text-anchor="middle" dominant-baseline="central"
+            font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="5.5" letter-spacing="1"
+            fill="#171717">ADMIT ONE</text>
+    </g>
+    <rect x="12" y="80" width="172" height="32" fill="#efe8d8" stroke="none"
+            stroke-width="1.6"/>
+      <rect x="12" y="80" width="172" height="32" fill="none" stroke="#171717" stroke-width="2"
+            opacity="1"/>
+      <line x1="19" x2="19" y1="84" y2="108" stroke="#171717" stroke-width="1.2"/><line x1="22.5" x2="22.5" y1="84" y2="108" stroke="#171717" stroke-width="1.2"/><line x1="177" x2="177" y1="84" y2="108" stroke="#171717" stroke-width="1.2"/><line x1="173.5" x2="173.5" y1="84" y2="108" stroke="#171717" stroke-width="1.2"/>
+      <text x="29" y="96.0" dominant-baseline="central" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif"
+            font-size="17.3" fill="#171717" textLength="128.0" lengthAdjust="spacingAndGlyphs">THE TARTAR STEPPE</text>
+      <text x="169" y="96.0" text-anchor="end" dominant-baseline="central"
+            font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7" fill="#171717">01</text><rect x="3" y="112" width="188" height="38" fill="#e0402e" stroke="none"
+            stroke-width="1.6"/>
+      <rect x="3" y="112" width="188" height="38" fill="none" stroke="#171717" stroke-width="2"
+            opacity="1"/>
+      <line x1="10" x2="10" y1="116" y2="146" stroke="#171717" stroke-width="1.2"/><line x1="13.5" x2="13.5" y1="116" y2="146" stroke="#171717" stroke-width="1.2"/><line x1="184" x2="184" y1="116" y2="146" stroke="#171717" stroke-width="1.2"/><line x1="180.5" x2="180.5" y1="116" y2="146" stroke="#171717" stroke-width="1.2"/>
+      <text x="20" y="131.0" dominant-baseline="central" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif"
+            font-size="22.8" fill="#171717">POISON</text>
+      <text x="176" y="131.0" text-anchor="end" dominant-baseline="central"
+            font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7" fill="#171717">02</text><rect x="8" y="150" width="180" height="34" fill="#171717" stroke="#efe8d8"
+            stroke-width="1.6"/>
+      <rect x="8" y="150" width="180" height="34" fill="none" stroke="#171717" stroke-width="2"
+            opacity="0"/>
+      <line x1="15" x2="15" y1="154" y2="180" stroke="#efe8d8" stroke-width="1.2"/><line x1="18.5" x2="18.5" y1="154" y2="180" stroke="#efe8d8" stroke-width="1.2"/><line x1="181" x2="181" y1="154" y2="180" stroke="#efe8d8" stroke-width="1.2"/><line x1="177.5" x2="177.5" y1="154" y2="180" stroke="#efe8d8" stroke-width="1.2"/>
+      <text x="25" y="167.0" dominant-baseline="central" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif"
+            font-size="20.4" fill="#efe8d8">ENDURANCE</text>
+      <text x="173" y="167.0" text-anchor="end" dominant-baseline="central"
+            font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7" fill="#efe8d8">03</text><rect x="0" y="184" width="196" height="42" fill="#efe8d8" stroke="none"
+            stroke-width="1.6"/>
+      <rect x="0" y="184" width="196" height="42" fill="none" stroke="#171717" stroke-width="2"
+            opacity="1"/>
+      <line x1="7" x2="7" y1="188" y2="222" stroke="#171717" stroke-width="1.2"/><line x1="10.5" x2="10.5" y1="188" y2="222" stroke="#171717" stroke-width="1.2"/><line x1="189" x2="189" y1="188" y2="222" stroke="#171717" stroke-width="1.2"/><line x1="185.5" x2="185.5" y1="188" y2="222" stroke="#171717" stroke-width="1.2"/>
+      <text x="17" y="205.0" dominant-baseline="central" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif"
+            font-size="17.5" fill="#171717" textLength="152.0" lengthAdjust="spacingAndGlyphs">HUMAN ACCOMPLISHMENT</text>
+      <text x="181" y="205.0" text-anchor="end" dominant-baseline="central"
+            font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7" fill="#171717">04</text>
+    <g transform="rotate(-6 107 58) translate(22 37)">
+      <path d="M0 0 H170 V16.0 A5 5 0 0 0 170 26.0 V42 H0 V26.0 A5 5 0 0 0 0 16.0 Z" fill="#e0402e" stroke="#171717" stroke-width="2"/>
+      <g fill="#171717"><rect x="9.0" y="8" width="0.7" height="26"/><rect x="11.3" y="8" width="0.7" height="26"/><rect x="13.1" y="8" width="0.7" height="26"/><rect x="14.9" y="8" width="2.0" height="26"/><rect x="18.0" y="8" width="2.0" height="26"/><rect x="20.7" y="8" width="0.7" height="26"/><rect x="22.5" y="8" width="0.7" height="26"/><rect x="24.3" y="8" width="2.0" height="26"/><rect x="27.9" y="8" width="0.7" height="26"/><rect x="30.2" y="8" width="2.0" height="26"/><rect x="33.3" y="8" width="0.7" height="26"/><rect x="35.6" y="8" width="0.7" height="26"/><rect x="37.4" y="8" width="0.7" height="26"/><rect x="38.8" y="8" width="0.7" height="26"/><rect x="41.1" y="8" width="2.6" height="26"/><rect x="44.4" y="8" width="2.0" height="26"/><rect x="48.0" y="8" width="0.7" height="26"/><rect x="49.8" y="8" width="0.7" height="26"/><rect x="52.1" y="8" width="0.7" height="26"/><rect x="53.9" y="8" width="2.0" height="26"/></g>
+      <text x="102" y="11" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="5"
+            letter-spacing="1" fill="#171717">ADMIT ONE · 1977</text>
+      <text x="102" y="28.5" text-anchor="middle" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="16.0"
+            fill="#171717">SORCERER</text>
+      <text x="102" y="36.5" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="5"
+            letter-spacing="0.5" fill="#171717">DIR. FRIEDKIN</text>
+      <line x1="142" x2="142" y1="3" y2="39" stroke="#171717" stroke-width="1" stroke-dasharray="2 2"/>
+      <text transform="translate(156 21.0) rotate(-90)" text-anchor="middle" dominant-baseline="central"
+            font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="5.5" letter-spacing="1"
+            fill="#171717">ADMIT ONE</text>
+    </g>
+    <rect x="0" y="238" width="302" height="26" fill="#e0402e"/>
+    <text x="151.0" y="258.5" text-anchor="middle" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="20"
+          letter-spacing="9" fill="#171717">NO SPOILERS</text>
+    <text x="151.0" y="282" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold"
+          font-size="7.5" letter-spacing="2.5" fill="#efe8d8">READ IT. WATCHED IT. WEARING IT.</text>
+  </g>
+  </g>
+  <g transform="translate(580 20)">
+  <ellipse cx="280" cy="652" rx="200" ry="10" fill="#000" opacity="0.08"/>
+  <path d="M205 52 C230 66 330 66 355 52 L455 70 Q480 76 492 96 L548 228 L470 262 L462 238 L462 640 Q280 648 98 640 L98 238 L90 262 L12 228 L68 96 Q80 76 105 70 Z" fill="url(#cotton)" stroke="#050505" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M209 55 C232 73 328 73 351 55" fill="none" stroke="#252525" stroke-width="9"/>
+  <path d="M100 96 Q96 170 98 238 M460 96 Q464 170 462 238 M90 262 L12 228 M470 262 L548 228"
+        fill="none" stroke="#262626" stroke-width="1.5"/>
+  <path d="M98 600 Q280 610 462 600" fill="none" stroke="#222" stroke-width="1.2"/>
+  
+  <g transform="translate(145 108)" filter="url(#ink)">
+    <text x="0" y="78" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="96" fill="#efe8d8"
+          textLength="270" lengthAdjust="spacingAndGlyphs">READ</text>
+    <line x1="0" x2="270" y1="90" y2="90" stroke="#efe8d8" stroke-opacity="0.35"/>
+    <text x="0" y="106" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="13" fill="#e0402e">01</text>
+    <text x="24" y="106.5" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="15.0" fill="#efe8d8">THE TARTAR STEPPE</text>
+    <text x="270" y="105" text-anchor="end" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5"
+          fill="#efe8d8">BUZZATI</text>
+    <line x1="0" x2="270" y1="112" y2="112" stroke="#efe8d8" stroke-opacity="0.35"/>
+    <text x="0" y="128" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="13" fill="#e0402e">02</text>
+    <text x="24" y="128.5" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="15.0" fill="#efe8d8">POISON</text>
+    <text x="270" y="127" text-anchor="end" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5"
+          fill="#efe8d8">TWIGHT</text>
+    <line x1="0" x2="270" y1="134" y2="134" stroke="#efe8d8" stroke-opacity="0.35"/>
+    <text x="0" y="150" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="13" fill="#e0402e">03</text>
+    <text x="24" y="150.5" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="15.0" fill="#efe8d8">ENDURANCE</text>
+    <text x="270" y="149" text-anchor="end" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5"
+          fill="#efe8d8">LANSING</text>
+    <line x1="0" x2="270" y1="156" y2="156" stroke="#efe8d8" stroke-opacity="0.35"/>
+    <text x="0" y="172" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="13" fill="#e0402e">04</text>
+    <text x="24" y="172.5" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="15.0" fill="#efe8d8">HUMAN ACCOMPLISHMENT</text>
+    <text x="270" y="171" text-anchor="end" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5"
+          fill="#efe8d8">MURRAY</text>
+    <line x1="0" x2="270" y1="178" y2="178" stroke="#efe8d8" stroke-opacity="0.35"/>
+    <text x="0" y="246" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="66" fill="none" stroke="#efe8d8"
+          stroke-width="1.6" textLength="270" lengthAdjust="spacingAndGlyphs">WATCHED</text>
+    <line x1="0" x2="270" y1="258" y2="258" stroke="#efe8d8" stroke-opacity="0.35"/>
+    <text x="0" y="274" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="13" fill="#e0402e">01</text>
+    <text x="24" y="274.5" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="15.0" fill="#efe8d8">SORCERER</text>
+    <text x="270" y="273" text-anchor="end" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5"
+          fill="#efe8d8">1977 · FRIEDKIN</text>
+    <line x1="0" x2="270" y1="280" y2="280" stroke="#efe8d8" stroke-opacity="0.35"/>
+    <text x="0" y="296" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="13" fill="#e0402e">02</text>
+    <text x="24" y="296.5" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="15.0" fill="#efe8d8">SOUND OF METAL</text>
+    <text x="270" y="295" text-anchor="end" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5"
+          fill="#efe8d8">2020 · MARDER</text>
+    <line x1="0" x2="270" y1="302" y2="302" stroke="#efe8d8" stroke-opacity="0.35"/>
+    <text x="0" y="318" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="13" fill="#e0402e">03</text>
+    <text x="24" y="318.5" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="15.0" fill="#efe8d8">BARAKA</text>
+    <text x="270" y="317" text-anchor="end" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5"
+          fill="#efe8d8">1992 · FRICKE</text>
+    <line x1="0" x2="270" y1="324" y2="324" stroke="#efe8d8" stroke-opacity="0.35"/>
+    <text x="0" y="340" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="13" fill="#e0402e">04</text>
+    <text x="24" y="340.5" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="15.0" fill="#efe8d8">AFTERSUN</text>
+    <text x="270" y="339" text-anchor="end" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5"
+          fill="#efe8d8">2022 · WELLS</text>
+    <line x1="0" x2="270" y1="346" y2="346" stroke="#efe8d8" stroke-opacity="0.35"/>
+    <g fill="#efe8d8"><rect x="0.0" y="362" width="2.0" height="26"/><rect x="3.6" y="362" width="1.2" height="26"/><rect x="5.9" y="362" width="0.7" height="26"/><rect x="7.3" y="362" width="0.7" height="26"/><rect x="9.1" y="362" width="2.6" height="26"/><rect x="12.8" y="362" width="2.6" height="26"/><rect x="16.1" y="362" width="1.2" height="26"/><rect x="18.9" y="362" width="2.6" height="26"/><rect x="23.1" y="362" width="0.7" height="26"/><rect x="25.4" y="362" width="2.0" height="26"/><rect x="28.1" y="362" width="2.0" height="26"/><rect x="31.7" y="362" width="2.0" height="26"/><rect x="34.4" y="362" width="0.7" height="26"/><rect x="35.8" y="362" width="0.7" height="26"/><rect x="37.2" y="362" width="0.7" height="26"/><rect x="39.5" y="362" width="2.6" height="26"/><rect x="42.8" y="362" width="2.0" height="26"/><rect x="46.4" y="362" width="0.7" height="26"/><rect x="48.2" y="362" width="0.7" height="26"/><rect x="50.5" y="362" width="0.7" height="26"/><rect x="52.8" y="362" width="2.0" height="26"/><rect x="55.5" y="362" width="1.2" height="26"/><rect x="57.4" y="362" width="2.0" height="26"/><rect x="60.5" y="362" width="1.2" height="26"/><rect x="62.4" y="362" width="0.7" height="26"/><rect x="64.7" y="362" width="0.7" height="26"/><rect x="66.5" y="362" width="0.7" height="26"/><rect x="68.3" y="362" width="2.0" height="26"/><rect x="71.0" y="362" width="0.7" height="26"/><rect x="72.4" y="362" width="2.0" height="26"/><rect x="76.0" y="362" width="0.7" height="26"/><rect x="78.3" y="362" width="0.7" height="26"/><rect x="79.7" y="362" width="2.6" height="26"/><rect x="83.0" y="362" width="0.7" height="26"/><rect x="84.8" y="362" width="0.7" height="26"/><rect x="86.2" y="362" width="0.7" height="26"/><rect x="88.5" y="362" width="0.7" height="26"/><rect x="90.8" y="362" width="0.7" height="26"/><rect x="93.1" y="362" width="2.0" height="26"/><rect x="96.7" y="362" width="0.7" height="26"/><rect x="98.5" y="362" width="0.7" height="26"/><rect x="100.3" y="362" width="0.7" height="26"/><rect x="102.6" y="362" width="0.7" height="26"/><rect x="104.9" y="362" width="2.6" height="26"/><rect x="108.2" y="362" width="0.7" height="26"/></g>
+    <text x="270" y="369" text-anchor="end" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7"
+          letter-spacing="1" fill="#efe8d8">ADMIT ONE</text>
+    <text x="270" y="379" text-anchor="end" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7"
+          letter-spacing="1" fill="#efe8d8">KEEP THIS STUB</text>
+    <text x="270" y="389" text-anchor="end" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7"
+          letter-spacing="1" fill="#e0402e">Nº 08 / 08</text>
+  </g>
+  </g>
+  <text x="300" y="712" text-anchor="middle" font-family="Arial, sans-serif" font-size="15"
+        letter-spacing="3" fill="#8a8780">FRONT</text>
+  <text x="860" y="712" text-anchor="middle" font-family="Arial, sans-serif" font-size="15"
+        letter-spacing="3" fill="#8a8780">BACK</text>
+</svg>

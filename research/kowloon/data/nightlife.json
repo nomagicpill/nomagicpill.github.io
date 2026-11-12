@@ -1,0 +1,1067 @@
+{
+ "about": "Built by tools/build_nightlife.py from research/facts.json, the street lines and data/interiors.json.",
+ "day": {
+  "date": "1987-01-14",
+  "date_note": "The model shows 14 January 1987, the day police and Housing Department staff sealed the city and counted its residents.",
+  "facts": [
+   {
+    "id": "lighting",
+    "claim": "Fluorescent tubes lit the lanes around the clock because daylight rarely reached street level",
+    "value": "24 h",
+    "certainty": "reported",
+    "sources": [
+     "Wikipedia, 'Kowloon Walled City'",
+     "This House (YouTube), 'The Densest City in Human History: A Rare Look Inside Kowloon Walled City', 28 Apr 2026, 12:20",
+     "Robert Benjamin, 'Denizens of noted hellhole face Walled City eviction', Baltimore Sun, 30 Jun 1992"
+    ]
+   },
+   {
+    "id": "kaitak-curfew",
+    "claim": "Night curfew at Kai Tak",
+    "value": "23:30-06:30",
+    "certainty": "reported",
+    "sources": [
+     "Wikipedia, 'Kai Tak Airport'"
+    ]
+   },
+   {
+    "id": "kaitak-approach",
+    "claim": "Runway 13 approach: an IGS beam led planes over Kowloon City toward Checkerboard Hill, then a low 47-degree right turn (about 650 ft at the start, about 140 ft at the end) onto short final",
+    "value": "47 deg turn",
+    "certainty": "reported",
+    "sources": [
+     "Wikipedia, 'Kai Tak Airport'"
+    ]
+   },
+   {
+    "id": "kaitak-noise",
+    "claim": "Residents lived with serious aircraft noise",
+    "value": "",
+    "certainty": "reported",
+    "sources": [
+     "Wikipedia, 'Kowloon Walled City'"
+    ]
+   },
+   {
+    "id": "fishball-hours",
+    "claim": "Fish ball factories were unlicensed and ran round the clock",
+    "value": "24 h",
+    "certainty": "reported",
+    "sources": [
+     "LCSD, Kowloon Walled City Park exhibition guide (the 'Twilight of the Warriors: Walled In' set exhibition)"
+    ]
+   },
+   {
+    "id": "fire-watch",
+    "claim": "Resident night-watch teams patrolled calling out fire warnings",
+    "value": "",
+    "certainty": "claim",
+    "sources": [
+     "HK01 series 真．城寨英雄 (parts 1-3), 26-28 Aug 2016: members of the Walled City kaifong association remember"
+    ]
+   },
+   {
+    "id": "rooftops-lcsd",
+    "claim": "People hung washing, sat on bamboo chairs, chatted and watched the city lights from the roofs",
+    "value": "",
+    "certainty": "reported",
+    "sources": [
+     "LCSD, Kowloon Walled City Park exhibition guide (the 'Twilight of the Warriors: Walled In' set exhibition)"
+    ]
+   }
+  ],
+  "lit_note": "Which windows are lit, and when, is illustrative: no record says. Lane lights burn around the clock.",
+  "plane_note": "Aircraft follow the shape of the runway 13 approach (a low right turn over Kowloon City); the exact track and heights are illustrative."
+ },
+ "eras": {
+  "1960s-70s": {
+   "title": "1960s–70s: the triad years",
+   "text": [
+    "From the 1950s the 14K and Sun Yee On triads ran brothels, gambling parlours and opium dens here, and police came in only in large groups.",
+    "Former residents place the vice trade on Lung Shing Road and Kwong Ming Street, with a striptease club and a cinema; a missionary who arrived in 1966 counted more than 40 opium and heroin dens. Their exact locations are not recorded, so the model marks only the two streets.",
+    "In 1973–74 the police made more than 3,500 raids, arrested over 2,500 people and seized over 1,800 kg of drugs. Triad power waned afterwards."
+   ],
+   "facts": [
+    {
+     "id": "triads-1950s",
+     "claim": "Triads 14K and Sun Yee On controlled brothels, gambling parlours and opium dens from the 1950s",
+     "value": "",
+     "certainty": "reported",
+     "sources": [
+      "Wikipedia, 'Kowloon Walled City'"
+     ]
+    },
+    {
+     "id": "police-groups",
+     "claim": "Police entered only in large groups and made few raids",
+     "value": "",
+     "certainty": "reported",
+     "sources": [
+      "Wikipedia, 'Kowloon Walled City'"
+     ]
+    },
+    {
+     "id": "vice-streets",
+     "claim": "Vice concentrated along Lung Shing Road and Kwong Ming Street, including a striptease club and cinema",
+     "value": "",
+     "certainty": "claim",
+     "sources": [
+      "HK01 series 真．城寨英雄 (parts 1-3), 26-28 Aug 2016: members of the Walled City kaifong association remember"
+     ]
+    },
+    {
+     "id": "streets-vice",
+     "claim": "HK01 interviewees place the vice trade on Lung Shing Road 龍城路 and Kwong Ming Street 光明街",
+     "value": "",
+     "certainty": "claim",
+     "sources": [
+      "HK01 series 真．城寨英雄 (parts 1-3), 26-28 Aug 2016: members of the Walled City kaifong association remember"
+     ]
+    },
+    {
+     "id": "opium-dens",
+     "claim": "More than 40 opium and heroin dens when Jackie Pullinger arrived (from 1966)",
+     "value": "40+",
+     "certainty": "claim",
+     "sources": [
+      "St Stephen's Society, 'About us'"
+     ]
+    },
+    {
+     "id": "raids-1973",
+     "claim": "More than 3,500 police raids, over 2,500 arrests and over 1,800 kg of drugs seized; triad power waned afterwards",
+     "value": "3,500 / 2,500 / 1,800 kg",
+     "certainty": "reported",
+     "sources": [
+      "Wikipedia, 'Kowloon Walled City'"
+     ]
+    },
+    {
+     "id": "crime-1974-split",
+     "claim": "In the same debate one peer described triad extortion and drug trafficking while the government called the enclave relatively crime-free and patrolled",
+     "value": "",
+     "certainty": "documented",
+     "sources": [
+      "House of Lords debate 'Walled City of Kowloon', HL Deb 11 June 1974 vol 352 cc463-76 (Lord Kennet, Earl Cowley, Lord Goronwy-Roberts)"
+     ]
+    }
+   ],
+   "streets": [
+    {
+     "name": "Kwong Ming Street",
+     "line": [
+      [
+       40,
+       66
+      ],
+      [
+       52,
+       45
+      ],
+      [
+       62,
+       25
+      ],
+      [
+       72,
+       5
+      ],
+      [
+       80,
+       -12
+      ]
+     ]
+    },
+    {
+     "name": "Lung Shing Road",
+     "line": [
+      [
+       78,
+       63
+      ],
+      [
+       90,
+       42
+      ],
+      [
+       104,
+       21
+      ],
+      [
+       117,
+       1
+      ],
+      [
+       125,
+       -12
+      ]
+     ]
+    }
+   ],
+   "street_certainty": "claim"
+  },
+  "1980s": {
+   "title": "1980s: crime in decline",
+   "text": [
+    "By 1983 the district police commander declared crime under control, though in 1984 a reporter still found triads in the lanes and only occasional patrols. Most residents had nothing to do with crime.",
+    "What remained outside the law was mostly work: dentists and doctors without Hong Kong registration, and unlicensed food factories. The markers show those named in clearance claims, at their floor.",
+    "By the evictions of 1992 the brothels, opium dens and gambling clubs were gone."
+   ],
+   "facts": [
+    {
+     "id": "crime-1983",
+     "claim": "The district police commander declared crime under control",
+     "value": "1983",
+     "certainty": "reported",
+     "sources": [
+      "Wikipedia, 'Kowloon Walled City'"
+     ]
+    },
+    {
+     "id": "crime-1984",
+     "claim": "Triad societies still operated in the lanes; police patrols had only recently begun and were infrequent",
+     "value": "",
+     "certainty": "reported",
+     "sources": [
+      "J.L. Battenfeld, 'Walled City a place of myths and crime', UPI, 18 Dec 1984"
+     ]
+    },
+    {
+     "id": "residents-peaceful",
+     "claim": "Most residents were not involved in crime; former residents remember a close, poor but generally happy community",
+     "value": "",
+     "certainty": "reported",
+     "sources": [
+      "Wikipedia, 'Kowloon Walled City'",
+      "Adolfo Arranz, 'City of anarchy' (graphic), South China Morning Post, 16 Mar 2013, p. A18"
+     ]
+    },
+    {
+     "id": "dentists",
+     "claim": "Unlicensed doctors and dentists practised without fear of prosecution, mainly China-trained practitioners whose qualifications Hong Kong did not recognise",
+     "value": "",
+     "certainty": "reported",
+     "sources": [
+      "Wikipedia, 'Kowloon Walled City'",
+      "J.L. Battenfeld, 'Walled City a place of myths and crime', UPI, 18 Dec 1984",
+      "Adolfo Arranz, 'City of anarchy' (graphic), South China Morning Post, 16 Mar 2013, p. A18"
+     ]
+    },
+    {
+     "id": "food-industry",
+     "claim": "Fish balls, barbecued and roast meat and other foods were made in premises with little or no sanitation",
+     "value": "",
+     "certainty": "reported",
+     "sources": [
+      "Adolfo Arranz, 'City of anarchy' (graphic), South China Morning Post, 16 Mar 2013, p. A18"
+     ]
+    },
+    {
+     "id": "dog-meat",
+     "claim": "Restaurants and cafes served dog meat, illegal elsewhere in Hong Kong",
+     "value": "",
+     "certainty": "reported",
+     "sources": [
+      "J.L. Battenfeld, 'Walled City a place of myths and crime', UPI, 18 Dec 1984",
+      "Adolfo Arranz, 'City of anarchy' (graphic), South China Morning Post, 16 Mar 2013, p. A18"
+     ]
+    },
+    {
+     "id": "night-escort",
+     "claim": "Patrols and police accompanied women returning home at night",
+     "value": "",
+     "certainty": "claim",
+     "sources": [
+      "HK01 series 真．城寨英雄 (parts 1-3), 26-28 Aug 2016: members of the Walled City kaifong association remember"
+     ]
+    },
+    {
+     "id": "vice-gone-1992",
+     "claim": "By the 1992 evictions the brothels, opium dens and gambling clubs were gone",
+     "value": "",
+     "certainty": "reported",
+     "sources": [
+      "Robert Benjamin, 'Denizens of noted hellhole face Walled City eviction', Baltimore Sun, 30 Jun 1992"
+     ]
+    }
+   ],
+   "points": [
+    {
+     "x": 34.7,
+     "y": 95.1,
+     "floor": 0,
+     "use": "clinic",
+     "z": 18.0,
+     "name": "興發西藥行",
+     "record": "HKRS1255-3-551"
+    },
+    {
+     "x": 34.7,
+     "y": 95.1,
+     "floor": 2,
+     "use": "clinic",
+     "z": 24.0,
+     "name": "興發西藥行",
+     "record": "HKRS1255-3-551"
+    },
+    {
+     "x": 29.6,
+     "y": 93.8,
+     "floor": 2,
+     "use": "clinic",
+     "z": 24.1,
+     "name": "Mei Tung Wah Herbalist (美東華跌打)",
+     "record": "HKRS1255-3-518"
+    },
+    {
+     "x": 27.1,
+     "y": 91.8,
+     "floor": 0,
+     "use": "dentist",
+     "z": 18.2,
+     "name": "Siu Ping Lung Dentistry (蕭秉隆牙科)",
+     "record": "HKRS1255-3-514"
+    },
+    {
+     "x": 26.0,
+     "y": 88.6,
+     "floor": 0,
+     "use": "clinic",
+     "z": 18.2,
+     "name": "Kai On Medicine Store (啟安藥行)",
+     "record": "HKRS1255-3-516"
+    },
+    {
+     "x": 15.7,
+     "y": 82.0,
+     "floor": 0,
+     "use": "dentist",
+     "z": 18.1,
+     "name": "蕭秉陞牙科",
+     "record": "HKRS1255-3-547"
+    },
+    {
+     "x": 18.4,
+     "y": 75.5,
+     "floor": 1,
+     "use": "clinic",
+     "z": 21.1,
+     "name": "志青診所",
+     "record": "HKRS1255-3-550"
+    },
+    {
+     "x": 18.4,
+     "y": 75.5,
+     "floor": 4,
+     "use": "dentist",
+     "z": 30.1,
+     "name": "麥釗牙科",
+     "record": "HKRS1255-3-553"
+    },
+    {
+     "x": 15.1,
+     "y": 79.5,
+     "floor": 0,
+     "use": "dentist",
+     "z": 18.1,
+     "name": "King's Dental Lab + Yip Wa Man Dentist",
+     "record": "HKRS1255-3-554"
+    },
+    {
+     "x": 23.3,
+     "y": 80.3,
+     "floor": 0,
+     "use": "dentist",
+     "z": 18.1,
+     "name": "King's Dental Lab + Yip Wa Man Dentist",
+     "record": "HKRS1255-3-554"
+    },
+    {
+     "x": 5.1,
+     "y": 70.8,
+     "floor": 0,
+     "use": "clinic",
+     "z": 18.2,
+     "name": "大眾福利診所",
+     "record": "HKRS1255-3-556"
+    },
+    {
+     "x": 51.2,
+     "y": 74.1,
+     "floor": 0,
+     "use": "food",
+     "z": 16.2,
+     "name": "Wing Cheung Shing (HK) Meat Co. (永祥盛食品公司) -",
+     "record": "HKRS1255-3-499"
+    },
+    {
+     "x": 49.1,
+     "y": 71.5,
+     "floor": 0,
+     "use": "food",
+     "z": 16.4,
+     "name": "Wing Fung Building",
+     "record": "HKRS1255-3-426"
+    },
+    {
+     "x": -3.0,
+     "y": 66.8,
+     "floor": 1,
+     "use": "clinic",
+     "z": 21.8,
+     "name": "Cheong Chuen Bone-setter",
+     "record": "HKRS1255-3-574"
+    },
+    {
+     "x": -1.7,
+     "y": 63.4,
+     "floor": 1,
+     "use": "clinic",
+     "z": 21.8,
+     "name": "Liu Kwan China New Medical Clinic",
+     "record": "HKRS1255-3-575"
+    },
+    {
+     "x": -5.7,
+     "y": 64.5,
+     "floor": 2,
+     "use": "clinic",
+     "z": 24.8,
+     "name": "健華診所",
+     "record": "HKRS1255-3-576"
+    },
+    {
+     "x": 35.1,
+     "y": 65.7,
+     "floor": 0,
+     "use": "food",
+     "z": 16.6,
+     "name": "So Kee Food Factory",
+     "record": "HKRS1255-3-539"
+    },
+    {
+     "x": 60.7,
+     "y": 63.2,
+     "floor": 1,
+     "use": "dentist",
+     "z": 18.2,
+     "name": "Ko Hung Dentistry (高雄牙科)",
+     "record": "HKRS1255-3-487"
+    },
+    {
+     "x": 63.2,
+     "y": 60.1,
+     "floor": 0,
+     "use": "food",
+     "z": 15.0,
+     "name": "Biu Kee Food (標記食品公司)",
+     "record": "HKRS1255-3-485"
+    },
+    {
+     "x": -12.0,
+     "y": 59.8,
+     "floor": 2,
+     "use": "clinic",
+     "z": 25.6,
+     "name": "Mei Tung Medical Laboratory Centre",
+     "record": "HKRS1255-3-308"
+    },
+    {
+     "x": 66.3,
+     "y": 56.5,
+     "floor": 0,
+     "use": "food",
+     "z": 14.8,
+     "name": "Kwan Kee Fish Ball Factory (坤記魚蛋廠)",
+     "record": "HKRS1255-3-484"
+    },
+    {
+     "x": 5.4,
+     "y": 50.2,
+     "floor": 1,
+     "use": "food",
+     "z": 20.6,
+     "name": "Foon Lok Food Stuffs",
+     "record": "HKRS1255-3-573"
+    },
+    {
+     "x": 5.4,
+     "y": 50.2,
+     "floor": 3,
+     "use": "food",
+     "z": 26.6,
+     "name": "Foon Lok Food Stuffs",
+     "record": "HKRS1255-3-573"
+    },
+    {
+     "x": -2.1,
+     "y": 46.5,
+     "floor": 3,
+     "use": "clinic",
+     "z": 27.4,
+     "name": "東方專科診所",
+     "record": "HKRS1255-3-183"
+    },
+    {
+     "x": -2.1,
+     "y": 46.5,
+     "floor": 2,
+     "use": "clinic",
+     "z": 24.4,
+     "name": "光明診所",
+     "record": "HKRS1255-3-184"
+    },
+    {
+     "x": -2.1,
+     "y": 46.5,
+     "floor": 1,
+     "use": "clinic",
+     "z": 21.4,
+     "name": "西醫李謀",
+     "record": "HKRS1255-3-185"
+    },
+    {
+     "x": -6.9,
+     "y": 49.0,
+     "floor": 1,
+     "use": "clinic",
+     "z": 21.4,
+     "name": "張挺華診所",
+     "record": "HKRS1255-3-186"
+    },
+    {
+     "x": -7.1,
+     "y": 48.4,
+     "floor": 0,
+     "use": "dentist",
+     "z": 18.4,
+     "name": "莊天麗牙科",
+     "record": "HKRS1255-3-187"
+    },
+    {
+     "x": -26.6,
+     "y": 46.9,
+     "floor": 0,
+     "use": "dentist",
+     "z": 21.2,
+     "name": "馬創忠牙科",
+     "record": "HKRS1255-3-278"
+    },
+    {
+     "x": -23.2,
+     "y": 42.1,
+     "floor": 1,
+     "use": "dentist",
+     "z": 24.2,
+     "name": "Tsang Keong Dental Clinic",
+     "record": "HKRS1255-3-280B"
+    },
+    {
+     "x": -26.6,
+     "y": 46.9,
+     "floor": 2,
+     "use": "clinic",
+     "z": 27.2,
+     "name": "International Clinic",
+     "record": "HKRS1255-3-297"
+    },
+    {
+     "x": -23.2,
+     "y": 42.1,
+     "floor": 2,
+     "use": "dentist",
+     "z": 27.2,
+     "name": "國強牙科",
+     "record": "HKRS1255-3-296"
+    },
+    {
+     "x": 78.7,
+     "y": 39.1,
+     "floor": 0,
+     "use": "food",
+     "z": 13.5,
+     "name": "Chung Lap Food Co. (中立食品公司)",
+     "record": "HKRS1255-3-478A"
+    },
+    {
+     "x": 80.0,
+     "y": 37.4,
+     "floor": 0,
+     "use": "food",
+     "z": 13.5,
+     "name": "Chung Lap Food Co. (中立食品公司)",
+     "record": "HKRS1255-3-478B"
+    },
+    {
+     "x": -41.3,
+     "y": 36.0,
+     "floor": 4,
+     "use": "dentist",
+     "z": 34.0,
+     "name": "魏香泉牙科",
+     "record": "HKRS1255-3-273"
+    },
+    {
+     "x": -37.8,
+     "y": 37.4,
+     "floor": 0,
+     "use": "food",
+     "z": 22.0,
+     "name": "Luen Hing Bldg, Luen Hing Noodle",
+     "record": "HKRS1255-3-301"
+    },
+    {
+     "x": 7.3,
+     "y": 36.7,
+     "floor": 4,
+     "use": "dentist",
+     "z": 28.7,
+     "name": "黃振華牙科",
+     "record": "HKRS1255-3-323"
+    },
+    {
+     "x": -43.5,
+     "y": 32.7,
+     "floor": 6,
+     "use": "clinic",
+     "z": 40.3,
+     "name": "Ng Ping Wai Clinic",
+     "record": "HKRS1255-3-266"
+    },
+    {
+     "x": -43.5,
+     "y": 32.7,
+     "floor": 0,
+     "use": "clinic",
+     "z": 22.3,
+     "name": "西醫邱家瑟",
+     "record": "HKRS1255-3-302"
+    },
+    {
+     "x": -26.0,
+     "y": 29.4,
+     "floor": 1,
+     "use": "clinic",
+     "z": 23.0,
+     "name": "邱氏診所",
+     "record": "HKRS1255-3-565"
+    },
+    {
+     "x": 96.7,
+     "y": 32.7,
+     "floor": 0,
+     "use": "dentist",
+     "z": 12.8,
+     "name": "李偉群牙科",
+     "record": "HKRS1255-3-372A"
+    },
+    {
+     "x": 60.0,
+     "y": 29.8,
+     "floor": 0,
+     "use": "food",
+     "z": 13.7,
+     "name": "Hop Hing Noodle Factory (合興瀨粉廠)",
+     "record": "HKRS1255-3-449"
+    },
+    {
+     "x": 99.1,
+     "y": 30.0,
+     "floor": 0,
+     "use": "dentist",
+     "z": 12.6,
+     "name": "Wong Mei yue Dentistry (黃美如牙科)",
+     "record": "HKRS1255-3-374"
+    },
+    {
+     "x": -52.8,
+     "y": 31.8,
+     "floor": 2,
+     "use": "clinic",
+     "z": 28.5,
+     "name": "李靜瑜醫務所",
+     "record": "HKRS1255-3-160"
+    },
+    {
+     "x": 89.9,
+     "y": 27.4,
+     "floor": 0,
+     "use": "dentist",
+     "z": 12.7,
+     "name": "Lai Woon Sun Dentistry (黎煥新牙科)",
+     "record": "HKRS1255-3-415"
+    },
+    {
+     "x": 105.4,
+     "y": 25.7,
+     "floor": 1,
+     "use": "food",
+     "z": 15.2,
+     "name": "Sheung Hei Ho Food (雙喜號福食)",
+     "record": "HKRS1255-3-420"
+    },
+    {
+     "x": 105.4,
+     "y": 25.7,
+     "floor": 2,
+     "use": "food",
+     "z": 18.2,
+     "name": "榮利麵廠",
+     "record": "HKRS1255-3-422"
+    },
+    {
+     "x": -65.5,
+     "y": 23.2,
+     "floor": 0,
+     "use": "dentist",
+     "z": 21.9,
+     "name": "Wong Wai Kuen Dentistry (王偉權牙科)",
+     "record": "HKRS1255-3-154"
+    },
+    {
+     "x": -71.1,
+     "y": 21.6,
+     "floor": 1,
+     "use": "dentist",
+     "z": 24.8,
+     "name": "Student Lunch Boxes",
+     "record": "HKRS1255-3-240"
+    },
+    {
+     "x": -71.1,
+     "y": 21.6,
+     "floor": 3,
+     "use": "dentist",
+     "z": 30.8,
+     "name": "中國西醫全科診所暨牙科診所",
+     "record": "HKRS1255-3-246"
+    },
+    {
+     "x": 104.9,
+     "y": 21.8,
+     "floor": 0,
+     "use": "dentist",
+     "z": 12.1,
+     "name": "Mak Yue Kwan Dentistry (麥汝鋆牙科)",
+     "record": "HKRS1255-3-376"
+    },
+    {
+     "x": 93.5,
+     "y": 21.2,
+     "floor": 0,
+     "use": "food",
+     "z": 12.4,
+     "name": "大興粉麵廠",
+     "record": "HKRS1255-3-408"
+    },
+    {
+     "x": 67.2,
+     "y": 21.8,
+     "floor": 0,
+     "use": "food",
+     "z": 13.2,
+     "name": "Tung Luen (東聠食品公司)",
+     "record": "HKRS1255-3-447"
+    },
+    {
+     "x": -82.3,
+     "y": 20.0,
+     "floor": 1,
+     "use": "clinic",
+     "z": 24.8,
+     "name": "Tai Chung Clinic",
+     "record": "HKRS1255-3-176"
+    },
+    {
+     "x": 109.4,
+     "y": 20.6,
+     "floor": 1,
+     "use": "food",
+     "z": 14.9,
+     "name": "Cheung Kee Food Company 張記凍肉食品公司",
+     "record": "HKRS1255-3-406"
+    },
+    {
+     "x": 69.4,
+     "y": 18.5,
+     "floor": 0,
+     "use": "food",
+     "z": 12.9,
+     "name": "Yeung Kee Fish Ball Factory (楊記魚旦批發公司)",
+     "record": "HKRS1255-3-446"
+    },
+    {
+     "x": 53.6,
+     "y": 15.1,
+     "floor": 0,
+     "use": "food",
+     "z": 13.2,
+     "name": "Kong Fat Food Company (廣發食品公司)",
+     "record": "HKRS1255-3-419"
+    },
+    {
+     "x": 74.2,
+     "y": 12.0,
+     "floor": 0,
+     "use": "food",
+     "z": 12.4,
+     "name": "鏡記粥麵廠",
+     "record": "HKRS1255-3-442"
+    },
+    {
+     "x": 71.8,
+     "y": 10.7,
+     "floor": 1,
+     "use": "food",
+     "z": 15.4,
+     "name": "Wing Cheong Food Co. (榮昌食品公司)",
+     "record": "HKRS1255-3-443"
+    },
+    {
+     "x": 112.2,
+     "y": 5.7,
+     "floor": 0,
+     "use": "dentist",
+     "z": 11.0,
+     "name": "國際牙科及國際牙科分所",
+     "record": "HKRS1255-3-379"
+    },
+    {
+     "x": 112.2,
+     "y": 5.7,
+     "floor": 1,
+     "use": "dentist",
+     "z": 14.0,
+     "name": "國際牙科及國際牙科分所",
+     "record": "HKRS1255-3-379"
+    },
+    {
+     "x": 119.1,
+     "y": -1.5,
+     "floor": 0,
+     "use": "food",
+     "z": 10.3,
+     "name": "Chiu Kee (Wing Lee) Pizza (超記(榮利)薄餅)",
+     "record": "HKRS1255-3-388"
+    },
+    {
+     "x": 37.3,
+     "y": -2.0,
+     "floor": 0,
+     "use": "food",
+     "z": 13.1,
+     "name": "Hop Hing Foods Co. (合興食品公司)",
+     "record": "HKRS1255-3-469"
+    },
+    {
+     "x": 121.9,
+     "y": -15.4,
+     "floor": 3,
+     "use": "clinic",
+     "z": 18.3,
+     "name": "Liu Kwok Sum Bonesetter & Gymnasium",
+     "record": "HKRS1255-3-20"
+    },
+    {
+     "x": 113.0,
+     "y": -8.0,
+     "floor": 0,
+     "use": "dentist",
+     "z": 10.1,
+     "name": "Hing Fat Metal & Screw Manufactory",
+     "record": "HKRS1255-3-433"
+    },
+    {
+     "x": 114.3,
+     "y": -14.2,
+     "floor": 0,
+     "use": "dentist",
+     "z": 9.9,
+     "name": "何賢牙醫",
+     "record": "HKRS1255-3-391"
+    },
+    {
+     "x": 114.5,
+     "y": -22.1,
+     "floor": 0,
+     "use": "dentist",
+     "z": 9.4,
+     "name": "美漢牙醫",
+     "record": "HKRS1255-3-2"
+    },
+    {
+     "x": 98.2,
+     "y": -17.4,
+     "floor": 0,
+     "use": "food",
+     "z": 10.1,
+     "name": "新興食品公司",
+     "record": "HKRS1255-3-21"
+    },
+    {
+     "x": -115.8,
+     "y": -15.5,
+     "floor": 0,
+     "use": "food",
+     "z": 19.8,
+     "name": "Shing Fat Food Company",
+     "record": "HKRS1255-3-120"
+    },
+    {
+     "x": 113.0,
+     "y": -23.1,
+     "floor": 1,
+     "use": "dentist",
+     "z": 12.5,
+     "name": "陳子明牙科",
+     "record": "HKRS1255-3-3"
+    },
+    {
+     "x": 76.9,
+     "y": -26.6,
+     "floor": 0,
+     "use": "dentist",
+     "z": 9.9,
+     "name": "鄭凌生牙科",
+     "record": "HKRS1255-3-34"
+    },
+    {
+     "x": -105.1,
+     "y": -30.0,
+     "floor": 0,
+     "use": "food",
+     "z": 18.1,
+     "name": "Yau Shing Food Company",
+     "record": "HKRS1255-3-215"
+    },
+    {
+     "x": 85.6,
+     "y": -33.0,
+     "floor": 0,
+     "use": "dentist",
+     "z": 9.5,
+     "name": "麥汝剛牙科室",
+     "record": "HKRS1255-3-27"
+    },
+    {
+     "x": 64.6,
+     "y": -31.9,
+     "floor": 1,
+     "use": "clinic",
+     "z": 12.9,
+     "name": "鳳陽堂藥廠",
+     "record": "HKRS1255-3-43"
+    },
+    {
+     "x": 54.2,
+     "y": -42.2,
+     "floor": 0,
+     "use": "food",
+     "z": 9.8,
+     "name": "Hing Fat Noodle Factory",
+     "record": "HKRS1255-3-49"
+    },
+    {
+     "x": -48.1,
+     "y": -43.0,
+     "floor": 0,
+     "use": "food",
+     "z": 14.9,
+     "name": "義發食品公司",
+     "record": "HKRS1255-3-77"
+    },
+    {
+     "x": 48.0,
+     "y": -46.3,
+     "floor": 0,
+     "use": "dentist",
+     "z": 9.8,
+     "name": "牙醫陳國祥",
+     "record": "HKRS1255-3-52"
+    },
+    {
+     "x": 34.3,
+     "y": -53.4,
+     "floor": 0,
+     "use": "clinic",
+     "z": 10.0,
+     "name": "Hon Hin Chung Medical Clinic",
+     "record": "HKRS1255-3-65"
+    },
+    {
+     "x": 28.2,
+     "y": -57.1,
+     "floor": 0,
+     "use": "clinic",
+     "z": 10.1,
+     "name": "茂安藥行",
+     "record": "HKRS1255-3-68"
+    },
+    {
+     "x": 25.8,
+     "y": -59.2,
+     "floor": 0,
+     "use": "dentist",
+     "z": 10.1,
+     "name": "吳美堅牙科",
+     "record": "HKRS1255-3-69"
+    },
+    {
+     "x": 20.9,
+     "y": -66.1,
+     "floor": 0,
+     "use": "dentist",
+     "z": 10.2,
+     "name": "Chan Hay Sing Dentistry (陳喜星牙科)",
+     "record": "HKRS1255-3-72"
+    },
+    {
+     "x": -41.7,
+     "y": -78.1,
+     "floor": 0,
+     "use": "food",
+     "z": 13.3,
+     "name": "Luen Fung Food Company (聠豐食品公司)",
+     "record": "HKRS1255-3-130"
+    },
+    {
+     "x": -55.5,
+     "y": -76.5,
+     "floor": 0,
+     "use": "food",
+     "z": 13.9,
+     "name": "Shing Kee Food",
+     "record": "HKRS1255-3-123B"
+    },
+    {
+     "x": -25.2,
+     "y": -84.6,
+     "floor": 0,
+     "use": "food",
+     "z": 11.4,
+     "name": "永豐食品公司",
+     "record": "HKRS1255-3-108"
+    },
+    {
+     "x": -41.7,
+     "y": -91.4,
+     "floor": 0,
+     "use": "dentist",
+     "z": 12.2,
+     "name": "Chan Yin Chor Dentistry 陳燕初牙科",
+     "record": "HKRS1255-3-118"
+    },
+    {
+     "x": -69.9,
+     "y": -101.7,
+     "floor": 0,
+     "use": "food",
+     "z": 12.7,
+     "name": "Shing Fung Foods Company",
+     "record": "HKRS1255-3-138A"
+    }
+   ],
+   "point_certainty": "documented"
+  }
+ }
+}

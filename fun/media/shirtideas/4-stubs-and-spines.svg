@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 720" width="600" height="720">
+  <defs>
+    <linearGradient id="cloth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f4f3f0"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="720" fill="#e9e7e2"/>
+  <ellipse cx="300" cy="662" rx="190" ry="10" fill="#000" opacity="0.06"/>
+  <path d="M215 60 C240 97 360 97 385 60 L470 85 L575 200 L505 257 L470 222
+           L470 648 Q300 664 130 648 L130 222 L95 257 L25 200 L130 85 Z"
+        fill="url(#cloth)" stroke="#cfccc5" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M222 63 C246 105 354 105 378 63" fill="none" stroke="#e3e0da" stroke-width="7"/>
+  <path d="M141 89 Q128 160 130 222 M459 89 Q472 160 470 222" fill="none"
+        stroke="#e6e3dd" stroke-width="1.5"/>
+  <path d="M95 257 L25 200 M505 257 L575 200" fill="none" stroke="#e6e3dd" stroke-width="1"/>
+  <g transform="translate(226.2 292) scale(0.6)">
+    <rect x="12" y="-215" width="40" height="215" rx="1.5" fill="#c8a15a" stroke="#000" stroke-opacity="0.18"/>
+    <rect x="12" y="-215" width="7.2" height="215" fill="#fff" opacity="0.08"/>
+    <line x1="15" x2="49" y1="-206" y2="-206" stroke="#2d2214" stroke-opacity="0.7" stroke-width="0.9"/>
+    <line x1="15" x2="49" y1="-202.5" y2="-202.5" stroke="#2d2214" stroke-opacity="0.7" stroke-width="0.9"/>
+    <line x1="15" x2="49" y1="-9" y2="-9" stroke="#2d2214" stroke-opacity="0.7" stroke-width="0.9"/>
+    <line x1="15" x2="49" y1="-12.5" y2="-12.5" stroke="#2d2214" stroke-opacity="0.7" stroke-width="0.9"/>
+    <text transform="translate(32.0 -131.5) rotate(90)" text-anchor="middle" dominant-baseline="central" font-family="Georgia, 'Times New Roman', serif" font-weight="normal" font-style="italic" font-size="14.4" letter-spacing="0.3" fill="#2d2214">The Tartar Steppe</text>
+    <line x1="24.0" x2="40.0" y1="-58" y2="-58" stroke="#2d2214" stroke-opacity="0.6" stroke-width="0.8"/>
+    <text transform="translate(32.0 -33) rotate(90)" text-anchor="middle" dominant-baseline="central" font-family="Georgia, 'Times New Roman', serif" font-size="8.0" letter-spacing="0.8" fill="#2d2214" textLength="36.0" lengthAdjust="spacingAndGlyphs">BUZZATI</text>
+    <rect x="53.5" y="-236" width="50" height="236" rx="1.5" fill="#1d1d1d" stroke="#000" stroke-opacity="0.18"/>
+    <rect x="53.5" y="-236" width="9.0" height="236" fill="#fff" opacity="0.08"/>
+    <line x1="56.5" x2="100.5" y1="-227" y2="-227" stroke="#f2f0ea" stroke-opacity="0.7" stroke-width="0.9"/>
+    <line x1="56.5" x2="100.5" y1="-223.5" y2="-223.5" stroke="#f2f0ea" stroke-opacity="0.7" stroke-width="0.9"/>
+    <line x1="56.5" x2="100.5" y1="-9" y2="-9" stroke="#f2f0ea" stroke-opacity="0.7" stroke-width="0.9"/>
+    <line x1="56.5" x2="100.5" y1="-12.5" y2="-12.5" stroke="#f2f0ea" stroke-opacity="0.7" stroke-width="0.9"/>
+    <text transform="translate(78.5 -142.0) rotate(90)" text-anchor="middle" dominant-baseline="central" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-style="normal" font-size="18.0" letter-spacing="4" fill="#f2f0ea">POISON</text>
+    <line x1="68.5" x2="88.5" y1="-58" y2="-58" stroke="#f2f0ea" stroke-opacity="0.6" stroke-width="0.8"/>
+    <text transform="translate(78.5 -33) rotate(90)" text-anchor="middle" dominant-baseline="central" font-family="Arial, Helvetica, sans-serif" font-size="8.5" letter-spacing="0.8" fill="#f2f0ea" textLength="36.0" lengthAdjust="spacingAndGlyphs">TWIGHT</text>
+    <rect x="105.0" y="-200" width="42" height="200" rx="1.5" fill="#5d7f99" stroke="#000" stroke-opacity="0.18"/>
+    <rect x="105.0" y="-200" width="7.6" height="200" fill="#fff" opacity="0.08"/>
+    <line x1="108.0" x2="144.0" y1="-191" y2="-191" stroke="#f4f1e8" stroke-opacity="0.7" stroke-width="0.9"/>
+    <line x1="108.0" x2="144.0" y1="-187.5" y2="-187.5" stroke="#f4f1e8" stroke-opacity="0.7" stroke-width="0.9"/>
+    <line x1="108.0" x2="144.0" y1="-9" y2="-9" stroke="#f4f1e8" stroke-opacity="0.7" stroke-width="0.9"/>
+    <line x1="108.0" x2="144.0" y1="-12.5" y2="-12.5" stroke="#f4f1e8" stroke-opacity="0.7" stroke-width="0.9"/>
+    <text transform="translate(126.0 -124.0) rotate(90)" text-anchor="middle" dominant-baseline="central" font-family="Georgia, 'Times New Roman', serif" font-weight="normal" font-style="normal" font-size="15.1" letter-spacing="0.3" fill="#f4f1e8">Endurance</text>
+    <line x1="117.6" x2="134.4" y1="-58" y2="-58" stroke="#f4f1e8" stroke-opacity="0.6" stroke-width="0.8"/>
+    <text transform="translate(126.0 -33) rotate(90)" text-anchor="middle" dominant-baseline="central" font-family="Georgia, 'Times New Roman', serif" font-size="8.4" letter-spacing="0.8" fill="#f4f1e8" textLength="36.0" lengthAdjust="spacingAndGlyphs">LANSING</text>
+    <rect x="148.5" y="-242" width="52" height="242" rx="1.5" fill="#8e2f2a" stroke="#000" stroke-opacity="0.18"/>
+    <rect x="148.5" y="-242" width="9.4" height="242" fill="#fff" opacity="0.08"/>
+    <line x1="151.5" x2="197.5" y1="-233" y2="-233" stroke="#e3c47c" stroke-opacity="0.7" stroke-width="0.9"/>
+    <line x1="151.5" x2="197.5" y1="-229.5" y2="-229.5" stroke="#e3c47c" stroke-opacity="0.7" stroke-width="0.9"/>
+    <line x1="151.5" x2="197.5" y1="-9" y2="-9" stroke="#e3c47c" stroke-opacity="0.7" stroke-width="0.9"/>
+    <line x1="151.5" x2="197.5" y1="-12.5" y2="-12.5" stroke="#e3c47c" stroke-opacity="0.7" stroke-width="0.9"/>
+    <text transform="translate(174.5 -145.0) rotate(90)" text-anchor="middle" dominant-baseline="central" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-style="normal" font-size="10.8" letter-spacing="1" fill="#e3c47c" textLength="158.0" lengthAdjust="spacingAndGlyphs">HUMAN ACCOMPLISHMENT</text>
+    <line x1="164.1" x2="184.9" y1="-58" y2="-58" stroke="#e3c47c" stroke-opacity="0.6" stroke-width="0.8"/>
+    <text transform="translate(174.5 -33) rotate(90)" text-anchor="middle" dominant-baseline="central" font-family="Georgia, 'Times New Roman', serif" font-size="8.5" letter-spacing="0.8" fill="#e3c47c" textLength="36.0" lengthAdjust="spacingAndGlyphs">MURRAY</text>
+    <path d="M204.0 0 V-118 Q204.0 -124 210.0 -124 H210.0 Q214.0 -124 214.0 -118 V-6 H232.0 V0 Z" fill="#8a8f94" stroke="#5f6468" stroke-width="0.8"/>
+    <rect x="0" y="0" width="246.0" height="10" fill="#8b6243"/>
+    <rect x="0" y="10" width="246.0" height="3" fill="#6e4b31"/>
+  </g>
+  <g transform="translate(192.0 316.0) scale(0.5) rotate(-4 105.0 37.0)">
+    <path d="M0 0 H210 V29.0 A8 8 0 0 0 210 45.0 V74 H0 V45.0 A8 8 0 0 0 0 29.0 Z" fill="#e07b39"/>
+    <line x1="46" x2="46" y1="3" y2="71" stroke="#241a14" stroke-opacity="0.4" stroke-dasharray="2 3"/>
+    <text transform="translate(20 37.0) rotate(-90)" text-anchor="middle" dominant-baseline="central"
+          font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="8" letter-spacing="1.5" fill="#241a14">ADMIT ONE</text>
+    <text transform="translate(33 37.0) rotate(-90)" text-anchor="middle" dominant-baseline="central"
+          font-family="'Courier New', Courier, monospace" font-size="6" fill="#241a14">Nº 227708</text>
+    <text x="128.0" y="16" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="6.5"
+          letter-spacing="2" fill="#241a14">ADMIT ONE · 1977</text>
+    <text x="128.0" y="40" text-anchor="middle" font-family="'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-weight="bold"
+          font-size="19" fill="#241a14">SORCERER</text>
+    <text x="128.0" y="52" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="6.5"
+          letter-spacing="1" fill="#241a14">DIR. WILLIAM FRIEDKIN</text>
+    <line x1="56" x2="198" y1="57.5" y2="57.5" stroke="#241a14" stroke-opacity="0.5" stroke-width="0.6"/>
+    <text x="56" y="67" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5" fill="#241a14">SEEN 22 AUG 2026</text>
+    <text x="198" y="67.5" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="8" fill="#241a14">★★★★★</text>
+  </g>
+  <g transform="translate(303.0 316.0) scale(0.5) rotate(3 105.0 37.0)">
+    <path d="M0 0 H210 V29.0 A8 8 0 0 0 210 45.0 V74 H0 V45.0 A8 8 0 0 0 0 29.0 Z" fill="#d6404e"/>
+    <line x1="46" x2="46" y1="3" y2="71" stroke="#241a14" stroke-opacity="0.4" stroke-dasharray="2 3"/>
+    <text transform="translate(20 37.0) rotate(-90)" text-anchor="middle" dominant-baseline="central"
+          font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="8" letter-spacing="1.5" fill="#241a14">ADMIT ONE</text>
+    <text transform="translate(33 37.0) rotate(-90)" text-anchor="middle" dominant-baseline="central"
+          font-family="'Courier New', Courier, monospace" font-size="6" fill="#241a14">Nº 182014</text>
+    <text x="128.0" y="16" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="6.5"
+          letter-spacing="2" fill="#241a14">ADMIT ONE · 2020</text>
+    <text x="128.0" y="40" text-anchor="middle" font-family="'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-weight="bold"
+          font-size="19" fill="#241a14" textLength="146.0" lengthAdjust="spacingAndGlyphs">SOUND OF METAL</text>
+    <text x="128.0" y="52" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="6.5"
+          letter-spacing="1" fill="#241a14">DIR. DARIUS MARDER</text>
+    <line x1="56" x2="198" y1="57.5" y2="57.5" stroke="#241a14" stroke-opacity="0.5" stroke-width="0.6"/>
+    <text x="56" y="67" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5" fill="#241a14">SEEN 18 AUG 2025</text>
+    <text x="198" y="67.5" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="8" fill="#241a14">★★★★½</text>
+  </g>
+  <g transform="translate(192.0 361.0) scale(0.5) rotate(2 105.0 37.0)">
+    <path d="M0 0 H210 V29.0 A8 8 0 0 0 210 45.0 V74 H0 V45.0 A8 8 0 0 0 0 29.0 Z" fill="#e5b84a"/>
+    <line x1="46" x2="46" y1="3" y2="71" stroke="#241a14" stroke-opacity="0.4" stroke-dasharray="2 3"/>
+    <text transform="translate(20 37.0) rotate(-90)" text-anchor="middle" dominant-baseline="central"
+          font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="8" letter-spacing="1.5" fill="#241a14">ADMIT ONE</text>
+    <text transform="translate(33 37.0) rotate(-90)" text-anchor="middle" dominant-baseline="central"
+          font-family="'Courier New', Courier, monospace" font-size="6" fill="#241a14">Nº 049206</text>
+    <text x="128.0" y="16" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="6.5"
+          letter-spacing="2" fill="#241a14">ADMIT ONE · 1992</text>
+    <text x="128.0" y="40" text-anchor="middle" font-family="'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-weight="bold"
+          font-size="19" fill="#241a14">BARAKA</text>
+    <text x="128.0" y="52" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="6.5"
+          letter-spacing="1" fill="#241a14">DIR. RON FRICKE</text>
+    <line x1="56" x2="198" y1="57.5" y2="57.5" stroke="#241a14" stroke-opacity="0.5" stroke-width="0.6"/>
+    <text x="56" y="67" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5" fill="#241a14">SEEN 04 FEB 2026</text>
+    <text x="198" y="67.5" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="8" fill="#241a14">★★★★½</text>
+  </g>
+  <g transform="translate(303.0 361.0) scale(0.5) rotate(-3 105.0 37.0)">
+    <path d="M0 0 H210 V29.0 A8 8 0 0 0 210 45.0 V74 H0 V45.0 A8 8 0 0 0 0 29.0 Z" fill="#5aa3a6"/>
+    <line x1="46" x2="46" y1="3" y2="71" stroke="#241a14" stroke-opacity="0.4" stroke-dasharray="2 3"/>
+    <text transform="translate(20 37.0) rotate(-90)" text-anchor="middle" dominant-baseline="central"
+          font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="8" letter-spacing="1.5" fill="#241a14">ADMIT ONE</text>
+    <text transform="translate(33 37.0) rotate(-90)" text-anchor="middle" dominant-baseline="central"
+          font-family="'Courier New', Courier, monospace" font-size="6" fill="#241a14">Nº 222208</text>
+    <text x="128.0" y="16" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="6.5"
+          letter-spacing="2" fill="#241a14">ADMIT ONE · 2022</text>
+    <text x="128.0" y="40" text-anchor="middle" font-family="'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-weight="bold"
+          font-size="19" fill="#241a14">AFTERSUN</text>
+    <text x="128.0" y="52" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="6.5"
+          letter-spacing="1" fill="#241a14">DIR. CHARLOTTE WELLS</text>
+    <line x1="56" x2="198" y1="57.5" y2="57.5" stroke="#241a14" stroke-opacity="0.5" stroke-width="0.6"/>
+    <text x="56" y="67" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5" fill="#241a14">SEEN 22 SEP 2026</text>
+    <text x="198" y="67.5" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="8" fill="#241a14">★★★★½</text>
+  </g>
+  <text x="300" y="700" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16"
+        fill="#8a8780">4 · Stubs + spines</text>
+</svg>

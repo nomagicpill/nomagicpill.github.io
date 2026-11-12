@@ -542,6 +542,124 @@ its main stage is 2D, so the app runs without WebGL: the head script stamps
 Recent facts in the prose (TSMC N2 and A16, Intel 18A, high-NA EUV, Nvidia
 Rubin) are dated October 2026 and cited in its Sources topic.
 
+### cameraskills specifics
+
+A course in one camera (a Fujifilm X-T30 III with the XC 13-33mm kit lens) and
+in street, travel and family photography with it. Its scripts live in
+`knowledge/media/cameraskills/`. It is unlinked from the site map for now, and
+it was designed, written and built by Claude Fable 5.2 (High); the page says so
+in its About topic.
+
+The stage has two modes, picked by the open topic's `data-stage`:
+
+- `body`: a 3D model of the camera. Every control is a clickable part with a
+  label; clicking one opens the topic that explains it.
+- `world`: a virtual viewfinder on a small town (street, square, park, living
+  room). What it shows is the photograph the current settings would take.
+
+The files:
+
+- `optics.js`: the model. The sensor, stops in thirds, the lens (its widest
+  aperture between 13 and 33 mm is interpolated, since Fujifilm publishes only
+  the ends), field of view, depth of field, hand-shake and subject-blur
+  estimates, noise, the film-simulation looks, and `resolveExposure`, which is
+  what the camera does in P, A, S and M with or without Auto ISO. No DOM;
+  exports to node.
+- `body.js`: the camera, built from primitives in centimetres, with dial faces
+  drawn on canvases. `part(id, name, topic, view, anchor, normal, objs, anim)`
+  registers a control; `topic` must be a section id in the page.
+- `world.js`: the town and its people, in metres. Everything that moves is a
+  pure function of time, so the renderer can sample several instants inside
+  one exposure. `LIGHTS` holds the light presets, each with the EV at which
+  mid-grey is correctly exposed. Lights that a preset doesn't use stay in the
+  scene at zero intensity: a constant light count means changing the light
+  never recompiles shaders.
+- `scene.js`: one WebGL canvas for both modes. In `world` mode each frame
+  renders the scene in linear light with depth, blurs it by the lens's blur
+  disc (depth of field), repeats that across the exposure with the camera
+  nudged along a hand-shake path (motion blur and shake), then develops it:
+  exposure, white balance, sensor clipping and noise, tone curve, film
+  simulation. A small read-back a few times a second is the light meter; another
+  is the histogram. `stage.step(n, dt)` advances frames by hand.
+- `widgets.js`: the figures in the drawer. `main.js`: the presets (`SHOTS`),
+  the dock, the read-outs drawn over the picture, the photo review, the
+  practice prompts, and the wiring. `CameraSkills.app = { stage, S, SHOTS,
+  applyShot, look }` is there for the console.
+- `exif.js`: reads the shooting settings out of a JPEG (the standard Exif
+  tags, plus the film simulation and the camera's own blur, focus and exposure
+  warnings from Fujifilm's maker note, following ExifTool's tag table). No DOM;
+  exports to node.
+- `practice.js`: the gallery (filter, sort, lightbox, and the strip of
+  photographs at the foot of each lesson), "add your photo" on the practice
+  cards (settings from `exif.js`, a histogram measured from a small canvas
+  copy, and a first look; the file is read in the browser and never sent
+  anywhere), and the simulator missions.
+- `photos/`: the 32 gallery photographs, about 1100 px on the long edge, 8 MB
+  in all. Every one is public domain or Creative Commons, from Wikimedia
+  Commons, and credited in the page with its licence and a link to its source.
+  **Do not add a photograph that is not one of those**, and do not hot-link.
+
+Page hooks, beyond the shell's own:
+
+- **Topic attributes:** `data-stage` (`body` or `world`; neither leaves the
+  stage alone), with `data-part` and `data-view` for the camera, or `data-shot`
+  (a key in `SHOTS`) for the viewfinder.
+- **Inside a topic:** any button with `data-shot` applies that preset, usually a
+  partial one (just a pose, or just one setting); `<a data-part>` points at a
+  control; `<ol class="cs-walk">` becomes a step-by-step walkthrough whose
+  `<li data-part>` or `<li data-shot>` steps drive the stage.
+- **Practice shots** are `<article class="cs-shot" id="shot-…" data-title>`
+  holding a `.cs-goal` paragraph and a `ul.cs-check`. `main.js` adds the
+  optional settings form, the button that copies a critique prompt built from
+  those, and a done box kept in `localStorage`. `data-try` names a preset to
+  rehearse in the simulator. `data-expect` says what the brief asks of the
+  settings (`speed>=1/250 focal<=23 aperture>=7.1 comp<=-0.33`), which the
+  first look compares with the photo's own. There is no API call anywhere: the
+  prompt is pasted into Claude by hand, with the photo.
+- **Gallery photographs** are `<figure class="cs-ph" id="ph-…">` inside
+  `#cs-gallery`, with `data-kind` (street, travel, people, movement, light),
+  `data-year`, `data-by` ("Surname, Given", for sorting) and `data-lessons`
+  (topic ids, most relevant first). The caption holds the title, photographer
+  and year, a note on what to notice, and the credit line. A lesson needs no
+  markup of its own: any topic named in a `data-lessons` gets an "In real
+  photographs" strip. The comment above the gallery in the page lists the
+  steps for adding one.
+- **Missions** are `<article class="cs-mission" id="m-…">` (brief and hint)
+  in the page, with their starting preset and checks under the same id in
+  `MISSIONS` in `practice.js`. A check is a label and a function of the
+  snapshot taken with the picture; `snapshot.census` lists everyone in the
+  frame and `stage.world.project([x, y, z])` says where a point in the world
+  lands in the picture.
+
+- **New preset:** add to `SHOTS`. `look(px, py, pz, tx, ty, tz, f)` stands the
+  photographer at a point, aimed at another, zoomed to `f` mm. `time` and
+  `paused` stage a moment.
+- **New control on the camera:** build it in `body.js`, register it with
+  `part(...)`, and name its topic.
+- **New mission:** write the card, add its entry to `MISSIONS`, then check
+  from the console that it fails from its starting preset and passes with a
+  correct solution (`CameraSkills.practice.start(id)`, change things with
+  `CameraSkills.app.applyShot({...})`, `stage.step(60)`, then
+  `CameraSkills.practice.judge(stage.world.capture().shot)`). Thresholds that
+  depend on the rendered picture (how bright a face came out, how dark a night
+  is) have to be measured, not guessed.
+
+Check the model from node (`require` `optics.js`: sunny-16 should come out as
+f/16 at about 1/ISO, and `resolveExposure` should return `error: 0` across
+EV 3 to 15 in A mode with Auto ISO; `exif.js` should agree with the metadata
+Wikimedia Commons reports for any original Fujifilm JPEG there). Check the
+pictures in a browser: open every `data-shot` preset once, since a camera
+position that looked fine on paper can put a lamp post through someone's head.
+Two things to know when checking over a local web server: the scripts are
+loaded by `main.js`, and browsers cache them, so a reload can run an old copy
+(open from disk, or disable the cache); and open at least one indoor or night
+lesson directly by its `#hash`, since those are the ones whose first frame
+has no sun (the shadow map must still be drawn once, see `scene.js`).
+
+The camera's controls, menu names and specifications follow Fujifilm's owner's
+manual and specification sheet for the X-T30 III, checked November 2026 and
+cited in the page's About topic.
+
 ## Third-party services
 
 Kept to a minimum, and deliberately so:

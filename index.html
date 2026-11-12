@@ -737,6 +737,9 @@
   <li>
     <a href="knowledge/transistors.html" data-description="Interactive model of how a transistor is made and works">Transistors</a><img src="media/claude.svg" alt="Written by Claude and myself" title="Written by Claude and myself" style="display:inline; height:0.85em; vertical-align:-0.05em; margin-left:3px; max-width:none;">
   </li>
+  <li>
+    <a href="knowledge/cameraskills.html" data-description="Interactive course in one camera and how to use it">Camera Skills</a><img src="media/claude.svg" alt="Written by Claude and myself" title="Written by Claude and myself" style="display:inline; height:0.85em; vertical-align:-0.05em; margin-left:3px; max-width:none;">
+  </li>
 </ul>
 
 </div>
@@ -1121,6 +1124,13 @@
       if (seen[href]) continue;
       seen[href] = true;
       posts.push(href);
+    }
+
+    // Show how many posts the pick is drawn from. Without JS the link
+    // keeps its plain text (and doesn't work anyway).
+    if (posts.length) {
+      trigger.textContent = 'Click here for a random post (out of ' +
+        posts.length.toLocaleString('en-US') + ').';
     }
 
     trigger.addEventListener('click', function (e) {

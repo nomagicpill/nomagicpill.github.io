@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 720" width="600" height="720">
+  <defs>
+    <linearGradient id="cloth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f4f3f0"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="720" fill="#e9e7e2"/>
+  <ellipse cx="300" cy="662" rx="190" ry="10" fill="#000" opacity="0.06"/>
+  <path d="M215 60 C240 97 360 97 385 60 L470 85 L575 200 L505 257 L470 222
+           L470 648 Q300 664 130 648 L130 222 L95 257 L25 200 L130 85 Z"
+        fill="url(#cloth)" stroke="#cfccc5" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M222 63 C246 105 354 105 378 63" fill="none" stroke="#e3e0da" stroke-width="7"/>
+  <path d="M141 89 Q128 160 130 222 M459 89 Q472 160 470 222" fill="none"
+        stroke="#e6e3dd" stroke-width="1.5"/>
+  <path d="M95 257 L25 200 M505 257 L575 200" fill="none" stroke="#e6e3dd" stroke-width="1"/>
+  <g transform="translate(200 138) rotate(-2 100.0 141.0)">
+  <rect width="200" height="282" rx="3" fill="#f2e6c8" stroke="#b8a378"/>
+  <text x="100.0" y="23" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="13" letter-spacing="1.5" fill="#3b2f20">BORROWER'S CARD</text>
+  <text x="100.0" y="34" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-size="6" fill="#5a4a33">DUE ON THE LAST DATE STAMPED BELOW</text>
+  <line x1="8" x2="192" y1="41" y2="41" stroke="#b5443b" stroke-width="0.8"/>
+  <line x1="8" x2="192" y1="43.5" y2="43.5" stroke="#b5443b" stroke-width="0.8"/>
+  <text x="29" y="54" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5" fill="#3b2f20">DATE DUE</text>
+  <text x="61" y="54" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="6.5" fill="#3b2f20">TITLE / AUTHOR</text>
+  <line x1="8" x2="192" y1="86" y2="86" stroke="#8fa9c7" stroke-width="0.6"/>
+  <line x1="8" x2="192" y1="112" y2="112" stroke="#8fa9c7" stroke-width="0.6"/>
+  <line x1="8" x2="192" y1="138" y2="138" stroke="#8fa9c7" stroke-width="0.6"/>
+  <line x1="8" x2="192" y1="164" y2="164" stroke="#8fa9c7" stroke-width="0.6"/>
+  <line x1="8" x2="192" y1="190" y2="190" stroke="#8fa9c7" stroke-width="0.6"/>
+  <line x1="8" x2="192" y1="216" y2="216" stroke="#8fa9c7" stroke-width="0.6"/>
+  <line x1="8" x2="192" y1="242" y2="242" stroke="#8fa9c7" stroke-width="0.6"/>
+  <line x1="8" x2="192" y1="268" y2="268" stroke="#8fa9c7" stroke-width="0.6"/>
+  <line x1="54" x2="54" y1="45" y2="274" stroke="#b5443b" stroke-width="0.8"/>
+  <text x="61" y="72" font-family="'Courier New', Courier, monospace" font-size="8.5" fill="#222">The Tartar Steppe</text>
+  <text x="61" y="81" font-family="'Courier New', Courier, monospace" font-size="6.5" fill="#4a4033">Dino Buzzati</text>
+  <text x="29" y="76" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7.5" fill="#6b3fa0" opacity="0.82" transform="rotate(-5 29 74)">FEB 11 '21</text>
+  <text x="61" y="98" font-family="'Courier New', Courier, monospace" font-size="8.5" fill="#222">Poison</text>
+  <text x="61" y="107" font-family="'Courier New', Courier, monospace" font-size="6.5" fill="#4a4033">Mark Twight</text>
+  <text x="29" y="102" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7.5" fill="#6b3fa0" opacity="0.82" transform="rotate(3 29 100)">SEP 30 '21</text>
+  <text x="61" y="124" font-family="'Courier New', Courier, monospace" font-size="8.5" fill="#222">Endurance</text>
+  <text x="61" y="133" font-family="'Courier New', Courier, monospace" font-size="6.5" fill="#4a4033">Alfred Lansing</text>
+  <text x="29" y="128" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7.5" fill="#6b3fa0" opacity="0.82" transform="rotate(-3 29 126)">JAN 06 '23</text>
+  <text x="61" y="150" font-family="'Courier New', Courier, monospace" font-size="8.5" fill="#222">Human Accomplishment</text>
+  <text x="61" y="159" font-family="'Courier New', Courier, monospace" font-size="6.5" fill="#4a4033">Charles Murray</text>
+  <text x="29" y="154" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="7.5" fill="#6b3fa0" opacity="0.82" transform="rotate(4 29 152)">JUL 19 '24</text>
+  <g transform="rotate(-9 162 81)" opacity="0.72"><rect x="134" y="73" width="56" height="15" rx="2" fill="none" stroke="#c0392b" stroke-width="1.4"/><text x="162" y="84.5" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="9.5" letter-spacing="1.5" fill="#c0392b">OVERDUE</text></g>
+  </g>
+  <text x="300" y="700" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16"
+        fill="#8a8780">1 · Library checkout card</text>
+</svg>

@@ -1,0 +1,2468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Apply saved theme before first paint to avoid a flash. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <!-- Hide the article while the 3D stage starts so it doesn't flash first;
+       main.js reveals whichever version won, and this timer is the backstop. -->
+  <script>
+    document.documentElement.classList.add('xp-booting');
+    setTimeout(function () { document.documentElement.classList.remove('xp-booting'); }, 8000);
+  </script>
+  <title>Camera Skills - No Magic Pill</title>
+  <meta name="description" content="An interactive course in the Fujifilm X-T30 III and the photography it is good at: a clickable 3D model of every control, a virtual viewfinder that shows what aperture, shutter speed, ISO and focal length do to a picture, live scenes for learning composition, and practice shots with prompts for getting a critique.">
+  <link rel="alternate" type="application/rss+xml" title="No Magic Pill RSS Feed" href="/feed.xml">
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="stylesheet" type="text/css" href="../css/explainer.css">
+  <link rel="icon" href="../media/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <style>
+    /* Page tokens. The viewfinder read-outs sit on top of a photograph, not
+       on the page, so like a real camera's display they are light-on-dark in
+       both themes; everything else follows the theme. */
+    :root {
+      --cs-surround: #1b1b1c;         /* the dark mat around the picture */
+      --cs-hud-ink: #ffffff;
+      --cs-hud-dim: rgba(255, 255, 255, 0.78);
+      --cs-hud-bg: rgba(0, 0, 0, 0.56);
+      --cs-hud-own: #7fc4ff;          /* a value you set yourself, as on the camera */
+      --cs-hud-bad: #ff6b5e;
+      --cs-af: #46e06e;
+      --cs-step: rgba(37, 99, 235, 0.09);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) { --cs-surround: #0b0b0c; --cs-step: rgba(110, 168, 254, 0.14); }
+    }
+    :root[data-theme="dark"] { --cs-surround: #0b0b0c; --cs-step: rgba(110, 168, 254, 0.14); }
+
+    /* ----- Top bar ----- */
+    .xp-title { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; max-width: none; }
+    .xp-title .xp-home { font-size: 1.17em; font-weight: bold; margin: 0; }
+    .cs-sections { display: flex; gap: 5px; flex-wrap: wrap; }
+    .cs-sections .xp-chip { font-size: 0.86em; padding: 4px 11px; }
+
+    /* ----- Stage ----- */
+    #scene-host { position: absolute; inset: 0; }
+    html[data-cs-stage="world"] .xp-stage { background: var(--cs-surround); }
+    .xp-label.cs-part { font: inherit; font-size: 0.72em; transform-origin: 0 0; }
+    .xp-label.cs-part.cs-dot { width: 13px; height: 13px; padding: 0; border-radius: 50%; font-size: 0; background: var(--link); border: 2px solid var(--xp-panel-solid); opacity: 0.85; }
+    .xp-label.cs-part.cs-dot:hover { opacity: 1; }
+    .cs-fallback { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0 24px; color: var(--xp-ink-2); text-align: center; }
+
+    /* ----- Viewfinder overlays (positioned over the picture by main.js) ----- */
+    .cs-vf { position: fixed; z-index: 12; pointer-events: none; overflow: hidden; color: var(--cs-hud-ink); font-size: 13px; line-height: 1.3; outline: 1px solid rgba(255, 255, 255, 0.25); }
+    .cs-grid i { position: absolute; background: rgba(255, 255, 255, 0.55); box-shadow: 0 0 1px rgba(0, 0, 0, 0.6); }
+    .cs-grid i:nth-child(1), .cs-grid i:nth-child(2) { top: 0; bottom: 0; width: 1px; }
+    .cs-grid i:nth-child(1) { left: 33.333%; } .cs-grid i:nth-child(2) { left: 66.667%; }
+    .cs-grid i:nth-child(3), .cs-grid i:nth-child(4) { left: 0; right: 0; height: 1px; }
+    .cs-grid i:nth-child(3) { top: 33.333%; } .cs-grid i:nth-child(4) { top: 66.667%; }
+    .cs-level { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+    .cs-level::before { content: ""; position: absolute; left: -110px; width: 220px; top: 0; height: 1px; background: rgba(255, 255, 255, 0.45); }
+    .cs-level i { position: absolute; left: -70px; width: 140px; top: -1px; height: 2px; background: var(--cs-af); box-shadow: 0 0 2px rgba(0, 0, 0, 0.7); }
+    .cs-af { position: absolute; left: 0; top: 0; border: 2px solid var(--cs-hud-ink); box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45); border-radius: 2px; will-change: transform; }
+    .cs-af[data-locked="true"] { border-color: var(--cs-af); }
+    .cs-af[data-face="true"] { border-radius: 8px; }
+    .cs-info { position: absolute; left: 8px; top: 7px; padding: 2px 7px; border-radius: 4px; background: var(--cs-hud-bg); font-variant-numeric: tabular-nums; max-width: calc(100% - 180px); }
+    .cs-warn { position: absolute; left: 8px; top: 34px; margin: 0; padding: 0; list-style: none; max-width: 62%; }
+    .cs-warn li { margin: 0 0 3px; padding: 2px 7px; border-radius: 4px; background: rgba(0, 0, 0, 0.7); width: fit-content; }
+    .cs-warn .xp-status { white-space: normal; font-weight: normal; }
+    .cs-warn .xp-status[data-level="1"] { color: #ffd166; } .cs-warn .xp-status[data-level="2"], .cs-warn .xp-status[data-level="3"] { color: #ffb38a; } .cs-warn .xp-status[data-level="4"] { color: #ff8a80; }
+    .cs-plan { position: absolute; right: 8px; top: 7px; width: 150px; height: 150px; border-radius: 6px; }
+    .cs-hist { position: absolute; right: 8px; bottom: 38px; width: 128px; height: 48px; border-radius: 4px; }
+    .cs-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 30px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 12px; background: var(--cs-hud-bg); font: bold 15px Arial, Helvetica, sans-serif; font-variant-numeric: tabular-nums; }
+    .cs-bar > span { white-space: nowrap; }
+    .cs-bar [data-own="true"] { color: var(--cs-hud-own); }
+    .cs-bar [data-bad="true"] { color: var(--cs-hud-bad); }
+    .cs-bar #vf-mode { border: 1.5px solid currentColor; border-radius: 3px; padding: 0 5px; }
+    .cs-scale { position: relative; flex: 0 1 150px; height: 12px; min-width: 70px; background:
+      linear-gradient(var(--cs-hud-dim), var(--cs-hud-dim)) 50% 50% / 100% 1px no-repeat,
+      repeating-linear-gradient(90deg, var(--cs-hud-dim) 0 1px, transparent 1px 16.666%) 0 50% / 100% 7px no-repeat; border-right: 1px solid var(--cs-hud-dim); }
+    .cs-scale i { position: absolute; top: -2px; width: 3px; height: 16px; margin-left: -1.5px; background: var(--cs-hud-own); }
+    #vf-comp { min-width: 2.4em; font-weight: normal; color: var(--cs-hud-dim); }
+    .cs-flash { position: absolute; inset: 0; background: #000; opacity: 0; }
+    .cs-flash.go { animation: cs-shutter 0.22s ease-out; }
+    @keyframes cs-shutter { 0% { opacity: 0.95; } 100% { opacity: 0; } }
+    .cs-vf.cs-small .cs-plan { width: 96px; height: 96px; }
+    .cs-vf.cs-small .cs-hist { display: none; }
+    .cs-vf.cs-small .cs-info { font-size: 11px; max-width: calc(100% - 120px); }
+    .cs-vf.cs-small .cs-bar { font-size: 12px; padding: 0 6px; gap: 5px; }
+    .cs-vf.cs-small .cs-scale { min-width: 40px; }
+    .cs-vf.cs-small #vf-comp { min-width: 0; }
+    .cs-vf.cs-small .cs-warn { font-size: 11px; top: 46px; }
+
+    /* ----- Dock ----- */
+    .cs-dock { display: block; padding: 8px 12px 10px; }
+    .cs-row { display: flex; align-items: center; gap: 6px 8px; flex-wrap: wrap; }
+    .cs-docklabel { font-size: 0.74em; color: var(--xp-ink-3); text-transform: uppercase; letter-spacing: 0.04em; margin-right: 2px; }
+    .cs-hint { font-size: 0.8em; color: var(--xp-ink-3); margin-left: auto; }
+    .cs-tabs { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+    .cs-tabs [data-tab][aria-selected="true"] { color: var(--text); border-color: var(--link); background: var(--xp-hover); }
+    .cs-spacer { flex: 1; }
+    .cs-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px 16px; align-items: end; }
+    .cs-panel[hidden] { display: none; }
+    .cs-panel .xp-controls { margin: 0; }
+    .cs-panel input[type="range"]:disabled { opacity: 0.45; cursor: default; }
+    .cs-pad { display: grid; grid-template-columns: repeat(3, 34px); grid-template-rows: repeat(2, 30px); gap: 3px; }
+    .cs-pad .xp-chip { padding: 0; border-radius: 6px; font-size: 0.95em; touch-action: none; user-select: none; -webkit-user-select: none; }
+    .cs-pad .xp-chip:active { background: var(--xp-hover); border-color: var(--link); }
+    kbd { font: inherit; font-size: 0.86em; border: 1px solid var(--xp-panel-border); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; background: var(--xp-panel-solid); }
+
+    /* ----- The photo you just took ----- */
+    .cs-photo { position: fixed; z-index: 45; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(600px, calc(100vw - 24px)); max-height: calc(100dvh - 90px); overflow-y: auto; padding: 12px 14px 14px; font-size: 0.9em; line-height: 1.45; }
+    .cs-photo img { display: block; width: 100%; border-radius: 4px; background: var(--cs-surround); }
+    .cs-photo img[data-portrait="true"] { width: auto; max-height: 46dvh; margin: 0 auto; }
+    .cs-photo-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+    .cs-photo-head b { font-size: 1.05em; }
+    .cs-photo .cs-exif { font-size: 0.86em; color: var(--xp-ink-2); margin: 6px 0 2px; font-variant-numeric: tabular-nums; }
+    .cs-photo ul { list-style: none; margin: 8px 0 0; padding: 0; }
+    .cs-photo li { margin: 0 0 7px; }
+    @media (min-width: 901px) {
+      html.xp-ready.xp-drawer-open .cs-photo { left: calc((100vw - var(--xp-drawer-w)) / 2); width: min(600px, calc(100vw - var(--xp-drawer-w) - 24px)); }
+    }
+
+    /* ----- In the drawer ----- */
+    .cs-dim { color: var(--xp-ink-3); }
+    .cs-readout-text { font-size: 0.9em; margin: 8px 0 4px; line-height: 1.45; }
+    .cs-big { font-size: 1.5em; font-weight: bold; margin: 6px 0 2px; font-variant-numeric: tabular-nums; }
+    .cs-big .cs-dim { font-size: 0.6em; font-weight: normal; }
+    .cs-calc table { margin: 4px 0; }
+    .xp-figure .xp-field { margin-top: 8px; }
+    .cs-ab { display: flex; flex-wrap: wrap; gap: 6px; margin: 0.8em 0; align-items: center; }
+    .cs-ab .xp-chip { font-size: 0.86em; padding: 5px 12px; color: var(--text); }
+    .cs-ab > span { font-size: 0.8em; color: var(--xp-ink-3); }
+    ol.cs-walk { padding-left: 0; list-style: none; counter-reset: step; }
+    ol.cs-walk li { counter-increment: step; position: relative; margin: 0 0 5px; padding: 7px 10px 7px 40px; border: 1px solid var(--xp-panel-border); border-radius: 8px; cursor: pointer; }
+    ol.cs-walk li::before { content: counter(step); position: absolute; left: 10px; top: 7px; width: 21px; height: 21px; border-radius: 50%; background: var(--xp-track); color: var(--text); font-size: 0.8em; font-weight: bold; text-align: center; line-height: 21px; }
+    ol.cs-walk li:hover { border-color: var(--link); }
+    ol.cs-walk li.is-on { border-color: var(--link); background: var(--cs-step); }
+    ol.cs-walk li.is-on::before { background: var(--link); color: #ffffff; }
+    html:not(.xp-ready) ol.cs-walk li { cursor: default; }
+    a[data-part] { cursor: pointer; border-bottom: 1px dashed var(--link); color: var(--link); }
+    .cs-menu { font-size: 0.84em; letter-spacing: 0.02em; white-space: nowrap; background: var(--code-bg); border-radius: 4px; padding: 0 4px; }
+    .cs-shot { border: 1px solid var(--xp-panel-border); border-radius: 10px; padding: 4px 14px 12px; margin: 1.1em 0; }
+    .cs-shot.is-done { border-color: var(--xp-good-mark); }
+    .cs-shot h3 { margin-top: 0.7em; }
+    .cs-shot .cs-goal { font-size: 1.02em; }
+    .cs-shot ul.cs-check { font-size: 0.9em; color: var(--xp-ink-2); }
+    .cs-shot-tools details { font-size: 0.88em; margin: 8px 0; }
+    .cs-shot-tools summary { cursor: pointer; color: var(--link); }
+    .cs-fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px 10px; margin: 8px 0 2px; }
+    .cs-fields label { display: flex; flex-direction: column; gap: 2px; font-size: 0.86em; color: var(--xp-ink-3); }
+    .cs-fields input { font: inherit; font-size: 1.05em; color: var(--text); background: var(--xp-panel-solid); border: 1px solid var(--xp-panel-border); border-radius: 6px; padding: 4px 7px; min-width: 0; }
+    .cs-prompt { width: 100%; box-sizing: border-box; margin-top: 8px; font: 0.8em/1.45 ui-monospace, Menlo, Consolas, monospace; color: var(--text); background: var(--code-bg); border: 1px solid var(--xp-panel-border); border-radius: 6px; padding: 8px; resize: vertical; }
+    .cs-done { display: block; margin-top: 8px; font-size: 0.9em; cursor: pointer; }
+    .cs-progress { height: 8px; border-radius: 4px; background: var(--xp-track); overflow: hidden; margin: 4px 0 2px; }
+    .cs-progress i { display: block; height: 100%; width: 0; background: var(--xp-good-mark); transition: width 0.3s ease; }
+    .cs-sims { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 6px; }
+    .cs-sim { font: inherit; padding: 3px 3px 4px; border: 1px solid var(--xp-panel-border); border-radius: 6px; background: transparent; color: var(--text); cursor: pointer; text-align: left; }
+    .cs-sim canvas { display: block; width: 100%; border-radius: 3px; }
+    .cs-sim span { display: block; font-size: 0.66em; line-height: 1.2; margin-top: 3px; color: var(--xp-ink-2); }
+    .cs-sim:hover, .cs-sim[aria-pressed="true"] { border-color: var(--link); }
+    .cs-sim[aria-pressed="true"] { box-shadow: 0 0 0 1px var(--link); }
+    /* ----- Photographs: gallery, lesson strips, lightbox ----- */
+    .cs-gallery-controls { margin: 1em 0 0.8em; }
+    .cs-gallery-controls .xp-chip { color: var(--text); }
+    .cs-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px 12px; align-items: start; }
+    .cs-ph { margin: 0; border: 1px solid var(--xp-panel-border); border-radius: 8px; overflow: hidden; }
+    .cs-ph img { display: block; width: 100%; height: auto; cursor: zoom-in; background: var(--xp-track); }
+    .cs-ph figcaption { padding: 7px 9px 8px; text-align: left; font-size: 0.86em; line-height: 1.4; }
+    .cs-ph-title { display: block; font-size: 1.04em; line-height: 1.25; }
+    .cs-ph-by { display: block; color: var(--xp-ink-2); }
+    .cs-ph-kind { float: right; margin-left: 6px; font-size: 0.78em; color: var(--xp-ink-3); border: 1px solid var(--xp-panel-border); border-radius: 999px; padding: 0 6px; }
+    .cs-ph-note { margin: 6px 0 4px; }
+    .cs-ph-credit, .cs-ph-lessons { margin: 4px 0 0; font-size: 0.86em; color: var(--xp-ink-3); }
+    html:not(.xp-ready) .cs-gallery { display: block; }
+    html:not(.xp-ready) .cs-ph { max-width: 560px; margin: 0 0 1.4em; }
+    .cs-examples h3 { margin-bottom: 0.5em; }
+    .cs-strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; }
+    .cs-thumb { font: inherit; color: var(--text); text-align: left; padding: 0; border: 1px solid var(--xp-panel-border); border-radius: 6px; background: transparent; overflow: hidden; cursor: zoom-in; }
+    .cs-thumb:hover, .cs-thumb:focus-visible { border-color: var(--link); outline: none; }
+    .cs-thumb img { display: block; width: 100%; height: 96px; object-fit: cover; background: var(--xp-track); }
+    .cs-thumb span { display: block; padding: 4px 6px 5px; font-size: 0.72em; line-height: 1.25; }
+    .cs-thumb b { display: block; }
+    .cs-thumb small { color: var(--xp-ink-3); }
+    .cs-lightbox { position: fixed; inset: 0; z-index: 95; display: grid; grid-template-columns: minmax(0, 1fr) min(360px, 34vw); grid-template-rows: auto minmax(0, 1fr); gap: 0 18px; padding: 12px 16px 16px; background: var(--cs-surround); color: var(--cs-hud-ink); }
+    .cs-lightbox[hidden] { display: none; }
+    .cs-lb-bar { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; padding-bottom: 10px; }
+    .cs-lb-bar .xp-btn { color: var(--cs-hud-ink); background: transparent; border-color: var(--cs-hud-dim); }
+    .cs-lb-bar .xp-btn:hover { background: rgba(255, 255, 255, 0.12); }
+    .cs-lb-bar .cs-spacer { flex: 1; }
+    #lb-count { font-size: 0.86em; color: var(--cs-hud-dim); font-variant-numeric: tabular-nums; }
+    .cs-lightbox img { width: 100%; height: 100%; min-height: 0; object-fit: contain; }
+    .cs-lb-cap { overflow-y: auto; font-size: 0.95em; line-height: 1.5; text-align: left; align-self: center; max-height: 100%; }
+    .cs-lb-cap .cs-ph-title { font-size: 1.25em; }
+    .cs-lb-cap .cs-ph-by, .cs-lb-cap .cs-ph-credit, .cs-lb-cap .cs-ph-lessons { color: var(--cs-hud-dim); }
+    .cs-lb-cap .cs-ph-kind { display: none; }
+    .cs-lb-cap .cs-ph-note { margin: 12px 0; font-size: 1.04em; }
+    .cs-lb-cap a { color: var(--cs-hud-own); border-bottom-color: var(--cs-hud-own); }
+    @media (max-width: 900px) {
+      .cs-lightbox { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 3fr) minmax(0, 2fr); padding: 10px; }
+      .cs-lb-cap { align-self: start; padding-top: 10px; }
+    }
+
+    /* ----- Your photo, and missions ----- */
+    .cs-drop { margin: 8px 0 6px; font-size: 0.88em; }
+    .cs-drop label { display: inline-block; color: var(--text); cursor: pointer; }
+    .cs-shot.is-drop { border-color: var(--link); box-shadow: 0 0 0 2px var(--link); }
+    .cs-firstlook { display: flex; gap: 10px; align-items: flex-start; margin: 6px 0 10px; padding: 8px; border: 1px solid var(--xp-panel-border); border-radius: 8px; font-size: 0.86em; line-height: 1.4; }
+    .cs-firstlook-img { width: 104px; height: auto; border-radius: 4px; flex: none; }
+    .cs-firstlook ul { margin: 4px 0; padding: 0; list-style: none; }
+    .cs-firstlook li { margin: 0 0 4px; }
+    .cs-firstlook p { margin: 2px 0; }
+    .cs-firstlook .cs-exif { font-variant-numeric: tabular-nums; color: var(--xp-ink-2); }
+    .cs-mission { border: 1px solid var(--xp-panel-border); border-radius: 10px; padding: 2px 14px 12px; margin: 0.9em 0; }
+    .cs-mission.is-done { border-color: var(--xp-good-mark); }
+    .cs-mission h3 { margin-top: 0.7em; }
+    .cs-mission details { font-size: 0.9em; margin: 4px 0 8px; }
+    .cs-mission summary { cursor: pointer; color: var(--link); }
+    .cs-mission-state { font-size: 0.88em; font-weight: bold; color: var(--xp-good); }
+    .cs-mission-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 5px 10px; border-radius: 8px; background: var(--cs-step); font-size: 0.88em; }
+    .cs-mission-bar[hidden] { display: none; }
+    .cs-mission-bar span { flex: 1; }
+    #photo-mission { margin: 0 0 8px; padding: 8px 10px; border-radius: 8px; background: var(--cs-step); }
+    #photo-mission ul { margin: 6px 0 0; }
+    .cs-credit { border: 1px solid var(--xp-panel-border); border-radius: 8px; padding: 8px 12px; margin: 1em 0; font-size: 0.92em; }
+
+    @media (max-width: 900px) {
+      html.xp-ready .xp-drawer { height: min(62dvh, 720px); }
+      .cs-dock { padding: 6px 8px 8px; }
+      .cs-hint { display: none; }
+      .cs-panel { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 6px 12px; }
+      .cs-sections .xp-chip { padding: 3px 8px; }
+    }
+    @media (max-width: 560px) {
+      .cs-sections { display: none; }      /* Explore has every topic; keep the bar to one line */
+      .xp-title { padding: 5px 10px 6px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .cs-flash.go { animation: none; } }
+  </style>
+</head>
+<body>
+
+<!-- ===== App chrome (shown once js/explainer.js has started) ===== -->
+
+<div id="stage" class="xp-stage xp-only">
+  <div id="scene-host"></div>
+</div>
+<div id="labels3d" class="xp-labels xp-only"></div>
+
+<!-- Read-outs drawn over the picture, like the camera's own display. -->
+<div id="vf" class="cs-vf xp-only" hidden>
+  <div id="vf-grid" class="cs-grid" hidden><i></i><i></i><i></i><i></i></div>
+  <div id="vf-level" class="cs-level" hidden><i></i></div>
+  <div id="vf-af" class="cs-af"></div>
+  <div id="vf-info" class="cs-info"></div>
+  <ul id="vf-warn" class="cs-warn" aria-live="polite"></ul>
+  <canvas id="vf-plan" class="cs-plan" width="300" height="300" aria-label="The scene from above: field of view and the zone in focus"></canvas>
+  <canvas id="vf-hist" class="cs-hist" width="192" height="72" aria-label="Histogram"></canvas>
+  <div class="cs-bar">
+    <span id="vf-mode">A</span><span id="vf-sh"></span><span id="vf-ap"></span>
+    <span id="vf-scale" class="cs-scale"><i></i></span><span id="vf-comp"></span>
+    <span id="vf-iso"></span>
+  </div>
+  <div id="vf-flash" class="cs-flash"></div>
+</div>
+
+<header class="xp-topbar xp-only">
+  <div class="xp-panel xp-title">
+    <a class="xp-home" href="../index.html">Home</a>
+    <nav class="cs-sections" aria-label="Sections">
+      <button class="xp-chip" type="button" data-open="cam-tour" data-group="The camera" aria-pressed="false">Camera</button>
+      <button class="xp-chip" type="button" data-open="sci-exposure" data-group="Photo science" aria-pressed="false">Science</button>
+      <button class="xp-chip" type="button" data-open="fr-subject" data-group="Photo framing" aria-pressed="false">Framing</button>
+      <button class="xp-chip" type="button" data-open="practice" data-group="Practice" aria-pressed="false">Practice</button>
+      <button class="xp-chip" type="button" data-open="gallery" data-group="Gallery" aria-pressed="false">Gallery</button>
+    </nav>
+  </div>
+  <button id="xp-menu-btn" class="xp-btn" type="button" aria-expanded="false" aria-controls="xp-menu">Explore &#9776;</button>
+</header>
+
+<nav id="xp-menu" class="xp-panel xp-menu xp-only" aria-label="Topics" hidden></nav>
+<div id="tip" class="xp-tip xp-only" hidden></div>
+
+<div id="dock" class="xp-panel xp-dock cs-dock xp-only" aria-label="Controls">
+  <!-- The camera -->
+  <div id="dock-body" class="cs-row">
+    <span class="cs-docklabel">View</span>
+    <button class="xp-chip" type="button" data-view="hero">Three-quarter</button>
+    <button class="xp-chip" type="button" data-view="front">Front</button>
+    <button class="xp-chip" type="button" data-view="top">Top</button>
+    <button class="xp-chip" type="button" data-view="back">Back</button>
+    <button class="xp-chip" type="button" data-view="side">Side</button>
+    <button class="xp-chip" type="button" data-view="bottom">Bottom</button>
+    <button id="tg-labels" class="xp-chip" type="button" aria-pressed="true">Labels</button>
+    <span class="cs-hint">Drag to turn the camera, scroll to zoom, click any control.</span>
+  </div>
+
+  <!-- The viewfinder -->
+  <div id="dock-world" hidden>
+    <div id="mission-bar" class="cs-mission-bar" hidden><b>Mission</b> <span id="mission-name"></span><button id="mission-quit" class="xp-chip" type="button">Leave mission</button></div>
+    <div class="cs-tabs" role="tablist" aria-label="Viewfinder controls">
+      <button class="xp-chip" type="button" role="tab" data-tab="exposure" aria-selected="true">Exposure</button>
+      <button class="xp-chip" type="button" role="tab" data-tab="lens" aria-selected="false">Lens &amp; focus</button>
+      <button class="xp-chip" type="button" role="tab" data-tab="scene" aria-selected="false">Scene &amp; light</button>
+      <button class="xp-chip" type="button" role="tab" data-tab="compose" aria-selected="false">Move &amp; compose</button>
+      <span class="cs-spacer"></span>
+      <button id="btn-pause" class="xp-chip" type="button" aria-pressed="false" title="Stop the people moving">Pause</button>
+      <button id="btn-shoot" class="xp-btn xp-primary" type="button" title="Take the picture and get it reviewed">&#9679; Take the picture</button>
+    </div>
+
+    <div class="cs-panel" data-panel="exposure">
+      <div class="xp-field">
+        <span class="xp-field-label"><span>Mode</span></span>
+        <div class="xp-controls" role="group" aria-label="Exposure mode">
+          <button class="xp-chip" type="button" data-mode="P" aria-pressed="false" title="Program: the camera picks aperture and shutter speed">P</button>
+          <button class="xp-chip" type="button" data-mode="A" aria-pressed="true" title="Aperture priority: you pick the aperture">A</button>
+          <button class="xp-chip" type="button" data-mode="S" aria-pressed="false" title="Shutter priority: you pick the shutter speed">S</button>
+          <button class="xp-chip" type="button" data-mode="M" aria-pressed="false" title="Manual: you pick both">M</button>
+        </div>
+      </div>
+      <div class="xp-field"><label for="k-ap"><span>Aperture</span> <output id="k-ap-out"></output></label><input type="range" id="k-ap" min="8" max="24" step="1" value="12"></div>
+      <div class="xp-field"><label for="k-sh"><span>Shutter speed</span> <output id="k-sh-out"></output></label><input type="range" id="k-sh" min="0" max="42" step="1" value="12" style="direction: rtl"></div>
+      <div class="xp-field">
+        <label for="k-iso"><span>ISO <button id="tg-isoauto" class="xp-chip" type="button" aria-pressed="true" style="font-size: 0.95em; padding: 0 7px; text-transform: none">Auto</button></span> <output id="k-iso-out"></output></label>
+        <input type="range" id="k-iso" min="0" max="19" step="1" value="0">
+      </div>
+      <div class="xp-field"><label for="k-comp"><span>Exposure comp.</span> <output id="k-comp-out"></output></label><input type="range" id="k-comp" min="-9" max="9" step="1" value="0"></div>
+    </div>
+
+    <div class="cs-panel" data-panel="lens" hidden>
+      <div class="xp-field"><label for="k-fl"><span>Zoom</span> <output id="k-fl-out"></output></label><input type="range" id="k-fl" min="13" max="33" step="1" value="23"></div>
+      <div class="xp-field">
+        <span class="xp-field-label"><span>Focus</span></span>
+        <div class="xp-controls" role="group" aria-label="Focus">
+          <button class="xp-chip" type="button" data-focus="face" aria-pressed="true" title="Find a face and focus on it">Face detect</button>
+          <button class="xp-chip" type="button" data-focus="point" aria-pressed="false" title="Focus on whatever is under the box. Click the picture to move it">Point</button>
+          <button class="xp-chip" type="button" data-focus="manual" aria-pressed="false" title="Set the distance yourself">Manual</button>
+        </div>
+      </div>
+      <div class="xp-field"><label for="k-fd"><span>Focus distance</span> <output id="k-fd-out"></output></label><input type="range" id="k-fd" min="0" max="100" step="0.5" value="50"></div>
+      <div class="xp-field">
+        <label for="sel-lens"><span>Lens</span></label>
+        <select id="sel-lens"><option value="kit">XC 13-33mm F3.5-6.3 (yours)</option><option value="prime">33mm F1.4 prime (what if)</option></select>
+      </div>
+      <div class="xp-field">
+        <span class="xp-field-label"><span>Stabiliser</span></span>
+        <div class="xp-controls"><button id="tg-ois" class="xp-chip" type="button" aria-pressed="true">OIS on</button></div>
+      </div>
+    </div>
+
+    <div class="cs-panel" data-panel="scene" hidden>
+      <div class="xp-field"><label for="sel-place"><span>Place</span></label><select id="sel-place"></select></div>
+      <div class="xp-field"><label for="sel-light"><span>Light</span></label><select id="sel-light"></select></div>
+      <div class="xp-field"><label for="sel-film"><span>Film simulation</span></label><select id="sel-film"></select></div>
+      <div class="xp-field">
+        <label for="sel-wb"><span>White balance</span></label>
+        <select id="sel-wb"><option value="auto">Auto</option><option value="daylight">Daylight</option><option value="shade">Shade</option><option value="cloudy">Cloudy</option><option value="tungsten">Incandescent</option></select>
+      </div>
+    </div>
+
+    <div class="cs-panel" data-panel="compose" hidden>
+      <div class="xp-field">
+        <span class="xp-field-label"><span>Walk</span></span>
+        <div class="cs-pad" role="group" aria-label="Move the photographer">
+          <button class="xp-chip" type="button" data-move="y:1" aria-label="Rise" title="Higher (R)">&#8679;</button>
+          <button class="xp-chip" type="button" data-move="z:1" aria-label="Forward" title="Forward (W)">&#9650;</button>
+          <button class="xp-chip" type="button" data-move="y:-1" aria-label="Crouch" title="Lower (F)">&#8681;</button>
+          <button class="xp-chip" type="button" data-move="x:-1" aria-label="Step left" title="Left (A)">&#9664;</button>
+          <button class="xp-chip" type="button" data-move="z:-1" aria-label="Back" title="Back (S)">&#9660;</button>
+          <button class="xp-chip" type="button" data-move="x:1" aria-label="Step right" title="Right (D)">&#9654;</button>
+        </div>
+      </div>
+      <div class="xp-field"><label for="k-height"><span>Camera height</span> <output id="k-height-out"></output></label><input type="range" id="k-height" min="0.25" max="3" step="0.05" value="1.6"></div>
+      <div class="xp-field"><label for="k-roll"><span>Tilt (roll)</span> <output id="k-roll-out"></output></label><input type="range" id="k-roll" min="-10" max="10" step="0.5" value="0"></div>
+      <div class="xp-field">
+        <span class="xp-field-label"><span>Show</span></span>
+        <div class="xp-controls">
+          <button id="tg-portrait" class="xp-chip" type="button" aria-pressed="false" title="Turn the camera on its side">Vertical</button>
+          <button id="tg-thirds" class="xp-chip" type="button" aria-pressed="false">Thirds</button>
+          <button id="tg-level" class="xp-chip" type="button" aria-pressed="false">Level</button>
+          <button id="tg-plan" class="xp-chip" type="button" aria-pressed="true" title="The scene from above">Plan</button>
+          <button id="tg-hist" class="xp-chip" type="button" aria-pressed="true">Histogram</button>
+          <button id="tg-zebra" class="xp-chip" type="button" aria-pressed="false" title="Blink the parts that are pure white">Blinkies</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The picture you just took, with a review. -->
+<section id="photo" class="xp-panel cs-photo xp-only" aria-label="Your photo" hidden>
+  <div class="cs-photo-head"><b id="photo-verdict"></b><button id="photo-close" class="xp-btn" type="button">Keep shooting</button></div>
+  <div id="photo-mission" hidden></div>
+  <img id="photo-img" alt="The photo you just took in the simulator">
+  <p id="photo-exif" class="cs-exif"></p>
+  <ul id="photo-list"></ul>
+</section>
+
+<!-- A photograph from the gallery, shown large. -->
+<div id="lightbox" class="cs-lightbox xp-only" role="dialog" aria-modal="true" aria-label="Photograph" hidden>
+  <div class="cs-lb-bar">
+    <button id="lb-prev" class="xp-btn" type="button" aria-label="Previous photograph">&#8592;</button>
+    <button id="lb-next" class="xp-btn" type="button" aria-label="Next photograph">&#8594;</button>
+    <span id="lb-count"></span>
+    <span class="cs-spacer"></span>
+    <button id="lb-close" class="xp-btn" type="button">Close &#10005;</button>
+  </div>
+  <img id="lb-img" alt="">
+  <div id="lb-cap" class="cs-lb-cap"></div>
+</div>
+
+<!-- ===== The article: every topic, readable without JavaScript ===== -->
+
+<aside id="xp-drawer" class="xp-drawer" aria-hidden="true">
+  <div class="xp-drawer-head xp-only">
+    <span class="xp-crumb"></span>
+    <button class="xp-btn xp-close" type="button" aria-label="Close this topic">Close &#10005;</button>
+  </div>
+  <div class="xp-drawer-body">
+
+<header class="xp-article-only">
+  <h3 id="home"><a href="../index.html">Home</a></h3>
+  <h1 id="cameraskills">Camera Skills</h1>
+  <p class="postmeta">
+  <span class="pub">Published <time datetime="2026-11-12">2026-11-12</time></span>
+  <!-- <span class="mod">Modified <time datetime=""></time></span> -->
+  </p>
+  <p>
+    A course in the Fujifilm X-T30 III with its 13-33mm kit lens, and in street, travel and family photography with it. This page is an interactive 3D course; you are reading its text version, which appears when JavaScript or WebGL is unavailable.
+  </p>
+</header>
+
+<div id="xp-library">
+
+<!-- ================================================================== -->
+<!-- START HERE                                                          -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="welcome" data-title="Welcome" data-group="Start here" data-stage="body" data-view="hero" data-next="setup">
+  <h2>Camera skills</h2>
+  <p class="xp-lede">
+    A course in one camera, the Fujifilm X-T30 III with its XC 13-33mm kit lens, and in the pictures it is good at: streets, travel, and the people you love.
+  </p>
+  <p>
+    It comes in three parts, and each has its own kind of stage behind this panel.
+  </p>
+  <ul>
+    <li><b><a href="#cam-tour">The camera</a>.</b> A model of your camera you can turn over in your hands. Click any dial or button to learn what it does and when you would reach for it.</li>
+    <li><b><a href="#sci-exposure">Photo science</a>.</b> A virtual viewfinder on a small town. Change the aperture, shutter speed, ISO or zoom and the picture changes the way a real one would: blur, grain, brightness and all.</li>
+    <li><b><a href="#fr-subject">Photo framing</a>.</b> The same town, with you walking around in it. Each lesson shows a weak version of a picture and a better one from a few steps away, then hands you the camera.</li>
+  </ul>
+  <p>
+    Along the way, <a href="#gallery">thirty-two real photographs</a> show each idea at work: they sit at the foot of the lessons they belong to and together in a gallery.
+  </p>
+  <p>
+    Then comes practice, in two stages: twelve <a href="#missions">missions</a> to get right in the simulator, and <a href="#practice">sixteen real-world shots</a> to go and take, each with a prompt you can paste into Claude along with your photo to get a critique.
+  </p>
+  <h3>How to use it</h3>
+  <ul>
+    <li><b>Next</b> at the bottom of each topic follows the course in order. <b>Explore</b> (top right) jumps anywhere.</li>
+    <li>In the viewfinder, <b>drag</b> to look around, <b>scroll</b> or pinch to zoom, <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to walk and <kbd>R</kbd>/<kbd>F</kbd> to stand taller or crouch. Click the picture to move the focus point.</li>
+    <li><b>Take the picture</b> freezes the frame and reviews it: exposure, sharpness, focus, placement.</li>
+    <li>Close this panel (or press <kbd>Esc</kbd>) to see the whole stage.</li>
+  </ul>
+  <h3>If you only remember five things</h3>
+  <ol>
+    <li>A photo needs a subject. Decide what the picture is of, then get closer.</li>
+    <li>Blur ruins more pictures than anything else, and most blur is a shutter speed that was too slow.</li>
+    <li>Shoot in <a href="#how-a">aperture priority with Auto ISO</a>, and steer brightness with the <a href="#cam-expcomp">exposure compensation dial</a>.</li>
+    <li>Light matters more than gear. Soft or low light flatters; noon sun does not.</li>
+    <li>Look at the edges and the background before you press the button.</li>
+  </ol>
+  <p class="xp-note">
+    The camera's details here come from Fujifilm's owner's manual and specifications for the X-T30 III. The pictures in the viewfinder are a simulation: the physics is real (the same formulas a lens obeys), the town is made of blocks. Designed, written and built by Claude Fable 5.2 (High); see <a href="#about">About this course</a>.
+  </p>
+</section>
+
+<section class="xp-topic" id="setup" data-title="Set it up once" data-group="Start here" data-stage="body" data-view="back" data-next="cam-tour">
+  <h2>Set it up once</h2>
+  <p class="xp-lede">
+    Ten minutes in the menus now saves fumbling later. These are suggestions for a JPEG shooter doing street, travel and family pictures; change any of them once you know why you would.
+  </p>
+  <p>Press <a data-part="menu">MENU/OK</a> and work through these. Menu names are as the camera shows them.</p>
+  <table>
+    <thead><tr><th>Menu</th><th>Set it to</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td><span class="cs-menu">IMAGE QUALITY</span></td><td>FINE, or FINE + RAW</td><td>Best JPEGs. Adding RAW keeps a safety copy you can re-develop later, in the camera or on a computer, at the cost of card space.</td></tr>
+      <tr><td><span class="cs-menu">ISO AUTO SETTING</span></td><td>AUTO1: max 6400, min shutter 1/125<br>AUTO2: max 12800, min shutter 1/250<br>AUTO3: max 3200, min shutter 1/60</td><td>One for everyday, one for moving people, one for still scenes. See <a href="#how-iso">Auto ISO</a>.</td></tr>
+      <tr><td><span class="cs-menu">FACE/EYE DETECTION SETTING</span></td><td>FACE DETECTION ON, EYE AUTO</td><td>The camera finds faces and focuses on the nearer eye. The <a data-part="fnBtn">Fn button</a> switches it off when it grabs the wrong person.</td></tr>
+      <tr><td><span class="cs-menu">AF MODE</span></td><td>SINGLE POINT</td><td>You decide where focus goes, with the <a data-part="stick">focus stick</a>. Faces override it when detection is on.</td></tr>
+      <tr><td><span class="cs-menu">APERTURE SETTING</span></td><td>AUTO + MANUAL</td><td>Your lens has no aperture ring, so the front dial sets the aperture, and turning it past f/22 selects A (automatic).</td></tr>
+      <tr><td><span class="cs-menu">DISP. CUSTOM SETTING</span></td><td>Add the histogram, the electronic level and a framing grid</td><td>The three overlays worth having on screen. This course uses all of them.</td></tr>
+      <tr><td><span class="cs-menu">TOUCH SCREEN SETTING</span></td><td>Touch to choose the focus area, or off</td><td>Off stops your nose moving the focus point when your eye is at the viewfinder.</td></tr>
+      <tr><td><span class="cs-menu">SOUND SETTING</span></td><td>Beeps off</td><td>Nothing announces a street photographer like an autofocus beep.</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Then charge the battery over USB-C, format the card in the camera (<span class="cs-menu">USER SETTING &gt; FORMAT</span>), set the <a data-part="diopter">diopter</a> so the viewfinder text is sharp for your eye, and go outside.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- THE CAMERA                                                          -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="cam-tour" data-title="A tour of the body" data-group="The camera" data-stage="body" data-view="hero" data-next="cam-modes">
+  <h2>A tour of the body</h2>
+  <p class="xp-lede">
+    The X-T30 III is built around dials you can read with the camera switched off. That is the whole idea: the three settings that make a photograph each have a physical control, and you can see where they are set at a glance.
+  </p>
+  <p>Turn the model with your mouse or finger and click anything. The buttons below jump to each side.</p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-part="shutterDial">Top: the dials</button>
+    <button class="xp-chip" type="button" data-part="frontDial">Front: lens and grip</button>
+    <button class="xp-chip" type="button" data-part="stick">Back: screen and buttons</button>
+  </div>
+  <div class="xp-stats">
+    <div class="xp-stat"><b>26.1 MP</b><span>APS-C sensor, 23.5 × 15.6 mm</span></div>
+    <div class="xp-stat"><b>20-50 mm</b><span>the kit lens, in full-frame terms</span></div>
+    <div class="xp-stat"><b>378 g</b><span>body with battery and card</span></div>
+    <div class="xp-stat"><b>ISO 160-12800</b><span>standard range</span></div>
+    <div class="xp-stat"><b>1/4000 s</b><span>fastest mechanical shutter</span></div>
+    <div class="xp-stat"><b>~315 shots</b><span>per battery charge</span></div>
+  </div>
+  <h3>Where things live</h3>
+  <ul>
+    <li><b>Top, left shoulder:</b> the <a data-part="filmDial">film simulation dial</a>, which sets the look of your JPEGs.</li>
+    <li><b>Top, right of the viewfinder:</b> the <a data-part="shutterDial">shutter speed dial</a>, the <a data-part="shutterBtn">shutter button</a> inside the <a data-part="power">ON/OFF switch</a>, and the <a data-part="expDial">exposure compensation dial</a> on the corner.</li>
+    <li><b>Front and back of the grip:</b> the two <a data-part="frontDial">command dials</a>, under your index finger and thumb.</li>
+    <li><b>Back:</b> the <a data-part="evf">viewfinder</a>, the tilting <a data-part="lcd">touch screen</a>, the <a data-part="stick">focus stick</a> and a column of buttons.</li>
+  </ul>
+  <p class="xp-note">
+    What it lacks is worth knowing too: there is no stabiliser in the body (the lens has one), no weather sealing, and one card slot. None of that matters for learning.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-modes" data-title="Auto lever and the P/A/S/M trick" data-group="The camera" data-stage="body" data-part="autoLever" data-next="cam-shutterdial">
+  <h2>The Auto lever, and where the mode dial went</h2>
+  <p class="xp-lede">
+    Most cameras have a dial marked P, A, S, M. Yours has no such dial. The mode is whatever your two controls add up to.
+  </p>
+  <p>
+    First, the lever under the shutter speed dial. Flip it to <b>AUTO</b> and the camera takes over completely: it recognises the scene (portrait, landscape, night, a moving subject) and picks everything, including the film simulation. It is the mode to hand the camera to a stranger in. Flip it back and you are in charge.
+  </p>
+  <p>With the lever off, two controls each have an <b>A</b> (automatic) position: the <a data-part="shutterDial">shutter speed dial</a>, and the aperture, which on your lens is set with the <a data-part="frontDial">front command dial</a> (turn it past f/22 to reach A).</p>
+  <table>
+    <thead><tr><th>Shutter dial</th><th>Aperture</th><th>You are in</th><th>Use it for</th></tr></thead>
+    <tbody>
+      <tr><td>A</td><td>A</td><td><b>P</b>, program</td><td>Snapshots when you do not want to think</td></tr>
+      <tr><td>A</td><td>you choose</td><td><b>A</b>, aperture priority</td><td>Nearly everything. Your default.</td></tr>
+      <tr><td>you choose</td><td>A</td><td><b>S</b>, shutter priority</td><td>Moving subjects: kids, pets, panning</td></tr>
+      <tr><td>you choose</td><td>you choose</td><td><b>M</b>, manual</td><td>Light that does not change; tripods; when the meter keeps being fooled</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The letter in the bottom-left of the display tells you which one you have landed in. <a href="#sci-modes">Which mode when</a> goes through the reasoning, and <a href="#how-a">the first walkthrough</a> sets up aperture priority step by step.
+  </p>
+  <p class="xp-note">
+    In AUTO the film simulation recipes saved to FS1-FS3 are not applied, and the rear dial becomes exposure compensation.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-shutterdial" data-title="Shutter speed dial" data-group="The camera" data-stage="body" data-part="shutterDial" data-next="cam-dials">
+  <h2>Shutter speed dial</h2>
+  <p class="xp-lede">
+    How long the sensor looks at the scene, from 1 second to 1/4000 of a second, in whole stops. Each click doubles or halves the light, and doubles or halves how far anything moving will smear.
+  </p>
+  <ul>
+    <li><b>A</b> (in red): the camera picks the speed. Leave it here for aperture priority.</li>
+    <li><b>The numbers</b> are fractions: 250 means 1/250 s. Between clicks, the <a data-part="rearDial">rear command dial</a> fine-tunes in thirds of a stop (1/250 becomes 1/320 or 1/200).</li>
+    <li><b>180x</b> is the fastest speed that works with flash.</li>
+    <li><b>T</b> (time) hands the whole range to the rear command dial, including long exposures up to 15 minutes. <b>B</b> (bulb) holds the shutter open for as long as you hold the button. Both are tripod territory.</li>
+  </ul>
+  <p>
+    Speeds to carry in your head: <b>1/60</b> for people standing still, <b>1/250</b> for people walking, <b>1/500</b> or faster for children and pets. <a href="#sci-shutter">Shutter speed</a> shows why.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-dials" data-title="Front and rear command dials" data-group="The camera" data-stage="body" data-part="frontDial" data-next="cam-expcomp">
+  <h2>Front and rear command dials</h2>
+  <p class="xp-lede">
+    Two unmarked wheels, one under your index finger and one under your thumb. They do whatever is not on a marked dial, and both can be pressed in like buttons.
+  </p>
+  <h3><a data-part="frontDial">Front dial</a>: aperture, and ISO</h3>
+  <p>
+    Your lens has no aperture ring, so this wheel is your aperture control: roll it to go from f/3.5 to f/22, and one step past f/22 to A. <b>Press it in</b> to switch what it controls: it steps through the roles you give it in <span class="cs-menu">BUTTON/DIAL SETTING &gt; COMMAND DIAL SETTING</span> (aperture, ISO, exposure compensation, film simulation or program shift). Give it aperture and ISO, and one wheel sets both; the display shows which value is live.
+  </p>
+  <h3><a data-part="rearDial">Rear dial</a>: shutter fine-tuning, and zoom-to-check</h3>
+  <p>
+    It nudges the shutter speed in thirds of a stop around whatever the top dial says, shifts the program in P mode, and steps through settings in the quick menu. <b>Press it in</b> to magnify the view at the focus point, the quickest way to confirm something is sharp. In playback it zooms into the picture.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-expcomp" data-title="Exposure compensation dial" data-group="The camera" data-stage="body" data-part="expDial" data-next="cam-filmdial">
+  <h2>Exposure compensation dial</h2>
+  <p class="xp-lede">
+    The brighter/darker dial, and the one you will use most. In P, A and S the camera decides how bright the picture should be; this is how you overrule it.
+  </p>
+  <p>
+    It runs from −3 to +3 stops in thirds. Turn toward <b>+</b> and the picture gets brighter; toward <b>−</b>, darker. The viewfinder shows the result before you shoot, so you turn it until the picture looks right.
+  </p>
+  <ul>
+    <li><b>+⅔ to +1⅓</b> when the subject is in front of something bright: a window, snow, a white sky.</li>
+    <li><b>−⅔ to −1</b> for night streets, spotlit faces, or to keep rich colour in a sunset.</li>
+    <li><b>0</b> again when you are done. The dial does not reset itself; a forgotten +2 has ruined many afternoons.</li>
+  </ul>
+  <p>
+    <b>C</b> hands compensation to the front command dial and widens the range to ±5. In manual mode with a fixed ISO the dial does nothing, because nothing is automatic for it to adjust. <a href="#sci-metering">Metering</a> explains why the camera gets it wrong.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-filmdial" data-title="Film simulation dial" data-group="The camera" data-stage="body" data-part="filmDial" data-next="cam-shutter">
+  <h2>Film simulation dial</h2>
+  <p class="xp-lede">
+    The reason many people buy a Fujifilm. Each position develops your JPEG with the colour and contrast of a different film stock, so the picture comes out of the camera finished.
+  </p>
+  <table>
+    <thead><tr><th>Mark</th><th>Simulation</th><th>Reach for it when</th></tr></thead>
+    <tbody>
+      <tr><td>STD</td><td>PROVIA</td><td>You want honest, neutral colour</td></tr>
+      <tr><td>V</td><td>Velvia</td><td>Landscapes, blue skies, markets full of colour</td></tr>
+      <tr><td>S</td><td>ASTIA</td><td>People outdoors: soft contrast, healthy skin</td></tr>
+      <tr><td>CC</td><td>CLASSIC CHROME</td><td>Streets and travel: muted, documentary</td></tr>
+      <tr><td>RA</td><td>REALA ACE</td><td>Family pictures: true colour with a little snap</td></tr>
+      <tr><td>A</td><td>ACROS</td><td>Black and white with real depth</td></tr>
+      <tr><td>FS1-FS3</td><td>your own</td><td>Three slots you fill: any simulation, or a whole recipe</td></tr>
+      <tr><td>C</td><td>custom</td><td>Whatever is chosen in the menu, including the fourteen not on the dial</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The camera has twenty simulations in all, counting the filter variants of the black-and-white ones. <a href="#sci-color">Film simulations and colour</a> shows them side by side, and <a href="#how-recipe">Save a look to FS1</a> fills the three custom slots.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-shutter" data-title="Shutter button and power" data-group="The camera" data-stage="body" data-part="shutterBtn" data-next="cam-focus">
+  <h2>Shutter button and ON/OFF switch</h2>
+  <p class="xp-lede">
+    The button has two stages, and the first one matters more than the second.
+  </p>
+  <ul>
+    <li><b>Half press:</b> the camera focuses and measures the light. A green box and a green dot mean focus is locked. Hold it there and both stay fixed.</li>
+    <li><b>Full press:</b> it takes the picture. Squeeze; do not stab. A jab at the button is the most common cause of camera shake.</li>
+  </ul>
+  <p>
+    Half-press, hold, and reframe is the oldest trick in the book: focus on the person, keep the button half down, then swing the camera so they sit to one side. <a href="#how-lock">Focus and recompose</a> walks through it.
+  </p>
+  <p>
+    The <a data-part="power">ON/OFF switch</a> is the collar around the button. The camera wakes in about a second, so switch it off between pictures while travelling; the battery is small.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-focus" data-title="Focus mode selector" data-group="The camera" data-stage="body" data-part="focusSel" data-next="cam-stick">
+  <h2>Focus mode selector: S, C, M</h2>
+  <p class="xp-lede">
+    A small switch on the front, by the lens, that sets how the camera focuses. Your left thumb finds it without looking.
+  </p>
+  <ul>
+    <li><b>S, single (AF-S).</b> Half-press and the camera focuses once, then holds. For anything that stays put: portraits, buildings, food, most street scenes.</li>
+    <li><b>C, continuous (AF-C).</b> The camera keeps refocusing for as long as you half-press. For anything moving toward or away from you: children, pets, cyclists.</li>
+    <li><b>M, manual.</b> You turn the <a data-part="focusRing">focus ring</a> on the lens. Mostly for <a href="#sci-dof">zone focusing</a> on the street, where you set a distance once and stop thinking about focus.</li>
+  </ul>
+  <p>
+    Leave it on S while you learn, and flick to C when the subject starts running. The little window next to the grip is the <a data-part="afLamp">AF-assist lamp</a>: it lights up to help focus in the dark, and blinks for the self-timer. Switch it off in the menu for candid work.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-stick" data-title="Focus stick" data-group="The camera" data-stage="body" data-part="stick" data-next="cam-locks">
+  <h2>Focus stick</h2>
+  <p class="xp-lede">
+    A thumb-sized joystick that moves the focus point around the frame. It replaces the four-way pad of older cameras, and it steers the menus too.
+  </p>
+  <ul>
+    <li><b>Tilt it</b> to slide the focus box to where your subject is.</li>
+    <li><b>Press it</b>, then turn the <a data-part="rearDial">rear command dial</a> to make the box bigger or smaller. A small box is precise (an eye behind a fence); a larger one is easier to land on a moving target.</li>
+    <li><b>Press and hold</b> its centre to choose what it does, including locking it so a stray thumb cannot move the point.</li>
+  </ul>
+  <p>
+    The focus point is the single most important thing the camera cannot guess. Putting it on purpose, every time, is half of getting sharp pictures. <a href="#how-focus">Move the focus point</a> has the drill.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-locks" data-title="AE-L and AF-L" data-group="The camera" data-stage="body" data-part="aeL" data-next="cam-q">
+  <h2>AE-L and AF-L buttons</h2>
+  <p class="xp-lede">
+    Two lock buttons for your thumb. Each freezes one thing the shutter button's half-press would otherwise keep changing.
+  </p>
+  <ul>
+    <li><b><a data-part="aeL">AE-L</a>, exposure lock.</b> Point at the part of the scene whose brightness you care about, hold AE-L, reframe, shoot. Useful for a backlit person: lock on their face from close up, step back, and it stays correctly exposed.</li>
+    <li><b><a data-part="afL">AF-L</a>, focus lock.</b> Holds the focus distance where it is, so you can take several frames without the camera hunting each time.</li>
+  </ul>
+  <p>
+    Later you may want <b>back-button focus</b>: set AF-L to AF-ON in <span class="cs-menu">BUTTON/DIAL SETTING &gt; FUNCTION (Fn) SETTING</span> so your thumb focuses and your finger only shoots. It separates the two jobs, which helps with moving subjects. It is a refinement; skip it for now.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-q" data-title="Q menu and Fn button" data-group="The camera" data-stage="body" data-part="qBtn" data-next="cam-drive">
+  <h2>Q menu and the Fn button</h2>
+  <p class="xp-lede">
+    Shortcuts, so that you almost never have to open the full menu while shooting.
+  </p>
+  <p>
+    <b><a data-part="qBtn">Q</a></b> brings up a grid of the settings people change most: white balance, ISO, focus mode, image quality, self-timer and so on. Move with the <a data-part="stick">focus stick</a>, change the highlighted value with the <a data-part="rearDial">rear dial</a>, tap the shutter button to leave. Hold Q down to edit which settings appear in the grid.
+  </p>
+  <p>
+    <b><a data-part="fnBtn">Fn</a></b>, on the top plate, starts out as face detection on/off. That is a good use for it: when the camera locks onto a passer-by instead of your subject, one press gives you back the plain focus point.
+  </p>
+  <p>
+    The touch screen holds four more shortcuts as swipes, once switched on in <span class="cs-menu">TOUCH SCREEN SETTING &gt; TOUCH FUNCTION</span>: up for the histogram, left for film simulation, right for the electronic level, down for the AF mode. Every button and swipe can be reassigned in <span class="cs-menu">FUNCTION (Fn) SETTING</span>.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-drive" data-title="DRIVE button" data-group="The camera" data-stage="body" data-part="drive" data-next="cam-evf">
+  <h2>DRIVE button</h2>
+  <p class="xp-lede">
+    What happens when you hold the shutter button down. This is also where video lives, which catches everyone out once.
+  </p>
+  <table>
+    <thead><tr><th>Option</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Single frame</td><td>One press, one picture. Your default.</td></tr>
+      <tr><td>CL, low-speed burst</td><td>A few frames a second while you hold the button. Enough for children and expressions.</td></tr>
+      <tr><td>CH, high-speed burst</td><td>Up to 8 frames a second with the mechanical shutter, 20 with the electronic one, 30 with a 1.25× crop.</td></tr>
+      <tr><td>BKT, ISO BKT, WB BKT</td><td>Bracketing: several versions of one shot with a setting varied.</td></tr>
+      <tr><td>HDR</td><td>Blends several exposures for scenes with bright sky and deep shadow.</td></tr>
+      <tr><td>Multiple exposure, Adv.</td><td>Double exposures, panoramas and effect filters.</td></tr>
+      <tr><td>Movie</td><td>Switches the camera to video.</td></tr>
+    </tbody>
+  </table>
+  <p>
+    A burst is not cheating. For a child blowing out candles or a friend mid-laugh, three frames a second triples your chance of open eyes. <a href="#sci-drive">Drive modes and bursts</a> covers when it helps. In playback the same button is <b>delete</b>.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-evf" data-title="Viewfinder and screen" data-group="The camera" data-stage="body" data-part="evf" data-next="cam-menu">
+  <h2>Viewfinder and screen</h2>
+  <p class="xp-lede">
+    Two ways to see the same picture. Both show you the photograph as it will come out, exposure and film simulation included, which is the great gift of a mirrorless camera to a beginner.
+  </p>
+  <ul>
+    <li><b><a data-part="evf">Viewfinder</a>.</b> Use it in bright sun, and whenever you want to concentrate. Pressing the camera to your face is also the steadiest way to hold it. A sensor beside the eyepiece switches the display over as your eye arrives.</li>
+    <li><b><a data-part="lcd">Screen</a>.</b> It tilts up for waist-level shooting and down for holding the camera overhead. Waist level is how you photograph children at their own height, and it is far less confronting on the street. It is a touch screen: tap to move the focus point.</li>
+    <li><b><a data-part="viewMode">VIEW MODE</a></b> cycles between eye sensor, viewfinder only and screen only.</li>
+    <li><b><a data-part="diopter">Diopter wheel</a></b> focuses the viewfinder for your eyesight. If the numbers in the finder look soft, turn this, not the lens.</li>
+    <li><b><a data-part="lamp">Indicator lamp</a>:</b> steady green means focus is locked; blinking green warns of blur or missed focus.</li>
+  </ul>
+</section>
+
+<section class="xp-topic" id="cam-menu" data-title="Menu, display and playback" data-group="The camera" data-stage="body" data-part="menu" data-next="cam-flash">
+  <h2>MENU/OK, DISP/BACK and playback</h2>
+  <ul>
+    <li><b><a data-part="menu">MENU/OK</a></b> opens the full menu and confirms choices. The tabs down the left are: image quality, focus, shooting, flash, movie, and the wrench for set-up.</li>
+    <li><b><a data-part="disp">DISP/BACK</a></b> steps back out of menus. While shooting it cycles how much information is drawn over the picture, from everything to nothing.</li>
+    <li><b><a data-part="play">Playback</a></b>, top left, shows what you have taken. Tilt the stick to move between pictures, turn the rear dial to zoom, press it in to jump to the focus point at full magnification. Press DISP/BACK during playback to see the settings and the histogram for that picture.</li>
+  </ul>
+  <p>
+    Looking at the back of the camera after every shot has a name, chimping, and it costs you the next picture. Check the first frame in new light, then trust the viewfinder. <a href="#how-review">Check a picture properly</a> shows what to look for when you do.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-flash" data-title="Flash and hot shoe" data-group="The camera" data-stage="body" data-part="flash" data-next="cam-lens">
+  <h2>Flash and hot shoe</h2>
+  <p class="xp-lede">
+    A small flash folds into the viewfinder housing. Slide the <a data-part="flashLever">lever</a> beside the film dial and it pops up.
+  </p>
+  <p>
+    It is weak (guide number about 5 at ISO 100, good for two or three metres) and it is at its best in daylight, not darkness. With the sun behind your friends, their faces fall into shadow; the flash fills those shadows back in. That is called fill flash, and it is the one use that reliably improves a picture.
+  </p>
+  <p>
+    In a dark room, direct flash gives the familiar look of bright faces against a black cave. You will usually do better raising the ISO and using the light that is there. See <a href="#sit-night">Low light</a>.
+  </p>
+  <p>
+    The <a data-part="hotShoe">hot shoe</a> on top takes a larger flash or a microphone. The fastest shutter speed that works with flash is 1/180 s, the red <b>180x</b> on the shutter dial.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-lens" data-title="The 13-33mm lens" data-group="The camera" data-stage="body" data-part="zoomRing" data-next="cam-ports">
+  <h2>The XC 13-33mm F3.5-6.3 OIS</h2>
+  <p class="xp-lede">
+    A very small, very light zoom that covers the classic walking-around range: wide enough for a street or a room at 13mm, a natural everyday view in the middle, a tight portrait at 33mm.
+  </p>
+  <ul>
+    <li><b><a data-part="zoomRing">Zoom ring</a></b>, the wide one. The lens collapses for carrying: twist the ring out of its parked position to extend it before shooting, and back to pack it away.</li>
+    <li><b><a data-part="focusRing">Focus ring</a></b>, the thin one at the front. It only does something in manual focus.</li>
+    <li><b>No aperture ring and no switches.</b> Aperture is on the camera's front dial; the stabiliser is switched in the menu.</li>
+    <li><b><a data-part="lensRelease">Lens release</a>:</b> hold it and twist the lens to take it off. Do it with the camera pointing down and switched off, to keep dust off the sensor.</li>
+  </ul>
+  <div class="xp-stats">
+    <div class="xp-stat"><b>f/3.5 → f/6.3</b><span>widest aperture, 13mm → 33mm</span></div>
+    <div class="xp-stat"><b>20 cm</b><span>closest focus</span></div>
+    <div class="xp-stat"><b>4 stops</b><span>optical stabiliser (OIS)</span></div>
+    <div class="xp-stat"><b>125 g</b><span>49 mm filter thread</span></div>
+  </div>
+  <h3>What the numbers mean for you</h3>
+  <p>
+    <b>F3.5-6.3</b> says how wide the aperture can open: f/3.5 at 13mm, shrinking to f/6.3 as you zoom to 33mm. That is modest. It limits two things: how much you can <a href="#sci-aperture">blur a background</a>, and how well you cope in <a href="#sci-iso">dim light</a>. The stabiliser makes up for some of the second, for subjects that hold still.
+  </p>
+  <p>
+    It is not weather sealed, so keep it out of rain. When you find yourself wanting more than it gives, the usual next lens is a small fast prime (a fixed focal length with a wide aperture, such as a 33mm or 35mm f/1.4 or f/2). The viewfinder here has one to try, under <b>Lens &amp; focus</b>.
+  </p>
+</section>
+
+<section class="xp-topic" id="cam-ports" data-title="Ports, battery and card" data-group="The camera" data-stage="body" data-part="ports" data-next="how-a">
+  <h2>Ports, battery and card</h2>
+  <ul>
+    <li><b><a data-part="ports">Connector cover</a></b> (left side): a USB-C socket that charges the battery in the camera and copies pictures to a phone or computer; a micro HDMI socket; and a 2.5 mm socket for a microphone or a remote release.</li>
+    <li><b><a data-part="battery">Battery and card door</a></b> (underneath): one NP-W126S battery, about 315 pictures a charge, and one SD card slot beside it.</li>
+    <li><b><a data-part="tripod">Tripod mount</a></b>: the standard thread, in line with the lens.</li>
+  </ul>
+  <h3>Habits worth having</h3>
+  <ul>
+    <li>Carry a second battery on any day that matters. A power bank and a USB-C cable do the same job more slowly.</li>
+    <li>Use a fast, name-brand SD card (the slot is UHS-I, so a UHS-II card is money wasted). Format it in the camera, not on a computer.</li>
+    <li>Copy your pictures off the card the same evening. A card is for carrying photographs, not keeping them.</li>
+  </ul>
+</section>
+
+<!-- ================================================================== -->
+<!-- HOW DO I…                                                           -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="how-a" data-title="Set up aperture priority" data-group="How do I…" data-stage="body" data-view="top" data-next="how-iso">
+  <h2>Set up aperture priority with Auto ISO</h2>
+  <p class="xp-lede">
+    The set-up most working photographers use most of the time. You choose the aperture, the camera handles the rest, and you steer brightness with one dial.
+  </p>
+  <ol class="cs-walk">
+    <li data-part="power">Switch the camera on.</li>
+    <li data-part="autoLever">Check the Auto lever is <b>off</b>, so the dials are in charge.</li>
+    <li data-part="shutterDial">Turn the shutter speed dial to the red <b>A</b>. The camera will now choose the shutter speed.</li>
+    <li data-part="frontDial">Roll the front command dial until the display reads <b>F5.6</b>. The aperture is yours. An <b>A</b> appears at the bottom-left of the display: aperture priority.</li>
+    <li data-part="frontDial">Press the front dial in to switch it to ISO (if ISO is one of its roles; otherwise use the Q menu), and roll to <b>AUTO1</b>. Press again to go back to aperture.</li>
+    <li data-part="expDial">Set exposure compensation to <b>0</b>.</li>
+    <li data-part="focusSel">Focus selector on <b>S</b>.</li>
+    <li data-part="shutterBtn">Half-press to focus, check the picture in the finder, and squeeze.</li>
+  </ol>
+  <p>
+    From here, three moves cover almost everything: roll the front dial for more or less depth of field, turn the compensation dial if the picture looks too bright or too dark, and watch the shutter speed at the bottom of the display so it never drops below what your subject needs.
+  </p>
+</section>
+
+<section class="xp-topic" id="how-iso" data-title="Change ISO and tame Auto ISO" data-group="How do I…" data-stage="body" data-part="frontDial" data-next="how-focus">
+  <h2>Change ISO, and tame Auto ISO</h2>
+  <p class="xp-lede">
+    Auto ISO is not a beginner's crutch. It is a rule you write once: "never let the shutter drop below this speed, and never raise the ISO above that."
+  </p>
+  <ol class="cs-walk">
+    <li data-part="menu">Press MENU/OK and go to the <b>shooting</b> tab, then <span class="cs-menu">ISO AUTO SETTING</span>.</li>
+    <li data-part="stick">Pick <b>AUTO1</b> with the focus stick. Set default sensitivity 160, maximum 6400, minimum shutter speed <b>1/125</b>. This is the everyday rule.</li>
+    <li data-part="stick">Set <b>AUTO2</b> to maximum 12800 and minimum shutter <b>1/250</b>: for people who move.</li>
+    <li data-part="stick">Set <b>AUTO3</b> to maximum 3200 and minimum shutter <b>1/60</b>: for still scenes where you want the cleanest file.</li>
+    <li data-part="frontDial">Back out. While shooting, press the front dial in until it controls ISO, and roll it to choose AUTO1, AUTO2, AUTO3 or a fixed value.</li>
+    <li data-part="qBtn">Or press Q, move to ISO with the stick and turn the rear dial.</li>
+  </ol>
+  <p>
+    With this in place, the camera opens the shutter as long as your rule allows, then raises the ISO, and only breaks the rule when it has no choice. If you see the shutter speed in the finder go below your minimum, the light has run out: open the aperture or steady the camera. <a href="#sci-iso">ISO</a> explains the trade.
+  </p>
+</section>
+
+<section class="xp-topic" id="how-focus" data-title="Move the focus point" data-group="How do I…" data-stage="body" data-part="stick" data-next="how-lock">
+  <h2>Move the focus point</h2>
+  <p class="xp-lede">
+    Left alone, the camera focuses on the middle of the frame or the nearest thing. Your subject is often neither.
+  </p>
+  <ol class="cs-walk">
+    <li data-part="focusSel">Focus selector on <b>S</b>.</li>
+    <li data-part="stick">Tilt the focus stick. A box moves across the display: push it onto your subject, onto the eye nearest you if it is a face.</li>
+    <li data-part="stick">Press the stick in, and turn the rear dial to shrink or grow the box.</li>
+    <li data-part="shutterBtn">Half-press. The box turns green and the lamp beside the finder lights: locked.</li>
+    <li data-part="rearDial">Not sure? Press the rear dial in to magnify the focus point and look.</li>
+    <li data-part="lcd">Or simply tap the subject on the touch screen.</li>
+    <li data-part="fnBtn">If the camera keeps jumping to someone else's face, press Fn to switch face detection off.</li>
+  </ol>
+  <p>
+    Practise until moving the point is as automatic as lifting the camera. In the simulator, clicking on the picture does the same thing.
+  </p>
+</section>
+
+<section class="xp-topic" id="how-lock" data-title="Focus and recompose" data-group="How do I…" data-stage="body" data-part="shutterBtn" data-next="how-recipe">
+  <h2>Focus and recompose</h2>
+  <p class="xp-lede">
+    The fast way to put a subject off-centre without touching the focus stick.
+  </p>
+  <ol class="cs-walk">
+    <li data-part="stick">Leave the focus point in the centre.</li>
+    <li data-part="shutterBtn">Aim the centre at your subject and <b>half-press</b>. Focus locks.</li>
+    <li data-part="shutterBtn">Keep the button half down and swing the camera until the frame looks right.</li>
+    <li data-part="shutterBtn">Squeeze the rest of the way.</li>
+    <li data-part="aeL">If the brightness changes as you swing (it will, toward a window), hold <b>AE-L</b> while aimed at the subject to lock exposure too.</li>
+  </ol>
+  <p>
+    It works because focus is a distance, and swinging the camera a little does not change the distance much. With your lens's deep focus it is very forgiving. It only fails very close up, or if the subject moves between the lock and the shot; then move the focus point instead.
+  </p>
+</section>
+
+<section class="xp-topic" id="how-recipe" data-title="Save a look to FS1" data-group="How do I…" data-stage="body" data-part="filmDial" data-next="how-review">
+  <h2>Save a look to FS1</h2>
+  <p class="xp-lede">
+    The dial has three empty slots. Fill them with the simulations you use that are not printed on it, or with a full "recipe": a simulation plus its tone, colour and grain settings.
+  </p>
+  <ol class="cs-walk">
+    <li data-part="menu">Press MENU/OK, open the <b>image quality</b> tab and choose <span class="cs-menu">FILM SIMULATION DIAL SETTING</span>.</li>
+    <li data-part="stick">Choose <b>FS1</b> and pick a simulation for it. <b>CLASSIC Neg.</b> is a popular first choice: it is not on the dial and it suits streets.</li>
+    <li data-part="stick">Adjust the settings stored with it if you like: highlights and shadows (contrast), colour, grain effect, white balance shift.</li>
+    <li data-part="stick">Do the same for <b>FS2</b> (try NOSTALGIC Neg.) and <b>FS3</b> (try ACROS with the red filter, for dramatic skies).</li>
+    <li data-part="filmDial">Turn the dial to FS1. Your look is one click away from now on.</li>
+  </ol>
+  <p>
+    Recipes are a hobby in themselves, and thousands are shared online. Start with one colour look and one black and white and use them for a month; consistency teaches more than variety.
+  </p>
+</section>
+
+<section class="xp-topic" id="how-review" data-title="Check a picture properly" data-group="How do I…" data-stage="body" data-part="play" data-next="sci-exposure">
+  <h2>Check a picture properly</h2>
+  <p class="xp-lede">
+    The screen on the back is small and flattering. Three checks tell you the truth in ten seconds.
+  </p>
+  <ol class="cs-walk">
+    <li data-part="play">Press playback.</li>
+    <li data-part="rearDial"><b>Sharpness.</b> Press the rear dial in: the picture jumps to full magnification at the focus point. Is the eye crisp? If it is smeared in one direction, the shutter was too slow. If it is soft everywhere, focus missed.</li>
+    <li data-part="disp"><b>Exposure.</b> Press DISP/BACK until the histogram shows. A pile against the right-hand wall means blown highlights; against the left, blocked shadows.</li>
+    <li data-part="lcd"><b>Edges.</b> Zoom back out and run your eye round the border. Anything bright, cut off or leaning there that you did not mean?</li>
+    <li data-part="shutterBtn">Half-press the shutter button to get back to shooting, and fix the one thing that was wrong.</li>
+  </ol>
+  <p>
+    <a href="#sci-metering">Metering and the histogram</a> explains the graph. The simulator's <b>Take the picture</b> button runs these same checks for you.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- PHOTO SCIENCE                                                       -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="sci-exposure" data-title="Exposure and stops" data-group="Photo science" data-stage="world" data-shot="sci-exposure" data-next="sci-aperture">
+  <h2>Exposure, and the stop</h2>
+  <p class="xp-lede">
+    A photograph is light collected on a sensor. Collect too little and it is dark and noisy; too much and the bright parts turn to blank white. Exposure is getting the amount right.
+  </p>
+  <p>
+    Three settings control it, and the viewfinder behind this panel is in manual mode so you can feel each one. Open the <b>Exposure</b> tab and drag them.
+  </p>
+  <ul>
+    <li><b>Aperture:</b> how wide the hole in the lens is.</li>
+    <li><b>Shutter speed:</b> how long the sensor is exposed.</li>
+    <li><b>ISO:</b> how much the camera amplifies what it collected.</li>
+  </ul>
+  <h3>The stop</h3>
+  <p>
+    Photographers count light in <b>stops</b>. One stop is a doubling or a halving. 1/250 s lets in twice the light of 1/500 s: one stop more. ISO 800 is one stop more sensitive than ISO 400. f/4 passes one stop more than f/5.6. Your camera's dials click in thirds of a stop.
+  </p>
+  <p>
+    The stop is what makes the three settings interchangeable. Take a stop away with one and you can give it back with another, and the picture is exactly as bright as before. That trade is the whole craft; the next four topics are about what each side of it costs.
+  </p>
+  <div class="xp-figure" data-widget="stops"></div>
+  <p class="xp-note">
+    The scale at the bottom of the viewfinder is the camera's light meter. In manual mode the marker shows how far your settings sit from what the meter suggests: left is darker, right is brighter.
+  </p>
+</section>
+
+<section class="xp-topic" id="sci-aperture" data-title="Aperture" data-group="Photo science" data-stage="world" data-shot="sci-aperture" data-next="sci-shutter">
+  <h2>Aperture</h2>
+  <p class="xp-lede">
+    The aperture is an adjustable hole behind the lens. It does two jobs at once: it sets how much light gets in, and how much of the scene is in focus.
+  </p>
+  <div class="xp-figure" data-widget="iris"></div>
+  <p>
+    The numbering runs backwards. A <b>small f-number is a big hole</b>: f/3.5 is wide open on your lens, f/22 is a pinprick. Think of it as a fraction and it makes sense: f/4 means the hole is a quarter of the focal length across, f/16 a sixteenth.
+  </p>
+  <h3>What it does to the picture</h3>
+  <p>Your friend is standing in the park. Watch the trees behind her, and the blue zone on the plan view.</p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="ap-wide" aria-pressed="true">f/6.3: wide open at 33mm</button>
+    <button class="xp-chip" type="button" data-shot="ap-small">f/22</button>
+    <button class="xp-chip" type="button" data-shot="ap-prime">What if: an f/1.4 prime</button>
+  </div>
+  <ul>
+    <li><b>Wide (f/3.5-f/5.6):</b> most light, shallowest focus. Use it in dim light, and for portraits where you want the background soft.</li>
+    <li><b>Middle (f/8):</b> the sweet spot. Sharpest results from this lens, and deep enough focus that small focusing errors vanish. "f/8 and be there" is old newspaper advice for a reason.</li>
+    <li><b>Small (f/16-f/22):</b> everything in focus from your feet to the horizon, but little light gets in, and the whole image softens slightly because light bends at the edges of a tiny hole (diffraction). Rarely worth it past f/11.</li>
+  </ul>
+  <p class="xp-note">
+    An honest word about your lens: at f/6.3 the background softens but does not melt. The creamy blur in magazine portraits comes from apertures like f/1.4, which is the third button. With the kit lens you get blur from <a href="#sci-dof">distance</a> instead: zoom to 33mm, get close, and keep the background far away.
+  </p>
+</section>
+
+<section class="xp-topic" id="sci-shutter" data-title="Shutter speed" data-group="Photo science" data-stage="world" data-shot="sci-shutter" data-next="sci-iso">
+  <h2>Shutter speed</h2>
+  <p class="xp-lede">
+    The shutter decides how much time is in the picture. A short time freezes; a long one smears anything that moves, including you.
+  </p>
+  <p>You are standing on the pavement as a cyclist and walkers go by. The camera is in shutter priority: you set the speed, it handles the rest.</p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="sh-fast">1/1000: frozen</button>
+    <button class="xp-chip" type="button" data-shot="sh-mid">1/60</button>
+    <button class="xp-chip" type="button" data-shot="sh-slow">1/15: a blur</button>
+  </div>
+  <h3>Two kinds of blur</h3>
+  <p>
+    <b>Subject blur</b> comes from things moving while the shutter is open. Only a faster speed fixes it. How fast depends on how quickly they cross your frame:
+  </p>
+  <div class="xp-figure" data-widget="freeze"></div>
+  <p>
+    <b>Camera shake</b> comes from your hands. The old rule: use a speed at least as fast as one over the full-frame focal length, so about 1/20 s at 13mm and 1/50 s at 33mm. Your lens's stabiliser (OIS) buys three or four stops beyond that, which is why you can get a sharp cathedral interior at 1/8 s. Try it: this is the tower at dusk, zoomed in, at 1/8 s.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="sh-shake">Tower at 1/8 s, stabiliser off</button>
+    <button class="xp-chip" type="button" data-shot="sh-ois">Switch the stabiliser on</button>
+  </div>
+  <p class="xp-note">
+    The stabiliser steadies the camera. It does nothing for a child who will not sit still. For moving people there is no substitute for a fast shutter speed, whatever it costs in ISO.
+  </p>
+  <p>
+    Slow speeds are also a creative tool: follow a cyclist with the camera at 1/30 s and they stay sharp while the street streaks behind them. That is <a href="#practice-action">panning</a>, and it is one of the practice shots.
+  </p>
+</section>
+
+<section class="xp-topic" id="sci-iso" data-title="ISO" data-group="Photo science" data-stage="world" data-shot="sci-iso" data-next="sci-triangle">
+  <h2>ISO</h2>
+  <p class="xp-lede">
+    ISO does not let in more light. It turns up the volume on the light you caught, and like any amplifier it turns up the hiss as well.
+  </p>
+  <p>A birthday at home in the evening, lit by lamps. The lens is wide open at f/3.5 and cannot do more. Everything else has to come from shutter speed and ISO.</p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="iso-low">ISO 160</button>
+    <button class="xp-chip" type="button" data-shot="iso-mid" aria-pressed="true">ISO 3200</button>
+    <button class="xp-chip" type="button" data-shot="iso-high">ISO 12800</button>
+    <button class="xp-chip" type="button" data-shot="iso-auto">Auto</button>
+  </div>
+  <ul>
+    <li><b>ISO 160</b> is the sensor's native setting: cleanest picture, richest colour. But here it needs about a quarter of a second, and the child becomes a ghost.</li>
+    <li><b>ISO 3200</b> gets a usable speed with fine grain you will not notice on a phone.</li>
+    <li><b>ISO 12800</b> freezes the running, at the price of obvious grain and thinner colour.</li>
+  </ul>
+  <h3>The rule</h3>
+  <p>
+    <b>A sharp, grainy picture beats a clean, blurred one.</b> Grain can be charming, and it shrinks when a picture is viewed small. Blur is forever. So set the aperture and shutter speed the picture needs first, and let the ISO be whatever it has to be. That is what <a href="#how-iso">Auto ISO</a> does for you.
+  </p>
+  <div class="xp-figure" data-widget="exposurecalc"></div>
+</section>
+
+<section class="xp-topic" id="sci-triangle" data-title="The exposure triangle" data-group="Photo science" data-stage="world" data-shot="sci-triangle" data-next="sci-modes">
+  <h2>The exposure triangle</h2>
+  <p class="xp-lede">
+    Three settings, one brightness. For any scene there are dozens of combinations that give the same exposure, and each one makes a different picture.
+  </p>
+  <table>
+    <thead><tr><th>Setting</th><th>More light by</th><th>What it costs</th></tr></thead>
+    <tbody>
+      <tr><td>Aperture</td><td>opening up (smaller f-number)</td><td>shallower focus</td></tr>
+      <tr><td>Shutter speed</td><td>slowing down</td><td>blur from movement</td></tr>
+      <tr><td>ISO</td><td>turning up</td><td>grain</td></tr>
+    </tbody>
+  </table>
+  <p>
+    So the question is never "what are the right settings?" It is "which of the three do I care about in this picture, and which can pay for it?"
+  </p>
+  <ul>
+    <li><b>A portrait:</b> you care about the background. Open the aperture; shutter and ISO follow.</li>
+    <li><b>A running child:</b> you care about freezing them. Fix the shutter at 1/500; aperture opens and ISO rises to pay.</li>
+    <li><b>A landscape:</b> you care about depth and quality. f/8, ISO 160, and let the shutter fall where it will, on a wall or tripod if need be.</li>
+    <li><b>A street at noon:</b> light to spare. f/8 and 1/500 and you care about neither.</li>
+  </ul>
+  <p>
+    Try it on the overcast street behind this panel: switch between modes on the <b>Exposure</b> tab, change one setting and watch which other one the camera moves to compensate.
+  </p>
+  <h3>Sunny 16</h3>
+  <p>
+    A check on your instincts that needs no meter: in full sun, at f/16, the right shutter speed is one over the ISO (ISO 200, 1/200 s). Open one stop for hazy sun, two for cloud, three for heavy overcast or open shade.
+  </p>
+</section>
+
+<section class="xp-topic" id="sci-modes" data-title="Which mode when" data-group="Photo science" data-stage="world" data-shot="sci-modes" data-next="sci-metering">
+  <h2>Which mode when</h2>
+  <p class="xp-lede">
+    The modes differ only in who sets what. The camera is very good at arithmetic and has no idea what your picture is about, so give it the arithmetic and keep the decision.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="m-P">P</button>
+    <button class="xp-chip" type="button" data-shot="m-A" aria-pressed="true">A</button>
+    <button class="xp-chip" type="button" data-shot="m-S">S</button>
+    <button class="xp-chip" type="button" data-shot="m-M">M</button>
+  </div>
+  <p>On the read-out along the bottom of the picture, the values you control are blue and the ones the camera chose are white, exactly as on your camera.</p>
+  <ul>
+    <li><b>A, aperture priority.</b> Your home base. You pick depth of field; the camera picks a shutter speed; Auto ISO keeps that speed safe. Nine pictures in ten.</li>
+    <li><b>S, shutter priority.</b> When motion is the point: children, pets, sport, panning. You pick the speed; aperture and ISO follow.</li>
+    <li><b>M, manual, with Auto ISO.</b> You pick both aperture and speed and the ISO floats. The best of both for action in changing light, and exposure compensation still works.</li>
+    <li><b>M, fully manual.</b> For light that does not change (a stage, a studio, a night skyline) or when the meter keeps being fooled. Set it once and every frame matches.</li>
+    <li><b>P, program.</b> The camera picks both; the rear dial shifts the pair. Fine for snapshots, but you learn nothing from it.</li>
+    <li><b>AUTO lever.</b> Hand-the-camera-to-someone mode.</li>
+  </ul>
+  <p>
+    On your camera these are not positions on a dial but combinations of the shutter dial and the aperture: see <a href="#cam-modes">the P/A/S/M trick</a>.
+  </p>
+</section>
+
+<section class="xp-topic" id="sci-metering" data-title="Metering and the histogram" data-group="Photo science" data-stage="world" data-shot="sci-metering" data-next="sci-focal">
+  <h2>Metering, compensation and the histogram</h2>
+  <p class="xp-lede">
+    The camera measures the light and aims to make the picture average out to a middle grey. Most scenes do average out that way. The ones that do not are where you earn your keep.
+  </p>
+  <p>
+    Here is the classic failure: two people at a table with a bright window behind them. The meter sees all that window, decides the scene is bright, and darkens everything. The window looks fine. The faces are mud.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="comp-zero" aria-pressed="true">As metered</button>
+    <button class="xp-chip" type="button" data-shot="comp-plus">Compensation +1⅔</button>
+  </div>
+  <p>
+    The fix is the <a href="#cam-expcomp">exposure compensation dial</a>. Turn it up and the faces come right; the window blows out to white, and that is fine, because the picture is of the people. You cannot always keep both ends. Decide which one matters.
+  </p>
+  <h3>The opposite case</h3>
+  <p>A street at night is mostly black. The meter tries to make it grey: lamps burn out and the mood goes. Turn compensation <i>down</i>.</p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="meter-night">Night street, as metered</button>
+    <button class="xp-chip" type="button" data-shot="comp-minus">Compensation −1</button>
+  </div>
+  <h3>Reading the histogram</h3>
+  <p>
+    The histogram is a bar chart of the tones in your picture, black on the left, white on the right. It does not care how bright your screen is or how sunny the day is, which makes it the only honest judge of exposure.
+  </p>
+  <div class="xp-figure" data-widget="histogram"></div>
+  <ul>
+    <li>A pile hard against the <b>right</b> wall: highlights are blown. There is nothing in them to recover. Turn compensation down.</li>
+    <li>A pile hard against the <b>left</b> wall: shadows are blocked. Often fine, sometimes not.</li>
+    <li>There is no "correct" shape. A snow scene lives on the right; a night street on the left.</li>
+  </ul>
+  <p class="xp-note">
+    Since you shoot JPEG, protect the highlights: a slightly dark picture can be lifted, a blown sky cannot be brought back. Setting <span class="cs-menu">DYNAMIC RANGE</span> to AUTO in the image quality menu lets the camera hold more highlight detail in contrasty light. <b>Blinkies</b> on the Move &amp; compose tab flashes whatever has blown.
+  </p>
+</section>
+
+<section class="xp-topic" id="sci-focal" data-title="Focal length and perspective" data-group="Photo science" data-stage="world" data-shot="sci-focal" data-next="sci-dof">
+  <h2>Focal length and perspective</h2>
+  <p class="xp-lede">
+    Focal length is the number on the zoom ring. It sets how much of the world fits in the frame: a small number sees wide, a large number sees narrow.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="f-13" aria-pressed="true">13mm</button>
+    <button class="xp-chip" type="button" data-shot="f-18">18mm</button>
+    <button class="xp-chip" type="button" data-shot="f-23">23mm</button>
+    <button class="xp-chip" type="button" data-shot="f-33">33mm</button>
+  </div>
+  <div class="xp-figure" data-widget="fov"></div>
+  <p>
+    Your sensor is smaller than a frame of 35mm film, so it sees the middle of the lens's image. Multiply by 1.5 to compare with the focal lengths people quote: your 13-33mm frames like a <b>20-50mm</b> on a full-frame camera. Those happen to be the classic lengths of street and travel photography: 28mm and 35mm for the scene, 50mm for the person.
+  </p>
+  <h3>Zooming is not the same as walking</h3>
+  <p>
+    Zooming in crops the view. Walking closer changes the <i>relationship</i> between near and far things. Here is your friend framed the same size twice:
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="persp-wide">13mm, from an arm's length</button>
+    <button class="xp-chip" type="button" data-shot="persp-tele">33mm, from two metres</button>
+  </div>
+  <ul>
+    <li><b>Wide and close:</b> the background shrinks away and takes in everything; whatever is nearest looms. Dramatic for places, unkind to faces.</li>
+    <li><b>Long and far:</b> the background is pulled up big behind the subject and there is less of it, so it is easier to keep clean. Flattering for people.</li>
+  </ul>
+  <p>
+    So choose where to stand first, for the perspective you want, and then use the zoom to trim the frame. Beginners do it the other way round and wonder why their pictures look flat.
+  </p>
+</section>
+
+<section class="xp-topic" id="sci-dof" data-title="Depth of field" data-group="Photo science" data-stage="world" data-shot="sci-dof" data-next="sci-focus">
+  <h2>Depth of field</h2>
+  <p class="xp-lede">
+    A lens focuses at one distance. Things nearer and farther go gradually soft, and the stretch that still looks sharp is the depth of field. You control how deep it is.
+  </p>
+  <p>You are crouched behind a flower bed with your friend beyond it. The blue band on the plan view is the sharp zone.</p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="dof-far" aria-pressed="true">Focus on her</button>
+    <button class="xp-chip" type="button" data-shot="dof-near">Focus on the flowers</button>
+    <button class="xp-chip" type="button" data-shot="dof-deep">f/16: get both</button>
+    <button class="xp-chip" type="button" data-shot="dof-open">Back to f/5.6</button>
+  </div>
+  <h3>Three levers</h3>
+  <ul>
+    <li><b>Aperture.</b> Wider is shallower.</li>
+    <li><b>Distance to the subject.</b> Closer is shallower, dramatically so. This is your strongest lever with a kit lens.</li>
+    <li><b>Focal length.</b> Longer is shallower, for the same position.</li>
+  </ul>
+  <div class="xp-figure" data-widget="dofcalc"></div>
+  <p>
+    To <b>blur a background</b> with this lens: zoom to 33mm, open to f/6.3, stand as close as the framing allows, and put as much distance as you can between the subject and whatever is behind them. A person one and a half metres away against trees thirty metres back will stand out; the same person against a wall one metre behind will not, at any aperture.
+  </p>
+  <h3>Zone focusing: the street photographer's trick</h3>
+  <p>
+    Deep focus is a tool too. At 13mm and f/8, focused two and a half metres away, everything from under a metre to the horizon is sharp. Switch to manual focus, set that once, and the camera never has to focus again: no delay, no hunting, no missed moments. It is how street photography was done for most of its history.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="zone">Try it on the street</button>
+  </div>
+</section>
+
+<section class="xp-topic" id="sci-focus" data-title="Autofocus" data-group="Photo science" data-stage="world" data-shot="sci-focus" data-next="sci-light">
+  <h2>Autofocus</h2>
+  <p class="xp-lede">
+    Autofocus answers two questions: <i>where</i> in the frame to focus, and <i>whether to keep adjusting</i> as things move. You set each separately.
+  </p>
+  <h3>Where: the AF mode</h3>
+  <ul>
+    <li><b>Single point.</b> One box, wherever you put it with the <a href="#cam-stick">stick</a>. Precise, and never surprises you.</li>
+    <li><b>Zone.</b> A larger patch; the camera picks the nearest thing inside it. Easier to keep on a moving subject.</li>
+    <li><b>Wide / Tracking.</b> The whole frame. In continuous focus it follows whatever it first locked onto.</li>
+    <li><b>Face and eye detection</b> sits on top of all of these: if there is a face, the camera goes to it, and to the nearer eye.</li>
+  </ul>
+  <p>A woman is walking toward you along the pavement. Watch the box.</p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="af-face" aria-pressed="true">Face detection</button>
+    <button class="xp-chip" type="button" data-shot="af-point">Single point, centre</button>
+  </div>
+  <p>
+    With face detection the box rides on her face wherever she goes. With a single point it sits where you left it and focuses on whatever is under it, which is the shop behind her unless you move it. Click anywhere in the picture to put the point there, as you would with the stick or the touch screen.
+  </p>
+  <h3>Whether to keep adjusting: S or C</h3>
+  <p>
+    <b>AF-S</b> focuses once and locks; <b>AF-C</b> keeps refocusing while you half-press. People walking toward you change distance fast, so they need AF-C. The <a href="#cam-focus">switch is on the front</a>.
+  </p>
+  <h3>Beyond faces</h3>
+  <p>
+    <span class="cs-menu">SUBJECT DETECTION SETTING</span> teaches the camera to find animals, birds, cars, motorcycles and bikes, aeroplanes or trains instead. It replaces face detection while it is on, so switch to <b>ANIMAL</b> for the dog and back for the family.
+  </p>
+  <p class="xp-note">
+    When focus misses, it is usually one of three things: the point was on the background; the subject moved after AF-S locked; or you were closer than the lens can focus (20 cm).
+  </p>
+</section>
+
+<section class="xp-topic" id="sci-light" data-title="Light and white balance" data-group="Photo science" data-stage="world" data-shot="sci-light" data-next="sci-color">
+  <h2>Light, and white balance</h2>
+  <p class="xp-lede">
+    The word photography means drawing with light, and the quality of the light does more for a picture than any setting. Four things about it are worth noticing: how hard it is, where it comes from, what colour it is, and how much of it there is.
+  </p>
+  <p>Your friend in the park, in four kinds of light:</p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="l-sunny" aria-pressed="true">Midday sun</button>
+    <button class="xp-chip" type="button" data-shot="l-overcast">Overcast</button>
+    <button class="xp-chip" type="button" data-shot="l-golden">Golden hour</button>
+    <button class="xp-chip" type="button" data-shot="l-dusk">Blue hour</button>
+  </div>
+  <ul>
+    <li><b>Midday sun</b> is hard: a small, high source, so shadows are black and sharp-edged, eye sockets go dark, people squint. Move your subject into open shade, or use the hard shadows as the subject.</li>
+    <li><b>Overcast</b> is soft: the whole sky is the lamp. Flattering for faces, dull for landscapes.</li>
+    <li><b>Golden hour</b>, the hour after sunrise and before sunset, is low, warm and directional. Everything looks better. Plan travel days around it.</li>
+    <li><b>Blue hour</b>, just after sunset, balances a deep blue sky against warm lamps. The best time for cities.</li>
+  </ul>
+  <h3>White balance</h3>
+  <p>
+    Light has colour: lamps are orange, shade is blue. Your brain corrects for it; the camera has to be told. <b>Auto</b> white balance neutralises most of the cast and is right nearly always. Setting it by hand is a creative choice: <b>Daylight</b> keeps a sunset warm and a lamp-lit room cosy, where Auto would drain them.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="wb-room">The living room by lamplight</button>
+    <button class="xp-chip" type="button" data-shot="wb-auto">Auto</button>
+    <button class="xp-chip" type="button" data-shot="wb-daylight">Daylight</button>
+    <button class="xp-chip" type="button" data-shot="wb-tungsten">Incandescent</button>
+  </div>
+  <p>
+    White balance is in the <a href="#cam-q">Q menu</a>. <a href="#fr-light">Where the light comes from</a> is a framing question, and has its own lesson.
+  </p>
+</section>
+
+<section class="xp-topic" id="sci-color" data-title="Film simulations and colour" data-group="Photo science" data-stage="world" data-shot="sci-color" data-next="sci-drive">
+  <h2>Film simulations and colour</h2>
+  <p class="xp-lede">
+    Since you want finished pictures straight from the camera, the film simulation is your darkroom. Choosing one is the last creative decision before you press the button.
+  </p>
+  <div class="xp-figure" data-widget="filmsims"></div>
+  <h3>A starting kit</h3>
+  <ul>
+    <li><b>Streets and travel:</b> CLASSIC CHROME. Muted, slightly hard, makes ordinary scenes look considered.</li>
+    <li><b>Family and friends:</b> REALA ACE or ASTIA. Skin looks like skin.</li>
+    <li><b>Scenery and colour:</b> Velvia, sparingly. It turns skin orange.</li>
+    <li><b>When the light is harsh or the colours are a mess:</b> ACROS. Black and white turns bad colour into good shape.</li>
+  </ul>
+  <h3>The other JPEG settings</h3>
+  <p>
+    Under the image quality menu, a handful of controls shape the file further. Leave them at zero until you have a reason: <span class="cs-menu">HIGHLIGHT</span> and <span class="cs-menu">SHADOW</span> tone (contrast at each end), <span class="cs-menu">COLOR</span> (saturation), <span class="cs-menu">GRAIN EFFECT</span>, <span class="cs-menu">COLOR CHROME EFFECT</span> (deeper tones in saturated colours), <span class="cs-menu">CLARITY</span> and <span class="cs-menu">SHARPNESS</span>. A set of these saved together is a recipe; <a href="#how-recipe">FS1-FS3 hold three</a>.
+  </p>
+  <p class="xp-note">
+    A safety net: with image quality on FINE + RAW, you can re-develop any picture later with a different simulation, in the camera itself (playback menu, <span class="cs-menu">RAW CONVERSION</span>). It is a good way to learn what each one does to a picture you know.
+  </p>
+</section>
+
+<section class="xp-topic" id="sci-drive" data-title="Bursts and the shutter" data-group="Photo science" data-stage="world" data-shot="sci-drive" data-next="fr-subject">
+  <h2>Bursts, and the two shutters</h2>
+  <p class="xp-lede">
+    Frames per second is how many pictures the camera takes while you hold the button down. Used well, it is a way of buying timing.
+  </p>
+  <p>
+    The child behind this panel changes pose every tenth of a second. Take a few single pictures with <b>Take the picture</b> and see how often you catch a good stride. A burst hands you several to choose from.
+  </p>
+  <ul>
+    <li><b>CL, 3-5 frames a second:</b> expressions, candles, a toast. Enough to beat blinks without filling the card.</li>
+    <li><b>CH, 8 frames a second:</b> running, jumping, the dog. Pair it with AF-C.</li>
+    <li><b>Single:</b> everything else. Picking the moment yourself is the skill; bursts are for when the moment is faster than you are.</li>
+  </ul>
+  <h3>Mechanical or electronic</h3>
+  <p>
+    The camera has a physical shutter that clicks and an electronic one that reads the sensor silently. <span class="cs-menu">SHUTTER TYPE</span> chooses.
+  </p>
+  <table>
+    <thead><tr><th></th><th>Mechanical</th><th>Electronic</th></tr></thead>
+    <tbody>
+      <tr><td>Fastest speed</td><td>1/4000 s</td><td>1/32000 s</td></tr>
+      <tr><td>Fastest burst</td><td>8 fps</td><td>20 fps (30 with a 1.25× crop)</td></tr>
+      <tr><td>Sound</td><td>a soft click</td><td>silent</td></tr>
+      <tr><td>Catch</td><td>none</td><td>fast-moving things lean, and indoor lights can leave bands across the frame</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Use the mechanical shutter by default. Go electronic when silence matters (a ceremony, a sleeping baby, a quiet street) and nothing is moving quickly.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- PHOTO FRAMING                                                       -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="fr-subject" data-title="Subject first, then closer" data-group="Photo framing" data-stage="world" data-shot="subj-weak" data-next="fr-thirds">
+  <h2>Subject first, then closer</h2>
+  <p class="xp-lede">
+    Before anything else, finish this sentence: "This is a picture of ____." If you cannot, neither can the person looking at it.
+  </p>
+  <p>
+    Here is a street with a fruit stall on it. The first frame is what most people take: everything is in it, so nothing is.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="subj-weak" aria-pressed="true">Weak: the whole street</button>
+    <button class="xp-chip" type="button" data-shot="subj-strong">Better: the vendor</button>
+  </div>
+  <p>
+    The second is a picture of a man selling fruit. You crossed the road and stood three steps away. Nothing else changed.
+  </p>
+  <ul>
+    <li><b>Get closer than feels polite.</b> If the subject does not fill at least a third of the frame, it is probably a picture of the background.</li>
+    <li><b>Walk; don't zoom.</b> Closeness with a wide lens puts the viewer in the scene. Zooming from across the road looks like surveillance.</li>
+    <li><b>Check the edges.</b> Run your eye round the border before you press. Half a person, a bright sign, a bin: they pull attention away from the subject.</li>
+    <li><b>One thing.</b> When in doubt, leave it out.</li>
+  </ul>
+  <p>
+    Now take over: use the <b>Move &amp; compose</b> tab or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>, find your own frame of the stall, and press <b>Take the picture</b>.
+  </p>
+</section>
+
+<section class="xp-topic" id="fr-thirds" data-title="The rule of thirds" data-group="Photo framing" data-stage="world" data-shot="thirds-weak" data-next="fr-lines">
+  <h2>The rule of thirds</h2>
+  <p class="xp-lede">
+    Divide the frame into three each way. Things placed on those lines, and especially where they cross, tend to look settled and intentional. Things placed dead centre tend to look like evidence.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="thirds-weak" aria-pressed="true">Weak: everything central</button>
+    <button class="xp-chip" type="button" data-shot="thirds-strong">Better: on the thirds</button>
+  </div>
+  <p>
+    In the first frame the tower stands in the middle and the horizon cuts the picture in half: half ground, half sky, and no opinion about either. In the second you stepped to one side and tipped the camera up a little. The tower sits on a third, the fountain balances it on the other side, and the sky gets two-thirds of the frame because the sky is the better half today.
+  </p>
+  <ul>
+    <li><b>Horizons</b> go on the upper or lower third, depending on whether land or sky is more interesting. Almost never across the middle.</li>
+    <li><b>People</b> go on a vertical third, looking or walking <i>into</i> the frame.</li>
+    <li><b>Eyes</b> in a portrait go on the upper third.</li>
+  </ul>
+  <p>
+    It is a default, not a law. Symmetry wants the centre; so does a face looking straight at you. Use thirds until you can feel when not to. The grid is on the Move &amp; compose tab here, and in <span class="cs-menu">DISP. CUSTOM SETTING</span> on the camera.
+  </p>
+</section>
+
+<section class="xp-topic" id="fr-lines" data-title="Leading lines" data-group="Photo framing" data-stage="world" data-shot="lines-weak" data-next="fr-layers">
+  <h2>Leading lines</h2>
+  <p class="xp-lede">
+    The eye follows lines. Roads, kerbs, railings, rows of lamps, shadows, a pointed arm: point them at your subject and the viewer arrives where you want.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="lines-weak" aria-pressed="true">Weak: lines going nowhere</button>
+    <button class="xp-chip" type="button" data-shot="lines-strong">Better: lines to the arch</button>
+  </div>
+  <p>
+    Same street, same light. In the second you stepped into the road and crouched. Now the centre line, both kerbs and the rooftops all run to the arch. Getting <b>low</b> stretches the lines in the foreground and makes them steeper and stronger; a wide focal length does the same.
+  </p>
+  <ul>
+    <li>Lines should lead <b>to</b> something. A road that runs out of the frame takes the viewer with it.</li>
+    <li>Diagonals feel energetic; horizontals calm; converging lines give depth.</li>
+    <li>Wait for someone to walk into the spot the lines point at, and you have a street photograph.</li>
+  </ul>
+</section>
+
+<section class="xp-topic" id="fr-layers" data-title="Foreground, middle, background" data-group="Photo framing" data-stage="world" data-shot="layers-weak" data-next="fr-frame">
+  <h2>Foreground, middle, background</h2>
+  <p class="xp-lede">
+    A photograph is flat. Depth has to be suggested, and the surest way is to give the eye something near, something in the middle and something far.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="layers-weak" aria-pressed="true">Weak: the tower alone</button>
+    <button class="xp-chip" type="button" data-shot="layers-strong">Better: three layers</button>
+  </div>
+  <p>
+    The first is the postcard: the tower, flat on, with empty paving below it. For the second you walked round the fountain and got low, so that the woman sitting on its rim is near you, the square and its people are behind her, and the tower stands at the back. It is the same tower, and now it is somewhere.
+  </p>
+  <ul>
+    <li>Travel pictures improve most from this one habit. Before shooting a landmark, look down and around for a foreground: a person, a railing, flowers, a puddle.</li>
+    <li>Use f/8 to f/11 so all three layers hold together, or a wide aperture to let the foreground go soft and hint.</li>
+    <li>People in the frame give scale. A tower is only tall next to someone small.</li>
+  </ul>
+</section>
+
+<section class="xp-topic" id="fr-frame" data-title="Frames within the frame" data-group="Photo framing" data-stage="world" data-shot="frame-weak" data-next="fr-angle">
+  <h2>Frames within the frame</h2>
+  <p class="xp-lede">
+    Doorways, arches, windows, branches, the gap between two people: anything that surrounds your subject concentrates attention on it and adds a layer of depth for free.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="frame-weak" aria-pressed="true">Weak: step through, shoot</button>
+    <button class="xp-chip" type="button" data-shot="frame-strong">Better: back up, use the arch</button>
+  </div>
+  <p>
+    Most people walk through the arch and photograph the tower. The better picture was twenty metres <i>back</i>, where the arch wraps the tower in a dark border and the street tells you how you got there.
+  </p>
+  <ul>
+    <li>The frame is usually darker than what it frames. Expose for the bright part (turn compensation down if the camera tries to lighten the arch).</li>
+    <li>Use f/8 or f/11 if you want both frame and subject sharp.</li>
+    <li>When you arrive somewhere, turn round. The way you came in is often the picture.</li>
+  </ul>
+</section>
+
+<section class="xp-topic" id="fr-angle" data-title="Height and angle" data-group="Photo framing" data-stage="world" data-shot="angle-weak" data-next="fr-background">
+  <h2>Height and angle</h2>
+  <p class="xp-lede">
+    Nearly every snapshot is taken from the same place: a standing adult's eye. Changing the camera's height is the cheapest way to make a picture that does not look like everyone else's.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="angle-weak" aria-pressed="true">Weak: looking down</button>
+    <button class="xp-chip" type="button" data-shot="angle-strong">Better: at their level</button>
+  </div>
+  <p>
+    Photographed from above, a child is a small figure on a floor. Kneel, and you are in their world: you see their face, the room rises behind them, and the picture is about them, not about your view of them. The same goes for pets, and for anyone sitting down.
+  </p>
+  <ul>
+    <li><b>Eye level with the subject</b> is the default for people. Not your eye level; theirs.</li>
+    <li><b>Low</b> makes subjects monumental and clears cluttered backgrounds by swapping them for sky.</li>
+    <li><b>High</b> shows pattern and layout: a market table, a plate, a crowd.</li>
+  </ul>
+  <p>
+    The tilting <a href="#cam-evf">screen</a> exists for this. Flip it up and hold the camera at your waist or on the ground. Try the height slider on the Move &amp; compose tab.
+  </p>
+</section>
+
+<section class="xp-topic" id="fr-background" data-title="Backgrounds" data-group="Photo framing" data-stage="world" data-shot="bg-weak" data-next="fr-light">
+  <h2>Backgrounds</h2>
+  <p class="xp-lede">
+    You look at your subject. The camera looks at everything. Half of composition is noticing what is behind people before the picture shows you.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="bg-weak" aria-pressed="true">Weak: a lamp post in her head</button>
+    <button class="xp-chip" type="button" data-shot="bg-strong">Better: two steps to the right</button>
+  </div>
+  <p>
+    In the first frame a lamp post rises out of your friend's head and a bin sits at her shoulder. She did not move for the second one. You did: two steps sideways put distant trees behind her, and zooming to 33mm narrowed the background to a small, soft patch of them.
+  </p>
+  <ul>
+    <li><b>Move yourself</b> before you move the subject. A step left or right changes everything behind them.</li>
+    <li><b>Look for plain:</b> foliage, a wall in shade, sky, distance.</li>
+    <li><b>Watch for mergers:</b> poles, branches and horizons that pass through heads; bright patches near the edge.</li>
+    <li><b>Longer and farther:</b> zooming in takes a narrower slice of background, and <a href="#sci-dof">distance behind the subject</a> softens it.</li>
+  </ul>
+</section>
+
+<section class="xp-topic" id="fr-light" data-title="Where the light comes from" data-group="Photo framing" data-stage="world" data-shot="light-front" data-next="fr-moment">
+  <h2>Where the light comes from</h2>
+  <p class="xp-lede">
+    You cannot move the sun. You can walk round your subject, which amounts to the same thing.
+  </p>
+  <p>It is an hour before sunset in the park. Your friend turns to face you wherever you stand.</p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="light-front" aria-pressed="true">Sun behind you</button>
+    <button class="xp-chip" type="button" data-shot="light-side">Sun from the side</button>
+    <button class="xp-chip" type="button" data-shot="light-back">Sun behind her</button>
+  </div>
+  <ul>
+    <li><b>Front light</b> (sun at your back) is clear and colourful and a little flat. Safe. People squint into it.</li>
+    <li><b>Side light</b> shows shape and texture: one side lit, one in shadow. The most three-dimensional.</li>
+    <li><b>Back light</b> (sun behind them) rims hair and shoulders with gold and keeps faces relaxed. The camera will make the face too dark: turn compensation up a stop or more, or use the <a href="#cam-flash">flash</a> to fill it. Let the sky go.</li>
+  </ul>
+  <p>
+    Indoors, the window is the sun. Turn people toward it or side-on to it and stand with it beside you; do not put it behind them unless you mean a silhouette.
+  </p>
+</section>
+
+<section class="xp-topic" id="fr-moment" data-title="The moment" data-group="Photo framing" data-stage="world" data-shot="moment-early" data-next="fr-level">
+  <h2>The moment</h2>
+  <p class="xp-lede">
+    A street photograph is a composition plus an instant. The composition you can build at leisure. The instant you have to wait for.
+  </p>
+  <p>
+    The method is called finding a stage. Choose a background that already works, here the zebra crossing with the street behind it. Frame it. Then wait for an actor to walk into the right place.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="moment-early" aria-pressed="true">Too early: an empty stage</button>
+    <button class="xp-chip" type="button" data-shot="moment-right">The moment</button>
+    <button class="xp-chip" type="button" data-shot="moment-live">Let it run, and catch it yourself</button>
+  </div>
+  <p>What makes a moment:</p>
+  <ul>
+    <li><b>Position:</b> the person is where the composition wants them, clear of posts and edges, with space ahead of them.</li>
+    <li><b>Stride:</b> legs apart in a full step read as walking. Legs together read as a person standing oddly.</li>
+    <li><b>Separation:</b> they stand out from what is behind them: light against dark, or dark against light.</li>
+    <li><b>Gesture:</b> a glance, a hand, a laugh. The thing you could not have planned.</li>
+  </ul>
+  <p>
+    Press <b>Let it run</b>, then <b>Take the picture</b> when the man in the red jacket is mid-crossing and mid-stride. The review will tell you where he landed. On the real street: camera up early, both eyes open, and shoot a beat before you think you should.
+  </p>
+</section>
+
+<section class="xp-topic" id="fr-level" data-title="Horizons and verticals" data-group="Photo framing" data-stage="world" data-shot="level-weak" data-next="fr-portrait">
+  <h2>Horizons and verticals</h2>
+  <p class="xp-lede">
+    People forgive a lot in a photograph. A sea that slopes or a tower that topples backwards they notice at once.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="level-weak" aria-pressed="true">Weak: close, tilted up, crooked</button>
+    <button class="xp-chip" type="button" data-shot="level-strong">Better: back, level, vertical</button>
+  </div>
+  <p>Two separate problems are in the first frame.</p>
+  <ul>
+    <li><b>A crooked horizon.</b> The camera is rolled a few degrees. Switch on the electronic level (the green line here) and straighten it. Be level, or be tilted so far that it is plainly on purpose.</li>
+    <li><b>Leaning buildings.</b> You stood close and pointed a wide lens upward to fit the tower in. Any time the camera tilts up, vertical lines lean toward each other. The cure is to keep the back of the camera upright: step far back, hold it level, and turn it on its side for a tall subject.</li>
+  </ul>
+  <p>
+    The second frame is from the far side of the square with the camera level and turned vertical. The tower stands straight. You will have spare foreground at the bottom; fill it with something (<a href="#fr-layers">layers</a>) or crop it later.
+  </p>
+  <p class="xp-note">
+    Leaning lines are not always wrong. Looking straight up between buildings, the convergence <i>is</i> the picture. The awkward zone is a slight tilt that looks like a mistake.
+  </p>
+</section>
+
+<section class="xp-topic" id="fr-portrait" data-title="Portraits" data-group="Photo framing" data-stage="world" data-shot="port-weak" data-next="fr-space">
+  <h2>Portraits of family and friends</h2>
+  <p class="xp-lede">
+    Pictures of people you love are the ones you will still be looking at in thirty years. A few habits make them much better.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="port-weak" aria-pressed="true">Weak: wide, close, from above</button>
+    <button class="xp-chip" type="button" data-shot="port-strong">Better: 33mm, eye level, vertical</button>
+  </div>
+  <ul>
+    <li><b>Zoom to 33mm and step back.</b> A wide lens held close stretches whatever is nearest, which is a nose. From two metres at 33mm, faces look like themselves.</li>
+    <li><b>Their eye level.</b> Shooting down on someone diminishes them.</li>
+    <li><b>Focus on the nearer eye.</b> Face and eye detection does this for you; check it did.</li>
+    <li><b>Turn the camera vertical</b> for one person. People are taller than they are wide.</li>
+    <li><b>Eyes on the upper third,</b> a little space above the head, and never crop at a joint: not at the wrists, knees or ankles. Mid-thigh, waist or chest.</li>
+    <li><b>Open shade or a window.</b> Soft light from the side. Not noon sun, not a ceiling light.</li>
+    <li><b>Keep talking.</b> The expression you want happens between the posed ones. Shoot a short burst as they laugh at how long you are taking.</li>
+  </ul>
+  <p>
+    For groups: f/5.6 to f/8 so both rows are sharp, everyone's face visible, and take five frames, because someone always blinks.
+  </p>
+</section>
+
+<section class="xp-topic" id="fr-space" data-title="Space and balance" data-group="Photo framing" data-stage="world" data-shot="space-weak" data-next="sit-street">
+  <h2>Space and balance</h2>
+  <p class="xp-lede">
+    Empty space is not wasted space. Where you leave it tells the viewer where things are going.
+  </p>
+  <div class="cs-ab xp-only">
+    <button class="xp-chip" type="button" data-shot="space-weak" aria-pressed="true">Weak: riding out of the frame</button>
+    <button class="xp-chip" type="button" data-shot="space-strong">Better: room to ride into</button>
+  </div>
+  <p>
+    A moving subject needs somewhere to go. In the first frame the cyclist is about to leave and the picture's empty half is behind him: the eye follows him out. In the second the space is ahead of him, and the picture holds together. The same applies to a gaze. Leave room in the direction someone is looking.
+  </p>
+  <ul>
+    <li><b>Lead room:</b> more space in front of movement and looks than behind.</li>
+    <li><b>Negative space:</b> a small subject against a big plain area (sky, wall, water) can be stronger than a frame-filling one. The emptiness becomes the mood.</li>
+    <li><b>Balance:</b> a large thing near the centre can be balanced by a small thing near the edge, like a seesaw. If a picture feels as if it is tipping, something is missing on the light side.</li>
+    <li><b>Odd numbers</b> group better than even ones: three people, not two pairs.</li>
+  </ul>
+  <p>
+    That is the end of the framing lessons. None of them is a rule. They are a list of things to check until checking becomes seeing.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- SITUATIONS                                                          -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="sit-street" data-title="Street" data-group="Situations" data-stage="world" data-shot="sit-street" data-next="sit-travel">
+  <h2>Cheat sheet: street</h2>
+  <p class="xp-lede">
+    Set the camera so that it needs nothing from you, and spend your attention on people.
+  </p>
+  <table>
+    <tbody>
+      <tr><th>Mode</th><td>A, aperture priority</td></tr>
+      <tr><th>Aperture</th><td>f/8 in daylight; f/5.6 in shade; wide open at dusk</td></tr>
+      <tr><th>ISO</th><td>AUTO2: minimum shutter 1/250, up to 12800</td></tr>
+      <tr><th>Zoom</th><td>13-23mm. Pick one and leave it; you learn to see the frame before lifting the camera</td></tr>
+      <tr><th>Focus</th><td>AF-S with face detection, or manual zone focus at 2.5 m</td></tr>
+      <tr><th>Compensation</th><td>−⅓ in hard sun, to hold highlights</td></tr>
+      <tr><th>Film simulation</th><td>CLASSIC CHROME, or ACROS</td></tr>
+      <tr><th>Extras</th><td>Beeps off, AF lamp off, screen tilted up, camera already in your hand</td></tr>
+    </tbody>
+  </table>
+  <h3>How to work</h3>
+  <ul>
+    <li><a href="#fr-moment">Find a stage and wait</a>. It is easier and kinder than chasing people.</li>
+    <li>Shoot from the chest with the tilted screen, or raise the camera early and keep it up so it stops being an event.</li>
+    <li>Light and shadow, reflections, gestures, people against plain walls. Not just "a person in a street".</li>
+    <li>If someone notices, smile. If someone minds, apologise and delete it. Know the local rules about photographing people, and never make someone's bad moment your picture.</li>
+  </ul>
+</section>
+
+<section class="xp-topic" id="sit-travel" data-title="Travel" data-group="Situations" data-stage="world" data-shot="sit-travel" data-next="sit-portrait">
+  <h2>Cheat sheet: travel</h2>
+  <p class="xp-lede">
+    Travel photography is everything at once: buildings, food, strangers, your companions. One set-up handles the lot; the timing is what you plan.
+  </p>
+  <table>
+    <tbody>
+      <tr><th>Mode</th><td>A, aperture priority</td></tr>
+      <tr><th>Aperture</th><td>f/8 for places; wide open for interiors and people</td></tr>
+      <tr><th>ISO</th><td>AUTO1: minimum shutter 1/125, up to 6400</td></tr>
+      <tr><th>Zoom</th><td>The whole range: 13mm for places, 33mm for details and faces</td></tr>
+      <tr><th>Focus</th><td>AF-S, single point, face detection on</td></tr>
+      <tr><th>Film simulation</th><td>CLASSIC CHROME for cities; Velvia for scenery; REALA ACE when people are the point</td></tr>
+      <tr><th>Interiors</th><td>13mm, f/3.5, stabiliser on, elbows in: 1/8 s is fine for churches and museums</td></tr>
+    </tbody>
+  </table>
+  <h3>Tell the story in three sizes</h3>
+  <ul>
+    <li><b>Wide:</b> where you are. <a href="#fr-layers">Give it a foreground.</a></li>
+    <li><b>Medium:</b> what happens there. People doing things.</li>
+    <li><b>Detail:</b> what it feels like. A hand, a plate, a door handle, a ticket. The lens focuses to 20 cm.</li>
+  </ul>
+  <p>
+    Be out for the hour after sunrise and the two around sunset; eat lunch at noon when the light is worst. Put your companions <i>in</i> the places. And take the obvious postcard first, so you can relax and look for the better one.
+  </p>
+</section>
+
+<section class="xp-topic" id="sit-portrait" data-title="People who know you're there" data-group="Situations" data-stage="world" data-shot="sit-portrait" data-next="sit-action">
+  <h2>Cheat sheet: portraits</h2>
+  <table>
+    <tbody>
+      <tr><th>Mode</th><td>A, aperture priority</td></tr>
+      <tr><th>Zoom</th><td>33mm, from about two metres</td></tr>
+      <tr><th>Aperture</th><td>Wide open (f/6.3 at 33mm). f/8 for groups</td></tr>
+      <tr><th>ISO</th><td>AUTO1</td></tr>
+      <tr><th>Focus</th><td>AF-S, face and eye detection on</td></tr>
+      <tr><th>Compensation</th><td>+⅓ to +⅔: skin looks better a touch bright</td></tr>
+      <tr><th>Film simulation</th><td>ASTIA, REALA ACE or PRO Neg. Std</td></tr>
+      <tr><th>Orientation</th><td>Vertical for one person</td></tr>
+    </tbody>
+  </table>
+  <h3>The order of operations</h3>
+  <ol>
+    <li><b>Light.</b> Find open shade or a window before you find a pose.</li>
+    <li><b>Background.</b> Plain and far. <a href="#fr-background">Move yourself</a> until it is.</li>
+    <li><b>Height.</b> Camera at their eye level.</li>
+    <li><b>Frame.</b> Eyes on the upper third; crop between joints.</li>
+    <li><b>Talk, then shoot.</b> Several frames. The third is usually the one.</li>
+  </ol>
+  <p>
+    Try the <b>33mm F1.4 prime</b> on the Lens &amp; focus tab to see what a portrait lens would add: the same framing with the background dissolved.
+  </p>
+</section>
+
+<section class="xp-topic" id="sit-action" data-title="Kids, pets and parties" data-group="Situations" data-stage="world" data-shot="sit-action" data-next="sit-night">
+  <h2>Cheat sheet: kids, pets and parties</h2>
+  <p class="xp-lede">
+    The hardest everyday photography there is: fast subjects, poor light, no second takes. The settings are simple. The trick is accepting grain.
+  </p>
+  <table>
+    <tbody>
+      <tr><th>Mode</th><td>S, shutter priority (or M with Auto ISO)</td></tr>
+      <tr><th>Shutter speed</th><td>1/500 for children; 1/1000 for dogs; 1/250 if they are only fidgeting</td></tr>
+      <tr><th>ISO</th><td>Auto, up to 12800</td></tr>
+      <tr><th>Zoom</th><td>13-18mm indoors: it keeps the aperture at f/3.5-f/4 and forgives focus</td></tr>
+      <tr><th>Focus</th><td>AF-C, zone or wide/tracking, face detection on (ANIMAL detection for pets)</td></tr>
+      <tr><th>Drive</th><td>CL or CH burst</td></tr>
+      <tr><th>Film simulation</th><td>REALA ACE; ACROS when the room light is ugly</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li><b>Get to their height</b> and <a href="#fr-angle">stay there</a>.</li>
+    <li><b>Go where the light is.</b> Move the game near the window. Two metres closer to it is worth two stops.</li>
+    <li><b>Zoom out, not in.</b> At 33mm the lens is f/6.3, nearly two stops dimmer than at 13mm. Indoors, wide and close wins.</li>
+    <li><b>Anticipate.</b> Focus on where they are about to be: the bottom of the slide, the cake.</li>
+    <li><b>Keep the grainy ones.</b> Nobody ever threw away a sharp picture of their child because of noise.</li>
+  </ul>
+</section>
+
+<section class="xp-topic" id="sit-night" data-title="Low light and night" data-group="Situations" data-stage="world" data-shot="sit-night" data-next="missions">
+  <h2>Cheat sheet: low light and night</h2>
+  <p class="xp-lede">
+    Your lens is slow, so night is a negotiation. You have three things to bargain with: a steady hand, a high ISO, and going where the light is.
+  </p>
+  <table>
+    <tbody>
+      <tr><th>Mode</th><td>A, aperture priority</td></tr>
+      <tr><th>Zoom and aperture</th><td>13mm at f/3.5. Stay wide: every bit of zoom costs light</td></tr>
+      <tr><th>ISO</th><td>Auto, minimum shutter 1/60 for people (1/15 for empty scenes), up to 12800</td></tr>
+      <tr><th>Compensation</th><td>−⅔ to −1: keep night dark and lamps from burning out</td></tr>
+      <tr><th>Stabiliser</th><td>On. Elbows in, breathe out, squeeze. Lean on a wall or lamp post</td></tr>
+      <tr><th>Focus</th><td>AF-S on something with contrast: a lit sign, an edge</td></tr>
+      <tr><th>Film simulation</th><td>CLASSIC Neg. or ACROS. Grain suits both</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li><b>Shoot at blue hour,</b> twenty minutes after sunset, when there is still light in the sky. It looks more like night than night does.</li>
+    <li><b>Put people near light:</b> shop windows, stalls, phone screens, street lamps. A face lit by a window is a portrait; a face in the dark is noise.</li>
+    <li><b>For still scenes, slow down instead of turning up:</b> rest the camera on a wall or railing, set the 2-second self-timer, ISO 160, and let the shutter take a second or two.</li>
+    <li><b>Skip the flash</b> unless it is the look you want.</li>
+  </ul>
+</section>
+
+<!-- ================================================================== -->
+<!-- PRACTICE                                                            -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="missions" data-title="Simulator missions" data-group="Practice" data-next="practice">
+  <h2>Simulator missions</h2>
+  <p class="xp-lede">
+    Twelve pictures to get right in the viewfinder before you try them outside. Each starts you in the wrong place or with the wrong settings. Fix it, press <b>Take the picture</b>, and the review tells you which conditions you met.
+  </p>
+  <p class="xp-only"><b data-mission-progress>0 of 12 missions complete</b></p>
+  <div class="cs-progress xp-only"><i data-mission-bar></i></div>
+  <p>
+    There is more than one way to pass most of them. If you are stuck, each has a hint, and the lesson it comes from is linked.
+  </p>
+
+  <h3>Settings</h3>
+
+  <article class="cs-mission" id="m-freeze">
+    <h3>1. Freeze the cyclist</h3>
+    <p>You are on the pavement on an overcast day at f/11 and ISO 160. Cyclists and joggers go by as streaks. Get a sharp picture of the cyclist without letting the ISO climb past 1600. He comes by every ten seconds or so.</p>
+    <details><summary>Hint</summary><p>Switch to S and pick 1/500 or faster with ISO on Auto; or stay in A and open the aperture until the camera's speed is fast enough. <a href="#sci-shutter">Shutter speed</a>.</p></details>
+  </article>
+
+  <article class="cs-mission" id="m-window">
+    <h3>2. Faces against the window</h3>
+    <p>Two people at a table with a bright window behind them, and the camera has turned them into shadows. Make their faces properly bright, at 1/60 or faster.</p>
+    <details><summary>Hint</summary><p>Turn exposure compensation up until the faces look right and let the window blow out. Watch the shutter speed: if it drops below 1/60, open the aperture or let the ISO rise. <a href="#sci-metering">Metering</a>.</p></details>
+  </article>
+
+  <article class="cs-mission" id="m-night">
+    <h3>3. Keep the night dark</h3>
+    <p>A street at night. The camera is brightening it into a grey murk and the lamps are burning out. Make it look like night: dark overall, lamps with their shape, no camera shake.</p>
+    <details><summary>Hint</summary><p>Exposure compensation down a stop or more. A darker picture also needs less ISO or a faster speed, which helps with shake. <a href="#sit-night">Low light</a>.</p></details>
+  </article>
+
+  <article class="cs-mission" id="m-steady">
+    <h3>4. Steady the tower</h3>
+    <p>Dusk, zoomed in to 33mm on the clock, ISO 160, stabiliser off. The shutter is open for a third of a second and your hands are smearing the picture. Get it sharp without zooming out and without going past ISO 1600.</p>
+    <details><summary>Hint</summary><p>Two ways: switch the stabiliser on (Lens &amp; focus tab), or raise the ISO until the shutter speed is fast enough to hold. <a href="#sci-shutter">Shutter speed</a>, <a href="#sci-iso">ISO</a>.</p></details>
+  </article>
+
+  <article class="cs-mission" id="m-soft">
+    <h3>5. Soften the background with your own lens</h3>
+    <p>Your friend is in the park and you are standing well back at 13mm and f/8: everything is sharp to the horizon. Using only the kit lens, make the trees behind her clearly soft while she stays sharp.</p>
+    <details><summary>Hint</summary><p>All three levers at once: zoom to 33mm, open to f/6.3, and walk in until you are about two metres from her. <a href="#sci-dof">Depth of field</a>.</p></details>
+  </article>
+
+  <article class="cs-mission" id="m-deep">
+    <h3>6. Flowers and friend, both sharp</h3>
+    <p>You are crouched behind the flower bed with your friend nine metres beyond it. At f/5.6 you can have the flowers or her, not both. Get both sharp, without shake.</p>
+    <details><summary>Hint</summary><p>A smaller aperture (f/16), or a wider focal length, or focus between the two. Watch the blue zone on the plan view. <a href="#sci-dof">Depth of field</a>.</p></details>
+  </article>
+
+  <h3>Framing</h3>
+
+  <article class="cs-mission" id="m-thirds">
+    <h3>7. Tower on a third</h3>
+    <p>The tower is dead centre, the horizon cuts the frame in half and the camera is tilted. Make a level picture with the whole tower standing on one of the vertical thirds and the horizon away from the middle.</p>
+    <details><summary>Hint</summary><p>Straighten the roll slider first. Then step sideways and turn back toward the tower, and tip the camera up a little. The grid and the level are switched on. <a href="#fr-thirds">Rule of thirds</a>.</p></details>
+  </article>
+
+  <article class="cs-mission" id="m-frame">
+    <h3>8. The tower through the arch</h3>
+    <p>You have walked through the arch and are looking at the tower like everyone else. Go back and use the arch as a frame: both sides of it in the picture, the tower showing through it.</p>
+    <details><summary>Hint</summary><p>Turn round and walk back into the street (hold S, or the down arrow on the pad) until the arch surrounds the tower, then zoom to tidy the edges. Too far back and the top of the arch hides the tower. <a href="#fr-frame">Frames within the frame</a>.</p></details>
+  </article>
+
+  <article class="cs-mission" id="m-eye">
+    <h3>9. Down at their level</h3>
+    <p>The birthday child is tearing up and down the living room and you are photographing the top of their head. Get a sharp picture from their height, looking across at them, not down.</p>
+    <details><summary>Hint</summary><p>Lower the camera height slider to about 0.7 m and level the view by dragging the picture. Then wait for them to run into the frame. <a href="#fr-angle">Height and angle</a>.</p></details>
+  </article>
+
+  <article class="cs-mission" id="m-moment">
+    <h3>10. The stride</h3>
+    <p>The stage is set: a zebra crossing with the street behind it. The man in the red jacket crosses back and forth. Catch him on the crossing in full stride, legs apart, clear of the edges of the frame.</p>
+    <details><summary>Hint</summary><p>Leave the camera where it is and watch a crossing or two before you shoot. Press just before the legs reach their widest. <a href="#fr-moment">The moment</a>.</p></details>
+  </article>
+
+  <article class="cs-mission" id="m-room">
+    <h3>11. Room to ride into</h3>
+    <p>From the pavement, photograph the cyclist so that the empty part of the frame is in front of him, not behind, and he is not pressed against an edge. Frozen sharp.</p>
+    <details><summary>Hint</summary><p>He rides from right to left. Aim a little to the left of where he will be, so that he is in the right-hand half when you press. <a href="#fr-space">Space and balance</a>.</p></details>
+  </article>
+
+  <article class="cs-mission" id="m-portrait">
+    <h3>12. A flattering portrait</h3>
+    <p>You are an arm's length from your friend at 13mm, looking down at her. Make a portrait she would thank you for: a longer focal length from farther back, at her eye level, the camera turned vertical, her eyes in the upper part of the frame, and nothing growing out of her head.</p>
+    <details><summary>Hint</summary><p>Zoom to 33mm, back away to two metres, set the height to about 1.6 m, press Vertical. If the lamp post is behind her head, step sideways until it is not. <a href="#fr-portrait">Portraits</a>, <a href="#fr-background">Backgrounds</a>.</p></details>
+  </article>
+</section>
+
+<section class="xp-topic" id="practice" data-title="How practice works" data-group="Practice" data-next="practice-street">
+  <h2>Practice</h2>
+  <p class="xp-lede">
+    Reading about photography is to photography what reading about swimming is to swimming. Here are sixteen shots to go and take. Each one isolates a skill from the course, and each comes with a prompt for getting a critique.
+  </p>
+  <p class="xp-only"><b data-progress>0 of 16 practice shots done</b></p>
+  <div class="cs-progress xp-only"><i data-progress-bar></i></div>
+  <h3>The loop</h3>
+  <ol>
+    <li><b>Pick one shot</b> and read its brief. Where there is a <b>Rehearse it in the simulator</b> button, try it there first.</li>
+    <li><b>Go and shoot it.</b> Take twenty frames, not two. Change one thing at a time.</li>
+    <li><b>Choose your best frame</b> yourself, before asking anyone. Choosing is half the training.</li>
+    <li><b>Get it onto your phone or computer:</b> the FUJIFILM XApp sends pictures to a phone over Bluetooth and Wi-Fi, or plug in the USB-C cable or the card.</li>
+    <li><b>Add the photo to its card.</b> The page reads the settings out of the file and gives a first look at shutter speed, ISO and exposure. The file stays in your browser; nothing is uploaded.</li>
+    <li><b>Press <i>Copy the critique prompt</i>,</b> open Claude, paste the prompt and attach the photo.</li>
+    <li><b>Reshoot</b> with the one fix that mattered most. Then tick the box.</li>
+  </ol>
+  <p class="xp-note">
+    The prompt tells Claude what camera and lens you have, what the exercise was for, what to judge, and the settings you used. Adding your photo to the card fills the settings in for you; use the original JPEG from the camera, since chat and photo apps often strip them out. You can also type them under <b>Add my settings</b>. New to all this? Warm up with the <a href="#missions">simulator missions</a> first.
+  </p>
+  <ul>
+    <li><a href="#practice-street">Street: four shots</a></li>
+    <li><a href="#practice-travel">Travel: four shots</a></li>
+    <li><a href="#practice-people">Family and friends: four shots</a></li>
+    <li><a href="#practice-action">Movement and low light: four shots</a></li>
+  </ul>
+  <article class="cs-shot" id="shot-free" data-title="Open critique" data-free="1">
+    <h3>Any photo at all</h3>
+    <p class="cs-goal">An open critique of any picture you have taken, with no exercise attached: what works, what does not, and what to do differently next time.</p>
+    <ul class="cs-check">
+      <li>Is there a clear subject, and does everything in the frame support it?</li>
+      <li>Is the subject sharp, and is the exposure right for it?</li>
+      <li>Do the light, the background and the edges of the frame help or hurt?</li>
+      <li>What is the single change that would have improved it most?</li>
+    </ul>
+  </article>
+</section>
+
+<section class="xp-topic" id="practice-street" data-title="Street shots" data-group="Practice" data-next="practice-travel">
+  <h2>Practice: street</h2>
+
+  <article class="cs-shot" id="shot-one-person" data-expect="speed>=1/250 focal<=23" data-title="One person, one street" data-try="subj-strong">
+    <h3>1. One person, one street</h3>
+    <p class="cs-goal">Make a picture that is unmistakably of one person in a public place: someone working, waiting or selling. They should fill at least a third of the frame.</p>
+    <p><b>Set up:</b> A mode, f/8, AUTO2 (1/250 minimum), 18-23mm, CLASSIC CHROME. Walk closer than is comfortable. Lesson: <a href="#fr-subject">Subject first</a>.</p>
+    <ul class="cs-check">
+      <li>Is it obvious within a second who the picture is of?</li>
+      <li>Is the person large enough in the frame, and sharp, with no motion blur?</li>
+      <li>Are the edges clean: no half-people, bright distractions or cut-off limbs?</li>
+      <li>Does the background add to the story or compete with it?</li>
+    </ul>
+  </article>
+
+  <article class="cs-shot" id="shot-zone" data-expect="focal<=14 aperture>=7.1 speed>=1/250" data-title="Zone focus walk" data-try="zone">
+    <h3>2. Zone focus walk</h3>
+    <p class="cs-goal">Shoot a whole walk without autofocus, relying on depth of field, and bring back one frame of a person passing within three metres that is sharp and well timed.</p>
+    <p><b>Set up:</b> focus selector on M, 13mm, f/8, focus set to about 2.5 m (use the distance scale on the display), AUTO2. Shoot from the chest with the screen tilted. Lesson: <a href="#sci-dof">Depth of field</a>.</p>
+    <ul class="cs-check">
+      <li>Is the main person inside the sharp zone, with no motion blur?</li>
+      <li>Was I close enough for a 13mm lens, or is the person lost in the frame?</li>
+      <li>Is the frame level, given that I was not looking through the viewfinder?</li>
+      <li>Was the moment well chosen: stride, gesture, expression?</li>
+    </ul>
+  </article>
+
+  <article class="cs-shot" id="shot-stage" data-expect="speed>=1/250" data-title="Find a stage, wait for the actor" data-try="moment-early">
+    <h3>3. Find a stage, wait for the actor</h3>
+    <p class="cs-goal">Choose a background first (a doorway, a mural, a patch of light, a crossing), compose it, and wait until a passer-by walks into exactly the right spot.</p>
+    <p><b>Set up:</b> A mode, f/8, AUTO2, any focal length. Stand still for at least ten minutes in one place. Lesson: <a href="#fr-moment">The moment</a>.</p>
+    <ul class="cs-check">
+      <li>Is the person in the strongest position in the frame, with space ahead of them?</li>
+      <li>Did I catch a full stride or a clear gesture?</li>
+      <li>Do they separate cleanly from the background, or merge with something behind them?</li>
+      <li>Would the background have been worth a picture even without the person?</li>
+    </ul>
+  </article>
+
+  <article class="cs-shot" id="shot-shadow" data-expect="comp<=-0.33" data-title="Hard light and shadow">
+    <h3>4. Hard light and shadow</h3>
+    <p class="cs-goal">In strong sun, make a picture where the pattern of light and shadow is the subject, with a person or object caught in a patch of light and the shadows left properly dark.</p>
+    <p><b>Set up:</b> A mode, f/8, exposure compensation −1, ACROS or CLASSIC CHROME. Watch the histogram: nothing against the right wall. Lesson: <a href="#sci-metering">Metering</a>.</p>
+    <ul class="cs-check">
+      <li>Do the highlights keep their detail, or are they blown?</li>
+      <li>Are the shadows doing compositional work (shapes, lines, framing), or just dark?</li>
+      <li>Is the subject in the light, and is it where the eye goes first?</li>
+      <li>Did I underexpose enough for the mood, or too much?</li>
+    </ul>
+  </article>
+</section>
+
+<section class="xp-topic" id="practice-travel" data-title="Travel shots" data-group="Practice" data-next="practice-people">
+  <h2>Practice: travel</h2>
+
+  <article class="cs-shot" id="shot-landmark" data-expect="aperture>=7.1 focal<=18" data-title="A landmark with a foreground" data-try="layers-strong">
+    <h3>5. A landmark with a foreground</h3>
+    <p class="cs-goal">Photograph a well-known building, monument or view in a way that is not the postcard: with a foreground layer or a frame within the frame that gives it depth and a sense of being there.</p>
+    <p><b>Set up:</b> A mode, f/8 to f/11, AUTO1, 13-18mm. Walk round it before shooting. Lessons: <a href="#fr-layers">Layers</a>, <a href="#fr-frame">Frames</a>.</p>
+    <ul class="cs-check">
+      <li>Are there distinct near, middle and far layers, and are they all acceptably sharp?</li>
+      <li>Does the foreground lead to the landmark or just sit in front of it?</li>
+      <li>Is the horizon level and are the verticals upright?</li>
+      <li>Is the sky holding detail, or blown white?</li>
+    </ul>
+  </article>
+
+  <article class="cs-shot" id="shot-lines" data-expect="aperture>=7.1 focal<=16" data-title="Leading lines" data-try="lines-strong">
+    <h3>6. Leading lines</h3>
+    <p class="cs-goal">Find strong lines (a road, a railing, a row of columns, a shoreline) and compose so that they carry the eye to a definite subject.</p>
+    <p><b>Set up:</b> A mode, f/8, 13mm, camera low. Try it from standing, kneeling and ground level. Lesson: <a href="#fr-lines">Leading lines</a>.</p>
+    <ul class="cs-check">
+      <li>Do the lines arrive at a subject, or run out of the frame?</li>
+      <li>Did getting low and wide strengthen them?</li>
+      <li>Is the subject at the end of the lines strong enough to be worth the journey?</li>
+      <li>Is the picture level, and is depth of field deep enough?</li>
+    </ul>
+  </article>
+
+  <article class="cs-shot" id="shot-golden" data-title="Golden hour">
+    <h3>7. The same place, in good light</h3>
+    <p class="cs-goal">Return to a place you photographed in the middle of the day and shoot it again within an hour of sunset or sunrise, making the direction and colour of the light part of the picture.</p>
+    <p><b>Set up:</b> A mode, f/8, white balance on Daylight to keep the warmth, compensation −⅓. Shoot with the sun to one side. Lesson: <a href="#sci-light">Light</a>.</p>
+    <ul class="cs-check">
+      <li>Is the low light shaping the scene: long shadows, texture, warm against cool?</li>
+      <li>Did I choose a good direction of light (side or back), or flat front light?</li>
+      <li>Is the colour rich without being garish, and are highlights held?</li>
+      <li>If I attach the midday version too, what exactly did the light change?</li>
+    </ul>
+  </article>
+
+  <article class="cs-shot" id="shot-detail" data-expect="focal>=28" data-title="The detail">
+    <h3>8. The detail</h3>
+    <p class="cs-goal">Make a close-up of something small that stands for a place: food, a hand at work, a texture, a sign, a door. One subject, simple background, soft light.</p>
+    <p><b>Set up:</b> A mode, 33mm, wide open, 20-40 cm away, single focus point placed exactly. Near a window or in shade. Lesson: <a href="#sci-dof">Depth of field</a>.</p>
+    <ul class="cs-check">
+      <li>Is focus exactly on the most important part?</li>
+      <li>Is the background simple, and did getting close soften it?</li>
+      <li>Is the light soft and from a flattering direction?</li>
+      <li>Does this detail say something about where it was taken?</li>
+    </ul>
+  </article>
+</section>
+
+<section class="xp-topic" id="practice-people" data-title="Family and friends shots" data-group="Practice" data-next="practice-action">
+  <h2>Practice: family and friends</h2>
+
+  <article class="cs-shot" id="shot-window" data-expect="focal>=28" data-title="Window portrait">
+    <h3>9. Window portrait</h3>
+    <p class="cs-goal">A head-and-shoulders portrait lit only by a window, with the person about a metre from it and turned partly toward it, so that light falls across the face from one side.</p>
+    <p><b>Set up:</b> A mode, 33mm, wide open, face and eye detection, compensation +⅓, ASTIA or REALA ACE, camera vertical. Room lights off. Lessons: <a href="#fr-portrait">Portraits</a>, <a href="#fr-light">Light direction</a>.</p>
+    <ul class="cs-check">
+      <li>Is the nearer eye sharp, and is there a catchlight in the eyes?</li>
+      <li>Is skin well exposed: not grey, not blown on the window side?</li>
+      <li>Is the shadow side of the face pleasing, or too dark?</li>
+      <li>Is the framing clean: eyes on the upper third, no crop at a joint, quiet background?</li>
+    </ul>
+  </article>
+
+  <article class="cs-shot" id="shot-shade" data-expect="focal>=28 aperture<=6.4" data-title="Open-shade portrait, far background" data-try="bg-strong">
+    <h3>10. Open shade, far background</h3>
+    <p class="cs-goal">An outdoor portrait in open shade with the background as far away and as plain as possible, to get the most subject separation this lens can give.</p>
+    <p><b>Set up:</b> A mode, 33mm at f/6.3, stand 1.5-2 m away, background at least 10 m behind. Move sideways until nothing grows out of their head. Lesson: <a href="#fr-background">Backgrounds</a>.</p>
+    <ul class="cs-check">
+      <li>Does the person stand out from the background? Is it noticeably softer than they are?</li>
+      <li>Is anything merging with their head or shoulders?</li>
+      <li>Is the camera at their eye level, and is the expression natural?</li>
+      <li>Is the light soft and even on the face?</li>
+    </ul>
+  </article>
+
+  <article class="cs-shot" id="shot-environment" data-expect="focal<=23" data-title="Environmental portrait">
+    <h3>11. Someone in their place</h3>
+    <p class="cs-goal">A portrait where the surroundings tell you who the person is: at their desk, in their kitchen, with their bike, in their garden. The person is the subject; the place is the caption.</p>
+    <p><b>Set up:</b> A mode, 16-23mm, f/5.6, AUTO1. Keep the person away from the edges of the frame, where wide lenses stretch things. Lesson: <a href="#sci-focal">Focal length</a>.</p>
+    <ul class="cs-check">
+      <li>Is the person clearly the subject, even though they are smaller in the frame?</li>
+      <li>Does the setting say something specific about them?</li>
+      <li>Is there wide-angle distortion on the person?</li>
+      <li>Is the frame tidy: nothing distracting at the edges, verticals upright?</li>
+    </ul>
+  </article>
+
+  <article class="cs-shot" id="shot-group" data-expect="aperture>=5 focal<=20 speed>=1/60" data-title="Group at a table">
+    <h3>12. A group at a table</h3>
+    <p class="cs-goal">Three or more people together, indoors, everyone's face visible and sharp, looking like themselves and not like a line-up.</p>
+    <p><b>Set up:</b> A mode, 16-18mm, f/5.6, AUTO1, face detection on, CL burst. Take five frames. Stand so the window is beside or behind you. Lesson: <a href="#sit-action">Kids, pets and parties</a>.</p>
+    <ul class="cs-check">
+      <li>Is every face in focus, front row and back?</li>
+      <li>Are all eyes open and faces unobstructed?</li>
+      <li>Is the grouping natural, and does it fill the frame without anyone at the stretched edges?</li>
+      <li>Is the light even across the group?</li>
+    </ul>
+  </article>
+</section>
+
+<section class="xp-topic" id="practice-action" data-title="Movement and low-light shots" data-group="Practice" data-next="gallery">
+  <h2>Practice: movement and low light</h2>
+
+  <article class="cs-shot" id="shot-kid" data-expect="speed>=1/500" data-title="A child or pet in motion, at their level" data-try="sit-action">
+    <h3>13. In motion, at their level</h3>
+    <p class="cs-goal">A sharp picture of a moving child or pet, taken from their eye height, with the face visible.</p>
+    <p><b>Set up:</b> S mode at 1/500 (1/1000 for a dog), Auto ISO to 12800, AF-C, face detection (ANIMAL detection for pets), CH burst, 13-18mm. Kneel or lie down. Lesson: <a href="#fr-angle">Height and angle</a>.</p>
+    <ul class="cs-check">
+      <li>Is the motion frozen: sharp face, no smear in hands or feet?</li>
+      <li>Is focus on the face or eyes and not the background?</li>
+      <li>Was the camera truly at their eye level?</li>
+      <li>Is the ISO noise acceptable for how the picture will be used, and did I pick the best frame of the burst?</li>
+    </ul>
+  </article>
+
+  <article class="cs-shot" id="shot-pan" data-expect="speed<=1/40" data-title="Panning">
+    <h3>14. Panning</h3>
+    <p class="cs-goal">Follow a cyclist, runner or car with the camera during a slow exposure so that the subject is reasonably sharp and the background streaks with speed.</p>
+    <p><b>Set up:</b> S mode at 1/30, ISO 160, AF-C, CH burst, 23mm. Stand side-on to the traffic, start following early, press gently and keep turning after the click. Expect one keeper in twenty. Lesson: <a href="#sci-shutter">Shutter speed</a>.</p>
+    <ul class="cs-check">
+      <li>Is some part of the subject sharp (ideally the face or body) against a clearly streaked background?</li>
+      <li>Are the streaks horizontal and smooth, or did the camera wobble?</li>
+      <li>Is there room in the frame ahead of the subject?</li>
+      <li>Would a slower or faster shutter speed have served this better?</li>
+    </ul>
+  </article>
+
+  <article class="cs-shot" id="shot-dinner" data-expect="speed>=1/50 focal<=16" data-title="Dinner-table light" data-try="sci-iso">
+    <h3>15. Dinner-table light</h3>
+    <p class="cs-goal">A natural-looking picture of people at a table in the evening, by the room's own light and with no flash, where the faces are sharp and the atmosphere survives.</p>
+    <p><b>Set up:</b> A mode, 13mm at f/3.5, Auto ISO with 1/60 minimum and 12800 maximum, stabiliser on, compensation −⅓, elbows on the table. Lesson: <a href="#sci-iso">ISO</a>.</p>
+    <ul class="cs-check">
+      <li>Are the faces sharp, or is there camera shake or subject movement?</li>
+      <li>Is the noise acceptable for the size it will be seen at?</li>
+      <li>Does the colour feel like the room did, neither orange nor drained?</li>
+      <li>Are lamps and candles holding their shape or burning out?</li>
+    </ul>
+  </article>
+
+  <article class="cs-shot" id="shot-night" data-expect="comp<=-0.33" data-title="Night street" data-try="sit-night">
+    <h3>16. Night street</h3>
+    <p class="cs-goal">A street scene after dark that still looks like night: deep shadows, lights that are not blown out, and a subject placed in or against a pool of light.</p>
+    <p><b>Set up:</b> A mode, 13mm at f/3.5, Auto ISO with 1/60 minimum and 12800 maximum, compensation −⅔ to −1, CLASSIC Neg. or ACROS. Go at blue hour as well as full dark. Lesson: <a href="#sit-night">Low light</a>.</p>
+    <ul class="cs-check">
+      <li>Does it read as night, or did the camera brighten it into murk?</li>
+      <li>Are light sources controlled, with detail around them?</li>
+      <li>Is the subject lit or silhouetted clearly, and sharp enough?</li>
+      <li>Is there blur from camera shake, and would bracing or a slower, steadier exposure have helped?</li>
+    </ul>
+  </article>
+</section>
+
+<!-- ================================================================== -->
+<!-- GALLERY                                                             -->
+<!-- ================================================================== -->
+<!--
+  One <figure class="cs-ph"> per photograph. To add one:
+    1. Use only public-domain or Creative Commons work, and save a copy (about
+       1100 px on the long edge) in media/cameraskills/photos/. No hot-linking.
+    2. data-kind: street | travel | people | movement | light
+       data-year, data-by ("Surname, Given", for sorting)
+       data-lessons: ids of the topics it should appear under, most relevant first
+    3. In the caption: title, photographer and year, what to notice, and a credit
+       line with the licence and a link to the source page.
+-->
+
+<section class="xp-topic" id="gallery" data-title="Photographs to learn from" data-group="Gallery" data-next="glossary">
+  <h2>Photographs to learn from</h2>
+  <p class="xp-lede">
+    Thirty-two real photographs, each chosen because it shows one of the lessons more clearly than a diagram can. Half are classics from the last hundred and thirty years; half are recent, in colour, by working photographers who share their pictures freely.
+  </p>
+  <p>
+    Each has a note on what to notice. The same pictures appear at the foot of the lessons they belong to. Click one to see it large.
+  </p>
+  <div id="cs-gallery-controls" class="xp-controls cs-gallery-controls xp-only" role="group" aria-label="Filter and sort the gallery"></div>
+  <div id="cs-gallery" class="cs-gallery">
+  <figure class="cs-ph" id="ph-ashaninka-girl" data-kind="people" data-year="2010" data-by="França, Pedro" data-lessons="sci-aperture sci-dof fr-portrait">
+    <img src="media/cameraskills/photos/ashaninka-girl.jpg" width="1100" height="732" loading="lazy" alt="Close portrait of a young girl; her eyes are sharp and the dark background is completely out of focus.">
+    <figcaption>
+      <b class="cs-ph-title">Young Ashaninka girl, Apiwtxa village, Brazil</b>
+      <span class="cs-ph-by">Pedro França / MinC, 2010</span>
+      <p class="cs-ph-note">Shallow depth of field: her eyes are sharp and everything behind her has melted away. That takes a wider aperture and a longer lens than your kit lens has; the "what if" prime in the viewfinder shows the same effect. The camera is at her eye level.</p>
+      <p class="cs-ph-credit">Photo © Pedro França / MinC, <a href="https://creativecommons.org/licenses/by/2.0">CC BY 2.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Young_Ashaninka_girl_in_an_Apiwtxa_village,_Acre_state,_Brazil.jpg">Wikimedia Commons</a>. Resized.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-dundas-subway" data-kind="movement" data-year="2008" data-by="Radomianin" data-lessons="sci-shutter">
+    <img src="media/cameraskills/photos/dundas-subway.jpg" width="828" height="1100" loading="lazy" alt="Black and white: a man walks along a subway platform toward the camera while a train streaks past, blurred.">
+    <figcaption>
+      <b class="cs-ph-title">Man at Dundas subway station, Toronto</b>
+      <span class="cs-ph-by">Radomianin, 2008</span>
+      <p class="cs-ph-note">One shutter speed, two results. The train crossing the frame smears into streaks; the man walking toward the camera stays readable. Movement across the picture blurs far more than movement toward you. The ceiling lines all run to him.</p>
+      <p class="cs-ph-credit">Photo © Radomianin, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Man_at_Dundas_subway_station,_Toronto,_2008-05-06.jpg">Wikimedia Commons</a>. Resized.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-cycling-amsterdam" data-kind="movement" data-year="2014" data-by="Borba, Alfredo" data-lessons="sci-shutter fr-space">
+    <img src="media/cameraskills/photos/cycling-amsterdam.jpg" width="1100" height="728" loading="lazy" alt="Black and white: a cyclist rides past, fairly sharp, while the wall and the pedestrians behind her are streaked with motion.">
+    <figcaption>
+      <b class="cs-ph-title">Cycling in Amsterdam</b>
+      <span class="cs-ph-by">Alfredo Borba, 2014</span>
+      <p class="cs-ph-note">Panning. The camera swung with the cyclist during a slow exposure, so she holds together while the street and the walkers behind her streak. She has room ahead of her to ride into.</p>
+      <p class="cs-ph-credit">Photo © Alfredo Borba, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Cycling_Amsterdam_03.jpg">Wikimedia Commons</a>. Resized.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-tanoura-dance" data-kind="movement" data-year="2018" data-by="Khalil, Mohamed" data-lessons="sci-shutter">
+    <img src="media/cameraskills/photos/tanoura-dance.jpg" width="1100" height="733" loading="lazy" alt="A spinning dancer against black; his skirt has blurred into bands of colour.">
+    <figcaption>
+      <b class="cs-ph-title">Tanoura dance</b>
+      <span class="cs-ph-by">Mohamed Khalil90, 2018</span>
+      <p class="cs-ph-note">Blur on purpose. A slow shutter speed turns the spinning skirt into bands of colour, while the dancer's head, the still centre of the spin, stays readable. The black background leaves nothing to compete.</p>
+      <p class="cs-ph-credit">Photo © Mohamed Khalil90, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Folkloric_Tanoura_dance_performed_by_man.jpg">Wikimedia Commons</a>. Resized.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-dogs-running" data-kind="movement" data-year="2024" data-by="Rhododendrites" data-lessons="sci-shutter sci-focus sit-action">
+    <img src="media/cameraskills/photos/dogs-running.jpg" width="1100" height="853" loading="lazy" alt="Two small dogs run across grass toward the camera, one carrying a tennis ball, both frozen in mid-stride.">
+    <figcaption>
+      <b class="cs-ph-title">Cavapoo chasing a maltipoo with a ball</b>
+      <span class="cs-ph-by">Rhododendrites, 2024</span>
+      <p class="cs-ph-note">A very fast shutter speed: paws off the ground, ears flying, every hair sharp. Taken from low down, near the dogs' own height, with the focus following them as they ran at the camera.</p>
+      <p class="cs-ph-credit">Photo © Rhododendrites, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Cavapoo_dog_chasing_a_maltipoo_with_a_ball_(11881).jpg">Wikimedia Commons</a>. Resized.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-palmer-vultee" data-kind="people" data-year="1943" data-by="Palmer, Alfred T." data-lessons="sci-metering fr-light sci-light">
+    <img src="media/cameraskills/photos/palmer-vultee.jpg" width="1100" height="878" loading="lazy" alt="Colour: a woman in a red headscarf drills an aircraft panel that reflects her face; the background is black.">
+    <figcaption>
+      <b class="cs-ph-title">Operating a hand drill at Vultee-Nashville</b>
+      <span class="cs-ph-by">Alfred T. Palmer, 1943</span>
+      <p class="cs-ph-note">One hard light, and a background left to go black. The exposure is set for her skin and the red headscarf, not for the average of the scene. The polished metal gives a second portrait. One red against blue and black is all the colour it needs.</p>
+      <p class="cs-ph-credit">Public domain. Library of Congress, FSA/OWI collection, via <a href="https://commons.wikimedia.org/wiki/File:Rosie_the_Riveter_(Vultee)_DS.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-strand-wall-street" data-kind="street" data-year="1915" data-by="Strand, Paul" data-lessons="sci-metering fr-light sit-street">
+    <img src="media/cameraskills/photos/strand-wall-street.jpg" width="1100" height="851" loading="lazy" alt="People with long shadows walk along a sunlit pavement under the huge dark window recesses of a bank.">
+    <figcaption>
+      <b class="cs-ph-title">Wall Street, New York</b>
+      <span class="cs-ph-by">Paul Strand, 1915</span>
+      <p class="cs-ph-note">Low sun, long shadows, and people made small by the dark recesses above them. Exposed for the sunlit pavement, so the recesses go fully black. Taken from above; nobody knows they are in a picture.</p>
+      <p class="cs-ph-credit">Public domain. Library of Congress, via <a href="https://commons.wikimedia.org/wiki/File:Paul_Strand,_Wall_Street,_New_York_City,_1915.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-mountain-child" data-kind="people" data-year="2017" data-by="Arkan, Salar" data-lessons="sci-focal fr-layers fr-portrait">
+    <img src="media/cameraskills/photos/mountain-child.jpg" width="1100" height="733" loading="lazy" alt="A girl in embroidered dress holds a torch; behind and far below her a stone village fills a mountain valley.">
+    <figcaption>
+      <b class="cs-ph-title">A village girl, Palangan, Kurdistan, Iran</b>
+      <span class="cs-ph-by">Salar Arkan, 2017</span>
+      <p class="cs-ph-note">Wide and close. She is large in the frame and the whole village still fits behind her: the place is her background, and the two layers explain each other. A longer lens from farther back would have shown her against a blur.</p>
+      <p class="cs-ph-credit">Photo © Salar Arkan, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Mountain_child.jpg">Wikimedia Commons</a>. Resized.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-adams-tetons" data-kind="travel" data-year="1942" data-by="Adams, Ansel" data-lessons="sci-dof fr-lines fr-layers sit-travel">
+    <img src="media/cameraskills/photos/adams-tetons.jpg" width="1100" height="881" loading="lazy" alt="A river curves in an S through dark forest toward snow-covered mountains under heavy cloud.">
+    <figcaption>
+      <b class="cs-ph-title">The Tetons and the Snake River</b>
+      <span class="cs-ph-by">Ansel Adams, 1942</span>
+      <p class="cs-ph-note">The river is a leading line, an S that carries the eye from the bottom edge to the peaks. Three layers: river, forest, mountains. Sharp from the near bank to the summits, which means a small aperture and a tripod.</p>
+      <p class="cs-ph-credit">Public domain. U.S. National Archives, National Park Service records, via <a href="https://commons.wikimedia.org/wiki/File:Adams_The_Tetons_and_the_Snake_River.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-steichen-flatiron" data-kind="light" data-year="1904" data-by="Steichen, Edward" data-lessons="sci-light sit-night fr-frame">
+    <img src="media/cameraskills/photos/steichen-flatiron.jpg" width="868" height="1100" loading="lazy" alt="A tall building looms in blue-green dusk behind bare branches; a cab driver in a top hat is silhouetted on a wet street.">
+    <figcaption>
+      <b class="cs-ph-title">The Flatiron</b>
+      <span class="cs-ph-by">Edward Steichen, 1904</span>
+      <p class="cs-ph-note">Blue hour. There is enough light left in the sky to draw the building, the lamps have just come on, and the wet street doubles them. A branch across the top frames it, and a cab driver's silhouette gives it scale.</p>
+      <p class="cs-ph-credit">Public domain. Via <a href="https://commons.wikimedia.org/wiki/File:Steichen_flatiron.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-shinjuku-blue-hour" data-kind="light" data-year="2019" data-by="Morin, Basile" data-lessons="sci-light sit-night">
+    <img src="media/cameraskills/photos/shinjuku-blue-hour.jpg" width="1100" height="880" loading="lazy" alt="Two buildings covered in bright neon signs stand against a deep blue sky above a busy crossing.">
+    <figcaption>
+      <b class="cs-ph-title">Neon signs at blue hour, Shinjuku, Tokyo</b>
+      <span class="cs-ph-by">Basile Morin, 2019</span>
+      <p class="cs-ph-note">Taken at blue hour, not at night. The sky still has colour, so the buildings have edges and the signs keep their detail. Half an hour later this is neon on black.</p>
+      <p class="cs-ph-credit">Photo © Basile Morin, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Buildings_with_colorful_neon_street_signs_at_blue_hour,_Shinjuku,_Tokyo.jpg">Wikimedia Commons</a>. Resized.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-fishmonger" data-kind="street" data-year="2013" data-by="Wilfredor" data-lessons="fr-subject sit-street fr-portrait">
+    <img src="media/cameraskills/photos/fishmonger.jpg" width="1100" height="732" loading="lazy" alt="Black and white: an old man in a flat cap laughs at the camera, the market behind him out of focus.">
+    <figcaption>
+      <b class="cs-ph-title">Fishmonger, Maracaibo street market, Venezuela</b>
+      <span class="cs-ph-by">Wilfredor, 2013</span>
+      <p class="cs-ph-note">Close enough to be a conversation. He fills the frame, the market is reduced to soft shapes behind him, and the laugh says he knew he was being photographed and did not mind.</p>
+      <p class="cs-ph-credit">Photo by Wilfredor, released to the public domain (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>), via <a href="https://commons.wikimedia.org/wiki/File:Fishmonger_smiling,_Maracaibo_street_market,_Venezuela.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-lange-migrant-mother" data-kind="people" data-year="1936" data-by="Lange, Dorothea" data-lessons="fr-subject fr-portrait">
+    <img src="media/cameraskills/photos/lange-migrant-mother.jpg" width="846" height="1100" loading="lazy" alt="A worried woman looks past the camera, hand at her chin; two children lean on her shoulders with their faces turned away.">
+    <figcaption>
+      <b class="cs-ph-title">Migrant Mother</b>
+      <span class="cs-ph-by">Dorothea Lange, 1936</span>
+      <p class="cs-ph-note">Fill the frame and there is nothing to look at but her face. The children turn away, so everything leads back to her eyes and the hand at her chin. Lange worked closer with each frame she took.</p>
+      <p class="cs-ph-credit">Public domain. Library of Congress, FSA/OWI collection, via <a href="https://commons.wikimedia.org/wiki/File:Lange-MigrantMother02.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-fisherman-sunrise" data-kind="light" data-year="2019" data-by="Morin, Basile" data-lessons="fr-thirds fr-space fr-light">
+    <img src="media/cameraskills/photos/fisherman-sunrise.jpg" width="1100" height="733" loading="lazy" alt="A small boat with one paddler crosses still orange water at sunrise; trees and bushes are black silhouettes.">
+    <figcaption>
+      <b class="cs-ph-title">Fisherman on his pirogue at sunrise, Si Phan Don, Laos</b>
+      <span class="cs-ph-by">Basile Morin, 2019</span>
+      <p class="cs-ph-note">Exposed for the sky, so the boat and the bushes go to silhouette. The boat sits low in the frame and left of centre, small against a great deal of water. The emptiness is the mood.</p>
+      <p class="cs-ph-credit">Photo © Basile Morin, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Silhouette_of_a_fisherman_on_his_pirogue_at_sunrise_in_Si_Phan_Don_Laos.jpg">Wikimedia Commons</a>. Resized.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-uyuni-sunset" data-kind="travel" data-year="2006" data-by="Galuzzi, Luca" data-lessons="fr-thirds sit-travel">
+    <img src="media/cameraskills/photos/uyuni-sunset.jpg" width="1100" height="733" loading="lazy" alt="A lone figure stands in silhouette on a flooded salt flat that mirrors an orange sunset; mountains on the horizon.">
+    <figcaption>
+      <b class="cs-ph-title">Watching sunset, Salar de Uyuni, Bolivia</b>
+      <span class="cs-ph-by">Luca Galuzzi, 2006</span>
+      <p class="cs-ph-note">A companion placed in the landscape, on a third and seen from behind, gives the place a scale and a feeling. The horizon sits high so the reflections get most of the frame.</p>
+      <p class="cs-ph-credit">Photo © Luca Galuzzi, <a href="https://creativecommons.org/licenses/by-sa/2.5">CC BY-SA 2.5</a>, via <a href="https://commons.wikimedia.org/wiki/File:Watching_Sunset_Salar_de_Uyuni_Bolivia_Luca_Galuzzi_2006.jpg">Wikimedia Commons</a>. Resized.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-stieglitz-winter" data-kind="street" data-year="1893" data-by="Stieglitz, Alfred" data-lessons="fr-lines fr-moment">
+    <img src="media/cameraskills/photos/stieglitz-winter.jpg" width="765" height="1100" loading="lazy" alt="A horse-drawn coach drives toward the camera through a snowstorm, along deep ruts in the snow.">
+    <figcaption>
+      <b class="cs-ph-title">Winter, Fifth Avenue</b>
+      <span class="cs-ph-by">Alfred Stieglitz, 1893</span>
+      <p class="cs-ph-note">The ruts in the snow lead straight to the coach coming at you. A vertical frame for something moving toward the camera, with room in front of it. And the weather most people stay indoors for is the picture.</p>
+      <p class="cs-ph-credit">Public domain. Via <a href="https://commons.wikimedia.org/wiki/File:Alfred_Stieglitz_Winter_Fifth_Avenue_1892.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-abbott-seventh-avenue" data-kind="travel" data-year="1935" data-by="Abbott, Berenice" data-lessons="fr-lines fr-angle">
+    <img src="media/cameraskills/photos/abbott-seventh-avenue.jpg" width="870" height="1100" loading="lazy" alt="Seen from high above, a bright avenue runs like a river of light between dark skyscrapers toward a hazy harbour.">
+    <figcaption>
+      <b class="cs-ph-title">Seventh Avenue looking south from 35th Street</b>
+      <span class="cs-ph-by">Berenice Abbott, 1935</span>
+      <p class="cs-ph-note">A high viewpoint turns a street into a pattern. Low winter sun makes the avenue a line of light between buildings in silhouette, running all the way to the harbour. Exposed for the bright street, not the dark walls.</p>
+      <p class="cs-ph-credit">Public domain. New York Public Library, Changing New York, via <a href="https://commons.wikimedia.org/wiki/File:Seventh_Avenue_looking_south_from_35th_Street,_Manhattan_(NYPL_b13668355-482802).jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-stieglitz-steerage" data-kind="street" data-year="1907" data-by="Stieglitz, Alfred" data-lessons="fr-layers fr-lines">
+    <img src="media/cameraskills/photos/stieglitz-steerage.jpg" width="877" height="1100" loading="lazy" alt="Passengers crowd two decks of a ship, divided by a slanting white gangway.">
+    <figcaption>
+      <b class="cs-ph-title">The Steerage</b>
+      <span class="cs-ph-by">Alfred Stieglitz, 1907</span>
+      <p class="cs-ph-note">Two crowds, one above the other, cut apart by the diagonal of the gangway. Look at the shapes before the people: a round straw hat, a slanting funnel, a ladder, crossed braces. The structure is what holds a crowded frame together.</p>
+      <p class="cs-ph-credit">Public domain. Via <a href="https://commons.wikimedia.org/wiki/File:Alfred_Stieglitz_-_The_Steerage_-_Google_Art_Project.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-atget-notre-dame" data-kind="travel" data-year="1922" data-by="Atget, Eugène" data-lessons="fr-layers fr-frame sit-travel">
+    <img src="media/cameraskills/photos/atget-notre-dame.jpg" width="1100" height="884" loading="lazy" alt="The cathedral seen from across the river, small, through the bare branches of a large tree on the quay.">
+    <figcaption>
+      <b class="cs-ph-title">Notre-Dame</b>
+      <span class="cs-ph-by">Eugène Atget, 1922</span>
+      <p class="cs-ph-note">The landmark is small and at the back. The picture is the bare tree in front of it: a foreground that frames and half-screens the cathedral, with the quay leading in. A postcard subject, and not a postcard.</p>
+      <p class="cs-ph-credit">Public domain. The Metropolitan Museum of Art, via <a href="https://commons.wikimedia.org/wiki/File:Eug%C3%A8ne_Atget,_N%C3%B4tre_Dame,_1922.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-hine-mechanic" data-kind="people" data-year="1920" data-by="Hine, Lewis" data-lessons="fr-frame">
+    <img src="media/cameraskills/photos/hine-mechanic.jpg" width="790" height="1100" loading="lazy" alt="A man in a vest bends to turn a large wrench, his curved back echoing the circular casing of the machine around him.">
+    <figcaption>
+      <b class="cs-ph-title">Power house mechanic working on steam pump</b>
+      <span class="cs-ph-by">Lewis Hine, 1920</span>
+      <p class="cs-ph-note">A frame within the frame: the circle of the pump holds the man, and the curve of his back repeats it. Posed, lit from the side, every edge considered.</p>
+      <p class="cs-ph-credit">Public domain. U.S. National Archives, via <a href="https://commons.wikimedia.org/wiki/File:Lewis_Hine_Power_house_mechanic_working_on_steam_pump.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-abbott-blossom" data-kind="street" data-year="1935" data-by="Abbott, Berenice" data-lessons="fr-frame fr-subject sit-street">
+    <img src="media/cameraskills/photos/abbott-blossom.jpg" width="1100" height="895" loading="lazy" alt="A man stands in the doorway of a restaurant whose windows are covered in painted menu prices, beside a striped barber pole.">
+    <figcaption>
+      <b class="cs-ph-title">Blossom Restaurant, 103 Bowery</b>
+      <span class="cs-ph-by">Berenice Abbott, 1935</span>
+      <p class="cs-ph-note">Square-on, like a stage set. The doorway frames the man; the painted prices tell you the place and the year. The frame is full to the edges and still tidy, because the camera is level and everything is parallel to it.</p>
+      <p class="cs-ph-credit">Public domain. New York Public Library, Changing New York, via <a href="https://commons.wikimedia.org/wiki/File:Blossom_Restaurant;_103_Bowery_by_Berenice_Abbott_in_1935.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-hine-cranberry" data-kind="people" data-year="1910" data-by="Hine, Lewis" data-lessons="fr-angle fr-lines">
+    <img src="media/cameraskills/photos/hine-cranberry.jpg" width="1100" height="863" loading="lazy" alt="A barefoot girl carrying two boxes of berries stands on a sandy path and looks at the camera; pickers work in the field behind.">
+    <figcaption>
+      <b class="cs-ph-title">Rose Biodo, 10, carrying berries, Browns Mills, New Jersey</b>
+      <span class="cs-ph-by">Lewis Hine, 1910</span>
+      <p class="cs-ph-note">The camera is down at the child's height, so she meets your eye and the horizon sits at her shoulders, not above her head. The sandy path leads to her. The pickers behind are small and soft: context, not competition.</p>
+      <p class="cs-ph-credit">Public domain. Library of Congress, National Child Labor Committee collection, via <a href="https://commons.wikimedia.org/wiki/File:ChildLabor1910.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-laughing-boy" data-kind="people" data-year="2018" data-by="Morin, Basile" data-lessons="fr-angle fr-light sit-portrait">
+    <img src="media/cameraskills/photos/laughing-boy.jpg" width="825" height="1100" loading="lazy" alt="A small boy laughs at the camera in warm low sunlight; the fields behind him are out of focus.">
+    <figcaption>
+      <b class="cs-ph-title">Laughing boy at golden hour, Don Det, Laos</b>
+      <span class="cs-ph-by">Basile Morin, 2018</span>
+      <p class="cs-ph-note">Low, warm sun from one side; the camera at the boy's eye level; a background far enough away to go soft. Vertical, for one person. The expression came from whatever was said a second earlier.</p>
+      <p class="cs-ph-credit">Photo © Basile Morin, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Laughing_boy_at_golden_hour.jpg">Wikimedia Commons</a>. Resized.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-childhood-joy" data-kind="movement" data-year="2021" data-by="Arnob, Jubair Ahmed" data-lessons="fr-angle sit-action">
+    <img src="media/cameraskills/photos/childhood-joy.jpg" width="1100" height="733" loading="lazy" alt="Seen from above, four children run across a field covered in sheets of pink and coloured cloth laid out to dry.">
+    <figcaption>
+      <b class="cs-ph-title">Children playing among drying cloth</b>
+      <span class="cs-ph-by">Jubair Ahmed Arnob, 2021</span>
+      <p class="cs-ph-note">A high viewpoint turns the drying cloth into a pattern, and a fast shutter speed freezes four children mid-stride across it. Each child is separate from the others; nobody overlaps.</p>
+      <p class="cs-ph-credit">Photo © Jubair Ahmed Arnob, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Childhood_Joy.jpg">Wikimedia Commons</a>. Resized.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-evans-burroughs" data-kind="people" data-year="1936" data-by="Evans, Walker" data-lessons="fr-background fr-portrait sit-portrait">
+    <img src="media/cameraskills/photos/evans-burroughs.jpg" width="846" height="1100" loading="lazy" alt="A woman looks straight at the camera, lips pressed together, against a wall of weathered boards.">
+    <figcaption>
+      <b class="cs-ph-title">Allie Mae Burroughs</b>
+      <span class="cs-ph-by">Walker Evans, 1936</span>
+      <p class="cs-ph-note">The plainest portrait possible: head-on, at eye level, in open shade, against bare boards. The background has nothing in it, so the face has everything.</p>
+      <p class="cs-ph-credit">Public domain. Library of Congress, FSA/OWI collection, via <a href="https://commons.wikimedia.org/wiki/File:Allie_Mae_Burroughs_print.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-parks-american-gothic" data-kind="people" data-year="1942" data-by="Parks, Gordon" data-lessons="fr-background fr-portrait">
+    <img src="media/cameraskills/photos/parks-american-gothic.jpg" width="778" height="1100" loading="lazy" alt="A woman stands holding a broom, a mop beside her, in front of a large American flag.">
+    <figcaption>
+      <b class="cs-ph-title">American Gothic, Washington, D.C.</b>
+      <span class="cs-ph-by">Gordon Parks, 1942</span>
+      <p class="cs-ph-note">Here the background is the point. Ella Watson with her broom and mop, in front of the flag: symmetrical, straight on, the flag soft but unmistakable. A portrait of someone in their place.</p>
+      <p class="cs-ph-credit">Public domain. Library of Congress, FSA/OWI collection, via <a href="https://commons.wikimedia.org/wiki/File:Gordon_Parks_-_American_Gothic.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-girl-and-dog" data-kind="people" data-year="2023" data-by="Morin, Basile" data-lessons="fr-light sit-action">
+    <img src="media/cameraskills/photos/girl-and-dog.jpg" width="733" height="1100" loading="lazy" alt="A small girl squeezes her eyes shut and hugs a sitting dog from behind in warm low sunlight.">
+    <figcaption>
+      <b class="cs-ph-title">Girl hugging her dog at golden hour, Don Det, Laos</b>
+      <span class="cs-ph-by">Basile Morin, 2023</span>
+      <p class="cs-ph-note">Golden hour from the front: warm, even, kind to faces. The camera is low, level with the dog, so both of them stand against the sky. Vertical framing, and a moment nobody could have posed.</p>
+      <p class="cs-ph-credit">Photo © Basile Morin, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Human%E2%80%93canine_friendship_-_girl_hugging_her_dog_tightly_at_golden_hour_in_Laos.jpg">Wikimedia Commons</a>. Resized.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-stieglitz-terminal" data-kind="street" data-year="1893" data-by="Stieglitz, Alfred" data-lessons="fr-moment sit-street">
+    <img src="media/cameraskills/photos/stieglitz-terminal.jpg" width="1100" height="835" loading="lazy" alt="A driver in a long coat tends a team of steaming horses hitched to a streetcar in the snow.">
+    <figcaption>
+      <b class="cs-ph-title">The Terminal</b>
+      <span class="cs-ph-by">Alfred Stieglitz, 1893</span>
+      <p class="cs-ph-note">A found moment: steam rising off the horses in the cold as the driver tends them. Bad weather makes good pictures. The team fills the middle of the frame and the building closes it off behind.</p>
+      <p class="cs-ph-credit">Public domain. The Metropolitan Museum of Art, via <a href="https://commons.wikimedia.org/wiki/File:The_Terminal_MET_DP232977.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-wolcott-jitterbug" data-kind="movement" data-year="1939" data-by="Wolcott, Marion Post" data-lessons="fr-moment sit-action">
+    <img src="media/cameraskills/photos/wolcott-jitterbug.jpg" width="1100" height="836" loading="lazy" alt="Couples dance in a crowded wooden room; the nearest pair are caught mid-step with bent knees.">
+    <figcaption>
+      <b class="cs-ph-title">Jitterbugging in a juke joint, Clarksdale, Mississippi</b>
+      <span class="cs-ph-by">Marion Post Wolcott, 1939</span>
+      <p class="cs-ph-note">A flash freezes the dance mid-step: bent knees, lifted heels, a grin. The moment is the whole picture. Taken from inside the room, at the dancers' level, not from the doorway.</p>
+      <p class="cs-ph-credit">Public domain. Library of Congress, FSA/OWI collection, via <a href="https://commons.wikimedia.org/wiki/File:Jitterbug_Wolcott_FSA.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-frissell-paddington" data-kind="people" data-year="1951" data-by="Frissell, Toni" data-lessons="fr-space fr-layers">
+    <img src="media/cameraskills/photos/frissell-paddington.jpg" width="1079" height="1100" loading="lazy" alt="A woman in a dark suit and beret stands on a station platform looking to the right; a policeman stands farther back under the arched glass roof.">
+    <figcaption>
+      <b class="cs-ph-title">Paddington Station, London</b>
+      <span class="cs-ph-by">Toni Frissell, 1951</span>
+      <p class="cs-ph-note">She looks to the right and the space is on that side. The ribs of the roof converge behind her, and the policeman makes a second, softer layer that echoes her stance. Two figures and an empty platform say more than a crowd.</p>
+      <p class="cs-ph-credit">Public domain. Library of Congress, Toni Frissell collection, via <a href="https://commons.wikimedia.org/wiki/File:Paddington_Station_by_Toni_Frissell_1951.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-varanasi-peas" data-kind="travel" data-year="2005" data-by="Royan, Jorge" data-lessons="sit-travel fr-angle">
+    <img src="media/cameraskills/photos/varanasi-peas.jpg" width="1100" height="733" loading="lazy" alt="Seen from above, a woman&#x27;s hands in green bangles scoop bright green peas from a pile on dark cloth.">
+    <figcaption>
+      <b class="cs-ph-title">Green peas, Varanasi, India</b>
+      <span class="cs-ph-by">Jorge Royan, 2005</span>
+      <p class="cs-ph-note">The detail shot. No face and no street, and it still says market. Taken straight down, the hands on a diagonal, green against brown, the bangles repeating the green.</p>
+      <p class="cs-ph-credit">Photo © Jorge Royan / <a href="http://www.royan.com.ar">royan.com.ar</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:India_-_Varanasi_green_peas_-_2714.jpg">Wikimedia Commons</a>. Resized.</p>
+    </figcaption>
+  </figure>
+  <figure class="cs-ph" id="ph-place-du-tertre" data-kind="light" data-year="2019" data-by="Blaché, Pierre" data-lessons="sit-night sit-travel">
+    <img src="media/cameraskills/photos/place-du-tertre.jpg" width="1100" height="618" loading="lazy" alt="A cobbled square at night, lit by café awnings and strings of lights, with a few people at tables.">
+    <figcaption>
+      <b class="cs-ph-title">Restaurants, Place du Tertre, Paris</b>
+      <span class="cs-ph-by">Pierre Blaché, 2019</span>
+      <p class="cs-ph-note">A night street lit by its own cafés. The cobbles and awnings lead in from both sides; warm lamps sit against a blue-black sky. A long exposure on a steady support: note that nothing in it is moving fast.</p>
+      <p class="cs-ph-credit">Photo by Pierre Blaché, released to the public domain (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>), via <a href="https://commons.wikimedia.org/wiki/File:Restaurants,_Place_du_Tertre,_Paris_30_September_2019.jpg">Wikimedia Commons</a>.</p>
+    </figcaption>
+  </figure>
+  </div>
+  <p class="xp-note">
+    Every photograph here is in the public domain or under a Creative Commons licence, and is credited beside the picture with a link to its source. The copies on this page have been resized. Where a licence says "share alike", the resized copy is offered under the same licence.
+  </p>
+</section>
+
+<!-- ================================================================== -->
+<!-- REFERENCE                                                           -->
+<!-- ================================================================== -->
+
+<section class="xp-topic" id="glossary" data-title="Glossary" data-group="Reference" data-next="about">
+  <h2>Glossary</h2>
+  <dl>
+    <dt><b>AF-S / AF-C</b></dt><dd>Single autofocus (focus once and hold) and continuous autofocus (keep refocusing). <a href="#sci-focus">Autofocus</a>.</dd>
+    <dt><b>Aperture</b></dt><dd>The adjustable opening in the lens, written as an f-number. Smaller number, bigger hole. <a href="#sci-aperture">Aperture</a>.</dd>
+    <dt><b>APS-C</b></dt><dd>Your sensor's size, 23.5 × 15.6 mm: about two-thirds the width of a 35mm film frame.</dd>
+    <dt><b>Bokeh</b></dt><dd>The look of the out-of-focus parts of a picture.</dd>
+    <dt><b>Bracketing</b></dt><dd>Taking several versions of one shot with a setting varied, to pick the best later.</dd>
+    <dt><b>Chimping</b></dt><dd>Checking the screen after every shot.</dd>
+    <dt><b>Crop factor</b></dt><dd>1.5 for your camera. Multiply a focal length by it to get the full-frame lens with the same view.</dd>
+    <dt><b>Depth of field</b></dt><dd>The range of distances that look sharp. <a href="#sci-dof">Depth of field</a>.</dd>
+    <dt><b>Diffraction</b></dt><dd>Softening of the whole image at very small apertures (f/16 and beyond).</dd>
+    <dt><b>Dynamic range</b></dt><dd>The span from the darkest to the brightest tone a sensor can record at once.</dd>
+    <dt><b>EV</b></dt><dd>Exposure value: a number for a quantity of light. One EV is one stop.</dd>
+    <dt><b>EVF</b></dt><dd>Electronic viewfinder: the eyepiece, with a small screen inside.</dd>
+    <dt><b>Exposure compensation</b></dt><dd>Telling the camera to make its automatic exposure brighter or darker. <a href="#cam-expcomp">The dial</a>.</dd>
+    <dt><b>Fill flash</b></dt><dd>Flash used in daylight to lighten shadows on a face.</dd>
+    <dt><b>Focal length</b></dt><dd>The lens's angle of view, in millimetres. Small is wide. <a href="#sci-focal">Focal length</a>.</dd>
+    <dt><b>Full frame</b></dt><dd>A sensor the size of 35mm film, 36 × 24 mm. The usual yardstick for focal lengths.</dd>
+    <dt><b>Golden hour / blue hour</b></dt><dd>The hour of low sun after sunrise and before sunset; the twilight just beyond it.</dd>
+    <dt><b>Histogram</b></dt><dd>A bar chart of the tones in a picture, dark to light. <a href="#sci-metering">Metering</a>.</dd>
+    <dt><b>Hyperfocal distance</b></dt><dd>The focus distance that makes everything from half that distance to infinity sharp.</dd>
+    <dt><b>ISO</b></dt><dd>The sensor's amplification. Higher is brighter and grainier. <a href="#sci-iso">ISO</a>.</dd>
+    <dt><b>JPEG / RAW</b></dt><dd>A finished, compressed picture, and the sensor's undeveloped data.</dd>
+    <dt><b>Metering</b></dt><dd>The camera measuring the light to choose an exposure.</dd>
+    <dt><b>OIS</b></dt><dd>Optical image stabilisation: a moving element in the lens that counters hand shake.</dd>
+    <dt><b>Prime</b></dt><dd>A lens with one focal length. Usually smaller and brighter than a zoom.</dd>
+    <dt><b>Recipe</b></dt><dd>A film simulation plus a set of tone and colour adjustments, saved together.</dd>
+    <dt><b>Shutter speed</b></dt><dd>How long the sensor is exposed. <a href="#sci-shutter">Shutter speed</a>.</dd>
+    <dt><b>Stop</b></dt><dd>A doubling or halving of light. <a href="#sci-exposure">Exposure</a>.</dd>
+    <dt><b>White balance</b></dt><dd>Correcting for the colour of the light so that white things look white. <a href="#sci-light">Light</a>.</dd>
+    <dt><b>Zone focusing</b></dt><dd>Presetting focus and aperture so a known range of distances is sharp, and shooting without autofocus.</dd>
+  </dl>
+</section>
+
+<section class="xp-topic" id="about" data-title="About and sources" data-group="Reference">
+  <h2>About this course</h2>
+  <p class="cs-credit">
+    Designed, written and built by <b>Claude Fable 5.2 (High)</b>, Anthropic's AI model, working in Claude Code in November 2026, to a brief from nomagicpill: a course for a new X-T30 III owner who wants to get better at street, travel and family photography. The 3D camera, the town, the optics and every word are its work, and so are any mistakes.
+  </p>
+  <h3>What is real and what is simulated</h3>
+  <ul>
+    <li><b>The camera's controls and specifications</b> follow Fujifilm's owner's manual and specification sheet for the X-T30 III, and Fujifilm's page for the XC 13-33mm lens, checked in November 2026. The 3D model is built by hand from simple shapes: proportions and positions are right, fine details are not. The order of the marks on the film simulation dial may differ from your camera's. Firmware updates can change menus.</li>
+    <li><b>The viewfinder</b> uses the real formulas: exposure in stops against the light level of the scene; depth of field from the thin-lens equations with a 0.02 mm circle of confusion; motion blur and hand shake by averaging many instants across the exposure; noise that grows with ISO. The lens's widest aperture between 13mm and 33mm is interpolated, since Fujifilm publishes only the two ends. Noise is exaggerated a little so it shows at screen size.</li>
+    <li><b>Film simulations</b> on screen are approximations of each one's character, not Fujifilm's colour science.</li>
+    <li><b>The photographs</b> in the <a href="#gallery">gallery</a> are real, and none are mine or nomagicpill's. Each is in the public domain or under a Creative Commons licence, came from Wikimedia Commons, and is credited beside the picture with its licence and a link to its source. The notes on what to notice are this course's reading of them, not the photographers' own words.</li>
+    <li><b>Reading your photo's settings</b> happens entirely in your browser. The film simulation and the camera's own blur and focus warnings come from Fujifilm's maker notes, decoded using the tag tables published by the ExifTool project; if a firmware update changes them, those two may read wrongly while the standard settings will not.</li>
+    <li><b>Menu advice</b> (Auto ISO values, which simulation for what) is opinion, of the kind an experienced friend would give. Change it when you know better.</li>
+  </ul>
+  <h3>Sources</h3>
+  <ul>
+    <li>Fujifilm, <a href="https://fujifilm-dsc.com/en/manual/x-t30-iii/">X-T30 III Owner's Manual</a>: parts of the camera, function controls, autofocus, ISO, shooting modes, button and dial settings.</li>
+    <li>Fujifilm, <a href="https://fujifilm-dsc.com/en/manual/x-t30-iii/technical_notes/spec/">X-T30 III specifications</a>.</li>
+    <li>Fujifilm, <a href="https://www.fujifilm-x.com/global/products/lenses/xc13-33mmf35-63-ois/">XC13-33mmF3.5-6.3 OIS</a>: optical design, stabilisation, close focus.</li>
+    <li>Photography Blog, <a href="https://www.photographyblog.com/reviews/fujifilm_xc_13_33mm_f3_5_6_3_ois_review">Fujifilm XC 13-33mm F3.5-6.3 OIS review</a>: the lens's rings and handling.</li>
+    <li>The depth-of-field, hyperfocal and exposure-value formulas are the standard ones, as in any optics text.</li>
+    <li>Phil Harvey, <a href="https://exiftool.org/TagNames/FujiFilm.html">ExifTool: FujiFilm tags</a>: the layout and values of Fujifilm's maker notes.</li>
+    <li><a href="https://commons.wikimedia.org/">Wikimedia Commons</a>, the Library of Congress, the U.S. National Archives, the New York Public Library and the Metropolitan Museum of Art: the photographs, credited individually in the gallery.</li>
+  </ul>
+  <p>
+    The 3D view uses <a href="https://threejs.org/">three.js</a>, served from this site.
+  </p>
+</section>
+
+</div><!-- #xp-library -->
+
+<hr class="xp-article-only">
+<h2 id="see_also" class="xp-article-only">See Also</h2>
+<ul class="xp-article-only">
+  <li><a href="powergrid.html">The U.S. Power Grid</a></li>
+  <li><a href="transistors.html">Transistors</a></li>
+</ul>
+
+  </div><!-- .xp-drawer-body -->
+</aside>
+
+<!-- Classic scripts, so the page also works opened straight from disk.
+     main.js loads three.js and the 3D stage itself, once WebGL checks out. -->
+<script src="../js/theme.js"></script>
+<script src="../js/explainer.js"></script>
+<script src="media/cameraskills/optics.js"></script>
+<script src="media/cameraskills/exif.js"></script>
+<script src="media/cameraskills/widgets.js"></script>
+<script src="media/cameraskills/practice.js"></script>
+<script src="media/cameraskills/main.js"></script>
+</body>
+</html>

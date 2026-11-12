@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>A home in Kowloon Walled City, 1987</title>
+    <meta name="description" content="Step inside one family's flat in Kowloon Walled City in January 1987: 23 m² for six people, every object explained." />
+    <meta name="theme-color" content="#efe6d4" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="A home in Kowloon Walled City, 1987" />
+    <meta property="og:description" content="One family's flat, 23 m² for six people: the altar, the bunk bed, the piecework on the table, every object explained." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23efe6d4'/%3E%3Cpath d='M5 26V12l5-2v-4l6 2 4-3 3 3v4l4 1v13z' fill='%23b5432c'/%3E%3Cpath d='M5 26h22' stroke='%232b241d' stroke-width='2'/%3E%3C/svg%3E" />
+    <link rel="apple-touch-icon" href="./img/apple-touch-icon.png" />
+    <link rel="preload" href="./data/flat.json" as="fetch" crossorigin="anonymous" />
+    <script type="module" crossorigin src="./assets/flat-wnUwX9_2.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/a11y-2XVoxmNu.js">
+    <link rel="modulepreload" crossorigin href="./assets/three-BSB_jJVp.js">
+    <link rel="modulepreload" crossorigin href="./assets/OrbitControls-COlIhR_c.js">
+    <link rel="modulepreload" crossorigin href="./assets/flat-post-m0Dva05I.js">
+    <link rel="stylesheet" crossorigin href="./assets/OrbitControls-BB3Dl_iO.css">
+    <link rel="stylesheet" crossorigin href="./assets/flat-DtJPePlU.css">
+      <meta property="og:url" content="https://nomagicpill.site/research/kowloon/flat.html" />
+    <meta property="og:site_name" content="No Magic Pill" />
+    <meta property="og:image" content="https://nomagicpill.site/research/kowloon/img/share-flat.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Inside a reconstructed Kowloon Walled City flat in 1987: the red altar, a wooden partition and the day's paper on the table" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://nomagicpill.site/research/kowloon/flat.html" />
+  </head>
+  <body>
+    <div id="app" class="flat-app">
+      <canvas id="scene" role="application" aria-roledescription="3D model" aria-label="One family's flat in Kowloon Walled City, January 1987" aria-describedby="flat-help"></canvas>
+      <p id="flat-help" class="sr-only">A doll's-house view of the flat. Arrow keys turn and tilt it, plus and minus zoom. The list of
+        everything in the flat, after the buttons, describes each object in words.</p>
+      <div id="pins"></div>
+
+      <header class="bar top">
+        <div class="title">
+          <h1 id="place-title">A home in the walled city <span class="zh" lang="zh-Hant">城寨人家</span></h1>
+          <p class="sub" id="place-sub">One family's flat, January 1987 · about 23 m² · six people</p>
+        </div>
+        <nav class="toplinks" aria-label="More">
+          <a id="city-link" class="ghost" href="./"><span class="long">← The city</span><span class="short">City</span></a>
+          <a class="ghost" href="./album.html">Photos</a>
+          <button id="about-btn" class="ghost" aria-expanded="false" aria-controls="about">About</button>
+        </nav>
+      </header>
+
+      <aside id="list" class="card flist" aria-label="Everything in the flat">
+        <div class="cut-head"><h2 class="panel-title" id="list-title">Everything in the flat</h2><button class="close" aria-label="Close the list">×</button></div>
+        <p class="note">Numbers match the pins. A badge marks objects that rest on a source; the rest are illustrative.</p>
+        <div class="body"></div>
+      </aside>
+
+      <aside id="card" class="card fcard" hidden aria-live="polite">
+        <button class="close" aria-label="Close">×</button>
+        <div class="body"></div>
+      </aside>
+
+      <nav class="bar bottom" aria-label="Views">
+        <div class="group place-group"><label for="place-select">Place</label><select id="place-select"></select></div>
+        <div class="group" role="group" aria-label="Views">
+          <button data-mode="house" class="on"><span class="long">Doll's house</span><span class="short">House</span></button>
+          <button data-mode="inside"><span class="long">Stand inside</span><span class="short">Inside</span></button>
+          <button id="list-btn" aria-expanded="false" aria-controls="list"><span class="long">Everything</span><span class="short">List</span> (<span class="count"></span>)</button>
+          <button id="eve-btn" aria-pressed="false"><span class="ico" aria-hidden="true">☀</span> Evening</button>
+          <button id="labels-btn" class="on" aria-pressed="true">Labels</button>
+          <button id="style-btn" class="on" aria-pressed="true" title="Photographic materials and light, or the illustrated drawing">Photo</button>
+          <button id="trace-btn" aria-pressed="false" hidden title="Ray-trace the view while it is still">Ray-trace</button>
+          <button id="snap-btn" title="Save this view as an image"><span class="long">Save photo</span><span class="short">Save</span></button>
+        </div>
+      </nav>
+
+      <section id="about" class="card about" hidden role="dialog" aria-labelledby="about-title">
+        <button class="close" aria-label="Close about">×</button>
+        <h2 id="about-title">About this place</h2>
+        <div class="body"></div>
+      </section>
+
+      <div id="walk-hud" class="walk-hud" hidden>
+        <p class="walk-tip"></p>
+        <div class="walk-move">
+          <button class="walk-fwd" aria-label="Walk forward">▲</button>
+          <button class="walk-back" aria-label="Walk back">▼</button>
+        </div>
+        <button id="walk-exit" class="ghost-sm">Doll's house</button>
+      </div>
+
+      <p id="rt-status" class="rt-status" role="status" aria-live="polite"></p>
+      <div id="loading" role="status">
+        <div class="msg"><span>Furnishing the flat…</span><i class="bar-anim" aria-hidden="true"></i></div>
+      </div>
+      <script>
+        if (location.protocol === "file:") document.querySelector("#loading .msg").innerHTML =
+          "<p style='max-width:440px;margin:0'>This page has to be opened through a web server, not straight from the folder. Run " +
+          "<code>python3 -m http.server 8000</code> in the folder that holds it and open <b>http://localhost:8000/flat.html</b>. On your website it opens normally.</p>";
+      </script>
+    </div>
+  </body>
+</html>

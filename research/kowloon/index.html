@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Kowloon Walled City, 1987</title>
+    <meta name="description" content="An interactive 3D model of Kowloon Walled City as surveyed in May 1987, traced from the Hong Kong Lands Department survey sheet." />
+    <meta name="theme-color" content="#efe6d4" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Kowloon Walled City, 1987" />
+    <meta property="og:description" content="An interactive 3D model of Kowloon Walled City as surveyed in May 1987: cut through it, walk its lanes, see it by night, and follow its history from fort to park." />
+    <!-- og:image, og:url and the canonical link are added at build time (vite.config.js, see README) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23efe6d4'/%3E%3Cpath d='M5 26V12l5-2v-4l6 2 4-3 3 3v4l4 1v13z' fill='%23b5432c'/%3E%3Cpath d='M5 26h22' stroke='%232b241d' stroke-width='2'/%3E%3C/svg%3E" />
+    <link rel="apple-touch-icon" href="./img/apple-touch-icon.png" />
+    <!-- start the model and ground map downloads while the script loads -->
+    <link rel="preload" href="./data/city.json" as="fetch" crossorigin="anonymous" />
+    <link rel="preload" href="./img/ground_1987.webp" as="image" crossorigin="anonymous" media="(min-width: 700px) and (min-height: 700px)" />
+    <link rel="preload" href="./img/ground_1987_2k.webp" as="image" crossorigin="anonymous" media="(max-width: 699.98px), (max-height: 699.98px)" />
+    <script type="module" crossorigin src="./assets/main-DPeQE3hn.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/a11y-2XVoxmNu.js">
+    <link rel="modulepreload" crossorigin href="./assets/three-BSB_jJVp.js">
+    <link rel="modulepreload" crossorigin href="./assets/OrbitControls-COlIhR_c.js">
+    <link rel="stylesheet" crossorigin href="./assets/OrbitControls-BB3Dl_iO.css">
+      <meta property="og:url" content="https://nomagicpill.site/research/kowloon/" />
+    <meta property="og:site_name" content="No Magic Pill" />
+    <meta property="og:image" content="https://nomagicpill.site/research/kowloon/img/poster.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A 3D model of Kowloon Walled City's towers standing on the 1987 survey map" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://nomagicpill.site/research/kowloon/" />
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="scene" role="application" aria-roledescription="3D model" aria-label="Kowloon Walled City, May 1987" aria-describedby="kbd-help"></canvas>
+      <p id="kbd-help" class="sr-only">Arrow keys turn and tilt the view, Shift and arrow keys move it, plus and minus zoom.
+        Enter shows what is known about the building under the cross in the middle of the view. The buttons below
+        open stories, cross-sections, day and night, the economy and the history, which are all text.</p>
+      <div id="aim" aria-hidden="true"></div>
+      <div id="labels" aria-hidden="true"></div>
+      <img id="match-photo" alt="" hidden />
+
+      <header class="bar top">
+        <div class="title">
+          <h1>Kowloon Walled City <span class="zh" lang="zh-Hant">九龍城寨</span></h1>
+          <p class="sub">As surveyed in May 1987</p>
+        </div>
+        <nav class="toplinks" aria-label="More">
+          <button id="start-btn" class="ghost icon start-btn" aria-label="Start here"><svg class="i" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 4l10 6-10 6z" fill="currentColor"/></svg><span class="long">Start here</span></button>
+          <button id="find-btn" class="ghost icon" aria-label="Find" aria-expanded="false" aria-controls="find-panel"><svg class="i" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="long">Find</span></button>
+          <button id="share-btn" class="ghost icon" aria-label="Share this view"><svg class="i" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10M6 7l4-4 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 11v5h12v-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="long">Share</span></button>
+          <a class="ghost icon" href="./album.html" aria-label="Photos"><svg class="i" viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="4" width="15" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 14l4.5-4.5 3.5 3.5 2-2 3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="long">Photos</span></a>
+          <a id="home-link" class="ghost icon" href="./flat.html" aria-label="Inside a home"><svg class="i" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 9.5L10 3l7 6.5V17H12v-5H8v5H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span class="long">Inside a home</span></a>
+          <button id="about-btn" class="ghost icon" aria-label="About" aria-expanded="false" aria-controls="about"><svg class="i" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 9v5M10 6v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="long">About</span></button>
+        </nav>
+      </header>
+
+      <nav class="bar bottom" aria-label="Views and layers">
+        <div class="group" role="group" aria-label="Views">
+          <button id="stories-btn" class="accent" aria-controls="story">Stories</button>
+          <button data-view="overview" class="on">Overview</button>
+          <button data-view="aerial"><span class="long">1989 aerial view</span><span class="short">1989</span></button>
+          <button data-view="plan">Plan</button>
+          <button data-view="street"><span class="long">Above the lanes</span><span class="short">Lanes</span></button>
+          <button id="cut-btn" aria-expanded="false" aria-controls="cut-panel"><span class="long">Cut through</span><span class="short">Cut</span></button>
+          <button id="econ-btn" aria-expanded="false" aria-controls="econ-panel"><span class="long">Economy</span><span class="short">Work</span></button>
+          <button id="hist-btn" aria-expanded="false" aria-controls="hist-panel">History</button>
+        </div>
+        <div class="group" role="group" aria-label="Colour buildings by">
+          <label for="colour-by">Colour</label>
+          <select id="colour-by">
+            <option value="facade">As built</option>
+            <option value="storeys">Storeys</option>
+            <option value="certainty">How sure we are</option>
+            <option value="business">Businesses</option>
+            <option value="daylight">Daylight</option>
+            <option value="outline">Survey record</option>
+          </select>
+          <button id="labels-btn" class="on" aria-pressed="true">Labels</button>
+          <button id="time-btn" aria-expanded="false" aria-controls="time-panel" aria-label="Day and night"><span class="ico" aria-hidden="true">☀</span> <span class="clock">15:30</span></button>
+        </div>
+      </nav>
+
+      <section id="find-panel" class="card find-panel" hidden role="search" aria-label="Find in the model">
+        <div class="find-row">
+          <input id="find-input" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="find-results"
+            placeholder="A street, number, trade, business or year" autocomplete="off" spellcheck="false" aria-label="Find" />
+          <button class="close" aria-label="Close search">×</button>
+        </div>
+        <ul id="find-results" role="listbox" aria-label="Results"></ul>
+        <p class="note">Try <i>Lung Chun Road</i>, <i>No. 12A</i>, <i>dentist</i>, <i>fish ball</i>, <i>1898</i> or <span lang="zh-Hant">光明街</span>.</p>
+      </section>
+      <div id="toast" class="toast" role="status" hidden></div>
+      <section id="start" class="start" hidden></section>
+      <div id="tour" class="tour" hidden></div>
+
+      <aside id="legend" class="card" hidden></aside>
+
+      <section id="cut-panel" class="card" hidden aria-label="Cross-sections">
+        <div class="cut-head">
+          <div class="seg" role="group" aria-label="Cut type">
+            <button data-cut="floor" class="on">Floors</button>
+            <button data-cut="across">Across</button>
+            <button data-cut="along">Along</button>
+          </div>
+          <button class="close" id="cut-close" aria-label="Close cuts">×</button>
+        </div>
+        <canvas id="minimap" aria-label="Map of the city showing the cut; drag to move a vertical cut"></canvas>
+        <div class="cut-row">
+          <input id="cut-range" type="range" min="0" max="13" step="1" value="3" aria-describedby="cut-readout" />
+          <button id="cut-flip" class="ghost-sm" title="Keep the other side">Flip</button>
+        </div>
+        <p id="cut-readout" class="readout"></p>
+        <div id="use-legend" class="use-legend" aria-label="Unit uses"></div>
+        <select id="room-select" class="room-select" aria-label="Visit a documented room"></select>
+      </section>
+
+      <aside id="info" class="card" hidden aria-live="polite">
+        <button class="close" aria-label="Close">×</button>
+        <div class="body"></div>
+      </aside>
+
+      <section id="about" class="card about" hidden role="dialog" aria-labelledby="about-title">
+        <button class="close" aria-label="Close about">×</button>
+        <h2 id="about-title">About this model</h2>
+        <p>Every building outline, address number, street name and landmark is traced from the Hong Kong
+          Lands Department's survey sheet 11-NE-11A of May 1987, the last edition before clearance that maps
+          the city plot by plot. The Yamen, which still stands, comes from the 2024 sheet.</p>
+        <p><b>Inferred:</b> building heights (a rule checked against photographs), ground levels (from survey
+          spot heights) and all rooftop clutter (illustrative). Click a building to see what is known about it.</p>
+        <p><b>Cut through</b> slices the city by floor or vertically to show every flat and business. Uses come from
+          about 360 clearance compensation claims in the Government Records Service (address, floor and business);
+          room layouts, furniture and the uses of unrecorded units are illustrative.</p>
+        <p><b>Stories</b> pair seven places with open-licensed photographs from Wikimedia Commons (credited on each
+          story). <b>Walk here</b> puts you at eye level in the lanes; the cables, pipes and lights there are illustrative.</p>
+        <p><b>Day &amp; night</b> (the clock) follows the sun on 14 January 1987, the day the city was surveyed. Which
+          windows are lit, and the aircraft track, are illustrative. <b>Crime &amp; vice</b> shows what sources say for
+          each era, marked by how sure they are; no den or brothel locations are recorded, so none are drawn.</p>
+        <p><b>Economy</b> charts the businesses named in the clearance claims, follows the food factories' goods out
+          through the lanes (routes illustrative), and gathers what is known about rents, compensation, water and power.</p>
+        <p><b>Photos</b> gathers 62 open-licensed photographs from the 1860s to today. <b>Inside a home</b> opens one
+          family's flat in January 1987, every object explained; it is an illustration of a typical home, not a record of one.</p>
+        <p><b>History</b> steps from the Song salt post to the park, with each year's survey on the ground. Before 1975
+          building heights are not recorded, so those years show the plots, not towers; the demolition order is illustrative.</p>
+        <p class="credit"><b>Controls:</b> drag to orbit, right-drag or two fingers to pan, scroll or pinch to zoom; click a
+          building for its details. With the keyboard, Tab to the model, then arrows turn and tilt, Shift + arrows
+          move, + and − zoom, Enter shows the building under the cross, and Escape closes the top panel.</p>
+        <p class="credit">Map data: survey sheets 1922–2024 © Lands Department, HKSAR Government, from
+          <a href="https://data.gov.hk/en/terms-and-conditions" target="_blank" rel="noopener">DATA.GOV.HK</a>; the 1987 city traced by this
+          project. Chinese street names adapted from <a href="https://commons.wikimedia.org/wiki/File:Streets_in_Kowloon_Walled_City.jpg"
+          target="_blank" rel="noopener">Streets in Kowloon Walled City</a> by Lord Jaraxxus
+          (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>), shared under the same licence.</p>
+        <details id="photo-credits" class="credits"><summary>Photographs</summary></details>
+        <p><a href="./voices.html">Residents' voices →</a> former residents, in their own words.</p>
+        <p><a href="./sources.html">How we know →</a> every fact with its certainty and sources, where sources disagree, and the city on screen and in print.</p>
+        <p><b>Who made this:</b> Claude Opus 5.5, Anthropic's AI model, wrote all of it (the research, the tracing, the 3D model,
+          the code and the text) under the instruction of <a href="https://nomagicpill.site/">nomagicpill</a>.
+          Spot a mistake, or remember the city differently? <a href="https://nomagicpill.site/about/about.html#contact">Get in touch</a>.
+          <a href="./sources.html#made">More →</a></p>
+        <p class="credit">Renders, data and text: this project. Copyrighted photographs used in research are linked, not reproduced.
+          Code libraries: three.js, three-mesh-bvh and three-gpu-pathtracer (MIT); <a href="./licenses.txt">licence notices</a>.</p>
+      </section>
+
+      <section id="time-panel" class="card time-panel" hidden aria-label="Day and night">
+        <div class="cut-head">
+          <h2 class="panel-title">Day &amp; night <small>14 January 1987</small></h2>
+          <button class="close" id="time-close" aria-label="Close day and night">×</button>
+        </div>
+        <p id="time-now" class="time-now"></p>
+        <input id="time-range" type="range" min="0" max="23.99" step="0.05" value="15.5" aria-label="Time of day" />
+        <div class="time-ticks" aria-hidden="true"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+        <div class="presets">
+          <button id="time-play" class="ghost-sm" aria-pressed="false">▶ Play the day</button>
+          <button class="ghost-sm" data-hour="7">Dawn</button>
+          <button class="ghost-sm" data-hour="12.4">Noon</button>
+          <button class="ghost-sm" data-hour="18">Dusk</button>
+          <button class="ghost-sm" data-hour="22">Night</button>
+          <button class="ghost-sm" data-hour="3">3 am</button>
+        </div>
+        <div class="plane-row">
+          <label><input type="checkbox" id="planes-on" checked /> Kai Tak arrivals</label>
+          <button id="watch-landing" class="ghost-sm">Watch a landing</button>
+        </div>
+        <p id="time-planes-note" class="note"></p>
+        <div class="era-row" role="group" aria-label="Crime and vice">
+          <span class="lab">Crime &amp; vice</span>
+          <div class="seg">
+            <button data-era="off" class="on">Off</button>
+            <button data-era="1960s-70s">1960s–70s</button>
+            <button data-era="1980s">1980s</button>
+          </div>
+        </div>
+        <div id="era-text" class="era-text"></div>
+        <div id="time-notes"></div>
+      </section>
+
+      <section id="econ-panel" class="card econ-panel" hidden aria-label="Economy">
+        <div class="cut-head">
+          <h2 class="panel-title">Economy <small>how the city made a living</small></h2>
+          <button class="close" id="econ-close" aria-label="Close economy">×</button>
+        </div>
+        <div class="seg etabs" role="group" aria-label="Economy topics">
+          <button data-etab="work" class="on">Work</button>
+          <button data-etab="fish">Fish balls</button>
+          <button data-etab="money">Money</button>
+          <button data-etab="water">Water &amp; power</button>
+        </div>
+        <div class="body"></div>
+      </section>
+
+      <section id="hist-panel" class="card hist-panel" hidden aria-label="History">
+        <div class="cut-head">
+          <h2 class="panel-title">History <small>from salt post to park</small></h2>
+          <button class="close" id="hist-close" aria-label="Close history">×</button>
+        </div>
+        <div class="body"></div>
+      </section>
+
+      <aside id="story" class="card story" hidden aria-live="polite" aria-label="Story">
+        <button class="close" aria-label="Close stories">×</button>
+        <div class="body"></div>
+      </aside>
+
+      <div id="lightbox" class="lightbox" hidden></div>
+
+      <div id="walk-hud" class="walk-hud" hidden>
+        <p class="walk-tip"></p>
+        <div class="walk-move">
+          <button class="walk-fwd" aria-label="Walk forward">▲</button>
+          <button class="walk-back" aria-label="Walk back">▼</button>
+        </div>
+        <button id="walk-exit" class="ghost-sm">Leave the street</button>
+      </div>
+      <div id="walkmap" class="walkmap" hidden tabindex="0" role="group"
+        aria-label="Map of where you are. It opens on hover or focus; click a place on it to walk there through the lanes.">
+        <canvas aria-hidden="true"></canvas>
+        <button type="button" class="wm-close" aria-label="Fold the map away">×</button>
+        <p class="wm-info" aria-live="polite"></p>
+      </div>
+
+      <div id="loading" role="status">
+        <img class="poster" src="./img/poster.jpg" alt="" />
+        <div class="msg"><span>Loading the city…</span><i class="bar-anim" aria-hidden="true"></i></div>
+      </div>
+      <noscript><div class="noscript">This 3D model of Kowloon Walled City needs JavaScript.</div></noscript>
+      <script>
+        // Opened straight from disk (file://)? Browsers then block the model's script, styles and data, and the
+        // page would say "Loading" for ever, so explain instead. Styled inline: the stylesheet is blocked too.
+        // Also covers the script failing to load on a website.
+        (function () {
+          function explain(html) {
+            var el = document.getElementById("loading");
+            if (!el) return;
+            el.className = "failed";
+            el.setAttribute("style", "position:fixed;inset:0;display:grid;place-items:center;padding:20px;background:#efe6d4;" +
+              "color:#2b241d;font:16px/1.5 Georgia,serif;z-index:40;overflow:auto");
+            el.innerHTML = '<div style="max-width:560px;background:#faf5eb;border-radius:12px;padding:18px 22px;' +
+              'box-shadow:0 6px 24px rgba(60,40,20,.18)">' + html + "</div>";
+          }
+          if (location.protocol === "file:") {
+            explain('<h1 style="font-size:22px;line-height:1.25;margin:0 0 8px">Open this page through a web server</h1>' +
+              "<p>It was opened straight from a folder (its address starts with <code>file://</code>). Browsers don’t let a " +
+              "page opened that way load its 3D code and data, so it would show “Loading the city…” for ever.</p>" +
+              "<p>On your website it opens normally. To view it on this computer, open Terminal in the folder that holds " +
+              "this <code>index.html</code> and run:</p>" +
+              '<pre style="background:#efe6d4;padding:8px 10px;border-radius:6px;overflow:auto;font-size:14px">python3 -m http.server 8000</pre>' +
+              "<p>then go to <b>http://localhost:8000</b>. From the project, <code>npm run preview</code> in <code>site/</code> " +
+              "does the same at <b>http://localhost:4173</b>.</p>");
+            return;
+          }
+          window.addEventListener("error", function (e) {
+            var t = e.target;
+            if (t && t.tagName === "SCRIPT" && document.getElementById("loading") && !document.querySelector("#loading.failed"))
+              explain("<p>The model’s code didn’t load. Check your connection and reload the page.</p>");
+          }, true);
+        })();
+      </script>
+    </div>
+  </body>
+</html>

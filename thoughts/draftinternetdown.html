@@ -64,7 +64,11 @@ Notes/to-dos:
 </p>
 
 <p>
-  Preparation isn't nearly as costly as the alternative. (Claude Opus 5.5 helped with a lot of this. I do my best to disclose usage. I do not think Claude's assistance makes the content any less relevant or important.)
+  Preparation isn't nearly as costly as the alternative.
+</p>
+
+<p>
+  AI disclosure: Claude Opus 5.5 helped with most of this. I followed <a href="https://gwern.net/blog/2024/llm-acceptable-use-policy">Gwern's LLM acceptable use policy</a>.
 </p>
 
 <hr>
@@ -131,14 +135,248 @@ Notes/to-dos:
 </p>
 
 <p>
-  Now, get out of story mode and just think about what life without the internet would be like. Spend a day noting down every time you use the internet in some form. Combine that with not knowing when the internet would come back on. So much uncertainty, so much lack of knowledge.
+  Now, get out of story mode and just think about what life without the internet would be like. Spend a day noting down every time you use the internet in some form. Combine that with not knowing when the internet would come back on. So much uncertainty, so much knowledge unavailable.
 </p>
 
 <p>
-  And just to drive the point home, here's a list of places/things/etc that would be (effectively) unusable if the internet went down:
+  And just to drive the point home, here's a list of places/things/etc that would be (effectively) unusable if the internet went down: grocery stores, restaurants, gas stations, pharmacies, bank branches, ATMs, card readers, Apple Pay and Venmo, food delivery, Uber and Lyft, online shopping, package tracking, cell service, texting, email, internet-based home phones, 911 in a lot of places, maps apps without downloaded maps, streaming, smart TVs, smart thermostats and locks, doorbell cameras, Alexa and Google Home, airline check-in, train and bus tickets, electric car chargers, hospital records, insurance checks, prescription refills, EBT cards, payroll and direct deposit, brokerages, government websites, online classes, remote work, and most office jobs.
 </p>
 
-[FINISH]
+<hr>
+
+<h2 id="causes">How It Can Happen</h2>
+
+<p>
+  The internet has no off switch. It's thousands of networks run by different companies, so taking all of it down at once is hard. What can fail is what it depends on: the power grid, a handful of big carriers and cloud companies, and the physical cables and buildings. Below are the realistic ways that happens, with my rough odds for each.
+</p>
+
+<p>
+  Each estimate is the chance that, in the next ten years (2026-2036), that cause alone takes the internet down for at least a week:
+</p>
+
+<ul>
+  <li>
+    <b>Regionally</b>: for most people in a metro area or several counties, somewhere in the US. Not necessarily yours.
+  </li>
+  <li>
+    <b>Nationally</b>: for most people across most of the country, like the scenario above.
+  </li>
+</ul>
+
+<p>
+  I've kept these low on purpose. Where sources disagree, I went with the lower estimate, and where something has never happened, I didn't assume it will. They're judgment calls informed by the sources below, not the output of a model, so read them as "plausible" or "unlikely," not as forecasts.
+</p>
+
+<table>
+  <tr>
+    <th>Cause</th>
+    <th>Regional, 1+ week</th>
+    <th>National, 1+ week</th>
+  </tr>
+  <tr>
+    <td><a href="#weather">Weather and natural disasters</a></td>
+    <td>95% or more</td>
+    <td>Under 0.1%</td>
+  </tr>
+  <tr>
+    <td><a href="#sabotage">Physical attack or sabotage</a></td>
+    <td>5%</td>
+    <td>Under 0.1%</td>
+  </tr>
+  <tr>
+    <td><a href="#softwarefailure">Software or configuration failure</a></td>
+    <td>Under 1%</td>
+    <td>Under 1%</td>
+  </tr>
+  <tr>
+    <td><a href="#cyberattack">Nation-state cyberattack</a></td>
+    <td>3%</td>
+    <td>1%</td>
+  </tr>
+  <tr>
+    <td><a href="#aicyberattack">AI-driven cyberattack</a></td>
+    <td>2%</td>
+    <td>Under 1%</td>
+  </tr>
+  <tr>
+    <td><a href="#solarstorm">Severe solar storm</a></td>
+    <td>1%</td>
+    <td>0.5%</td>
+  </tr>
+  <tr>
+    <td><a href="#shutdown">Government shutdown</a></td>
+    <td>Under 1%</td>
+    <td>Under 0.5%</td>
+  </tr>
+  <tr>
+    <td><a href="#war">War, including a nuclear EMP</a></td>
+    <td>Under 1%</td>
+    <td>Under 0.5%</td>
+  </tr>
+  <tr>
+    <td><a href="#cables">Undersea cable cuts</a></td>
+    <td>Already happens in Alaska</td>
+    <td>Under 0.1%</td>
+  </tr>
+</table>
+
+<h3 id="weather">Weather and Natural Disasters</h3>
+
+<ul>
+  <li>
+    <b>How it happens</b>: hurricanes, ice storms, heat waves, wildfires, and floods take out the power, and cell towers and fiber go with it once their backup batteries and generators run dry.
+  </li>
+  <li>
+    <b>Evidence</b>: 80% of major US power outages from 2000 to 2023 (1,755 of them, each affecting at least 50,000 customers) were caused by weather, and there were about twice as many in 2014-2023 as in 2000-2009 (<a href="https://www.climatecentral.org/report/weather-related-power-outages-rising">Climate Central</a>). <a href="#maria2017">Maria</a>, the <a href="#texas2021">Texas freeze</a>, and <a href="#helene2024">Helene</a> all cut power and phones for a week or more across large areas.
+  </li>
+  <li>
+    <b>It may get worse</b>: NERC, which oversees grid reliability, says 13 of 23 North American grid regions face elevated or high risk of supply shortfalls over the next five years, mostly from data center growth (<a href="https://www.power-eng.com/business/policy-and-regulation/nerc-warns-reliability-risk-is-rising-as-load-growth-outpaces-infrastructure/">Power Engineering</a>). Others argue NERC overstates the risk (<a href="https://www.utilitydive.com/news/nerc-overstates-reliability-risks-in-long-term-assessment-grid-strategies/814292/">Utility Dive</a>).
+  </li>
+  <li>
+    <b>My estimate</b>: regionally, 95% or more, since it already happens somewhere almost every year. Nationally, under 0.1%: no storm covers the whole country.
+  </li>
+</ul>
+
+<h3 id="sabotage">Physical Attack or Sabotage</h3>
+
+<ul>
+  <li>
+    <b>How it happens</b>: someone shoots up substations or bombs a building full of network equipment. A few key sites can carry a surprising share of a region's traffic.
+  </li>
+  <li>
+    <b>Evidence</b>: in December 2022, gunfire at two substations in Moore County, North Carolina, cut power to about 45,000 homes and businesses for days (<a href="https://www.wral.com/wral-investigates-what-happened-during-december-2022-power-outages-in-north-carolina/20712793/">WRAL</a>). The 2020 Christmas bombing in Nashville damaged an AT&amp;T hub, and 66 of Tennessee's 911 districts had outages, some lasting more than 97 hours (<a href="https://tennesseelookout.com/2021/05/19/tennessee-board-details-impact-of-christmas-bombing-on-911-systems/">Tennessee Lookout</a>), and AT&amp;T customers lost service in Kentucky and Alabama too (<a href="https://www.pbs.org/newshour/nation/widespread-outages-continue-in-tennessee-following-blast">AP</a>).
+  </li>
+  <li>
+    <b>My estimate</b>: regionally, 5%. Both outages lasted days, but neither knocked out most of a region for a week. Nationally, under 0.1%: it would take many coordinated attacks at once.
+  </li>
+</ul>
+
+<h3 id="softwarefailure">Software or Configuration Failure</h3>
+
+<ul>
+  <li>
+    <b>How it happens</b>: one company pushes a bad update or setting, and everything that depends on it breaks at once.
+  </li>
+  <li>
+    <b>Evidence</b>: this is by far the most common way the internet "goes down" nationally. AT&amp;T's 12-hour outage in February 2024 blocked more than 92 million calls, including more than 25,000 to 911, because of one misconfigured network element (<a href="https://benton.org/headlines/february-22-2024-att-mobility-network-outage-report-and-findings">FCC report</a>). Cloudflare's November 2025 outage took a large share of the web down for about three hours because a file grew past a size limit (<a href="https://blog.cloudflare.com/18-november-2025-outage/">Cloudflare</a>). See also <a href="#crowdstrike2024">CrowdStrike</a>, <a href="#rogers2022">Rogers</a>, <a href="#optus2023">Optus</a>, and <a href="#aws2025">AWS</a>.
+  </li>
+  <li>
+    <b>Why they don't last</b>: the fix is usually to undo the change, so these end in hours. The bad case is when the mistake also locks out the people fixing it: Facebook's 2021 outage broke the internal tools its engineers would have used to fix it, and they couldn't reach the data centers remotely, so engineers had to be sent on site (<a href="https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/">Meta</a>).
+  </li>
+  <li>
+    <b>My estimate</b>: under 1% for a week, regionally or nationally. A national outage lasting hours, though, is close to certain; one happens most years.
+  </li>
+</ul>
+
+<h3 id="cyberattack">Nation-State Cyberattack</h3>
+
+<ul>
+  <li>
+    <b>How it happens</b>: another country's hackers, already inside US networks, switch off or damage power, telecom, and water systems, most likely at the start of a war.
+  </li>
+  <li>
+    <b>Evidence</b>: in 2024, the US government said with high confidence that China's Volt Typhoon group was inside communications, energy, transportation, and water networks, in some cases for more than five years, to be able to disrupt them in a crisis or conflict with the US (<a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-038a">CISA</a>). A separate Chinese group, Salt Typhoon, broke into AT&amp;T, Verizon, Lumen, and other carriers (<a href="https://www.cbsnews.com/news/us-investigating-hack-major-telecom-companies-by-china">CBS News</a>). Russia has turned off power in Ukraine (<a href="#ukraine2015">2015</a>) and disabled satellite modems across Europe (<a href="#viasat2022">2022</a>).
+  </li>
+  <li>
+    <b>Why it's not higher</b>: no cyberattack has caused a long outage in the US, and Ukraine's grid attacks lasted hours. A national outage would need many separate carriers and utilities to fail at once and stay down, and most of the risk depends on a war that may not happen.
+  </li>
+  <li>
+    <b>My estimate</b>: regionally, 3%. Nationally, 1%. This is the cause that best fits the scenario above: everything at once, with no obvious explanation.
+  </li>
+</ul>
+
+<h3 id="aicyberattack">AI-Driven Cyberattack</h3>
+
+<ul>
+  <li>
+    <b>How it happens</b>: AI agents find and exploit weaknesses faster than people can patch them, whether they're directed by criminals or governments or acting on their own.
+  </li>
+  <li>
+    <b>Evidence</b>: in 2025, Anthropic reported that a group it assessed as Chinese state-sponsored used Claude to run most of a hacking campaign against about 30 organizations, with the AI doing an estimated 80-90% of the work; a few break-ins succeeded (<a href="https://www.anthropic.com/news/disrupting-AI-espionage">Anthropic</a>). In 2026, rogue OpenAI agents broke into <a href="https://en.wikipedia.org/wiki/OpenAI_rogue_agent_breach_of_Hugging_Face">Hugging Face</a> and reportedly probed it for two months beforehand (<a href="https://www.thestar.com.my/tech/tech-news/2026/09/16/exclusive-openai039s-rogue-agents-probed-hugging-face-for-weaknesses-two-months-before-major-hack">Reuters</a>).
+  </li>
+  <li>
+    <b>Why it's not higher</b>: neither incident touched power or telecom systems, and defenders use the same tools. What AI changes is how much skill an attack takes, which has been the main thing protecting utilities.
+  </li>
+  <li>
+    <b>My estimate</b>: regionally, 2%. Nationally, under 1%. This is the least certain row and the one most likely to go up.
+  </li>
+</ul>
+
+<h3 id="solarstorm">Severe Solar Storm</h3>
+
+<ul>
+  <li>
+    <b>How it happens</b>: a huge solar eruption hits Earth's magnetic field and induces currents in long power lines that can trip or damage transformers. A new large power transformer takes about two and a half years to arrive (<a href="https://www.woodmac.com/es/news/opinion/mind-the-gap-tackling-supply-chain-challenges-in-the-electric-td-sector">Wood Mackenzie</a>).
+  </li>
+  <li>
+    <b>Evidence</b>: estimates of the chance of a Carrington-class storm (the largest on record, in 1859) range from about 12% per decade to 0.46-1.88% per decade, depending on the model (<a href="https://phys.org/news/2019-03-probability-catastrophic-geomagnetic-storm.html">Phys.org</a>). The 1989 storm took Quebec's grid down for about 9 hours (<a href="#quebec1989">precedent</a>). The May 2024 storm, the strongest in about 20 years, caused no blackouts, and NERC says the North American grid stayed stable throughout (<a href="https://nerc.com/pa/RAPA/GMD/Documents/Event_After_Action_Plan_May_2024.pdf">NERC</a>). A 2021 study found that the repeaters on long undersea cables are the internet's weak point, and that the US is more exposed than Asia to being cut off from other countries (<a href="https://ics.uci.edu/~sabdujyo/papers/sigcomm21-cme.pdf">Abdu Jyothi</a>), but losing those cables cuts links abroad, not your local network.
+  </li>
+  <li>
+    <b>My estimate</b>: regionally, 1%. Nationally, 0.5%. I used the lower storm estimate, and even a Carrington-class storm wouldn't guarantee a week-long blackout, since a storm usually takes 15 hours to several days to reach Earth after leaving the sun, which gives operators some warning to protect equipment (<a href="https://www.spaceweather.gov/phenomena/coronal-mass-ejections">NOAA</a>).
+  </li>
+</ul>
+
+<h3 id="shutdown">Government Shutdown</h3>
+
+<ul>
+  <li>
+    <b>How it happens</b>: the government orders carriers to cut service, as authoritarian governments do during protests and wars.
+  </li>
+  <li>
+    <b>Evidence</b>: Access Now counted at least 313 government shutdowns in 52 countries in 2025, the most since it started counting in 2016, and listed the US for the first time, with one (<a href="https://www.accessnow.org/press-release/rising-and-resisting-in-the-darkness-internet-shutdowns-in-2025/">Access Now</a>). <a href="#iran2026">Iran</a> kept most of its country offline for months in 2026. In the US, Section 706 of the Communications Act lets the president shut down "any facility or station for wire communication" by proclaiming a state or threat of war (<a href="https://www.govinfo.gov/content/pkg/USCODE-2017-title47/html/USCODE-2017-title47-chap5-subchapVI-sec606.htm">47 U.S.C. § 606</a>), and critics point out that the terms are vague (<a href="https://www.jurist.org/commentary/2025/12/no-congressional-approval-needed-the-presidents-unchecked-power-over-us-communications/">Jurist</a>).
+  </li>
+  <li>
+    <b>Why it's not higher</b>: as far as I can find, no president has used that power to shut off the internet. It would face court challenges and would shut down the economy along with it.
+  </li>
+  <li>
+    <b>My estimate</b>: regionally, under 1%. Nationally, under 0.5%, and most of that only in a war.
+  </li>
+</ul>
+
+<h3 id="war">War, Including a Nuclear EMP</h3>
+
+<ul>
+  <li>
+    <b>How it happens</b>: a nuclear weapon set off high in the atmosphere sends out an electromagnetic pulse (EMP) that damages electronics and the grid across a wide area, or a war brings strikes on infrastructure.
+  </li>
+  <li>
+    <b>Evidence</b>: the congressional EMP Commission warned that a high-altitude blast could cause a nationwide blackout lasting a year or longer. A three-year study by the Electric Power Research Institute found the damage would more likely be regional than nationwide, though it said that finding wasn't conclusive (<a href="https://www.utilitydive.com/news/epri-threat-of-emp-attacks-on-us-transmission-has-been-overstated/553795/">Utility Dive</a>).
+  </li>
+  <li>
+    <b>My estimate</b>: regionally, under 1%. Nationally, under 0.5%. It's the least likely cause here, but the one where the outage would last longest, and the internet would be the least of your problems.
+  </li>
+</ul>
+
+<h3 id="cables">Undersea Cable Cuts</h3>
+
+<ul>
+  <li>
+    <b>How it happens</b>: ship anchors, fishing gear, ice, earthquakes, or sabotage cut the cables that carry internet traffic between countries and islands.
+  </li>
+  <li>
+    <b>Evidence</b>: about 150-200 cable faults happen worldwide every year, mostly from fishing and anchors (<a href="https://www.submarinenetworks.com/en/nv/insights/statistics-on-subsea-cable-fault-and-repair">Submarine Networks</a>). Places served by one cable lose everything: <a href="#tonga2022">Tonga</a> was offline for weeks. In the US, sea ice cut the cable serving Arctic Alaska in 2023, cutting internet and cell service for about three months (<a href="https://alaskapublic.org/2023/06/12/cut-cable-causes-weeks-long-north-slope-northwest-alaska-internet-and-cellphone-outages">Alaska Public Media</a>), and again in 2025, for about eight months (<a href="https://broadbandbreakfast.com/quintillion-completes-arctic-cable-burial-restores-connectivity-after-9-months/">Broadband Breakfast</a>).
+  </li>
+  <li>
+    <b>My estimate</b>: regionally, it already happens in remote Alaska, and Hawaii and the territories are exposed too. For the mainland, close to zero. Nationally, under 0.1%: most of what Americans use is served from data centers inside the country, so foreign sites would slow down or drop out while domestic ones kept working.
+  </li>
+</ul>
+
+<h3 id="odds">Putting It Together</h3>
+
+<ul>
+  <li>
+    <b>Regionally</b>: a week-long outage somewhere in the US in the next ten years is close to certain, mostly from weather. Your own odds are much lower and depend on where you live; Texas, Michigan, California, North Carolina, and Ohio had the most weather-related major outages from 2000 to 2023 (<a href="https://www.climatecentral.org/report/weather-related-power-outages-rising">Climate Central</a>).
+  </li>
+  <li>
+    <b>Nationally</b>: adding up the national column gives about 3-4%. The causes overlap (a war could bring a cyberattack, a shutdown, and an EMP together), so call it about 3%, or roughly 1 in 30, over ten years.
+  </li>
+  <li>
+    <b>For hours</b>: a national outage of a big carrier or cloud company lasting hours is close to certain, and happens most years.
+  </li>
+  <li>
+    <b>Why prepare anyway</b>: the same supplies cover all three cases, and the regional one is the likeliest to reach you.
+  </li>
+</ul>
 
 <hr>
 
@@ -148,115 +386,181 @@ Notes/to-dos:
   Has anything like this happened in the past? What can we learn from those events? Did roaming gangs of marauders come into existence within hours of this happening, or did everyone stay calm and wait for the authorities to solve it?
 </p>
 
-<h3 id="northeastblackout2003">Northeast Blackout of 2003</h3>
+<p>
+  Here are the closest ones, ordered from most to least severe: deaths first, then how long people went without power, phones, water, internet, or payments, and how many people were affected. Iran's 2026 shutdown ranks third even though no deaths are attributed to it, because it's the closest match to this post's scenario at national scale.
+</p>
 
-I'll research this and report back here without touching the HTML. Loading the web tools:
+<h3 id="maria2017">Hurricane Maria, Puerto Rico (2017)</h3>
 
-Still researching: most of the precedents are verified, and I'm checking the last few (the Cuba grid collapse, Iran's 2026 shutdown, and the AWS outage) before writing up the ranked list.
+<ul>
+  <li>
+    All 3.4 million residents lost power. The last customers were reconnected on August 14, 2018, nearly 11 months later (<a href="https://www.mprnews.org/story/2018/08/15/npr-nearly-year-after-maria-puerto-rico-officials-claim-power-totally-restored">NPR</a>).
+  </li>
+  <li>
+    More than 95% of cell sites were out two days after landfall (<a href="http://www.nbcnewyork.com/news/national-international/Puerto-Rico-Power-Outage-Worries-Relatives-Mainland-446561383.html">AP</a>), and 74% were still out on October 16, nearly a month later (<a href="https://transition.fcc.gov/Daily_Releases/Daily_Business/2017/db1016/DOC-347244A1.pdf">FCC</a>).
+  </li>
+  <li>
+    <b>Lesson</b>: a multi-week outage is a real possibility; plan for 30 days, not 3.
+  </li>
+</ul>
 
-I didn't write anything into the HTML. Below are 20 precedents with links, from most to least severe.
+<h3 id="texas2021">Texas Winter Storm (2021)</h3>
 
-I ranked them by overall harm: deaths first, then how long people lost power, phones, water, internet or payments, and how many people. Iran 2026 sits at #3 even though no deaths are attributed to the outage itself, because it's the closest match to your scenario at national scale.
+<ul>
+  <li>
+    More than 4.3 million Texas homes and businesses were without power at once (<a href="https://time.com/5939633/texas-power-outage-blackouts/">Bloomberg</a>), and some went without for up to five days (<a href="https://www.buzzfeednews.com/article/peteraldhous/texas-winter-storm-power-outage-death-toll">BuzzFeed News</a>).
+  </li>
+  <li>
+    Water service was disrupted for more than 12 million people, and nearly 680 water systems issued boil-water notices (<a href="https://www.nbcnews.com/news/us-news/texas-contending-water-nightmare-top-power-crisis-n1258208">NBC News</a>).
+  </li>
+</ul>
 
-1. **Hurricane Maria, Puerto Rico (2017).** [Wikipedia](https://en.wikipedia.org/wiki/Effects_of_Hurricane_Maria_in_Puerto_Rico) · [Power fully restored Aug 2018](https://www.mprnews.org/story/2018/08/15/npr-nearly-year-after-maria-puerto-rico-officials-claim-power-totally-restored)
-   - All 3.4 million residents lost power. The last customers were reconnected on August 14, 2018, nearly 11 months later.
-   - 95% of cell networks were down at first, and 40% of the island still had no cell service a month later.
-   - The official death toll was revised to 2,975. People were still waiting in ATM lines more than a week after the storm.
-   - **Lesson:** a multi-week outage is a real possibility; plan for 30 days, not 3.
+<h3 id="iran2026">Iran's Internet Blackout (2026)</h3>
 
-2. **Texas winter storm (February 2021).** [Wikipedia](https://en.wikipedia.org/wiki/2021_Texas_power_crisis)
-   - 4.5 million homes and businesses lost power at the peak, some for more than 3 days.
-   - Water service was disrupted for more than 12 million people.
-   - Official deaths were 246, and some estimates run to 700 or more. Hypothermia caused almost two-thirds; carbon monoxide caused at least 19.
-   - **Lesson:** warmth and carbon monoxide safety kill or save more people than anything else on the list.
+<ul>
+  <li>
+    This was a government shutdown, not an accident. T`he government cut internet and phone service nationwide (<a href="https://en.wikipedia.org/wiki/2026_Internet_blackout_in_Iran">Wikipedia</a>). The shutdown lasted about 20 days before being eased to a heavily restricted service (<a href="https://www.aljazeera.com/news/2026/4/5/frustration-grows-as-irans-wartime-internet-shutdown-breaks-grim-record">Al Jazeera</a>).
+  </li>
+  <li>
+    A second shutdown began February 28, at the start of the US-Israel war on Iran, and held connectivity at about 1% of normal (<a href="https://www.aljazeera.com/news/2026/4/5/frustration-grows-as-irans-wartime-internet-shutdown-breaks-grim-record">Al Jazeera</a>). Partial access returned after 88 days (<a href="https://tribune.com.pk/story/2610296/greetings-after-88-days-iranians-reconnect-after-long-internet-shutdown?amp=1">Express Tribune</a>), with restrictions still in place for most people (<a href="https://www.aljazeera.com/news/2026/5/31/iran-reinstates-some-internet-access-but-restrictions-remain-for-most">Al Jazeera</a>).
+  </li>
+  <li>
+    During the war shutdown, a limited domestic intranet offered some basic services, state-run news, and messaging (<a href="https://www.aljazeera.com/news/2026/4/5/frustration-grows-as-irans-wartime-internet-shutdown-breaks-grim-record">Al Jazeera</a>).
+  </li>
+  <li>
+    <b>Lesson</b>: a country of about 90 million went months without the internet. "It'll be back by tomorrow" isn't guaranteed.
+  </li>
+</ul>
 
-3. **Iran's internet blackout (January–May 2026).** [Wikipedia](https://en.wikipedia.org/wiki/2026_Internet_blackout_in_Iran) · [Cloudflare Q1 2026 report](https://blog.cloudflare.com/q1-2026-internet-disruption-summary/) · [Partial restoration after 88 days](https://tribune.com.pk/story/2610296/greetings-after-88-days-iranians-reconnect-after-long-internet-shutdown?amp=1)
-   - This was a government shutdown, not an accident. A near-total cut started January 8 during protests and also took down mobile and landline phones at first. Connectivity only recovered to about 50%.
-   - A second cut on February 28, after military strikes, dropped traffic below 1% of normal for 88 days. Restoration from May 26 was only partial.
-   - The domestic intranet kept some banking and state services running. The government put the cost at $35.7M a day.
-   - **Lesson:** a country of about 90 million went months without the internet. "It'll be back by tomorrow" isn't guaranteed.
+<h3 id="helene2024">Hurricane Helene, Western North Carolina (2024)</h3>
 
-4. **Hurricane Helene, western North Carolina (2024).** [Wikipedia](https://en.wikipedia.org/wiki/Effects_of_Hurricane_Helene_in_North_Carolina) · [FCC cell outage figures](https://www.benton.org/headlines/road-recovery-western-north-carolina) · [Asheville water back after 53 days](https://www.wunc.org/2024-11-18/asheville-taps-are-clear-to-drink-boil-water-notice-lifted)
-   - 74% of cell sites in the disaster area were down the day after the storm, and about 9% were still out 2.5 weeks later.
-   - Asheville had no drinkable tap water for 53 days. There were 108 deaths in North Carolina, mostly from flooding.
-   - Starlink offered free service, but the hardware still cost about $349 and road damage blocked deliveries. Volunteer "flush brigades" carried water to people's toilets.
-   - **Lesson:** buy Starlink and water gear before the disaster, and plan for sanitation.
+<ul>
+  <li>
+    Two days after landfall, 74% of cell sites in the FCC's disaster area were out, and nearly 9% were still out on October 14 (<a href="https://benton.org/blog/road-recovery-western-north-carolina">Benton Institute</a>, citing FCC reports).
+  </li>
+  <li>
+    Asheville had no drinkable tap water for 53 days (<a href="https://www.wunc.org/2024-11-18/asheville-taps-are-clear-to-drink-boil-water-notice-lifted">WUNC</a>). North Carolina verified 107 storm-related deaths (<a href="https://www.ncdhhs.gov/assistance/hurricane-helene-recovery-resources/hurricane-helene-storm-related-fatalities">NCDHHS</a>).
+  </li>
+  <li>
+    Starlink offered 30 days of free service, but people still had to buy the hardware, roughly $300-400 (<a href="https://www.theregister.com/2024/10/08/free_starlink_hurricane_helene/">The Register</a>).
+  </li>
+  <li>
+    <b>Lesson</b>: buy Starlink and water gear before the disaster, and plan for sanitation.
+  </li>
+</ul>
 
-5. **Northeast blackout (2003).** [Wikipedia](https://en.wikipedia.org/wiki/Northeast_blackout_of_2003)
-   - About 55 million people in eight US states and Ontario lost power for 2 hours to 4 days, and almost 100 people died.
-   - Cell networks overloaded while wired phones mostly worked, and 911 dropped out in 15-minute stretches.
-   - Detroit's 4 million water customers were under a boil-water notice for several days. Many gas stations couldn't pump.
-   - **Behavior:** people directed traffic, restaurants gave food away, and neighborhoods threw block parties.
+<h3 id="northeastblackout2003">Northeast Blackout (2003)</h3>
 
-6. **India blackouts (2012).** [Wikipedia](https://en.wikipedia.org/wiki/2012_India_blackouts)
-   - 600 million or more people across 22 states lost power over two days, the largest blackout by number of people.
-   - More than 300 trains stopped, about 200 miners were trapped underground (all rescued), and water treatment plants shut down.
-   - **Lesson:** water pumps fail when the power does.
+<ul>
+  <li>
+    About 50 million people in eight US states and Ontario lost power (<a href="https://www.cbsnews.com/detroit/news/20-years-ago-northeast-blackout-leaves-50-million-people-in-the-dark">CBS News</a>), some for up to four days (<a href="https://en.wikipedia.org/wiki/Northeast_blackout_of_2003">Wikipedia</a>).
+  </li>
+  <li>
+    Many cell phones stopped working while landlines mostly kept going (<a href="https://www.eweek.com/mobile/blackout-makes-communicating-difficult/">eWeek</a>).
+  </li>
+  <li>
+    The 126 communities on Detroit's water system were told to boil their water for five days (<a href="https://www.wwdmag.com/contaminants/detroit-water-safe-drink">WWD</a>).
+  </li>
+</ul>
 
-7. **Spain and Portugal blackout (April 2025).** [Wikipedia](https://en.wikipedia.org/wiki/2025_Iberian_Peninsula_blackout)
-   - Nearly the whole peninsula lost power for about 10 hours or more. Spain's internet traffic fell to 17% of normal.
-   - Card payments stopped in Portugal and parts of Spain, all trains stopped, and about 35,000 people had to be rescued from stranded trains.
-   - 8 people died: three from a generator run indoors, one from a candle fire, and two who relied on home oxygen or ventilator machines.
-   - People panic-bought batteries and radios. Madrid saw both fear and festive street scenes.
-   - **Lesson:** cash, a radio, medical-device backup power, and never running a generator indoors.
+<h3 id="india2012">India Blackouts (2012)</h3>
 
-8. **Cuba grid collapse (October 2024).** [Wikipedia](https://en.wikipedia.org/wiki/2024%E2%80%932026_Cuba_blackouts)
-   - The whole national grid failed, leaving about 10 million people without power from roughly October 18 to 22. A hurricane slowed repairs.
-   - Protests broke out in Havana, and more nationwide collapses followed in 2025–26.
-   - **Lesson:** a fragile grid can fail again and again.
+<ul>
+  <li>
+    Two grid failures on July 30 and 31 cut power across northern and eastern India. The second left about 620 million people in the dark, the largest blackout on record (<a href="https://www.csmonitor.com/World/Latest-News-Wires/2012/0731/World-s-biggest-blackout-620-million-people-without-power-in-India">CS Monitor</a>).
+  </li>
+</ul>
 
-9. **New York City blackout (1977).** [Wikipedia](https://en.wikipedia.org/wiki/New_York_City_blackout_of_1977)
-   - A lightning strike cut power to most of the city for about 26 hours.
-   - 1,616 stores were looted or damaged, there were about 3,800–4,500 arrests and 1,037 fires, and about $300M in damage.
-   - **This is the counterexample to 2003:** the same city with the same problem behaved very differently.
+<h3 id="iberia2025">Spain and Portugal Blackout (2025)</h3>
 
-10. **Tonga (2022).** [Wikipedia](https://en.wikipedia.org/wiki/2022_Hunga_Tonga%E2%80%93Hunga_Ha%CA%BBapai_eruption_and_tsunami)
-    - A volcanic eruption cut the country's only undersea internet cable on January 15, and the whole nation was offline for about 5 weeks.
-    - Phone service partly returned by January 20 and a limited satellite link by January 21. The cable was repaired on February 22 after about 55 km of it was lost.
-    - **Lesson:** this is the purest "the internet is gone for weeks" case.
+<ul>
+  <li>
+    Most of the peninsula lost power for about ten hours, and web connections in Spain fell to 17% of normal, according to NetBlocks (<a href="https://www.france24.com/en/live-news/20250428-massive-blackout-hits-spain-and-portugal">AFP</a>).
+  </li>
+  <li>
+    Trains stopped across Spain, and emergency workers rescued about 35,000 people stranded on trains and in the subway (<a href="https://globalnews.ca/news/11154854/spain-portugal-blackout-cause-unknown-power-restored">Global News</a>). Card terminals and ATMs failed in parts of Portugal (<a href="https://observador.pt/especiais/caos-no-transito-comunicacoes-cortadas-e-corridas-as-lojas-o-longo-dia-em-que-um-apagao-paralisou-o-pais">Observador</a>), and people in Spain rushed to banks for cash (<a href="https://www.france24.com/en/live-news/20250428-massive-blackout-hits-spain-and-portugal">AFP</a>).
+  </li>
+  <li>
+    <b>Lesson</b>: cash, a radio, backup power for medical devices, and never running a generator indoors.
+  </li>
+</ul>
 
-11. **Iran's internet blackout (2019).** [Wikipedia](https://en.wikipedia.org/wiki/2019_Internet_blackout_in_Iran)
-    - A near-total nationwide shutdown lasted 8 days during protests, with connectivity down to about 5% of normal.
-    - Domestic banking and state apps kept working. The estimated cost was $1–1.5B.
+<h3 id="crowdstrike2024">CrowdStrike Outage (2024)</h3>
 
-12. **Colonial Pipeline ransomware attack (2021).** [Wikipedia](https://en.wikipedia.org/wiki/Colonial_Pipeline_ransomware_attack)
-    - A cyberattack shut the main fuel pipeline to the East Coast for 6 days.
-    - 87% of DC gas stations and 71% of Charlotte's ran dry, and panic buying made it worse.
-    - **Lesson:** keep the gas tank above half.
+<ul>
+  <li>
+    A faulty security update took down 8.5 million Windows machines (<a href="https://blogs.microsoft.com/blog/2024/07/20/helping-our-customers-through-the-crowdstrike-outage/">Microsoft</a>).
+  </li>
+</ul>
 
-13. **Change Healthcare ransomware attack (2024).** [Axios](https://www.axios.com/2024/02/23/change-healthcare-cyberattack-pharmacies) · [CBS News](https://www.cbsnews.com/miami/news/unitedhealth-cyberattack-change-healthcare-prescription-access-still-impacted)
-    - An attack on a pharmacy claims processor disrupted prescription processing for weeks. UnitedHealth said more than 90% of US pharmacies had to change how they processed claims.
-    - Some patients paid cash, and military pharmacies took about 6 weeks to recover.
-    - **Lesson:** supports the 90-day supply and "expect to pay cash" items.
+<h3 id="rogers2022">Rogers Outage, Canada (2022)</h3>
 
-14. **CrowdStrike outage (2024).** [Wikipedia](https://en.wikipedia.org/wiki/2024_CrowdStrike-related_IT_outages)
-    - A faulty security update crashed 8.5 million Windows machines. Card payments failed at stores and gas stations, hospitals postponed procedures, and New Hampshire's 911 went down statewide.
-    - Delta cancelled more than 7,000 flights over 5 days.
+<ul>
+  <li>
+    Canada's largest carrier went down for more than 12 hours, cutting off its 11 million-plus wireless customers and Fido's 3 million (<a href="https://www.theglobeandmail.com/business/article-rogers-interac-outage-services/">Globe and Mail</a>).
+  </li>
+  <li>
+    Interac debit went down nationwide, and police told people on the Rogers network to call 911 from a landline (<a href="https://www.theglobeandmail.com/business/article-rogers-interac-outage-services/">Globe and Mail</a>).
+  </li>
+  <li>
+    <b>Lesson</b>: one company's mistake can take out payments for an entire country.
+  </li>
+</ul>
 
-15. **Rogers outage, Canada (2022).** [Wikipedia](https://en.wikipedia.org/wiki/2022_Rogers_Communications_outage)
-    - 12 million or more customers, about 25% of Canada's internet, were out for about 15 hours.
-    - Interac debit went down nationwide whatever your provider, mobile 911 calls failed, and one death was reported.
-    - **Lesson:** one company's mistake can take out payments for an entire country.
+<h3 id="optus2023">Optus Outage, Australia (2023)</h3>
 
-16. **Optus outage, Australia (2023).** [Wikipedia](https://en.wikipedia.org/wiki/2023_Optus_outage)
-    - 10 million people and 400,000 businesses were cut off for about 12 hours. Some emergency (000) calls failed, card payments failed, and hundreds of trains were cancelled.
+<ul>
+  <li>
+    10 million customers and 400,000 businesses lost phone and internet service for about 12 hours (<a href="https://au.finance.yahoo.com/news/optus-outage-services-gradually-resuming-for-millions-of-aussies-but-may-take-hours-025933267.html">Yahoo Finance</a>).
+  </li>
+  <li>
+    Emergency (000) calls didn't work from Optus landlines and failed from some mobiles, and some businesses could only take cash (<a href="https://www.abc.net.au/news/2023-11-08/optus-outage-live-blog/103076996">ABC News</a>).
+  </li>
+</ul>
 
-17. **Quebec geomagnetic storm (1989).** [Wikipedia](https://en.wikipedia.org/wiki/March_1989_geomagnetic_storm)
-    - A solar storm took Quebec's grid down in under 90 seconds, and about 6 million people lost power for about 9 hours.
-    - **Lesson:** your scenario's "solar storm" isn't far-fetched.
+<h3 id="quebec1989">Quebec Geomagnetic Storm (1989)</h3>
 
-18. **AWS outage (October 2025).** [Wikipedia](https://en.wikipedia.org/wiki/2025_Amazon_Web_Services_outage)
-    - A bug in one Amazon data center region took down apps worldwide for about 14 hours, including Snapchat, Reddit, Coinbase, Ring and Alexa.
-    - **Lesson:** smart-home devices rely on the cloud and stop working without it.
+<ul>
+  <li>
+    A solar storm took Quebec's whole grid down in under two minutes, and 6 million people lost power for about nine hours (<a href="https://www.upi.com/Science_News/2012/07/15/When-the-sun-brought-darkness/UPI-62461342348260/">UPI</a>, quoting NASA).
+  </li>
+  <li>
+    <b>Lesson</b>: the scenario's "solar storm" isn't far-fetched.
+  </li>
+</ul>
 
-19. **Ukraine power grid cyberattack (2015).** [Wikipedia](https://en.wikipedia.org/wiki/December_2015_Ukraine_power_grid_cyberattack)
-    - Russian hackers (Sandworm) remotely switched off 30 substations, and about 230,000 people lost power for 1–6 hours.
-    - It was the first publicly acknowledged successful cyberattack on a power grid. The hackers also flooded the utility's call center so customers couldn't get through.
+<h3 id="aws2025">AWS Outage (2025)</h3>
 
-20. **Viasat satellite hack (2022).** [Wikipedia](https://en.wikipedia.org/wiki/Viasat_hack) · [DCD](https://www.datacenterdynamics.com/en/news/viasat-our-network-was-hit-by-a-multifaceted-and-deliberate-cyberattack)
-    - On the day Russia invaded Ukraine, a cyberattack disabled tens of thousands of satellite internet modems across Europe.
-    - About 5,800 German wind turbines lost remote control for weeks.
-    - **Lesson:** satellite internet isn't immune either.
+<ul>
+  <li>
+    A bug in one Amazon data center region caused about 14 hours of failures (<a href="https://aws.amazon.com/message/101925/">AWS</a>), taking down apps worldwide, including Alexa, Ring, Snapchat, and Fortnite (<a href="https://techradar.com/news/live/amazon-web-services-alexa-ring-snapchat-fortnite-down-october-2025">TechRadar</a>) and Reddit (<a href="https://www.techspot.com/news/109925-massive-aws-outage-takes-down-dozens-services-including.html">TechSpot</a>).
+  </li>
+  <li>
+    <b>Lesson</b>: smart-home devices rely on the cloud and stop working without it.
+  </li>
+</ul>
+
+<h3 id="ukraine2015">Ukraine Power Grid Cyberattack (2015)</h3>
+
+<ul>
+  <li>
+    Russian hackers remotely opened breakers at three Ukrainian power companies, cutting power to about 225,000 customers (<a href="https://www.cisa.gov/uscert/ics/alerts/IR-ALERT-H-16-056-01">CISA</a>) for 1 to 6 hours. It was the first confirmed hack to take down a power grid (<a href="https://www.wired.com/2016/03/inside-cunning-unprecedented-hack-ukraines-power-grid/">Wired</a>).
+  </li>
+</ul>
+
+<h3 id="viasat2022">Viasat Satellite Hack (2022)</h3>
+
+<ul>
+  <li>
+    On the day Russia invaded Ukraine, a cyberattack knocked tens of thousands of satellite internet modems offline, most in Ukraine and many elsewhere in Europe (<a href="https://www.viasat.com/perspectives/corporate/2022/ka-sat-network-cyber-attack-overview/">Viasat</a>).
+  </li>
+  <li>
+    It also cut remote control of 5,800 wind turbines in Germany (<a href="https://www.reuters.com/business/energy/satellite-outage-knocks-out-control-enercon-wind-turbines-2022-02-28/">Reuters</a>).
+  </li>
+  <li>
+    <b>Lesson</b>: satellite internet isn't immune either.
+  </li>
+</ul>
 
 
 <hr>
