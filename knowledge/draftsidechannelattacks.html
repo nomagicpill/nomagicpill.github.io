@@ -53,8 +53,6 @@ Notes/to-dos:
 LED key;
 gwern hacking pinball and ESP scores
 gwern death note anonymity
-row hammer
-recognizing keystrokes using wifi devices
 https://t.co/IxAM7gCPOV: doppler info to get location
 
 add videos (like defcon presentations, etc) or pictures
@@ -84,7 +82,7 @@ add videos (like defcon presentations, etc) or pictures
 
 <hr>
 
-<h2 id="keyshape">Determing Key Shapes From Sounds</h2>
+<h2 id="keyshape">Determining Key Shapes From Sounds</h2>
 
 <p>
   <a href="media/sidechannelattacks/Listen%20to%20Your%20Key-%20Towards%20Acoustics-based%20Physical%20Key%20Inference.pdf">Listen to Your Key: Towards Acoustics-based Physical Key Inference</a> (DOI <a href="https://dl.acm.org/doi/10.1145/3376897.3377853">here</a>):
@@ -111,15 +109,46 @@ add videos (like defcon presentations, etc) or pictures
 <h2 id="ledcryptokeys">Determining Crypto Keys from LED Lights</h2>
 
 <p>
-  <a href="">Video-Based Cryptanalysis: Extracting Cryptographic Keys from Video Footage of a Device’s Power LED Captured by Standard Video Cameras</a>
+  <a href="media/sidechannelattacks/Video-Based%20Cryptanalysis-%20Extracting%20Cryptographic%20Keys%20from%20Video%20Footage%20of%20a%20Device’s%20Power%20LED.pdf">Video-Based Cryptanalysis: Extracting Cryptographic Keys from Video Footage of a Device’s Power LED Captured by Standard Video Cameras</a>:
 </p>
 
+<blockquote>
+  In this paper, we present video-based cryptanalysis, a new method used to recover secret keys from a device by analyzing video footage of a device’s power LED. We show that cryptographic computations performed by the CPU change the power consumption of the device which affects the brightness of the device’s power LED. Based on this observation, we show how attackers can exploit commercial video cameras (e.g., an iPhone 13’s camera or Internet-connected security camera) to recover secret keys from devices. This is done by obtaining video footage of a device’s power LED (in which the frame is filled with the power LED) and exploiting the video camera’s rolling shutter to increase the sampling rate by three orders of magnitude from the FPS rate (60 measurements per second) to the rolling shutter speed (60K measurements per second in the iPhone 13 Pro Max). The frames of the video footage of the device’s power LED are analyzed in the RGB space, and the associated RGB values are used to recover the secret key by inducing the power consumption of the device from the RGB values. We demonstrate the application of video-based cryptanalysis by performing two side-channel cryptanalytic timing attacks and recover: (1) a 256- bit ECDSA key from a smart card by analyzing video footage of the power LED of a smart card reader via a hijacked Internetconnected security camera located 16 meters away from the smart card reader, and (2) a 378-bit SIKE key from a Samsung Galaxy S8 by analyzing video footage of the power LED of Logitech Z120 USB speakers that were connected to the same USB hub (that was used to charge the Galaxy S8) via an iPhone 13 Pro Max. Finally, we discuss countermeasures, limitations, and the future of video-based cryptanalysis in light of the expected improvements in video cameras’ specifications.
+</blockquote>
+
+<hr>
+
+<h2 id="rowhammer">Row Hammer</h2>
+
+<p>
+  <a href="media/sidechannelattacks/Flipping%20Bits%20in%20Memory%20Without%20Accessing%20Them-%20An%20Experimental%20Study%20of%20DRAM%20Disturbance%20Errors.pdf">Flipping Bits in Memory Without Accessing Them: An Experimental Study of DRAM Disturbance Errors</a>:
+</p>
+
+<blockquote>
+  Memory isolation is a key property of a reliable and secure computing system — an access to one memory address should not have unintended side effects on data stored in other addresses. However, as DRAM process technology scales down to smaller dimensions, it becomes more difficult to prevent DRAM cells from electrically interacting with each other. In this paper, we expose the vulnerability of commodity DRAM chips to disturbance errors. By reading from the same address in DRAM, we show that it is possible to corrupt data in nearby addresses. More specifically, activating the same row in DRAM corrupts data in nearby rows. We demonstrate this phenomenon on Intel and AMD systems using a malicious program that generates many DRAM accesses. We induce errors in most DRAM modules (110 out of 129) from three major DRAM manufacturers. From this we conclude that many deployed systems are likely to be at risk. We identify the root cause of disturbance errors as the repeated toggling of a DRAM row’s wordline, which stresses inter-cell coupling effects that accelerate charge leakage from nearby rows. We provide an extensive characterization study of disturbance errors and their behavior using an FPGA-based testing platform. Among our key findings, we show that (i) it takes as few as 139K accesses to induce an error and (ii) up to one in every 1.7K cells is susceptible to errors. After examining various potential ways of addressing the problem, we propose a low-overhead solution to prevent the errors.
+</blockquote>
+
+<hr>
+
+<h2 id="wifikeystrokes">Keystroke Recognition Using WiFi Signals</h2>
+
+<p>
+  <a href="media/sidechannelattacks/Keystroke%20Recognition%20Using%20WiFi%20Signals.pdf">Keystroke Recognition Using WiFi Signals</a>:
+</p>
+
+<blockquote>
+  Keystroke privacy is critical for ensuring the security of computer systems and the privacy of human users as what being typed could be passwords or privacy sensitive information. In this paper, we show for the first time that WiFi signals can also be exploited to recognize keystrokes. The intuition is that while typing a certain key, the hands and fingers of a user move in a unique formation and direction and thus generate a unique pattern in the time-series of Channel State Information (CSI) values, which we call CSI-waveform for that key. In this paper, we propose a WiFi signal based keystroke recognition system called WiKey. WiKey consists of two Commercial Off-The-Shelf (COTS) WiFi devices, a sender (such as a router) and a receiver (such as a laptop). The sender continuously emits signals and the receiver continuously receives signals. When a human subject types on a keyboard, WiKey recognizes the typed keys based on how the CSI values at the WiFi signal receiver end. We implemented the WiKey system using a TP-Link TL-WR1043ND WiFi router and a Lenovo X200 laptop. WiKey achieves more than 97.5% detection rate for detecting the keystroke and 96.4% recognition accuracy for classifying single keys. In real-world experiments, WiKey can recognize keystrokes in a continuously typed sentence with an accuracy of 93.5%.
+</blockquote>
+
 <hr>
 
 
 
 
-<hr>
+
+
+
+
 
 <h2 id="see_also">See Also</h2>
 
